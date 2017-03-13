@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup       set suite variable    ${session}    ${AdminUser.session}
-Force Tags        msgcenter
+Force Tags        routing
 Library           json
 Library           requests
 Library           Collections
@@ -12,7 +12,13 @@ Library           uuid
 
 *** Test Cases ***
 获取消息中心未读消息数据(/users/{agentUserId}/activities)
-    [Documentation]    设置路由规则
+    [Documentation]    设置路由规则：
+    ...
+    ...    规则为：渠道指定技能组规则
+    ...
+    ...    前提：
+    ...    1.将所发消息关联设置为空
+    ...    2.渠道指定技能组A
     [Tags]
     #获取未读消息，并标记
     ${resp}=    /users/{agentUserId}/activities    ${AdminUser}    ${timeout}    unread
@@ -31,11 +37,3 @@ Library           uuid
     ${data}=    set variable    {"receiverIds":["${AdminUser.userId}"],"activity":{"actor":{"id":"${msgCenterEntity.actorId}","objectType":"visitor","name":"${msgCenterEntity.actorName}","avatar":"/avatars/223.jpg"},"verb":"POST","object":{"id":"${msgCenterEntity.objectId}","uri":"http://www.baidu.com","content":{"summary":"status has changed.","detail":"status has changed：customer has sent."}}}}
     ${resp}=    /v1/tenants/{tenantId}/activities    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    #获取未读消息
-    ${resp}=    /users/{agentUserId}/activities    ${AdminUser}    ${timeout}    unread
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j1}    to json    ${resp.content}
-    log    ${j1['count_total']}
-    log    ${j1['count_unread']}
-    Should Be True    ${j['count_total']}+1 == ${j1['count_total']}    count_total返回值不正确 ,比较前后值分别为:${j['count_total']} ,${j1['count_total']}
-    Should Be True    ${j['count_unread']}+1 == ${j1['count_unread']}    count_total返回值不正确 , 比较前后值分别为:${j['count_unread']} ,${j1['count_unread']}

@@ -22,11 +22,13 @@
     ...
     ...    Request URL: /v1/tenants/{tenantId}/channel-binding
     ...
-    ...    Request Method: GET / PUT
+    ...    Request Method: GET / PUT / POST
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/channel-binding
     ${params}=    set variable    page=1&per_page=100&_=1489409326850
     Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
     ...    timeout=${timeout}

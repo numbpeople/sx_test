@@ -7,7 +7,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          MsgCenterApi.robot
+Resource          api/MsgCenterApi.robot
 Library           uuid
 
 *** Test Cases ***
@@ -97,7 +97,7 @@ Library           uuid
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j1}    to json    ${resp.content}
     log    ${j1['count_unread']}
-    Should Be True    ${j2['count_unread']}== ${j1['count_unread']}+1     count_unread返回值不正确 , 比较前后值分别为:${j2['count_unread']} ,${j1['count_unread']}
+    Should Be True    ${j2['count_unread']}== ${j1['count_unread']}+1    count_unread返回值不正确 , 比较前后值分别为:${j2['count_unread']} ,${j1['count_unread']}
 
 获取已发消息列表数据(/v1/tenants/{tenantId}/agents/{userId}/activities)
     [Documentation]    获取消息中心已发消息列表数据

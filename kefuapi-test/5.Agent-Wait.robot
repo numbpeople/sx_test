@@ -6,7 +6,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
+Resource          api/KefuApi.robot
 
 *** Test Cases ***
 关闭待接入列表search出的指定访客

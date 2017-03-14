@@ -7,7 +7,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          NoteApi.robot
+Resource          api/NoteApi.robot
 
 *** Test Cases ***
 获取project数据(/tenants/{tenantId}/projects)

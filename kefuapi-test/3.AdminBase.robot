@@ -7,7 +7,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
+Resource          api/KefuApi.robot
 Resource          JsonDiff.robot
 
 *** Test Cases ***

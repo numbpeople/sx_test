@@ -6,7 +6,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
+Resource          api/KefuApi.robot
 
 *** Test Cases ***
 客服删除新增加关联、账号和技能组并登出

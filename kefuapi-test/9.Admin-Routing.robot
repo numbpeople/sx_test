@@ -7,8 +7,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          RoutingApi.robot
-Resource          KefuApi.robot
+Resource          api/RoutingApi.robot
+Resource          api/KefuApi.robot
 Library           uuid
 Library           demjson
 

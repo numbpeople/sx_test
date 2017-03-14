@@ -6,8 +6,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
-Resource          ThirdPartApi.robot
+Resource          api/KefuApi.robot
+Resource          api/ThirdPartApi.robot
 
 *** Test Cases ***
 学而思统计接口关联发送消息数(/v1/Tenant/me/ServiceSession/Statistics/MessageCountByTechChannelList)

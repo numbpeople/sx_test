@@ -6,8 +6,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
-Resource          registerApi.robot
+Resource          api/KefuApi.robot
+Resource          api/registerApi.robot
 
 *** Test Cases ***
 获取图片验证码(/imgVerifyCode)

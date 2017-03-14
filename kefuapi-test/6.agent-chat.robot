@@ -6,7 +6,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
+Resource          api/KefuApi.robot
 
 *** Test Cases ***
 从待接入接起会话查看attribute和track信息，查看会话信息和历史消息接口后关闭

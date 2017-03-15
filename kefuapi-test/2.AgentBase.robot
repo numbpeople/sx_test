@@ -6,9 +6,11 @@ Library           requests
 Library           Collections
 Library           RequestsLibrary
 Library           String
+Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff.robot
+Resource          BaseKeyword.robot
 
 *** Test Cases ***
 获取机器人推荐状态(/v1/Tenants/{tenantId}/robots/recommendation/status)

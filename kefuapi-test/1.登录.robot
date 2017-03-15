@@ -9,12 +9,22 @@ Library           String
 Library           calendar
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
+Resource          BaseKeyword.robot
 Library           uuid
 Resource          JsonDiff.robot
 Library           jsonschema
+Library           urllib
 
 *** Test Cases ***
+444
+    set global variable    @{curTime}    get time    sec    2006-03-29 15:06:21
+    set test variable    &{r1}    ${empty}
+    set to dictionary    &{r1}    test=test
+    set to dictionary    &{r1}    test1=test1
+    log    ${r1}
+
 客服登录(/login)
+    #${t}    urlencode    username=00001@qq.com&password=!@#123&stat=flsf
     Create Session    adminsession    ${kefuurl}
     ${resp}=    /login    adminsession    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
@@ -26,13 +36,15 @@ Library           jsonschema
     #Should Be True    ${r['ValidJson']}    登录失败：${r}
     set global variable    ${loginJson}    ${j}
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
-    ...    session=adminsession
+    ...    session=adminsession    nicename=${j['agentUser']['nicename']}
     set global variable    ${AdminUser}    ${AdminUser}
     ${DR}=    initFilterTime
     set global variable    ${DateRange}    ${DR}
+    #Close All Session In Waitlist    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
 
 获取初始化数据(/home/initdata)
-    ${resp}=    /home/initdata    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /home/initdata    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${temp}    to json    ${initdataJson}
@@ -44,7 +56,8 @@ Library           jsonschema
 
 获取organ信息(/v1/infos)
     [Tags]    unused
-    ${resp}=    /v1/infos    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v1/infos    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${temp}    to json    ${infosJson}
@@ -55,7 +68,8 @@ Library           jsonschema
     set global variable    ${orgEntity}    ${orgEntity}
 
 获取organ信息(/v2/infos)
-    ${resp}=    /v2/infos    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v2/infos    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${temp}    to json    ${infosJson}
@@ -66,8 +80,8 @@ Library           jsonschema
     set global variable    ${orgEntity}    ${orgEntity}
 
 获取登录状态(/v1/Agents/me)
-    log    ${AdminUser}
-    ${resp}=    /v1/Agents/me    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v1/Agents/me    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
@@ -78,7 +92,8 @@ Library           jsonschema
     set global variable    ${AgentsMeJson}    ${j}
 
 获取坐席数据(/v1/Tenants/me/Agents/me)
-    ${resp}=    /v1/Tenants/me/Agents/me    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v1/Tenants/me/Agents/me    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
@@ -87,7 +102,8 @@ Library           jsonschema
     set global variable    ${TenantsMeAgentsMeJson}    ${j}
 
 获取租户信息(/v1/Tenants/me)
-    ${resp}=    /v1/Tenants/me    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v1/Tenants/me    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${temp}    to json    ${TenantsMeJson}
@@ -97,41 +113,43 @@ Library           jsonschema
     set global variable    ${TenantsMeJson}    ${j}
 
 添加客服并获取客服列表(/v1/Admin/Agents)
+    set test variable    ${tadmin}    ${AdminUser}
     ${curTime}    get time    epoch
     ${t}    evaluate    type('${curTime}@test.com')
-    set to dictionary    ${AgentUser1}    username=${AdminUser.tenantId}${curTime}@test.com    password=test2015    maxServiceSessionCount=10    tenantId=${AdminUser.tenantId}
+    set to dictionary    ${AgentUser1}    username=${tadmin.tenantId}${curTime}@test.com    password=test2015    maxServiceSessionCount=10    tenantId=${tadmin.tenantId}
     ${data}=    set variable    {"nicename":"${AgentUser1.username}","username":"${AgentUser1.username}","password":"${AgentUser1.password}","confirmPassword":"${AgentUser1.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser1.maxServiceSessionCount}","roles":"agent"}
     ###添加坐席
-    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}    ${timeout}
+    ${resp}=    /v1/Admin/Agents    post    ${tadmin}    ${AgentFilterEntity}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be True    '${j['tenantId']}'=='${AgentUser1.tenantId}'    返回的tenantId不正确：${resp.content}
-    set to dictionary    ${AgentUser1}    userId=${j['userId']}    roles=${j['roles']}
+    set to dictionary    ${AgentUser1}    userId=${j['userId']}    roles=${j['roles']}    nicename=${j['nicename']}
     set global variable    ${AgentUser1}    ${AgentUser1}
     ###查询坐席信息
     set to dictionary    ${AgentFilterEntity}    keyValue=${curTime}
-    ${resp}=    /v1/Admin/Agents    get    ${AdminUser}    ${AgentFilterEntity}    ${data}    ${timeout}
+    ${resp}=    /v1/Admin/Agents    get    ${tadmin}    ${AgentFilterEntity}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be True    ${j['numberOfElements']}==1    获取客服列表不正确：${resp.content}
     Should Be True    '${j['content'][0]['username']}'=='${AgentUser1.username}'    获取客服列表不正确：${resp.content}
 
 添加技能组并获取技能组列表(/v1/AgentQueue)
+    set test variable    ${tadmin}    ${AdminUser}
     #添加技能组
     ${curTime}    get time    epoch
-    set to dictionary    ${AgentQueue1}    queueName=${AdminUser.tenantId}${curTime}
+    set to dictionary    ${AgentQueue1}    queueName=${tadmin.tenantId}${curTime}
     ${data}=    set variable    {"queueName":"${AgentQueue1.queueName}"}
-    ${resp}=    /v1/AgentQueue    post    ${AdminUser}    ${data}    ${timeout}
+    ${resp}=    /v1/AgentQueue    post    ${tadmin}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.content}
+    Should Be Equal    '${j['tenantId']}'    '${tadmin.tenantId}'    技能组列表数据不正确：${resp.content}
     set to dictionary    ${AgentQueue1}    queueId=${j['queueId']}
     set global variable    ${AgentQueue1}    ${AgentQueue1}
     ###获取技能组
-    ${resp}=    /v1/AgentQueue    get    ${AdminUser}    ${empty}    ${timeout}
+    ${resp}=    /v1/AgentQueue    get    ${tadmin}    ${empty}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    Should Be Equal    '${j[0]['agentQueue']['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.content}
+    Should Be Equal    '${j[0]['agentQueue']['tenantId']}'    '${tadmin.tenantId}'    技能组列表数据不正确：${resp.content}
     : FOR    ${i}    IN    @{j}
     \    Exit For Loop If    '${i['agentQueue']['queueId']}' =='${AgentQueue1.queueId}'
     Should Be Equal    '${i['agentQueue']['queueId']}'    '${AgentQueue1.queueId}'    技能组id数据不正确：${i}
@@ -139,29 +157,32 @@ Library           jsonschema
     log    ${AgentQueue1}
 
 添加坐席到技能组(/v1/AgentQueue/{queueId}/AgentUser)
+    set test variable    ${tadmin}    ${AdminUser}
+    set test variable    ${tagent}    ${AgentUser1}
     #添加坐席到技能组
-    ${data}=    set variable    ["${AgentUser1.userId}"]
-    ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${AdminUser}    ${AgentQueue1.queueId}    ${data}    ${timeout}
+    ${data}=    set variable    ["${tagent.userId}"]
+    ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${tadmin}    ${AgentQueue1.queueId}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
     ###获取技能组
-    ${resp}=    /v1/AgentQueue    get    ${AdminUser}    ${empty}    ${timeout}
+    ${resp}=    /v1/AgentQueue    get    ${tadmin}    ${empty}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     : FOR    ${i}    IN    @{j}
     \    Exit For Loop If    '${i['agentQueue']['queueId']}' =='${AgentQueue1.queueId}'
-    Should Be Equal    '${i['agentUsers'][0]['tenantId']}'    '${AgentUser1.tenantId}'    用户tenantId数据不正确：${i}
-    Should Be Equal    '${i['agentUsers'][0]['userId']}'    '${AgentUser1.userId}'    用户userId数据不正确：${i}
+    Should Be Equal    '${i['agentUsers'][0]['tenantId']}'    '${tagent.tenantId}'    用户tenantId数据不正确：${i}
+    Should Be Equal    '${i['agentUsers'][0]['userId']}'    '${tagent.userId}'    用户userId数据不正确：${i}
 
 创建关联信息并获取app关联信息
+    set test variable    ${tadmin}    ${AdminUser}
     #快速创建关联
-    ${data}=    create dictionary    companyName=对接移动客服 请勿移除管理员    email=${AdminUser.userId}@easemob.com    password=47iw5ytIN8Ab8f2KopaAaq    telephone=13800138000    tenantId=${AdminUser.tenantId}
-    ${resp}=    /v1/autoCreateImAssosciation    ${AdminUser}    ${data}    ${timeout}
+    ${data}=    create dictionary    companyName=对接移动客服 请勿移除管理员    email=${tadmin.userId}@easemob.com    password=47iw5ytIN8Ab8f2KopaAaq    telephone=13800138000    tenantId=${tadmin.tenantId}
+    ${resp}=    /v1/autoCreateImAssosciation    ${tadmin}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     set to dictionary    ${RestEntity}    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}    clientSecret=${j['entity']['clientSecret']}
     ...    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}    agentQueueId=${j['entity']['agentQueueId']}    robotId=${j['entity']['robotId']}
     #查询关联id
-    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
@@ -176,7 +197,8 @@ Library           jsonschema
     log    ${RestEntity}
 
 webim获取关联信息(/v1/webimplugin/targetChannels)
-    ${resp}=    /v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v1/webimplugin/targetChannels    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}

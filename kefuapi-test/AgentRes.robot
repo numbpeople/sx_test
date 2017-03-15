@@ -1,9 +1,9 @@
 *** Variables ***
-${kefuurl}        https://sandbox.kefu.easemob.com/
-&{AdminUser}      username=leoli_02@easemob.com    password=lijipeng123    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
-...               cookies=    session=    userId=
+${kefuurl}        http://kefu.easemob.com
+&{AdminUser}      username=0222test1@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+...               cookies=    session=    userId=    nicename=
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
-...               cookies=    session=    userId=
+...               cookies=    session=    userId=    nicename=
 @{kefustatus}     Busy    Leave    Hidden    Online
 ${timeout}        ${30.0}
 ${delay}          1
@@ -46,3 +46,5 @@ ${retryTimes}     10
 &{MsgFilter}      fromSeqId=0    size=10    lastSeqId=0
 &{RobotRulesEntity}    page=1    per_page=15    q=
 &{AgentQueue1}    queueId=    queueName=    channelData=
+&{AgentMsgEntity}    msg=    type=    ext=
+&{ProjectEntity}    id=

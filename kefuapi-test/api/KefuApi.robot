@@ -2,42 +2,6 @@
 Library           uuid
 
 *** Keywords ***
-initFilterTime
-    ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
-    ${yn}=    Convert To Integer    ${yyyy}
-    ${mn}=    Convert To Integer    ${mm}
-    ${dn}=    Convert To Integer    ${day}
-    ${mr}=    Monthrange    ${yn}    ${mn}
-    ${sec1}=    Get Time    epoch    ${yyyy}-${mm}-01 0:0:0
-    ${sec2}=    Get Time    epoch    ${yyyy}-${mm}-${mr[1]} 23:59:59
-    &{DR}=    create dictionary    beginMonthDateTime=${sec1}000    endMonthDateTime=${sec2}000    beginMonthDate=${yyyy}-${mm}-01T00%3A00%3A00.000Z    endMonthDate=${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z    beginDateTime=${sec1}000
-    ...    endDateTime=${sec2}000    beginDate=${yyyy}-${mm}-01T00%3A00%3A00.000Z    endDate=${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z
-    Return From Keyword    &{DR}
-    #set global variable    ${DateRange.beginMonthDateTime}    ${sec1}000
-    #set global variable    ${DateRange.endMonthDateTime}    ${sec2}000
-    #set global variable    ${DateRange.beginMonthDate}    ${yyyy}-${mm}-01T00%3A00%3A00.000Z
-    #set global variable    ${DateRange.endMonthDate}    ${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z
-    #周算法有问题，默认值暂时用月
-    #set global variable    ${DateRange.beginDate}    ${DateRange.beginMonthDate}
-    #set global variable    ${DateRange.endDate}    ${DateRange.endMonthDate}
-    #set global variable    ${DateRange.beginDateTime}    ${DateRange.beginMonthDateTime}
-    #set global variable    ${DateRange.endDateTime}    ${DateRange.endMonthDateTime}
-    #${wn}=    weekday    ${yn}    ${mn}    ${dn}
-    #${fown}=    Evaluate    ${dn}-1-${wn}
-    #${lown}=    Evaluate    ${fown}+6
-    #${fow}=    Evaluate    "%02d" % ${fown}
-    #${low}=    Evaluate    "%02d" % ${lown}
-    #set global variable    ${DateRange.beginWeekDate}    ${yyyy}-${mm}-${fow}T00%3A00%3A00.000Z
-    #set global variable    ${DateRange.endWeekDate}    ${yyyy}-${mm}-${low}T23%3A59%3A59.000Z
-    #${sec1}=    Get Time    epoch    ${yyyy}-${mm}-${fow} 0:0:0
-    #${sec2}=    Get Time    epoch    ${yyyy}-${mm}-${low} 23:59:59
-    #set global variable    ${DateRange.beginWeekDateTime}    ${sec1}000
-    #set global variable    ${DateRange.endWeekDateTime}    ${sec2}000
-    #set global variable    ${DateRange.beginDate}    ${DateRange.beginWeekDate}
-    #set global variable    ${DateRange.endDate}    ${DateRange.endWeekDate}
-    #set global variable    ${DateRange.beginDateTime}    ${DateRange.beginWeekDateTime}
-    #set global variable    ${DateRange.endDateTime}    ${DateRange.endWeekDateTime}
-
 get token by credentials
     [Arguments]    ${session}    ${channel}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
@@ -615,7 +579,8 @@ GetChannel
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/channel-data-binding
     ${params}    set variable    dutyType=${channeldata.dutyType}&id=${channeldata.id}&id2=${channeldata.id2}&type=${channeldata.type}&type2=${channeldata.type2}&
-    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    data=${data}    timeout=${timeout}
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    data=${data}
+    ...    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robots/freechat
     [Arguments]    ${agent}    ${timeout}

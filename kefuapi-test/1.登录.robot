@@ -14,15 +14,7 @@ Library           uuid
 Resource          JsonDiff.robot
 Library           jsonschema
 
-
 *** Test Cases ***
-444
-    set global variable    @{curTime}    get time    sec    2006-03-29 15:06:21
-    set test variable    &{r1}    ${empty}
-    set to dictionary    &{r1}    test=test
-    set to dictionary    &{r1}    test1=test1
-    log    ${r1}
-
 客服登录(/login)
     #${t}    urlencode    username=00001@qq.com&password=!@#123&stat=flsf
     Create Session    adminsession    ${kefuurl}

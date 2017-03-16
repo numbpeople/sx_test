@@ -1,6 +1,6 @@
 *** Variables ***
-${kefuurl}        http://kefu.easemob.com
-&{AdminUser}      username=0222test1@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+${kefuurl}        http://sandbox.kefu.easemob.com
+&{AdminUser}      username=leoli_02@easemob.com    password=lijipeng123    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=

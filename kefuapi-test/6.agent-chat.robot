@@ -8,7 +8,6 @@ Library           String
 Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
-Resource          BaseKeyword.robot
 
 *** Test Cases ***
 从待接入接起会话查看attribute、track、会话信息、历史消息接口并关闭，查看历史会话、访客中心及统计指标
@@ -27,7 +26,7 @@ Resource          BaseKeyword.robot
     ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentDayServiceSessionCountGroupByAgent    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    :FOR    ${i}    IN    @{j}
+    : FOR    ${i}    IN    @{j}
     \    Exit For Loop If    '${i['agentNiceName']}'=='${AdminUser.nicename}'
     ${todayAgentSession}=    Convert To Integer    ${i['count']}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
@@ -115,7 +114,7 @@ Resource          BaseKeyword.robot
     Should Be True    ${rs}    会话关闭失败
     #获取管理员模式下客户中心
     set to dictionary    ${FilterEntity}    page=0
-    :FOR    ${i}    IN RANGE    ${retryTimes}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/crm/tenants/{tenantId}/customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
@@ -130,7 +129,7 @@ Resource          BaseKeyword.robot
     set to dictionary    ${FilterEntity}    page=1
     #6.管理员模式下查询该访客的会话
     set to dictionary    ${FilterEntity}    isAgent=false
-    :FOR    ${i}    IN RANGE    ${retryTimes}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
@@ -144,7 +143,7 @@ Resource          BaseKeyword.robot
     ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${resp.content}
     #查询今日会话数，今日消息数，今日客服新进会话数
-    :FOR    ${i}    IN RANGE    ${retryTimes}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/ChatMessage/Statistics/TodayTotalMessageCount    ${AdminUser}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     \    Exit For Loop If    ${resp.content} >${todayMsgCount}
@@ -156,7 +155,7 @@ Resource          BaseKeyword.robot
     ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentDayServiceSessionCountGroupByAgent    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    :FOR    ${i}    IN    @{j}
+    : FOR    ${i}    IN    @{j}
     \    Exit For Loop If    '${i['agentNiceName']}'=='${AdminUser.nicename}'
     Should Be True    ${i['count']}==${todayAgentSession}+1    今日客服新进会话数不正确：${i['count']}==${todayAgentSession}+1
 

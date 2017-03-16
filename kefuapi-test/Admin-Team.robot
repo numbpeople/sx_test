@@ -7,8 +7,7 @@ Library           RequestsLibrary
 Library           String
 Library           urllib
 Resource          AgentRes.robot
-Resource          KefuApi.robot
-Resource          BaseKeyword.robot
+Resource          api/KefuApi.robot
 
 *** Test Cases ***
 批量创建坐席

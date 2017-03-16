@@ -6,7 +6,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          KefuApi.robot
+Resource          api/KefuApi.robot
 
 *** Test Cases ***
 获取微信授权码(/v1/weixin/admin/preauthcode)

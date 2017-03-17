@@ -14,9 +14,10 @@ Resource          api/KefuApi.robot
     [Documentation]    [Tags] batch
     [Tags]    batch
     set test variable    ${tadmin}    ${AdminUser}
-    : FOR    ${t}    IN RANGE    200
-    \    &{AgentUser}=    create dictionary    username=${t}p1${tadmin.username}    password=test2015    maxServiceSessionCount=10    tenantId=${tadmin.tenantId}
+    : FOR    ${t}    IN RANGE    500
+    \    &{AgentUser}=    create dictionary    username=test${t}@qq.com    password=test2015    maxServiceSessionCount=10    tenantId=${tadmin.tenantId}
     \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
     \    ${resp}=    /v1/Admin/Agents    post    ${tadmin}    ${AgentFilterEntity}    ${data}
     \    ...    ${timeout}
+    \    log    ${resp.content}
     \    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}

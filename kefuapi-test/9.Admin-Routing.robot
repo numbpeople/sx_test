@@ -27,7 +27,8 @@ Resource          commons/admin common/admin_common.robot
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM
     ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
-    ${queueentity}=    Add Agentqueue    #创建一个技能组
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}
+    ${queueentity}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     ${restentity}=    Add Channel    #快速创建一个关联
     #将规则排序设置为渠道优先
     ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
@@ -66,6 +67,8 @@ Resource          commons/admin common/admin_common.robot
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentity.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
+    Delete Agentqueue    ${queueentity.queueId}
+    Comment    Delete Channel    ${restentity.channelId}
 
 关联指定规则(/v1/tenants/{tenantId}/channel-binding)
     [Documentation]    设置路由规则：

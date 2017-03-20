@@ -10,15 +10,16 @@ Resource          ../../api/RoutingApi.robot
 
 *** Keywords ***
 Add Agentqueue
+    [Arguments]    ${agentqueue}    ${queueName}
     [Documentation]    创建一个技能组，返回该技能组的id和名字
     ...
-    ...    describtion：包含字段
+    ...    describtion：参数技能组名字
+    ...
+    ...    返回值：
     ...
     ...    queueId、queueName
     #添加技能组
-    ${curTime}    get time    epoch
-    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}
-    ${data}=    set variable    {"queueName":"${agentqueue.queueName}"}
+    ${data}=    set variable    {"queueName":"${queueName}"}
     ${resp}=    /v1/AgentQueue    post    ${AdminUser}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -83,8 +84,20 @@ Set Queue Agents
     ...    describtion：包含字段
     ...
     ...    agent:指定调用接口的agent变量
-    ...    userIds:需要设置的用户id列表，格式为list，如：["ccd08c6b-ef15-4380-89cd-c362e8ee11f4","b02ccf78-d5cc-4a81-9890-753a56d1f4ce"]、["ccd08c6b-ef15-4380-89cd-c362e8ee11f4"]
+    ...    userIds:需要设置的用户id列表，格式为list，如：["ccd08c6b-ef15-4380-89cd-c362e8ee11f4","b02ccf78-d5cc-4a81-9890-753a56d1f4ce"] 或 ["ccd08c6b-ef15-4380-89cd-c362e8ee11f4"]
     ...    queueId：需要添加的到的技能组id
     #添加坐席到技能组
     ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${agent}    ${queueId}    ${userIds}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Delete Agentqueue
+    [Arguments]    ${queueId}
+    #删除新增技能组
+    ${resp}=    /v1/AgentQueue/{queueId}    ${AdminUser}    ${queueId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Delete Channel
+    [Arguments]    ${channelId}
+    #删除新增关联
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${AdminUser}    ${channelId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}

@@ -30,7 +30,7 @@ Library           jsonschema
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=adminsession    nicename=${j['agentUser']['nicename']}
     set global variable    ${AdminUser}    ${AdminUser}
-    ${DR}=    initFilterTime
+    ${DR}=    InitFilterTime
     set global variable    ${DateRange}    ${DR}
     #Close All Session In Waitlist    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
 

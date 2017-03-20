@@ -10,7 +10,6 @@ Resource          AgentRes.robot
 Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Library           uuid
-Library           demjson
 Resource          commons/admin common/admin_common.robot
 
 *** Test Cases ***
@@ -28,8 +27,8 @@ Resource          commons/admin common/admin_common.robot
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM
     ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
-    ${queueentity}=    add_agentqueue    #创建一个技能组
-    ${restentity}=    add_channel    #快速创建一个关联
+    ${queueentity}=    Add Agentqueue    #创建一个技能组
+    ${restentity}=    Add Channel    #快速创建一个关联
     #将规则排序设置为渠道优先
     ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
     ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
@@ -41,8 +40,8 @@ Resource          commons/admin common/admin_common.robot
     ${j}    to json    ${resp.content}
     ${listlength}=    Get Length    ${j['content']}
     #判断如果没有渠道数据，使用post请求，反之使用put请求
-    Run Keyword If    ${listlength} == 0    add_routing    ${originTypeentity}    ${queueentity}
-    Run Keyword If    ${listlength} > 0    update_routing    ${originTypeentity}    ${queueentity}
+    Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentity}
+    Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentity}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}

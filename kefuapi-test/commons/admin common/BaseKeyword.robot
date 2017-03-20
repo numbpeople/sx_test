@@ -13,7 +13,7 @@ Library           jsonschema
 Library           urllib
 
 *** Keywords ***
-initFilterTime
+InitFilterTime
     ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
     ${yn}=    Convert To Integer    ${yyyy}
     ${mn}=    Convert To Integer    ${mm}

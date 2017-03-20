@@ -9,7 +9,7 @@ Resource          ../../api/KefuApi.robot
 Resource          ../../api/RoutingApi.robot
 
 *** Keywords ***
-add_agentqueue
+Add Agentqueue
     [Documentation]    创建一个技能组，返回该技能组的id和名字
     ...
     ...    describtion：包含字段
@@ -26,7 +26,7 @@ add_agentqueue
     set to dictionary    ${agentqueue}    queueId=${j['queueId']}
     Return From Keyword    ${agentqueue}
 
-add_channel
+Add Channel
     [Documentation]    快速创建一个关联，并返回该关联的所有信息
     ...
     ...    describtion：包含字段
@@ -53,7 +53,7 @@ add_channel
     log    ${restentity}
     Return From Keyword    ${restentity}
 
-add_routing
+Add Routing
     [Arguments]    ${originTypeentity}    ${queueentity}
     #将渠道绑定到技能组
     ${data}=    set variable    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"robotId":0,"secondQueueId":null,"secondRobotId":null}
@@ -61,17 +61,30 @@ add_routing
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
 
-update_routing
+Update Routing
     [Arguments]    ${originTypeentity}    ${queueentity}
     #获取对应渠道的信息
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"robotId":0,"secondQueueId":null,"secondRobotId":null}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${listlength}=    Get Length    ${j['content']}
-    :FOR    ${i}    IN RANGE    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
     \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
     set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
     #修改渠道绑定到技能组
     ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"secondQueueId":0,"robotId":null,"secondRobotId":null,"createDateTime":1489485870000}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    put    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Set Queue Agents
+    [Arguments]    ${agent}    ${userIds}    ${queueId}
+    [Documentation]    设置技能组坐席列表
+    ...
+    ...    describtion：包含字段
+    ...
+    ...    agent:指定调用接口的agent变量
+    ...    userIds:需要设置的用户id列表，格式为list，如：["ccd08c6b-ef15-4380-89cd-c362e8ee11f4","b02ccf78-d5cc-4a81-9890-753a56d1f4ce"]、["ccd08c6b-ef15-4380-89cd-c362e8ee11f4"]
+    ...    queueId：需要添加的到的技能组id
+    #添加坐席到技能组
+    ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${agent}    ${queueId}    ${userIds}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}

@@ -221,6 +221,12 @@ GetChannel
     ${uri}=    set variable    /v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
+/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/today/total
+    [Arguments]    ${agent}    ${orgEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/organs/${orgEntity.organName}/tenants/${agent.tenantId}/statistics/internal/session/today/total
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
 /v1/Tenant/me/ServiceSession/Statistics/CurrentServiceSessionCount
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

@@ -18,6 +18,12 @@ Resource          JsonDiff.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Be True    ${resp.content}>=0    今日新会话数不正确：${resp.content}
 
+新今日新会话数(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/today/total)
+    log    ${RestEntity}
+    ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/today/total    ${AdminUser}    ${orgEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be True    ${resp.content}>=0    今日新会话数不正确：${resp.content}
+
 处理中会话数(/v1/Tenant/me/ServiceSession/Statistics/CurrentServiceSessionCount)
     ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentServiceSessionCount    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

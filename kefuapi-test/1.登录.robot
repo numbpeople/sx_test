@@ -13,6 +13,7 @@ Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          JsonDiff.robot
 Library           jsonschema
+Resource          api/RoutingApi.robot
 
 *** Test Cases ***
 客服登录(/login)

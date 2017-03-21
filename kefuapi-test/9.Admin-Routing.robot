@@ -159,7 +159,7 @@ Resource          commons/admin common/admin_common.robot
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP
     ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"${queueentity.queueName}"}}
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
-    #将规则排序设置为渠道优先
+    #将入口指定设置优先顺序
     ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
     ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

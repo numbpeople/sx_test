@@ -71,10 +71,27 @@ Update Routing
     ${listlength}=    Get Length    ${j['content']}
     : FOR    ${i}    IN RANGE    ${listlength}
     \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
+    Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
     set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
     #修改渠道绑定到技能组
     ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"secondQueueId":0,"robotId":null,"secondRobotId":null,"createDateTime":1489485870000}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    put    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Delete Routing
+    [Arguments]    ${originTypeentity}    ${queueentity}
+    #获取对应渠道的信息
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"robotId":0,"secondQueueId":null,"secondRobotId":null}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j['content']}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
+    Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
+    set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
+    #修改渠道绑定到技能组
+    ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"secondQueueId":0,"robotId":null,"secondRobotId":null,"createDateTime":1489485870000}
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    delete    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
 Set Queue Agents

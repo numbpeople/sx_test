@@ -580,14 +580,6 @@ GetChannel
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/userChannelSwitches/${channel}
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
-/v1/tenants/{tenantId}/channel-data-binding
-    [Arguments]    ${agent}    ${channeldata}    ${data}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/channel-data-binding
-    ${params}    set variable    dutyType=${channeldata.dutyType}&id=${channeldata.id}&id2=${channeldata.id2}&type=${channeldata.type}&type2=${channeldata.type2}&
-    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    data=${data}
-    ...    timeout=${timeout}
-
 /v1/Tenants/{tenantId}/robots/freechat
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

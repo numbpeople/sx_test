@@ -67,8 +67,12 @@ Resource          commons/admin common/admin_common.robot
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentity.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
+    #清理待接入会话
+    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    #技能组和关联信息
     Delete Agentqueue    ${queueentity.queueId}
-    Comment    Delete Channel    ${restentity.channelId}
+    Delete Channel    ${restentity.channelId}
 
 关联指定规则(/v1/tenants/{tenantId}/channel-binding)
     [Documentation]    设置路由规则：

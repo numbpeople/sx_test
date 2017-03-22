@@ -361,8 +361,8 @@ Resource          commons/admin common/admin_common.robot
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
     #快速创建一个关联
     ${restentity}=    Add Channel
-    #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"ChannelData:UserSpecifiedChannel:Channel:Default"}
+    #将规则排序设置为渠道->入口指定优先
+    ${data}=    set variable    {"value":"Channel:UserSpecifiedChannel:ChannelData:Default"}
     ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     #获取渠道绑定关系
@@ -428,8 +428,8 @@ Resource          commons/admin common/admin_common.robot
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
     #快速创建一个关联
     ${restentity}=    Add Channel
-    #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
+    #将规则排序设置为入口-> 渠道指定优先
+    ${data}=    set variable    {"value":"UserSpecifiedChannel:Channel:ChannelData:Default"}
     ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     #获取渠道绑定关系

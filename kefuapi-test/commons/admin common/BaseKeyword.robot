@@ -90,6 +90,7 @@ Close All Session In Waitlist
     log    ${j}
 
 Get Current Weekend
+    [Documentation]    获取当前日期是星期几
     #返回当前日期是星期几
     @{time} =    get time    year month day hour min sec
     ${r1}=    create list

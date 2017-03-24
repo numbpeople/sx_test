@@ -7,6 +7,7 @@ Library           String
 Library           calendar
 Resource          ../../api/KefuApi.robot
 Resource          ../../api/RoutingApi.robot
+Resource          ../../api/SystemSwitch.robot
 
 *** Keywords ***
 Add Agentqueue
@@ -65,7 +66,7 @@ Add Routing
 Update Routing
     [Arguments]    ${originTypeentity}    ${queueentity}
     #获取对应渠道的信息
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"robotId":0,"secondQueueId":null,"secondRobotId":null}
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${listlength}=    Get Length    ${j['content']}
@@ -118,3 +119,38 @@ Delete Channel
     #删除新增关联
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${AdminUser}    ${channelId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Set Worktime
+    [Arguments]    ${iswork}    ${weekend}    ${agent}
+    [Documentation]    设置工作时间
+    ...
+    ...    Describtion：
+    ...
+    ...    参数：${iswork} | ${weekend} | ${agent}
+    ...
+    ...    ${iswork}代表是否上班， 值为on，则为上班，为off，则为下班
+    ...
+    ...    ${weekend}代表当前是礼拜几
+    #获取上下班时间
+    ${r1}    create list
+    &{timePlanIds}=    create dictionary
+    ${data}=    set variable    NULL
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    get    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    #存储timePlanId值
+    ${listlength}=    Get Length    ${j['entities']}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${day}=    convert to string    ${j['entities'][${i}]['day']}
+    \    ${timePlanId}=    convert to integer    ${j['entities'][${i}]['timePlanId']}
+    \    set to dictionary    ${timePlanIds}    ${day}=${timePlanId}
+    log    ${timePlanIds}
+    #修改工作时间为上班或者下班时间
+    ${weekend}=    convert to string    ${weekend}
+    ${keys}=    Get Dictionary Keys    ${timePlanIds}
+    ${Values}=    Get Dictionary Values    ${timePlanIds}
+    ${timePlanId}=    Get From Dictionary    ${timePlanIds}    ${weekend}
+    Run Keyword If    '${iswork}' == 'on'    set test variable    ${data}    {"timePlans":[{"timePlanId":${timePlanId},"tenantId":${agent.tenantId},"day":"${weekend}","timePlanItems":[{"startTime":"00:00:00","stopTime":"23:59:59"}]}]}
+    Run Keyword If    '${iswork}' == 'off'    set test variable    ${data}    {"timePlans":[]}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    put    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

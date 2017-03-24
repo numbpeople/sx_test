@@ -10,6 +10,7 @@ Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff.robot
+Resource          api/SystemSwitch.robot
 
 *** Test Cases ***
 今日新会话数(/v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount)
@@ -314,7 +315,7 @@ Resource          JsonDiff.robot
     Should Be Equal    ${resp.headers['Content-Type']}    application/vnd.ms-excel;charset=utf-8    获取排队统计导出文件不正确
 
 获取上下班时间(/v1/tenants/{tenantId}/timeplans)
-    ${resp}=    /v1/tenants/{tenantId}/timeplans    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    get    ${AdminUser}    ${timeout}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}

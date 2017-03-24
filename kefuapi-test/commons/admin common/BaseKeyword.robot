@@ -88,3 +88,17 @@ Close All Session In Waitlist
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     log    ${j}
+
+Get Current Weekend
+    [Documentation]    获取当前日期是星期几
+    #返回当前日期是星期几
+    @{time} =    get time    year month day hour min sec
+    ${r1}=    create list
+    :FOR    ${i}    IN    @{time}
+    \    ${r2}=    Convert To Integer    ${i}
+    \    Append To List    ${r1}    ${r2}
+    log    ${r1}
+    ${weekday}=    Weekday    ${r1[0]}    ${r1[1]}    ${r1[2]}
+    ${weekday}=    Convert To Integer    ${weekday}
+    ${weekday}=    Evaluate    ${weekday}+1
+    Return From Keyword    ${weekday}

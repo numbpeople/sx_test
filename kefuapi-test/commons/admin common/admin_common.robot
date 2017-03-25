@@ -224,8 +224,8 @@ Delete Agent
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Get Channels
-    [Documentation]    获取所有技能组信息，返回queueName和queueId的字典集
-    ###获取技能组
+    [Documentation]    获取所有关联信息，返回appkey和channelId的字典集
+    #获取关联信息
     &{channelList}    create dictionary
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
@@ -233,8 +233,9 @@ Get Channels
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${listlength}=    Get Length    ${j}
-    :FOR    ${i}    IN RANGE    ${listlength}
-    \    ${channelName}=    convert to string    ${j[${i}]['name']}
-    \    log    ${channelName}
-    \    set to dictionary    ${channelList}    ${channelName}=${j[${i}]['id']}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${appName}=    convert to string    ${j[${i}]['appName']}
+    \    ${id}=    convert to string    ${j[${i}]['id']}
+    \    log    ${appName}
+    \    set to dictionary    ${channelList}    ${appName}#${id}=${j[${i}]['id']}
     Return From Keyword    ${channelList}

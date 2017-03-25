@@ -48,14 +48,14 @@ Resource          commons/admin common/admin_common.robot
     \    Run Keyword If    '${status}' == 'True'    Delete Agent    ${userIdValue}
 
 批量删除关联
-    #设置客服账号名称模板
-    ${preChannelname}=    convert to string    快速创建的关联
-    #获取所有客服列表
+    #设置关联对比模板
+    ${preChannelname}=    convert to string    ${AdminUser.tenantId}
+    #获取所有关联列表
     ${channellist}=    Get Channels    #返回字典
     ${channelNameList}=    Get Dictionary Keys    ${channellist}
     ${listlength}=    Get Length    ${channelNameList}
     log    ${channellist}
-    #循环判断技能组名称是否包含模板信息，是则删除，不是则跳过
+    #循环判断返回值中是否包含模板信息，是则删除，不是则跳过
     :FOR    ${i}    IN RANGE    ${listlength}
     \    ${channelname}=    convert to string    ${channelNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${channelname}    ${preChannelname}

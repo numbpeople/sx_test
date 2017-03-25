@@ -222,3 +222,19 @@ Delete Agent
     [Documentation]    删除客服，参数为客服userId
     ${resp}=    /v1/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Get Channels
+    [Documentation]    获取所有技能组信息，返回queueName和queueId的字典集
+    ###获取技能组
+    &{channelList}    create dictionary
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j}
+    :FOR    ${i}    IN RANGE    ${listlength}
+    \    ${channelName}=    convert to string    ${j[${i}]['name']}
+    \    log    ${channelName}
+    \    set to dictionary    ${channelList}    ${channelName}=${j[${i}]['id']}
+    Return From Keyword    ${channelList}

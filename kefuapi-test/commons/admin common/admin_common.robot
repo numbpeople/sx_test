@@ -56,15 +56,45 @@ Add Channel
     Return From Keyword    ${restentity}
 
 Add Routing
-    [Arguments]    ${originTypeentity}    ${queueentity}
+    [Arguments]    ${originTypeentity}    ${agentQueueId}=0    ${secondQueueId}=0    ${robotId}=null    ${secondRobotId}=null
+    [Documentation]    渠道指定技能组/机器人
+    ...
+    ...    describtion：包含字段
+    ...
+    ...    参数：
+    ...
+    ...    ${originTypeentity} 渠道设置的值
+    ...
+    ...    ${agentQueueId}=0 第一个技能组Id值，默认为0
+    ...
+    ...    ${secondQueueId}=0 第二个技能组Id值，默认为0
+    ...
+    ...    ${robotId}=null \ 第一个机器人Id值，默认为null
+    ...
+    ...    ${secondRobotId}=null 第二个机器人Id值，默认为null
     #将渠道绑定到技能组
-    ${data}=    set variable    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"robotId":0,"secondQueueId":null,"secondRobotId":null}
+    ${data}=    set variable    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"${originTypeentity.dutyType}","agentQueueId":${agentQueueId},"robotId":${robotId},"secondQueueId":${secondQueueId},"secondRobotId":${secondRobotId}}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    post    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
 
 Update Routing
-    [Arguments]    ${originTypeentity}    ${queueentity}
+    [Arguments]    ${originTypeentity}    ${agentQueueId}=0    ${secondQueueId}=0    ${robotId}=null    ${secondRobotId}=null
+    [Documentation]    渠道指定技能组/机器人
+    ...
+    ...    describtion：包含字段
+    ...
+    ...    参数：
+    ...
+    ...    ${originTypeentity} 渠道设置的值
+    ...
+    ...    ${agentQueueId}=0 第一个技能组Id值，默认为0
+    ...
+    ...    ${secondQueueId}=0 第二个技能组Id值，默认为0
+    ...
+    ...    ${robotId}=null \ 第一个机器人Id值，默认为null
+    ...
+    ...    ${secondRobotId}=null 第二个机器人Id值，默认为null
     #获取对应渠道的信息
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -72,15 +102,16 @@ Update Routing
     ${listlength}=    Get Length    ${j['content']}
     : FOR    ${i}    IN RANGE    ${listlength}
     \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
-    Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
+    Comment    Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
     set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
     #修改渠道绑定到技能组
-    ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"secondQueueId":0,"robotId":null,"secondRobotId":null,"createDateTime":1489485870000}
+    ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"${originTypeentity.dutyType}","agentQueueId":${agentQueueId},"secondQueueId":${secondQueueId},"robotId":${robotId},"secondRobotId":${secondRobotId},"createDateTime":1489485870000}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    put    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
 Delete Routing
     [Arguments]    ${originTypeentity}    ${queueentity}
+    [Documentation]    删除渠道绑定关系
     #获取对应渠道的信息
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"robotId":0,"secondQueueId":null,"secondRobotId":null}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -110,12 +141,14 @@ Set Queue Agents
 
 Delete Agentqueue
     [Arguments]    ${queueId}
+    [Documentation]    删除技能组，参数为技能组Id
     #删除新增技能组
     ${resp}=    /v1/AgentQueue/{queueId}    ${AdminUser}    ${queueId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Delete Channel
     [Arguments]    ${channelId}
+    [Documentation]    删除关联，参数为关联Id
     #删除新增关联
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${AdminUser}    ${channelId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
@@ -154,3 +187,17 @@ Set Worktime
     Run Keyword If    '${iswork}' == 'off'    set test variable    ${data}    {"timePlans":[]}
     ${resp}=    /v1/tenants/{tenantId}/timeplans    put    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Get Agentqueue
+    [Documentation]    获取所有技能组信息，返回queueId和queueName的字典集
+    ###获取技能组
+    &{queueList}    create dictionary
+    ${resp}=    /v1/AgentQueue    get    ${AdminUser}    ${empty}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${queueName}=    convert to string    ${j[${i}]['agentQueue']['queueName']}
+    \    log    ${queueName}
+    \    set to dictionary    ${queueList}    ${queueName}=${j[${i}]['agentQueue']['queueId']}
+    Return From Keyword    ${queueList}

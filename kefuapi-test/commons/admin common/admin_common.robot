@@ -239,3 +239,44 @@ Get Channels
     \    log    ${appName}
     \    set to dictionary    ${channelList}    ${appName}#${id}=${j[${i}]['id']}
     Return From Keyword    ${channelList}
+
+Close Conversations By ChannelId
+    [Arguments]    ${techChannelId}    ${techChannelType}=easemob
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #查询会话
+    set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait
+    set to dictionary    ${DateRange}    beginDate=${EMPTY}    endDate=${EMPTY}
+    #根据channelId查询会话
+    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    set variable    ${j['total_entries']}
+    Return From Keyword If    ${listlength} == 0
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${state}=    set variable    ${j['items'][${i}]['state']}
+    \    ${serviceSessionId}=    set variable    ${j['items'][${i}]['serviceSessionId']}
+    \    ${visitoruserid}=    set variable    ${j['items'][${i}]['visitorUser']['userId']}
+    \    Close Conversation    ${state}    ${serviceSessionId}    ${visitoruserid}
+
+Close Conversation
+    [Arguments]    ${status}    ${sessionServiceId}    ${userId}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #关闭processing或wait的会话
+    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}    ${userId}
+    Run Keyword If    '${status}' == 'Processing'    Close Processing Coversation    ${sessionServiceId}    ${userId}
+
+Close Waiting Conversation
+    [Arguments]    ${sessionServiceId}    ${userId}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #清理待接入会话
+    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+
+Close Processing Coversation
+    [Arguments]    ${sessionServiceId}    ${userId}
+    [Documentation]    关闭processing的会话
+    #关闭进行中会话
+    ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${AdminUser}    ${userId}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}

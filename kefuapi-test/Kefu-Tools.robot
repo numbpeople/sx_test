@@ -60,4 +60,5 @@ Resource          commons/admin common/admin_common.robot
     \    ${channelname}=    convert to string    ${channelNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${channelname}    ${preChannelname}
     \    ${channelIdValue}=    Get From Dictionary    ${channellist}    ${channelNameList[${i}]}
-    \    Run Keyword If    '${status}' == 'True'    Delete Channel    ${channelIdValue}
+    \    Run Keyword If    ${status}    Close Conversations By ChannelId    ${channelIdValue}
+    \    Run Keyword If    ${status}    Delete Channel    ${channelIdValue}

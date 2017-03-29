@@ -208,7 +208,7 @@ webim获取关联信息(/v1/webimplugin/targetChannels)
     set global variable    ${targetchannelJson}    ${d}
     set global variable    ${targetchannelsJson}    ${j}
     ##
-    Create Session    restsession    https://${targetchannelJson['restDomain']}
+    Create Session    restsession    http://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
     ${j}    to json    ${resp1.content}
     set to dictionary    ${RestEntity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
@@ -251,3 +251,11 @@ webim获取关联信息(/v1/webimplugin/targetChannels)
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     set to dictionary    ${RestEntity}    queueId=${AgentQueue1.queueId}    queueName=${AgentQueue1.queueName}
     set global variable    ${RestEntity}    ${RestEntity}
+
+tt
+    set test variable    ${t1}    1
+    set test variable    ${t2}    ${t1}+${2}
+    log    ${t2}
+    ${t1}    convert to integer    ${t1}
+    should be true    ${t2} == ${t1}+1
+    ${t1}=    ${t2}+${1}

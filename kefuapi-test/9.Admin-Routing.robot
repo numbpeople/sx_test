@@ -1742,3 +1742,69 @@ Resource          api/SystemSwitch.robot
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
     Delete Channel    ${restentity.channelId}
+
+渠道指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
+    [Documentation]    设置路由规则：
+    ...
+    ...    规则为：渠道指定技能组规则
+    ...
+    ...    前提：
+    ...    1.渠道指定技能组A
+    ...    2.将关联a指定为空
+    [Tags]
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    #快速创建一个关联
+    ${restentity}=    Add Channel    #快速创建一个关联
+    #获取机器人的tenantId、userId列表
+    &{robotlist}    Get Robotlist
+    log    ${robotlist}
+    ${robotTenantIds}=    Get Dictionary Keys    ${robotlist}
+    ${robotId}=    set variable    ${robotTenantIds[0]}    #第一个机器人的tenantId
+    ${secondRobotId}=    set variable    ${robotTenantIds[1]}    #第二个机器人的tenantId
+    ${robotUserId}=    Get From Dictionary    ${robotlist}    ${robotId}    #第一个机器人的userId
+    ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
+    ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
+    #将规则排序设置为渠道优先
+    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
+    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    #判断渠道是否有绑定关系
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j['content']}
+    #判断如果没有渠道数据，使用post请求，反之使用put请求
+    Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotentity.robotId}
+    Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotentity.robotId}
+    #获取关联appkey的token
+    Create Session    restsession    https://${targetchannelJson['restDomain']}
+    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
+    ${j}    to json    ${resp1.content}
+    set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
+    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    log    ${restentity}
+    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    #查看该会话是否属于机器人
+    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
+    set suite variable    ${AgentEntity.username}    ${Empty}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.content}
+    \    Exit For Loop If    ${j['total_entries']} == 1
+    \    sleep    ${delay}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    #清理进行中的会话
+    Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
+    #技能组和关联信息
+    Delete Agentqueue    ${queueentityA.queueId}
+    Delete Channel    ${restentity.channelId}

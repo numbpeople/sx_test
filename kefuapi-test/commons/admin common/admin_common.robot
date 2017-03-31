@@ -211,7 +211,7 @@ Get Agents
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     ${listlength}=    Get Length    ${j['content']}
-    :FOR    ${i}    IN RANGE    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
     \    ${username}=    convert to string    ${j['content'][${i}]['username']}
     \    log    ${username}
     \    set to dictionary    ${agentList}    ${username}=${j['content'][${i}]['userId']}
@@ -263,7 +263,7 @@ Close Conversation
     [Documentation]    根据channelId查找所有processing或wait的会话
     #关闭processing或wait的会话
     Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}    ${userId}
-    Run Keyword If    '${status}' == 'Processing'    Close Processing Coversation    ${sessionServiceId}    ${userId}
+    Run Keyword If    '${status}' == 'Processing'    Close Processing Conversation    ${sessionServiceId}    ${userId}
 
 Close Waiting Conversation
     [Arguments]    ${sessionServiceId}    ${userId}
@@ -272,7 +272,7 @@ Close Waiting Conversation
     ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
 
-Close Processing Coversation
+Close Processing Conversation
     [Arguments]    ${sessionServiceId}    ${userId}
     [Documentation]    关闭processing的会话
     #关闭进行中会话
@@ -280,3 +280,20 @@ Close Processing Coversation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
+
+Get Robotlist
+    [Documentation]    获取所有机器人的tenantId和userId的字典集合
+    #获取多机器人的id
+    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/personalInfos    ${AdminUser}    ${FilterEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    log    ${resp.content}
+    ${j}    to json    ${resp.content}
+    log    ${resp.content}
+    &{robotList}    create dictionary
+    : FOR    ${i}    IN RANGE    ${j['numberOfElements']}
+    \    ${tenantId}=    convert to string    ${j['content'][${i}]['tenantId']}
+    \    ${userId}=    convert to string    ${j['content'][${i}]['robotId']}
+    \    log    ${tenantId}
+    \    log    ${userId}
+    \    set to dictionary    ${robotList}    ${tenantId}=${userId}
+    Return From Keyword    ${robotList}

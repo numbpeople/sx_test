@@ -8,6 +8,7 @@ Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
 Resource          api/MsgCenterApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 
 *** Test Cases ***

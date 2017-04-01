@@ -11,7 +11,6 @@ Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          AgentsApi.robot
 Library           uuid
-Resource          JsonDiff.robot
 Library           jsonschema
 Library           urllib
 

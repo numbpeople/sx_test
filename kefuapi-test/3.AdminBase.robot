@@ -9,8 +9,8 @@ Library           String
 Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
-Resource          JsonDiff.robot
 Resource          api/SystemSwitch.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 今日新会话数(/v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount)

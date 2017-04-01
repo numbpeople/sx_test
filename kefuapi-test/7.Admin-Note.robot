@@ -8,6 +8,7 @@ Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
 Resource          api/NoteApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 获取project数据(/tenants/{tenantId}/projects)

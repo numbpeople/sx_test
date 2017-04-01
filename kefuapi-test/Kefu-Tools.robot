@@ -11,7 +11,6 @@ Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
-Resource          JsonDiff.robot
 Library           jsonschema
 Resource          api/RoutingApi.robot
 Resource          commons/admin common/admin_common.robot
@@ -41,7 +40,7 @@ Resource          commons/admin common/admin_common.robot
     ${listlength}=    Get Length    ${userNameList}
     log    ${agentlist}
     #循环判断技能组名称是否包含模板信息，是则删除，不是则跳过
-    :FOR    ${i}    IN RANGE    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
     \    ${username}=    convert to string    ${userNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
     \    ${userIdValue}=    Get From Dictionary    ${agentlist}    ${userNameList[${i}]}
@@ -56,7 +55,7 @@ Resource          commons/admin common/admin_common.robot
     ${listlength}=    Get Length    ${channelNameList}
     log    ${channellist}
     #循环判断返回值中是否包含模板信息，是则删除，不是则跳过
-    :FOR    ${i}    IN RANGE    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
     \    ${channelname}=    convert to string    ${channelNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${channelname}    ${preChannelname}
     \    ${channelIdValue}=    Get From Dictionary    ${channellist}    ${channelNameList[${i}]}

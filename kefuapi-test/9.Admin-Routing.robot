@@ -9,6 +9,7 @@ Library           String
 Resource          AgentRes.robot
 Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/admin_common.robot
 Resource          commons/admin common/BaseKeyword.robot

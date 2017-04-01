@@ -9,6 +9,7 @@ Library           String
 Library           calendar
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)

@@ -7,6 +7,7 @@ Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 关闭待接入列表search出的指定访客

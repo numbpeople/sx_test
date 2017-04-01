@@ -56,8 +56,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -115,8 +114,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -166,8 +164,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -237,8 +234,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -309,8 +305,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -375,8 +370,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -441,8 +435,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -506,8 +499,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -571,8 +563,8 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    Comment    ${filterentity}=    create dictionary    visitorName=${guestentity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -640,8 +632,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -708,8 +699,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -785,8 +775,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -863,8 +852,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -935,8 +923,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1007,8 +994,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1078,8 +1064,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1147,8 +1132,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1216,8 +1200,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1284,8 +1267,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1361,8 +1343,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1439,8 +1420,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1511,8 +1491,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1583,8 +1562,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1654,8 +1632,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1723,8 +1700,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -1933,6 +1909,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #查看该会话是否属于机器人
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
@@ -1950,6 +1927,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -2046,6 +2024,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -2136,6 +2115,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -2203,12 +2183,14 @@ Resource          api/SystemSwitch.robot
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
     ${j}    to json    ${resp1.content}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     log    ${restentity}
     ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -2298,6 +2280,7 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -2370,8 +2353,8 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${GuestEntity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    Comment    ${filterentity}=    create dictionary    visitorName=${guestentity.userName}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}

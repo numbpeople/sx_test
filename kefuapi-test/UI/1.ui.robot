@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup
-Force Tags        base
+Force Tags        ui
 Library           json
 Library           requests
 Library           Collections
@@ -10,7 +10,6 @@ Library           calendar
 Resource          ../AgentRes.robot
 Resource          ../api/KefuApi.robot
 Library           uuid
-Resource          ../JsonDiff.robot
 Library           jsonschema
 Library           urllib
 Library           Selenium2Library

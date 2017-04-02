@@ -1,226 +1,73 @@
 *** Variables ***
 &{OrgRegInfo}     phone=    codeValue=    name=    desc=    username=leoli-org081701@easemob.com    password=111111    orgName=leoli081701
+&{OrgFilterEntity}    page=0    size=15    originType=${EMPTY}    state=Terminal,Abort    isAgent=${True}    techChannelId=    visitorName=
+...               summaryIds=    sortOrder=desc    techChannelType=    categoryId=-1    subCategoryId=-1    userTagIds=    enquirySummary=
+...               total_pages=1    total_entries=1    firstResponseTime=0    sessionTime=0    avgResponseTime=0    visitorMark=    sessionTag=all
+...               asc=false    channelId=    dateInterval=1d    sessionType=S_ALL    queryType=ORIGIN    visitorTag=    waitTime=60000
+...               objectType=O_AGENT
+&{OrgDateRange}    beginDate=    endDate=    beginDateTime=    endDateTime=    beginWeekDate=    endWeekDate=    beginWeekDateTime=
+...               endWeekDateTime=    beginMonthDate=    endMonthDate=    beginMonthDateTime=    endMonthDateTime=
 
 *** Keywords ***
-/v1/organs
-    [Arguments]    ${session}    ${timeout}    ${tenantId}    ${data}
+/v2/orgs/{orgId}/token
+    [Arguments]    ${method}    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/Agents/${AgentEntity.userId}
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    headers=${header}    data=${data}
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/token
+    ${data}=    Create Dictionary    username=${agent.username}    password=${agent.password}
+    ${rs}=    Run Keyword If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}
+    ...    data=${data}    timeout=${timeout}
+    ...    ELSE IF    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}
     ...    timeout=${timeout}
+    Return From Keyword    ${rs}
 
-/v1/organs/{org_name}/token
-    [Arguments]    ${session}    ${timeout}    ${OrgRegInfo}
+/v2/orgs/initdata
+    [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/organs/${OrgRegInfo.orgName}/token
-    ${data}=    Create Dictionary    username=${OrgRegInfo.username}    password=${OrgRegInfo.password}
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    headers=${header}    data=${data}
-    ...    timeout=${timeout}
+    ${uri}=    set variable    /v2/orgs/initdata
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/organs todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}/count/total
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/count/total
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/organs/{organName}/token todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}/users
+    [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/users
+    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-/v1/organs/{organName}/users/me todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}/metrics
+    [Arguments]    ${agent}    ${OrgFilterEntity}    ${OrgDateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/metrics
+    ${params}=    set variable    sessionTag=${OrgFilterEntity.sessionTag}&sessionType=${OrgFilterEntity.sessionType}&beginDateTime=${OrgDateRange.beginDateTime}&endDateTime=${OrgDateRange.endDateTime}&page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-/v1/organs/{organName}/users/{userId}/attributes/nicename todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}/downloadmetrics
+    [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/downloadmetrics
+    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-/v1/organs/{organName}/tenants todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}/tenants
+    [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/tenants
+    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-/v1/organs/{organName}/tenants/{tenantId} todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/organs/{organName}/tenants/{tenantId}/enable todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/disable todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/attributes/agentNumQuota todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/easemobchannels/ todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/servicesessions todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/servicesessions/{sessionServiceId} todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/servicesessions/{sessionServiceId}/messages todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/messages/{msgId} todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/quality/mark todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/trend todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/visitor/total todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/count/type todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/today/total todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/trend todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/today/total todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/today/processing todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/today/agent todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/workload todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/workquality todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/statistics/external/agent/online/count todo
-    [Arguments]    ${session}    ${username}    ${password}    ${status}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/x-www-form-urlencoded
-    ${params}    set variable    username=${username}&password=${password}&status=${status}
-    ${uri}=    set variable    /login
-    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    params=${params}    headers=${header}
-    ...    timeout=${timeout}
+/v2/orgs/{orgId}/template
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${agent.orgId}/template
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}

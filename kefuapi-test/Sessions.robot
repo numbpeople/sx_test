@@ -12,7 +12,6 @@ Resource          api/KefuApi.robot
 Resource          AgentsApi.robot
 Resource          SessionsApi.robot
 Library           uuid
-Resource          JsonDiff.robot
 Library           jsonschema
 Library           urllib
 

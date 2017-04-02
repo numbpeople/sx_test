@@ -8,10 +8,10 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          AgentRes.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/KefuApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
-Resource          JsonDiff.robot
 Library           jsonschema
 Resource          api/RoutingApi.robot
 
@@ -208,7 +208,7 @@ webim获取关联信息(/v1/webimplugin/targetChannels)
     set global variable    ${targetchannelJson}    ${d}
     set global variable    ${targetchannelsJson}    ${j}
     ##
-    Create Session    restsession    https://${targetchannelJson['restDomain']}
+    Create Session    restsession    http://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
     ${j}    to json    ${resp1.content}
     set to dictionary    ${RestEntity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession

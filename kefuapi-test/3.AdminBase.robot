@@ -9,8 +9,9 @@ Library           String
 Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
-Resource          JsonDiff.robot
+Resource          Api/SettingsApi.robot
 Resource          api/SystemSwitch.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 今日新会话数(/v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount)
@@ -585,3 +586,14 @@ Resource          api/SystemSwitch.robot
     ${r}=    userSpecifiedQueueIdJsonDiff    ${temp}    ${j['data'][0]}
     Should Be True    ${r['ValidJson']}    获取是否入口指定优先信息失败：${r}
     set global variable    ${userSpecifiedQueueIdJson}    ${j['data'][0]}
+
+获取单点登录(/v1/access/config)
+    ${resp}=    /v1/access/config    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    获取单点登录失败：${resp.content}
+
+获取回调(/tenants/{tenantId}/webhook)
+    ${resp}=    /tenants/{tenantId}/webhook    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}

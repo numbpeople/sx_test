@@ -8,6 +8,7 @@ Library           String
 Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 从待接入接起会话查看attribute、track、会话信息、历史消息接口并关闭，查看历史会话、访客中心及统计指标

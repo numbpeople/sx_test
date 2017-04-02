@@ -8,7 +8,6 @@ Library           calendar
 Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
 Library           uuid
-Resource          ../../JsonDiff.robot
 Library           jsonschema
 Library           urllib
 
@@ -94,7 +93,7 @@ Get Current Weekend
     #返回当前日期是星期几
     @{time} =    get time    year month day hour min sec
     ${r1}=    create list
-    :FOR    ${i}    IN    @{time}
+    : FOR    ${i}    IN    @{time}
     \    ${r2}=    Convert To Integer    ${i}
     \    Append To List    ${r1}    ${r2}
     log    ${r1}

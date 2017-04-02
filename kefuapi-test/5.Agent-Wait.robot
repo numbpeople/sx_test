@@ -7,6 +7,7 @@ Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 关闭待接入列表search出的指定访客
@@ -99,7 +100,7 @@ Resource          api/KefuApi.robot
     [Documentation]    关闭待接入中search出来的访客，历史会话中查询（坐席模式无该会话，管理员模式应该有该会话），访客中心中查询（坐席模式无该访客，管理员模式应该有该访客），质检中查询
     [Tags]    batch
     set test variable    ${originType}    webim
-    : FOR    ${t}    IN RANGE    20
+    : FOR    ${t}    IN RANGE    3000
     \    ${curTime}    get time    epoch
     \    set to dictionary    ${MsgEntity}    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}"}}
     \    #set to dictionary    ${MsgEntity}    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"agentUsername":"0222test1@t.com"}}

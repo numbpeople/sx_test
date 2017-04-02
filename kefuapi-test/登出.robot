@@ -7,7 +7,9 @@ Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
+Resource          api/OrgApi.robot
 Resource          api/RoutingApi.robot
+Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***
 客服删除新增加关联、账号和技能组并登出
@@ -29,3 +31,11 @@ Resource          api/RoutingApi.robot
     #退出
     ${resp}=    /logout    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+org管理员登出(/v2/orgs/{orgId}/token)
+    [Tags]    org
+    ${resp}=    /v2/orgs/{orgId}/token    delete    ${OrgAdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
+    Should Not Be Empty    ${resp.content}    返回值为空
+    ${j}    to json    ${resp.content}
+    should be true    '${j['status']}'=='OK'    返回值status不正确，期望值：OK，实际值：${j['status']}

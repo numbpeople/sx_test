@@ -1,7 +1,9 @@
 *** Variables ***
-${kefuurl}        http://sandbox.kefu.easemob.com
-&{AdminUser}      username=0222test1111@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+${kefuurl}        http://kefu.easemob.com
+${orgurl}         http://sandbox.kefuorg.easemob.com
+&{AdminUser}      username=0222test1@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
+&{OrgAdminUser}    username=zk1@organ.com    password=123456    orgId=2057    cookies=    session=    userId=    nicename=
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
 @{kefustatus}     Busy    Leave    Hidden    Online

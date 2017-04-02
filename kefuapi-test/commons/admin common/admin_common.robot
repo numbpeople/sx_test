@@ -189,7 +189,7 @@ Set Worktime
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
 Get Agentqueue
-    [Documentation]    获取所有技能组信息，返回queueId和queueName的字典集
+    [Documentation]    获取所有技能组信息，返回queueName和queueId的字典集
     ###获取技能组
     &{queueList}    create dictionary
     ${resp}=    /v1/AgentQueue    get    ${AdminUser}    ${empty}    ${timeout}
@@ -201,3 +201,99 @@ Get Agentqueue
     \    log    ${queueName}
     \    set to dictionary    ${queueList}    ${queueName}=${j[${i}]['agentQueue']['queueId']}
     Return From Keyword    ${queueList}
+
+Get Agents
+    [Documentation]    获取所有客服信息，返回username和userId的字典集
+    ###查询坐席信息
+    &{agentList}    create dictionary
+    set to dictionary    ${AgentFilterEntity}    size=100
+    ${resp}=    /v1/Admin/Agents    get    ${AdminUser}    ${AgentFilterEntity}    ${EMPTY}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j['content']}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${username}=    convert to string    ${j['content'][${i}]['username']}
+    \    log    ${username}
+    \    set to dictionary    ${agentList}    ${username}=${j['content'][${i}]['userId']}
+    Return From Keyword    ${agentList}
+
+Delete Agent
+    [Arguments]    ${userId}
+    [Documentation]    删除客服，参数为客服userId
+    ${resp}=    /v1/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Get Channels
+    [Documentation]    获取所有关联信息，返回appkey和channelId的字典集
+    #获取关联信息
+    &{channelList}    create dictionary
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${appName}=    convert to string    ${j[${i}]['appName']}
+    \    ${id}=    convert to string    ${j[${i}]['id']}
+    \    log    ${appName}
+    \    set to dictionary    ${channelList}    ${appName}#${id}=${j[${i}]['id']}
+    Return From Keyword    ${channelList}
+
+Close Conversations By ChannelId
+    [Arguments]    ${techChannelId}    ${techChannelType}=easemob
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #查询会话
+    set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait
+    set to dictionary    ${DateRange}    beginDate=${EMPTY}    endDate=${EMPTY}
+    #根据channelId查询会话
+    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    set variable    ${j['total_entries']}
+    Return From Keyword If    ${listlength} == 0
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${state}=    set variable    ${j['items'][${i}]['state']}
+    \    ${serviceSessionId}=    set variable    ${j['items'][${i}]['serviceSessionId']}
+    \    ${visitoruserid}=    set variable    ${j['items'][${i}]['visitorUser']['userId']}
+    \    Close Conversation    ${state}    ${serviceSessionId}    ${visitoruserid}
+
+Close Conversation
+    [Arguments]    ${status}    ${sessionServiceId}    ${userId}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #关闭processing或wait的会话
+    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}    ${userId}
+    Run Keyword If    '${status}' == 'Processing'    Close Processing Conversation    ${sessionServiceId}    ${userId}
+
+Close Waiting Conversation
+    [Arguments]    ${sessionServiceId}    ${userId}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #清理待接入会话
+    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+
+Close Processing Conversation
+    [Arguments]    ${sessionServiceId}    ${userId}
+    [Documentation]    关闭processing的会话
+    #关闭进行中会话
+    ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${AdminUser}    ${userId}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
+
+Get Robotlist
+    [Documentation]    获取所有机器人的tenantId和userId的字典集合
+    #获取多机器人的id
+    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/personalInfos    ${AdminUser}    ${FilterEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    log    ${resp.content}
+    ${j}    to json    ${resp.content}
+    log    ${resp.content}
+    &{robotList}    create dictionary
+    : FOR    ${i}    IN RANGE    ${j['numberOfElements']}
+    \    ${tenantId}=    convert to string    ${j['content'][${i}]['tenantId']}
+    \    ${userId}=    convert to string    ${j['content'][${i}]['robotId']}
+    \    log    ${tenantId}
+    \    log    ${userId}
+    \    set to dictionary    ${robotList}    ${tenantId}=${userId}
+    Return From Keyword    ${robotList}

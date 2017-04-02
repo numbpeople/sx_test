@@ -23,30 +23,57 @@ Resource          api/SystemSwitch.robot
     log    ${RestEntity}
     ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/today/total    ${AdminUser}    ${orgEntity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Should Be True    ${resp.content}>=0    今日新会话数不正确：${resp.content}
+    Should Be True    ${resp.content}>=0    新今日新会话数不正确：${resp.content}
 
 处理中会话数(/v1/Tenant/me/ServiceSession/Statistics/CurrentServiceSessionCount)
     ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentServiceSessionCount    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Be True    ${resp.content}>=0    处理中会话数不正确：${resp.content}
 
+新处理中会话数(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/today/processing)
+    log    ${RestEntity}
+    ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/today/total    ${AdminUser}    ${orgEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be True    ${resp.content}>=0    新处理中会话数不正确：${resp.content}
+
 在线客服数(/v1/Tenant/me/Agents/Statistics/CurrentOnlineAgentCount)
     ${resp}=    /v1/Tenant/me/Agents/Statistics/CurrentOnlineAgentCount    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Be True    ${resp.content}>=0    在线客服数不正确：${resp.content}
+
+新在线客服数(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/agent/online)
+    ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/agent/online    ${AdminUser}    ${orgEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be True    ${resp.content}>=0    新在线客服数不正确：${resp.content}
 
 今日消息数(/v1/Tenant/me/ChatMessage/Statistics/TodayTotalMessageCount)
     ${resp}=    /v1/Tenant/me/ChatMessage/Statistics/TodayTotalMessageCount    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Be True    ${resp.content}>=0    今日消息数不正确：${resp.content}
 
+新今日消息数(/v1/statistics/tenant/{tenantId}/message/today/total)
+    ${resp}=    /v1/statistics/tenant/{tenantId}/message/today/total    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be True    ${resp.content}>=0    新今日消息数不正确：${resp.content}
+
 今日客服新进会话数(/v1/Tenant/me/ServiceSession/Statistics/CurrentDayServiceSessionCountGroupByAgent)
     ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentDayServiceSessionCountGroupByAgent    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     log    ${resp.content}
 
-首页趋势数据(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/trend)
+新今日客服新进会话数(/statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/agent/session/today)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/agent/session/today    ${AdminUser}    ${orgEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be True    ${resp.content}>=0    新今日客服新进会话数不正确：${resp.content}
+
+首页会话量趋势数据(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/trend)
     ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/trend    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+
+首页消息量趋势数据(/v1/statistics/tenant/{tenantId}/message/trend)
+    ${resp}=    /v1/statistics/tenant/{tenantId}/message/trend    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     log    ${j}
@@ -405,6 +432,35 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    '${j['status']}'    'OK'    返回的满意度后三名信息不正确：${resp.content}
     Should Be True    ${j['totalElements']}>=0    返回的满意度后三名信息不正确：${resp.content}
 
+实时监控接起会话数排名(/statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/session/start)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/session/start    ${AdminUser}    ${orgEntity}    true    ${FilterEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的接起会话数排名信息不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    返回的接起会话数排名信息不正确：${resp.content}
+
+实时监控平均首次响应时长排名(/statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/first/response)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/first/response    ${AdminUser}    ${orgEntity}    true    ${FilterEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的平均首次响应时长排名信息不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    返回的平均首次响应时长排名信息不正确：${resp.content}
+
+实时监控满意度排名(/statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/visitor/mark)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/visitor/mark    ${AdminUser}    ${orgEntity}    true    ${FilterEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的满意度排名信息不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    返回的满意度排名信息不正确：${resp.content}
+
+实时监控平均响应时长排名(/statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/response/time)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/monitor/list/response/time    ${AdminUser}    ${orgEntity}    true    ${FilterEntity}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的平均响应时长排名信息不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    返回的平均响应时长排名信息不正确：${resp.content}
+
+
 获取工作量会话指标new(/statistics/internal/orgs/{organId}/tenants/{tenantId}/session/wl/total)
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/session/wl/total    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -433,7 +489,15 @@ Resource          api/SystemSwitch.robot
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['status']}    OK    返回的会话数分布（按会话消息数维度）：${resp.content}
     Should Be True    ${j['entities'][0]['count']}>=0    返回的会话数分布（按会话消息数维度）：${resp.content}
-    Should Be True    ${j['totalElements']}==4    返回的会话数分布（按会话消息数维度）：${resp.content}
+    Should Be True    ${j['totalElements']}==5    返回的会话数分布（按会话消息数维度）：${resp.content}
+
+获取会话数分布（按会话时长维度）new(/statistics/internal/orgs/{organId}/tenants/{tenantId}/session/dist/session/time)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/session/dist/session/time    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    返回的会话数分布（按会话时长维度）：${resp.content}
+    Should Be True    ${j['entities'][0]['count']}>=0    返回的会话数分布（按会话时长维度）：${resp.content}
+    Should Be True    ${j['totalElements']}==5    返回的会话数分布（按会话时长维度）：${resp.content}
 
 获取客服工作量详情new(/statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/agent/wl)
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/agent/wl    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}

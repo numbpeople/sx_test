@@ -297,3 +297,27 @@ Get Robotlist
     \    log    ${userId}
     \    set to dictionary    ${robotList}    ${tenantId}=${userId}
     Return From Keyword    ${robotList}
+
+Set RoutingPriorityList
+    [Arguments]    ${firstValue}    ${secondValue}    ${thirdValue}
+    [Documentation]    设置会话分配的优先级
+    ...
+    ...    Arguments(可以随意放置位置):
+    ...
+    ...    渠道、关联、入口
+    ...
+    @{list}    create list    ${firstValue}    ${secondValue}    ${thirdValue}
+    #将规则排序设置为渠道优先
+    @{keys}    Get Dictionary Keys    ${PriorityEntity}
+    ${s}=    set variable    ${EMPTY}
+    :FOR    ${i}    IN    @{list}
+    \    log    ${i}
+    \    ${j}    Get From Dictionary    ${PriorityEntity}    ${i}
+    \    ${s}=    evaluate    '${s}:${j}'
+    log    ${s}
+    #将规则排序设置为渠道优先
+    ${s}    Strip String    ${s}    mode=left    characters=:
+    log    ${s}
+    ${data}=    set variable    {"value":"${s}:Default"}
+    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

@@ -34,9 +34,7 @@ Resource          api/SystemSwitch.robot
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     ${restentity}=    Add Channel    #快速创建一个关联
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -93,9 +91,7 @@ Resource          api/SystemSwitch.robot
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     ${restentity}=    Add Channel    #快速创建一个关联
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -150,9 +146,7 @@ Resource          api/SystemSwitch.robot
     ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"${queueentityA.queueName}"}}
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
     #将入口指定设置优先顺序
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    渠道    关联
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -205,9 +199,7 @@ Resource          api/SystemSwitch.robot
     #快速创建一个关联
     ${restentity}=    Add Channel
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -276,9 +268,7 @@ Resource          api/SystemSwitch.robot
     #快速创建一个关联
     ${restentity}=    Add Channel
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -348,9 +338,7 @@ Resource          api/SystemSwitch.robot
     #快速创建一个关联
     ${restentity}=    Add Channel
     #将规则排序设置为渠道->入口指定优先
-    ${data}=    set variable    {"value":"Channel:UserSpecifiedChannel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -413,9 +401,7 @@ Resource          api/SystemSwitch.robot
     #快速创建一个关联
     ${restentity}=    Add Channel
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:Channel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -478,9 +464,7 @@ Resource          api/SystemSwitch.robot
     #快速创建一个关联
     ${restentity}=    Add Channel
     #将规则排序设置为关联->入口指定优先
-    ${data}=    set variable    {"value":"ChannelData:UserSpecifiedChannel:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    入口    渠道
     #关联指定到技能组
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -542,9 +526,7 @@ Resource          api/SystemSwitch.robot
     #快速创建一个关联
     ${restentity}=    Add Channel
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    关联    渠道
     #关联指定到技能组
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityB.queueId}    id2=0    type=agentQueue    type2=
     set to dictionary    ${queueentityB}    channelData=${cData}
@@ -610,9 +592,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -678,9 +658,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -746,9 +724,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -823,9 +799,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -901,9 +875,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道->入口指定优先
-    ${data}=    set variable    {"value":"Channel:UserSpecifiedChannel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -972,9 +944,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:Channel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1043,9 +1013,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为关联->入口指定优先
-    ${data}=    set variable    {"value":"ChannelData:UserSpecifiedChannel:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    入口    渠道
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1111,9 +1079,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    on    ${weekend}    ${AdminUser}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    关联    渠道
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1178,9 +1144,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1246,9 +1210,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1314,9 +1276,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1391,9 +1351,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1469,9 +1427,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为渠道->入口指定优先
-    ${data}=    set variable    {"value":"Channel:UserSpecifiedChannel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1540,9 +1496,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:Channel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1611,9 +1565,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为关联->入口指定优先
-    ${data}=    set variable    {"value":"ChannelData:UserSpecifiedChannel:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    入口    渠道
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1679,9 +1631,7 @@ Resource          api/SystemSwitch.robot
     log    ${weekend}
     Set Worktime    off    ${weekend}    ${AdminUser}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    关联    渠道
     #关联指定到技能组    #设置全天或者上下班    #上班技能组    #下班技能组    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1747,9 +1697,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1812,9 +1760,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到机器人
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -1880,9 +1826,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -1978,9 +1922,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定机器人
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -2076,9 +2018,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道->入口指定优先
-    ${data}=    set variable    {"value":"Channel:UserSpecifiedChannel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -2167,9 +2107,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:Channel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -2242,9 +2180,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为关联->入口指定优先
-    ${data}=    set variable    {"value":"ChannelData:UserSpecifiedChannel:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    入口    渠道
     #关联指定到机器人
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -2332,9 +2268,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    关联    渠道
     #关联指定到机器人
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -2409,9 +2343,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -2482,9 +2414,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组    #设置全天或者上下班    #上班指定机器人    #下班不指定    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -2556,9 +2486,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"Channel:ChannelData:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -2659,9 +2587,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道->关联指定优先
-    ${data}=    set variable    {"value":"ChannelData:Channel:UserSpecifiedChannel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    渠道    入口
     #关联指定到技能组    #设置全天或者上下班    #上班指定机器人    #下班不指定    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -2763,9 +2689,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为渠道->入口指定优先
-    ${data}=    set variable    {"value":"Channel:UserSpecifiedChannel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -2860,9 +2784,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:Channel:ChannelData:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -2940,9 +2862,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为关联->入口指定优先
-    ${data}=    set variable    {"value":"ChannelData:UserSpecifiedChannel:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    关联    入口    渠道
     #关联指定到技能组    #设置全天或者上下班    #上班指定机器人    #下班不指定    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
@@ -3034,9 +2954,7 @@ Resource          api/SystemSwitch.robot
     ${secondrobotUserId}=    Get From Dictionary    ${robotlist}    ${secondRobotId}    #第二个机器人的userId
     ${robotentity}=    create dictionary    robotId=${robotId}    secondRobotId=${secondRobotId}
     #将规则排序设置为入口-> 渠道指定优先
-    ${data}=    set variable    {"value":"UserSpecifiedChannel:ChannelData:Channel:Default"}
-    ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set RoutingPriorityList    入口    关联    渠道
     #关联指定到技能组    #设置全天或者上下班    #上班指定机器人    #下班不指定    #上班的绑定类型    #下班的绑定类型
     ${cData}=    create dictionary    dutyType=Onoff    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}

@@ -36,9 +36,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道优先
     Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
@@ -56,19 +54,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -96,9 +88,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -112,19 +102,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -160,19 +144,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -201,9 +179,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->关联指定优先
     Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
@@ -212,9 +188,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityB.queueId}    id2=0    type=agentQueue    type2=
     set to dictionary    ${queueentityB}    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentityB.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentityB.channelData.id}","type1":"${queueentityB.channelData.type}","id2":"${queueentityB.channelData.id2}","type2":"${queueentityB.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -228,19 +202,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -273,13 +241,9 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}
@@ -297,19 +261,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -340,9 +298,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->入口指定优先
     Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
@@ -360,19 +316,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -403,9 +353,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为入口-> 渠道指定优先
     Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}
@@ -423,19 +371,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -469,9 +411,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -485,19 +425,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -531,9 +465,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityB.queueId}    id2=0    type=agentQueue    type2=
     set to dictionary    ${queueentityB}    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentityB.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentityB.channelData.id}","type1":"${queueentityB.channelData.type}","id2":"${queueentityB.channelData.id2}","type2":"${queueentityB.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -548,19 +480,13 @@ Resource          api/SystemSwitch.robot
     Comment    ${filterentity}=    create dictionary    visitorName=${guestentity.userName}
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -594,9 +520,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道优先
     Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
@@ -614,19 +538,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -663,9 +581,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -679,19 +595,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -726,9 +636,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->关联指定优先
     Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
@@ -737,9 +645,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -753,19 +659,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -804,13 +704,9 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
@@ -828,19 +724,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -877,9 +767,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->入口指定优先
     Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
@@ -897,19 +785,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -946,9 +828,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为入口-> 渠道指定优先
     Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
@@ -966,19 +846,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1018,9 +892,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1034,19 +906,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1084,9 +950,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1100,19 +964,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1146,9 +1004,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道优先
     Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
@@ -1166,19 +1022,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -1215,9 +1065,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1231,19 +1079,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Channel    ${restentity.channelId}
@@ -1278,9 +1120,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->关联指定优先
     Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
@@ -1289,9 +1129,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1305,19 +1143,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1356,13 +1188,9 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
@@ -1380,19 +1208,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1429,9 +1251,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->入口指定优先
     Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
@@ -1449,19 +1269,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1498,9 +1312,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为入口-> 渠道指定优先
     Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班技能组    #下班技能组
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
@@ -1518,19 +1330,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1570,9 +1376,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityB.queueId}    id2=${queueentityA.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1586,19 +1390,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1636,9 +1434,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1652,19 +1448,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -1699,9 +1489,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道优先
     Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotentity.robotId}
@@ -1717,15 +1505,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询的筛选条件
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -1765,9 +1549,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1779,15 +1561,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -1828,9 +1606,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->关联指定优先
     Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -1839,9 +1615,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${queueentityA.queueId}    id2=0    type=agentQueue    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -1854,15 +1628,11 @@ Resource          api/SystemSwitch.robot
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -1873,19 +1643,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -1927,13 +1691,9 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
@@ -1949,15 +1709,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -1968,19 +1724,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2020,9 +1770,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->入口指定优先
     Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -2038,15 +1786,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -2057,19 +1801,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2109,9 +1847,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为入口-> 渠道指定优先
     Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -2130,19 +1866,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2185,9 +1915,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -2199,15 +1927,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -2218,19 +1942,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2290,19 +2008,13 @@ Resource          api/SystemSwitch.robot
     Comment    ${filterentity}=    create dictionary    visitorName=${guestentity.userName}
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2345,9 +2057,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道优先
     Set RoutingPriorityList    渠道    关联    入口
     #判断渠道是否有绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断如果没有渠道数据，使用post请求，反之使用put请求    #上班指定机器人
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -2363,15 +2073,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -2419,9 +2125,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Allday    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -2433,15 +2137,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -2488,9 +2188,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->关联指定优先
     Set RoutingPriorityList    渠道    关联    入口
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班指定机器人    #下班不指定
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -2499,9 +2197,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${queueentityA.queueId}    id2=${queueentityB.queueId}    type=agentQueue    type2=agentQueue
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -2513,15 +2209,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -2532,19 +2224,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -2592,13 +2278,9 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
@@ -2614,15 +2296,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -2633,19 +2311,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Delete Agentqueue    ${queueentityB.queueId}
@@ -2691,9 +2363,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为渠道->入口指定优先
     Set RoutingPriorityList    渠道    入口    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班机器人    #下班不指定
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -2709,15 +2379,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -2728,19 +2394,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2786,9 +2446,7 @@ Resource          api/SystemSwitch.robot
     #将规则排序设置为入口-> 渠道指定优先
     Set RoutingPriorityList    入口    渠道    关联
     #获取渠道绑定关系
-    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Routing
     ${listlength}=    Get Length    ${j['content']}
     #判断渠道是否有绑定关系，如果没有渠道数据，使用post请求，反之使用put请求    #上班机器人    #下班不指定
     Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    0    0    ${robotId}
@@ -2806,19 +2464,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2867,9 +2519,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -2881,15 +2531,11 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    #查看该会话是否属于机器人
+    #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
-    \    sleep    ${delay}
+    #查询当前会话是否属于机器人
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
@@ -2900,19 +2546,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}
@@ -2959,9 +2599,7 @@ Resource          api/SystemSwitch.robot
     ${cData}=    create dictionary    dutyType=Onoff    id=${robotId}    id2=0    type=robot    type2=
     &{queueentity}    create dictionary    channelData=${cData}
     ${data}=    evaluate    {"tenantId":"${AdminUser.tenantId}","type":"easemob","id":"${restentity.channelId}","dutyType":"${queueentity.channelData.dutyType}","name":"${restentity.channelName}","info":"${restentity.orgName}#${restentity.appName}#${restentity.serviceEaseMobIMNumber}","id1":"${queueentity.channelData.id}","type1":"${queueentity.channelData.type}","id2":"${queueentity.channelData.id2}","type2":"${queueentity.channelData.type2}"}
-    log    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${AdminUser}    ${cData}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
     ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
@@ -2975,19 +2613,13 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
-    \    sleep    ${delay}
+    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    Close Waiting Conversation    ${j['items'][0]['userWaitQueueId']}
     #技能组和关联信息
     Delete Agentqueue    ${queueentityA.queueId}
     Comment    Delete Agentqueue    ${queueentityB.queueId}

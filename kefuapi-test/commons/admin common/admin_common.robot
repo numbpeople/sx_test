@@ -72,7 +72,7 @@ Add Routing
     ...    ${robotId}=null \ 第一个机器人Id值，默认为null
     ...
     ...    ${secondRobotId}=null 第二个机器人Id值，默认为null
-    #将渠道绑定到技能组
+    #将渠道绑定到技能组或机器人
     ${data}=    set variable    {"channelType":"${originTypeentity.originType}","key":"${originTypeentity.key}","name":"${originTypeentity.name}","tenantId":"${AdminUser.tenantId}","dutyType":"${originTypeentity.dutyType}","agentQueueId":${agentQueueId},"robotId":${robotId},"secondQueueId":${secondQueueId},"secondRobotId":${secondRobotId}}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    post    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -104,7 +104,7 @@ Update Routing
     \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
     Comment    Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
     set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
-    #修改渠道绑定到技能组
+    #修改渠道绑定关系
     ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"${originTypeentity.dutyType}","agentQueueId":${agentQueueId},"secondQueueId":${secondQueueId},"robotId":${robotId},"secondRobotId":${secondRobotId},"createDateTime":1489485870000}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    put    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -121,7 +121,7 @@ Delete Routing
     \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
     Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
     set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
-    #修改渠道绑定到技能组
+    #删除渠道绑定关系
     ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"Allday","agentQueueId":${queueentity.queueId},"secondQueueId":0,"robotId":null,"secondRobotId":null,"createDateTime":1489485870000}
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    delete    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -262,12 +262,12 @@ Close Conversation
     [Arguments]    ${status}    ${sessionServiceId}    ${userId}
     [Documentation]    根据channelId查找所有processing或wait的会话
     #关闭processing或wait的会话
-    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}    ${userId}
+    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}
     Run Keyword If    '${status}' == 'Processing'    Close Processing Conversation    ${sessionServiceId}    ${userId}
 
 Close Waiting Conversation
-    [Arguments]    ${sessionServiceId}    ${userId}
-    [Documentation]    根据channelId查找所有processing或wait的会话
+    [Arguments]    ${sessionServiceId}
+    [Documentation]    关闭待接入的会话
     #清理待接入会话
     ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
@@ -305,12 +305,11 @@ Set RoutingPriorityList
     ...    Arguments(可以随意放置位置):
     ...
     ...    渠道、关联、入口
-    ...
     @{list}    create list    ${firstValue}    ${secondValue}    ${thirdValue}
     #将规则排序设置为渠道优先
     @{keys}    Get Dictionary Keys    ${PriorityEntity}
     ${s}=    set variable    ${EMPTY}
-    :FOR    ${i}    IN    @{list}
+    : FOR    ${i}    IN    @{list}
     \    log    ${i}
     \    ${j}    Get From Dictionary    ${PriorityEntity}    ${i}
     \    ${s}=    evaluate    '${s}:${j}'
@@ -321,3 +320,65 @@ Set RoutingPriorityList
     ${data}=    set variable    {"value":"${s}:Default"}
     ${resp}=    /tenants/{tenantId}/options/RoutingPriorityList    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Get Routing
+    [Documentation]    获取路由规则中渠道绑定的关系
+    ...
+    ...    Return：
+    ...
+    ...    请求返回值：resp
+    #判断渠道是否有绑定关系
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${EMPTY}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Search Waiting Conversation
+    [Arguments]    ${agent}    ${filter}    ${date}
+    [Documentation]    根据筛选条件查询待接入会话
+    ...
+    ...    Arguments：
+    ...
+    ...    ${AdminUser}、${FilterEntity}、${DateRange}
+    ...
+    ...    Return：
+    ...
+    ...    返回符合筛选的符合结果：resp
+    #根据访客昵称查询待接入列表
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${agent}    ${filter}    ${date}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.content}
+    \    Exit For Loop If    ${j['total_entries']} ==1
+    \    sleep    ${delay}
+    Return From Keyword    ${j}
+
+Set ChannelData Routing
+    [Arguments]    ${agent}    ${cdata}    ${data}
+    [Documentation]    关联绑定机器人或者技能组
+    ...
+    ...    Arguments：
+    ...
+    ...    ${AdminUser}、${cdata} 、${data}
+    #关联绑定技能组或机器人
+    ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${agent}    ${cdata}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Get Current Conversation
+    [Arguments]    ${agent}    ${filter}    ${date}
+    [Documentation]    获取当前会话，返回符合筛选条件的值并返回
+    ...
+    ...    Arguments：
+    ...
+    ...    ${AdminUser}、${FilterEntity}、${DateRange}
+    ...
+    ...    Return：
+    ...
+    ...    返回符合筛选的符合结果：resp
+    :FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${agent}    ${filter}    ${date}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.content}
+    \    Exit For Loop If    ${j['total_entries']} == 1
+    \    sleep    ${delay}
+    Return From Keyword    ${j}

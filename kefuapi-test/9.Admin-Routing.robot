@@ -43,18 +43,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -91,18 +87,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -133,18 +125,14 @@ Resource          api/SystemSwitch.robot
     Set RoutingPriorityList    入口    渠道    关联
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -191,18 +179,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -250,18 +234,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -305,18 +285,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -360,18 +336,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -414,18 +386,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -468,19 +436,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${guestentity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -527,18 +490,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -584,18 +543,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -659,7 +614,8 @@ Resource          api/SystemSwitch.robot
     Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -713,18 +669,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -774,18 +726,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -835,18 +783,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -895,18 +839,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -953,18 +893,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1011,18 +947,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1068,18 +1000,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1132,18 +1060,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1197,18 +1121,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1258,18 +1178,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityB.queueId}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1319,18 +1235,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1379,18 +1291,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1437,18 +1345,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1496,20 +1400,16 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotentity.robotId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询的筛选条件
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -1552,20 +1452,16 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -1618,32 +1514,24 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1700,31 +1588,24 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1777,31 +1658,24 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1854,19 +1728,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1918,31 +1787,24 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -1996,19 +1858,14 @@ Resource          api/SystemSwitch.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    Comment    ${filterentity}=    create dictionary    visitorName=${guestentity.userName}
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -2064,20 +1921,16 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -2128,20 +1981,16 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #清理进行中的会话
     Close Processing Conversation    ${j['items'][0]['serviceSessionId']}    ${j['items'][0]['visitorUser']['userId']}
@@ -2200,31 +2049,24 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -2287,31 +2129,24 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}    ${queueentityB.queueId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -2370,31 +2205,24 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -2453,18 +2281,14 @@ Resource          api/SystemSwitch.robot
     Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    0    0    ${robotId}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -2522,31 +2346,24 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     set suite variable    ${AgentEntity.username}    ${Empty}
     #查询当前会话是否属于机器人
-    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
-    log    ${msgentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
@@ -2602,18 +2419,14 @@ Resource          api/SystemSwitch.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #获取关联appkey的token
     Create Session    restsession    https://${targetchannelJson['restDomain']}
-    ${resp1}    get token by credentials    restsession    ${easemobtechchannelJson}    ${timeout}
-    ${j}    to json    ${resp1.content}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
     set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
-    log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #根据访客昵称查询待接入列表
-    ${j}=    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
     Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}

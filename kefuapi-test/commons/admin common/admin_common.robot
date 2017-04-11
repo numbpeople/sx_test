@@ -349,9 +349,9 @@ Search Waiting Conversation
     \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${agent}    ${filter}    ${date}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
+    \    Exit For Loop If    ${j['total_entries']} > 0
     \    sleep    ${delay}
-    Return From Keyword    ${j}
+    Return From Keyword    ${resp}
 
 Set ChannelData Routing
     [Arguments]    ${agent}    ${cdata}    ${data}
@@ -375,10 +375,39 @@ Get Current Conversation
     ...    Return：
     ...
     ...    返回符合筛选的符合结果：resp
-    :FOR    ${i}    IN RANGE    ${retryTimes}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${agent}    ${filter}    ${date}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} == 1
+    \    Exit For Loop If    ${j['total_entries']} > 0
     \    sleep    ${delay}
+    Return From Keyword    ${resp}
+
+Get Appkey Token
+    [Arguments]    ${session}    ${channelJson}
+    [Documentation]    获取appkey的管理员token
+    ...
+    ...    Arguments：
+    ...
+    ...    ${session} 、${channelJson}
+    ...
+    ...    Return：
+    ...
+    ...    ${resp}
+    #获取管理员的token
+    ${resp1}    get token by credentials    restsession    ${channelJson}    ${timeout}
+    ${j}    to json    ${resp1.content}
     Return From Keyword    ${j}
+
+Send Message
+    [Arguments]    ${rest}    ${guest}    ${msg}
+    [Documentation]    模拟访客发送消息
+    ...
+    ...    Arguments：
+    ...
+    ...    ${restentity}	${guestentity}	${msgentity}
+    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    ${resp}=    Send Msg    ${rest}    ${guest}    ${msg}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['data']['${rest.serviceEaseMobIMNumber}']}    success    发送消息失败

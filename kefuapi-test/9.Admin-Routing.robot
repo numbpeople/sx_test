@@ -1,6 +1,8 @@
 *** Settings ***
-Suite Setup       Run Keywords    log    suite执行开始
-Suite Teardown    Run Keywords    Delete Agentusers    Delete Queues    Delete Channels
+Suite Setup       log    suite执行开始
+Suite Teardown    Run Keywords    Delete Agentusers
+...               AND    Delete Queues
+...               AND    Delete Channels
 ...               AND    log    suite执行结束
 Force Tags        routing
 Library           json

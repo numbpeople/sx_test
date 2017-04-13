@@ -1,5 +1,7 @@
 *** Settings ***
-Suite Setup       set suite variable    ${session}    ${AdminUser.session}
+Suite Setup       Run Keywords    log    suite执行开始
+Suite Teardown    Run Keywords    Delete Agentusers    Delete Queues    Delete Channels
+...               AND    log    suite执行结束
 Force Tags        routing
 Library           json
 Library           requests
@@ -14,6 +16,7 @@ Library           uuid
 Resource          commons/admin common/admin_common.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/SystemSwitch.robot
+Resource          kefutool/Tools-Resourse.robot
 
 *** Test Cases ***
 渠道指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)

@@ -807,7 +807,6 @@ GetChannel
     ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&channelId=${FilterEntity.channelId}&AdminUserId=${agent.userId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/dist/sessionTime
     [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
@@ -1053,10 +1052,10 @@ GetChannel
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/ServiceSessionSummaries/${summaryId}/tree
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/crm/tenants/{tenantId}/agents/{agentId}/visitors
+/v1/crm/tenants/{tenantId}/agents/{agentId}/customers
     [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/agents/${agent.userId}/visitors
+    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/agents/${agent.userId}/customers
     ${params}=    set variable    page=${FilterEntity.page}&size=${FilterEntity.per_page}&userTagIds=${FilterEntity.userTagIds}&categoryId=${FilterEntity.categoryId}&subCategoryId=${FilterEntity.subCategoryId}&visitorName=${FilterEntity.visitorName}&summaryIds=${FilterEntity.summaryIds}&enquirySummary=${FilterEntity.enquirySummary}&beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 

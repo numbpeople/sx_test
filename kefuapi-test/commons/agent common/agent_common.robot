@@ -185,3 +185,20 @@ Get History
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['total_entries']} > 0
     Return From Keyword    ${j}
+
+Agent Send Message
+    [Arguments]    ${agent}    ${visitoruserid}    ${servicesessionid}    ${msg}
+    [Documentation]    坐席发送消息给访客
+    ...
+    ...    Arguments：
+    ...
+    ...    ${agent} | ${visitoruserid} | ${servicesessionid} | ${msg}
+    ...
+    ...    Return：
+    ...
+    ...    请求结果：${j}
+    #坐席发送消息
+    ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages    ${agent}    ${visitoruserid}    ${servicesessionid}    ${msg}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}

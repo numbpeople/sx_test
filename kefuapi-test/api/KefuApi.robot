@@ -58,7 +58,7 @@ GetChannel
     [Arguments]    ${agent}    ${visitorId}    ${serviceSessionId}    ${Msg}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Agents/me/Visitors/${visitorId}/ServiceSessions/${serviceSessionId}/Messages
-    ${postdata}    set variable    {"type":"${Msg.type}","msg":"${Msg.msg}","ext":${Msg.ext}}
+    ${postdata}    set variable    {"type":"${Msg.type}","msg":"${Msg.msg}"}
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${postdata}    timeout=${timeout}
 
 /v1/tenantapp/imUser
@@ -1185,15 +1185,6 @@ GetChannel
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /Tenants/${agent.tenantId}/Agents/${agent.userId}/PreSchedule/Ack?answer=true
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
-
-Should Be Not Contain In JsonList
-    [Arguments]    ${keyname}    ${diffvalue}    @{list}
-    ${l}    Get Length    ${list}
-    Return From Keyword If    ${l}==0    ${true}
-    : FOR    ${a}    IN    @{list}
-    \    Exit For Loop If    '${a${keyname}}'=='${diffvalue}'
-    Return From Keyword If    '${a${keyname}}'=='${diffvalue}'    ${false}
-    Return From Keyword If    '${a${keyname}}'!='${diffvalue}'    ${true}
 
 Return QueueName From QueueList By QueueId
     [Arguments]    ${queueId}    @{list}

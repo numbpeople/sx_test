@@ -177,6 +177,48 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be Equal    '${j['status']}'    'OK'    返回的排队统计信息不正确：${resp.content}
     Should Be True    ${j['entities'][0]['avg_wt']}>=0    返回的排队统计信息不正确：${resp.content}
 
+获取排队统计-排队总数(/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/total)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/total    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的排队统计-排队总数不正确：${resp.content}
+    Should Be True    ${j['entities'][0]['avg_wt']}>=0    返回的排队统计-排队总数不正确：${resp.content}
+
+获取排队统计-24小时进线(/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/hour/create)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/hour/create    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的排队统计-24小时进线不正确：${resp.content}
+    Should Be Equal    ${j['entities'][0]['key']}    session    返回的排队统计-24小时进线不正确：${resp.content}
+
+获取排队统计-24小时排队(/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/hour/wait)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/hour/wait    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的排队统计-24小时排队不正确：${resp.content}
+    should be true    ${j['totalElements']}>=0    返回的排队统计-24小时排队不正确：${resp.content}
+
+获取排队统计-按天进线(/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/day/create)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/day/create    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的排队统计-按天进线不正确：${resp.content}
+    Should Be Equal    ${j['entities'][0]['key']}    session    返回的排队统计-按天进线不正确：${resp.content}
+
+获取排队统计-排队趋势(/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/trend)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/trend    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的排队统计-排队趋势不正确：${resp.content}
+    Should Be Equal    ${j['entities'][0]['key']}    cnt_wc    返回的排队统计-排队趋势不正确：${resp.content}
+
+获取排队统计-会话标签分布(/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/session/tag)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/session/tag    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    返回的排队统计-会话标签分布不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    返回的排队统计-会话标签分布不正确：${resp.content}
+
 获取24小时进线量(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/dist/hour)
     ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/dist/hour    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -461,7 +503,6 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be Equal    '${j['status']}'    'OK'    返回的平均响应时长排名信息不正确：${resp.content}
     Should Be True    ${j['totalElements']}>=0    返回的平均响应时长排名信息不正确：${resp.content}
 
-
 获取工作量会话指标new(/statistics/internal/orgs/{organId}/tenants/{tenantId}/session/wl/total)
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/session/wl/total    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -562,12 +603,78 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be Equal    ${j['status']}    OK    获取工作质量详情：${resp.content}
     Should Be True    ${j['totalElements']}>=0    获取工作质量详情：${resp.content}
 
+获取技能组工作质量(/statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/group/wq)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/group/wq    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    获取技能组工作质量详情：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    获取技能组工作质量详情：${resp.content}
+
 获取客服时长统计(/statistics/internal/orgs/{organId}/tenants/{tenantId}/serve/agent)
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/serve/agent    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['status']}    OK    获取客服时长统计：${resp.content}
     Should Be True    ${j['totalElements']}>=0    获取客服时长统计：${resp.content}
+
+获取客服在线时长明细(/statistics/internal/orgs/{organId}/tenants/{tenantId}/serve/agent/detail)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/serve/agent/detail    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    获取客服在线时长明细：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    获取客服在线时长明细：${resp.content}
+
+获取独立访客数(/statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/total)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/total    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    获取独立访客数：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    获取独立访客数：${resp.content}
+
+获取独立访客数趋势(/statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/trend)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/trend    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    获取独立访客数趋势：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    获取独立访客数趋势：${resp.content}
+
+获取独立访客数列表(/statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/count)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/count    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    获取独立访客数列表：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    获取独立访客数列表：${resp.content}
+
+获取技能组工作量(/statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/group/wl)
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/group/wl    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['status']}    OK    返回的技能组工作量信息不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    返回的技能组工作量信息不正确：${resp.content}
+
+统计文件导出-工作量(/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wl)
+    ${resp}=    /statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wl    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+统计文件导出-工作质量(/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wq)
+    ${resp}=    /statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wq    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+统计文件导出-访客统计(/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/visitor)
+    ${resp}=    /statistics/internal/file/orgs/{organId}/tenants/{tenantId}/visitor    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+统计文件导出-排队统计(/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wait)
+    ${resp}=    /statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wait    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+统计文件导出-客服时长(/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/agent/serve)
+    ${resp}=    /statistics/internal/file/orgs/{organId}/tenants/{tenantId}/agent/serve    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+统计文件导出-客服时长明细(/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/agent/serve/detail)
+    ${resp}=    /statistics/internal/file/orgs/{organId}/tenants/{tenantId}/agent/serve/detail    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
 获取客户中心列表(/v1/crm/tenants/{tenantId}/customers)
     ${resp}=    /v1/crm/tenants/{tenantId}/customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}

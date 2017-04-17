@@ -525,11 +525,25 @@ GetChannel
     ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/serve
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/agent/detail/serve
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/wait/total
     [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/organs/${orgEntity.organName}/tenants/${agent.tenantId}/statistics/internal/session/wait/total
     ${params}=    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/total
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/total
+    ${params}=    set variable    sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/wait/file
@@ -551,6 +565,41 @@ GetChannel
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/organs/${orgEntity.organName}/tenants/${agent.tenantId}/statistics/internal/session/wait/hour
     ${params}    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/hour/create
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/hour/create
+    ${params}    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/hour/wait
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/hour/wait
+    ${params}    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/day/create
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/day/create
+    ${params}    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/trend
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/trend
+    ${params}    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/wait/session/tag
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/session/tag
+    ${params}    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=all&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/wait/trend
@@ -730,6 +779,48 @@ GetChannel
     ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&total_entries=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&AdminUserId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&asc=${FilterEntity.asc}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/group/wl
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/kpi/group/wl
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&total_entries=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&AdminUserId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&asc=${FilterEntity.asc}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wq
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/file/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wq
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&asc=${FilterEntity.asc}&locale=${FilterEntity.locale}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/visitor
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/file/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/visitor
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=V_ORIGINTYPE
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/wait
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/file/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait
+    ${params}=    set variable    originType=${FilterEntity.originType}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&waitTime=${FilterEntity.waitTime}&visitorTag=${FilterEntity.visitorTag}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&locale=${FilterEntity.locale}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/agent/serve
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/file/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/agent/serve
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&locale=${FilterEntity.locale}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/file/orgs/{organId}/tenants/{tenantId}/agent/serve/detail
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/file/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/agent/serve/detail
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&agentId=${agent.userId}&locale=${FilterEntity.locale}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/workLoad/agent/file
     [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
@@ -821,11 +912,46 @@ GetChannel
     ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/kpi/group/wq
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/kpi/group/wq
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
 /statistics/internal/orgs/{organId}/tenants/{tenantId}/serve/agent
     [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/serve/agent
     ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.sortOrder}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/serve/agent/detail
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/serve/agent/detail
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.order}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&agentId=${agent.userId}&asc=${FilterEntity.asc}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/total
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/visitor/total
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=V_ORIGINTYPE
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/trend
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/visitor/trend
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=V_ORIGINTYPE
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/visitor/count
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/visitor/count
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=V_ORIGINTYPE
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/workQuality/agent

@@ -459,3 +459,11 @@ Resource          JsonDiff/KefuJsonDiff.robot
     ${j}    to json    ${resp.content}
     Should Be Equal    '${j['status']}'    'OK'    个人统计数据消息/会话数趋势status不正确：${resp.content}
     Should Be True    ${j['totalElements']}>=0    个人统计数据消息/会话数趋势数量不正确：${resp.content}
+
+个人统计数据工作时长(/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/serve)
+    [Tags]
+    ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/trend    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['status']}'    'OK'    个人统计数据工作时长status不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=0    个人统计数据工作时长不正确：${resp.content}

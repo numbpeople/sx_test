@@ -16,6 +16,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/admin_common.robot
 Resource          commons/agent common/agent_common.robot
 Resource          kefutool/Tools-Resource.robot
+Resource          commons/admin common/BaseKeyword.robot
 
 *** Test Cases ***
 从待接入接起会话查看attribute、track、会话信息、历史消息接口并关闭，查看历史会话、访客中心
@@ -193,28 +194,9 @@ Resource          kefutool/Tools-Resource.robot
     Should Be Equal    ${a['body']['visitorUserId']}    ${GuestEntity.userId}    访客id不正确：${a}
     Should Be Equal    ${a['body']['channel_id']}    ${RestEntity.channelId}    关联id不正确：${a}
     set to dictionary    ${GuestEntity}    startSessionTimestamp=${j['startSessionTimestamp']}    sessionServiceSeqId=${a['sessionServiceSeqId']}
-    #7.坐席查收访客发送的新消息
-    ${curTime}    get time    epoch
-    set to dictionary    ${MsgEntity}    msg=消息${curTime}    type=txt    ext={}
-    Send Message    ${RestEntity}    ${GuestEntity}    ${MsgEntity}
-    #获取会话的历史消息
-    set to dictionary    ${MsgFilter}    size=50
-    ${j}    Get Messages    ${AdminUser}    ${GuestEntity.chatGroupId}    ${MsgFilter}
-    : FOR    ${a}    IN    @{j['messages']}
-    \    ${tmsg}=    set variable if    '${a['body']['bodies'][0]['type']}'=='txt'    ${a['body']['bodies'][0]['msg']}    ${empty}
-    \    ${diff1}=    replace string    ${tmsg}    \n    ${empty}
-    \    ${diff2}=    replace string    ${MsgEntity.msg}    \n    ${empty}
-    \    Exit For Loop If    '${diff1}'=='${diff2}'
-    Should Be Equal    ${a['body']['bodies'][0]['msg']}    ${MsgEntity.msg}    消息内容不正确：${a}
-    Should Be Equal    ${a['body']['bodies'][0]['type']}    ${MsgEntity.type}    消息类型不正确：${a}
-    Should Be Equal    ${a['body']['serviceSessionId']}    ${GuestEntity.sessionServiceId}    会话id不正确：${a}
-    Should Be Equal    ${a['sessionServiceId']}    ${GuestEntity.sessionServiceId}    会话id不正确：${a}
-    Should Be Equal    '${a['tenantId']}'    '${AdminUser.tenantId}'    tenantId不正确：${a}
-    Should Be Equal    ${a['body']['visitorUserId']}    ${GuestEntity.userId}    访客id不正确：${a}
-    Should Be Equal    ${a['body']['channel_id']}    ${RestEntity.channelId}    关联id不正确：${a}
     #坐席发送消息
     ${curTime}    get time    epoch
-    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt    ext=${a['body']['ext']}
+    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
     ${j}    Agent Send Message    ${AdminUser}    ${GuestEntity.userId}    ${GuestEntity.sessionServiceId}    ${AgentMsgEntity}
     Should Be Equal    '${j['fromUser']['bizId']}'    '${AdminUser.tenantId}'    坐席tenantId信息不正确：${j}
     Should Be Equal    '${j['fromUser']['tenantId']}'    '${AdminUser.tenantId}'    坐席tenantId信息不正确：${j}

@@ -47,9 +47,9 @@ Add Channel
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
     Should Not Be Empty    ${j[0]['appKey']}    appkey为空
-    set test variable    ${diffs1}    ${restentity.appName}${restentity.orgName}${restentity.serviceEaseMobIMNumber}
+    ${diffs1}    set variable    ${restentity.appName}${restentity.orgName}${restentity.serviceEaseMobIMNumber}
     : FOR    ${d}    IN    @{j}
-    \    set test variable    ${diffs2}    ${d['appName']}${d['orgName']}${d['serviceEaseMobIMNumber']}
+    \    ${diffs2}    set variable    ${d['appName']}${d['orgName']}${d['serviceEaseMobIMNumber']}
     \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
     set to dictionary    ${restentity}    channelId=${d['id']}
     log    ${restentity}
@@ -405,9 +405,27 @@ Send Message
     ...
     ...    Arguments：
     ...
-    ...    ${restentity}	${guestentity}	${msgentity}
+    ...    ${restentity} ${guestentity} ${msgentity}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     ${resp}=    Send Msg    ${rest}    ${guest}    ${msg}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${rest.serviceEaseMobIMNumber}']}    success    发送消息失败
+
+Create Channel And Get Token
+    [Documentation]    快速创建关键并返回关联的所有信息
+    ...
+    ...    Return：
+    ...
+    ...    全局变量：${restentity}
+    ...
+    ...    describtion：包含字段
+    ...
+    ...    appKey、appName、orgName、clientId、clientSecret、serviceEaseMobIMNumber、channelName、dutyType、agentQueueId、robotId、channelId、token、restDomain、restsession
+    #快速创建一个关联
+    ${restentity}=    Add Channel
+    #获取关联appkey的token
+    Create Session    restsession    https://${targetchannelJson['restDomain']}
+    ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
+    set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
+    set global variable    ${restentity}    ${restentity}

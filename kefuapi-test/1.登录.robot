@@ -17,6 +17,7 @@ Resource          api/RoutingApi.robot
 
 *** Test Cases ***
 客服登录(/login)
+    [Tags]    sdk
     #${t}    urlencode    username=00001@qq.com&password=!@#123&stat=flsf
     Create Session    adminsession    ${kefuurl}
     ${resp}=    /login    adminsession    ${AdminUser}    ${timeout}
@@ -48,7 +49,7 @@ Resource          api/RoutingApi.robot
     set global variable    ${initdataJson}    ${j}
 
 获取organ信息(/v1/infos)
-    [Tags]    unused
+    [Tags]    unused    sdk
     set test variable    ${tadmin}    ${AdminUser}
     ${resp}=    /v1/infos    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

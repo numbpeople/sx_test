@@ -51,6 +51,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     \    Should Be Equal    ${j['status']}    ${s}    设置状态失败：${resp.status_code}
 
 获取访客列表(/v1/Agents/me/Visitors)
+    [Tags]    sdk
     ${resp}=    /v1/Agents/me/Visitors    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -135,6 +136,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be True    ${j['totalElements']} >= 0    访客中心人数不正确：${resp.content}
 
 获取待接入列表(/v1/Tenant/me/Agents/me/UserWaitQueues)
+    [Tags]    sdk
     ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues    ${AdminUser}    ${FilterEntity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
@@ -160,6 +162,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be True    ${j} >= 0    待接入总数不正确：${resp.content}
 
 获取待接入列表new(/v1/tenants/{tenantId}/queues)
+    [Tags]    sdk
     ${resp}=    /v1/tenants/{tenantId}/queues    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}

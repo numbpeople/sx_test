@@ -412,7 +412,7 @@ Send Message
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${rest.serviceEaseMobIMNumber}']}    success    发送消息失败
 
-Create Channel And Get Token
+Create Channel
     [Documentation]    快速创建关键并返回关联的所有信息
     ...
     ...    Return：

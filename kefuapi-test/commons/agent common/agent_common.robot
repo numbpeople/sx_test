@@ -39,9 +39,12 @@ Get Processing Conversation
     ...
     ...    请求结果：${j}
     #查询进行中会话是否有该访客
-    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
+    :FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.content}
+    \    ${listlength}    Get Length    ${j}
+    \    Exit For Loop If    ${listlength} > 0
     Return From Keyword    ${j}
 
 Get Attribute

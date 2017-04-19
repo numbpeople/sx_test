@@ -244,7 +244,8 @@ Close Conversations By ChannelId
     [Arguments]    ${techChannelId}    ${techChannelType}=easemob
     [Documentation]    根据channelId查找所有processing或wait的会话
     #查询会话
-    set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait
+    set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait    per_page=150
+    ...    visitorName=${EMPTY}
     set to dictionary    ${DateRange}    beginDate=${EMPTY}    endDate=${EMPTY}
     #根据channelId查询会话
     ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
@@ -350,7 +351,6 @@ Search Waiting Conversation
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['total_entries']} > 0
-    \    sleep    ${delay}
     Return From Keyword    ${resp}
 
 Set ChannelData Routing

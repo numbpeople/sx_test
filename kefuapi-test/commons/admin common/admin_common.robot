@@ -52,6 +52,15 @@ Add Channel
     \    ${diffs2}    set variable    ${d['appName']}${d['orgName']}${d['serviceEaseMobIMNumber']}
     \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
     set to dictionary    ${restentity}    channelId=${d['id']}
+    set global variable    ${easemobtechchannelJson}    ${d}
+    #查询关联domain
+    ${resp}=    /v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set test variable    ${diffs1}    ${restentity.appName}${restentity.orgName}${restentity.serviceEaseMobIMNumber}
+    : FOR    ${d}    IN    @{j}
+    \    set test variable    ${diffs2}    ${d['appName']}${d['orgName']}${d['imServiceNumber']}
+    \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
+    set to dictionary    ${restentity}    restDomain=${d['restDomain']}
     log    ${restentity}
     Return From Keyword    ${restentity}
 
@@ -425,7 +434,13 @@ Create Channel
     #快速创建一个关联
     ${restentity}=    Add Channel
     #获取关联appkey的token
-    Create Session    restsession    https://${targetchannelJson['restDomain']}
+    Create Session    restsession    http://${restentity.restDomain}
     ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}
-    set to dictionary    ${restentity}    token=${j['access_token']}    restDomain=${targetchannelJson['restDomain']}    session=restsession
+    set to dictionary    ${restentity}    token=${j['access_token']}    session=restsession
     set global variable    ${restentity}    ${restentity}
+
+Close Processing Conversations By SessionList
+    [Arguments]    @{SessionList}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    : FOR    ${i}    IN RANGE    @{SessionList}
+    \    Close Conversation    ${state}    ${i.serviceSessionId}    ${i.visitoruserid}

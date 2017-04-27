@@ -80,6 +80,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     log    ${j}
 
 获取客服状态分布信息(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/monitor/agent/status/dist)
+    [Tags]    unused
     ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/monitor/agent/status/dist    ${AdminUser}    ${orgEntity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -94,6 +95,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be Equal    '${j['entity']['tenantId']}'    '${AdminUser.tenantId}'    返回的客服负载情况不正确：${resp.content}
 
 获取访客排队情况信息(/v1/organs/{organName}/tenants/{tenantId}/statistics/internal/monitor/wait/count)
+    [Tags]    unused
     ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/monitor/wait/count    ${AdminUser}    ${orgEntity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}

@@ -13,6 +13,7 @@ Resource          ../commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          ../api/RoutingApi.robot
 Resource          ../commons/admin common/admin_common.robot
+Resource          ../commons/agent common/agent_common.robot
 Library           OperatingSystem
 
 *** Test Cases ***
@@ -61,3 +62,63 @@ Library           OperatingSystem
     \    ${channelIdValue}=    Get From Dictionary    ${channellist}    ${channelNameList[${i}]}
     \    Run Keyword If    ${status}    Close Conversations By ChannelId    ${channelIdValue}
     \    Run Keyword If    ${status}    Delete Channel    ${channelIdValue}
+
+批量创建待接入
+    set test variable    ${originType}    webim
+    : FOR    ${t}    IN RANGE    3000
+    \    ${curTime}    get time    epoch
+    \    set to dictionary    ${MsgEntity}    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}"}}
+    \    #set to dictionary    ${MsgEntity}    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"agentUsername":"0222test1@t.com"}}
+    \    set to dictionary    ${GuestEntity}    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
+    \    #1.发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    \    ${resp}=    send msg    ${RestEntity}    ${GuestEntity}    ${MsgEntity}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    \    ${j}    to json    ${resp.content}
+    \    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    \    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}    originType=${GuestEntity.originType}
+    \    set test variable    ${FilterEntity}    ${FilterEntity}
+    \    sleep    300ms
+
+批量创建会话、接入并关闭
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #发送消息并创建访客
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    #将规则排序设置为渠道优先
+    #Set RoutingPriorityList    渠道    关联    入口
+    #判断渠道是否有绑定关系
+    #${j}    Get Routing
+    #${listlength}=    Get Length    ${j['content']}
+    #判断如果没有渠道数据，使用post请求，反之使用put请求
+    #Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #发送消息并创建200访客
+    : FOR    ${i}    IN RANGE    200
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    \    sleep    200ms
+    sleep    1s
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=200
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN RANGE    ${j['total_entries']}
+    \    Access Conversation    ${AdminUser}    ${j['items'][${i}]['userWaitQueueId']}
+    \    sleep    50ms
+    sleep    1s
+    #关闭进行中会话
+    ${resp}=    /v1/Agents/me/Visitors    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN    @{j}
+    \    Stop Processing Conversation    ${AdminUser}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms

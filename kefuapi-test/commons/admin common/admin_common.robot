@@ -56,9 +56,9 @@ Add Channel
     #查询关联domain
     ${resp}=    /v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
-    set test variable    ${diffs1}    ${restentity.appName}${restentity.orgName}${restentity.serviceEaseMobIMNumber}
+    ${diffs1}    set variable    ${restentity.appName}${restentity.orgName}${restentity.serviceEaseMobIMNumber}
     : FOR    ${d}    IN    @{j}
-    \    set test variable    ${diffs2}    ${d['appName']}${d['orgName']}${d['imServiceNumber']}
+    \    ${diffs2}    set variable    ${d['appName']}${d['orgName']}${d['imServiceNumber']}
     \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
     set to dictionary    ${restentity}    restDomain=${d['restDomain']}
     log    ${restentity}

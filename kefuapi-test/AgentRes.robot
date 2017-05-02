@@ -1,14 +1,15 @@
 *** Variables ***
-${kefuurl}        http://120.26.12.239
+${kefuurl}        http://sandbox.kefu.easemob.com
 ${orgurl}         http://sandbox.kefuorg.easemob.com
-&{AdminUser}      username=0401a2@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+&{AdminUser}      username=0216l@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome
 &{OrgAdminUser}    username=zk1@organ.com    password=123456    orgId=2057    cookies=    session=    userId=    nicename=
 ...               browser=chrome
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
 @{kefustatus}     Busy    Leave    Hidden    Online
-${timeout}        ${3.0}
+@{SessionState}    ${empty}    Wait    Processing
+${timeout}        ${30.0}
 ${delay}          1
 ${shortcutMessageGroupId}    ${EMPTY}
 ${shortcutMessageGroupName}    ${EMPTY}

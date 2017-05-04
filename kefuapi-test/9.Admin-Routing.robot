@@ -1110,8 +1110,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询的筛选条件
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1147,8 +1146,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1193,8 +1191,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1250,8 +1247,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1303,8 +1299,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1398,8 +1393,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1496,8 +1490,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1538,8 +1531,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1592,8 +1584,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1657,8 +1648,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1716,8 +1706,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1823,8 +1812,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1925,8 +1913,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -1968,8 +1955,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -2024,8 +2010,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -2089,8 +2074,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -2150,8 +2134,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
@@ -2259,8 +2242,7 @@ Resource          kefutool/Tools-Resource.robot
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
     #设置查询当前会话的参数
-    set to dictionary    ${FilterEntity}    status=Processing    isAgent=${False}    visitorName=${guestentity.userName}
-    set suite variable    ${AgentEntity.username}    ${Empty}
+    set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
     ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}

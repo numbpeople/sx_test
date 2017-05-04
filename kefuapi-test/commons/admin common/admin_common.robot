@@ -8,6 +8,7 @@ Library           calendar
 Resource          ../../api/KefuApi.robot
 Resource          ../../api/RoutingApi.robot
 Resource          ../../api/SystemSwitch.robot
+Resource          ../../api/SessionCurrentApi.robot
 
 *** Keywords ***
 Add Agentqueue

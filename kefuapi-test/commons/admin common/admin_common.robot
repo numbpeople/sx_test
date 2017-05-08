@@ -361,6 +361,7 @@ Search Waiting Conversation
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['total_entries']} > 0
+    \    sleep    ${delay}
     Return From Keyword    ${resp}
 
 Set ChannelData Routing

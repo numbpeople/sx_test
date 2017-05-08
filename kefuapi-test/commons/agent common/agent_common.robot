@@ -45,6 +45,7 @@ Get Processing Conversation
     \    ${j}    to json    ${resp.content}
     \    ${listlength}    Get Length    ${j}
     \    Exit For Loop If    ${listlength} > 0
+    \    sleep    ${delay}
     Return From Keyword    ${j}
 
 Get Attribute
@@ -149,6 +150,7 @@ Get Admin Customers
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['numberOfElements']} > 0
+    \    sleep    ${delay}
     Return From Keyword    ${j}
 
 Get Agent Customers
@@ -168,6 +170,7 @@ Get Agent Customers
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['numberOfElements']} > 0
+    \    sleep    ${delay}
     Return From Keyword    ${j}
 
 Get History
@@ -187,6 +190,7 @@ Get History
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['total_entries']} > 0
+    \    sleep    ${delay}
     Return From Keyword    ${j}
 
 Agent Send Message

@@ -25,10 +25,11 @@ get token by password
 send msg
     [Arguments]    ${rest}    ${guest}    ${msg}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json    Authorization=Bearer ${rest.token}
-    #${lengext}=    Get Length    ${ext}
-    #${strext}=    set variable if    ${lengext}==0    ${ext}    ${lengext}>0    "${ext}"
     ${postdata}    set variable    {"target_type":"users","target":["${rest.serviceEaseMobIMNumber}"],"msg":{"type":"${msg.type}","msg":"${msg.msg}"},"from":"${guest.userName}","ext":${msg.ext}}
-    #${str}=    Replace String    ${appkey}    \#    \/
+    #判断如果msg中包含指定key，重新设置data值
+    ${status}    Run Keyword And Return Status    Should Contain    ${msg.msg}    ${msg.key}
+    log    ${status}
+    Run Keyword If    ${status}    set test variable    ${postdata}    {"target_type":"users","target":["${rest.serviceEaseMobIMNumber}"],"msg":${msg.msg},"from":"${guest.userName}","ext":${msg.ext}}
     ${uri}=    set variable    /${rest.orgName}/${rest.appName}/messages
     ${data}    Post Request    ${rest.session}    ${uri}    data=${postdata}    headers=${header}    timeout=${timeout}
     Return From Keyword    ${data}

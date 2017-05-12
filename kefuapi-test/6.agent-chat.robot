@@ -260,21 +260,27 @@ Resource          commons/admin common/BaseKeyword.robot
     Should Be Equal    '${j['fromUser']['username']}'    '${AdminUser.username}'    坐席username信息不正确：${j}
     Should Be Equal    '${j['body']['bodies'][0]['msg']}'    '${AgentMsgEntity.msg}'    消息内容不正确：${j}
     Should Be Equal    '${j['body']['bodies'][0]['type']}'    '${AgentMsgEntity.type}'    消息类型不正确：${j}
-    #访客评价会话
-    set to dictionary    ${MsgEntity}    msg=1    # 1代表5星、2代表4星 ......
-    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
-    #8.关闭会话
+    #发送满意度评价
+    ${j}    Send InviteEnquiry    ${AdminUser}    ${GuestEntity.sessionServiceId}
+    Should Be Equal    ${j['status']}    OK    消息内容不正确：${j}
+    #关闭会话
     ${j}    Stop Processing Conversation    ${AdminUser}    ${GuestEntity.userId}    ${GuestEntity.sessionServiceId}
     #查询进行中会话是否有该访客
     ${j}    Get Processing Conversation    ${AdminUser}
     ${rs}=    Should Be Not Contain In JsonList    ['user']['nicename']    ${GuestEntity.userName}    @{j}
     Should Be True    ${rs}    会话关闭失败
-    #6.坐席模式下查询该访客的会话
+    #访客评价会话
+    set to dictionary    ${MsgEntity}    msg=1    # 1代表5星、2代表4星 ......
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #坐席模式下查询该访客的会话
     set to dictionary    ${FilterEntity}    isAgent=true
     ${j}    Get History    ${AdminUser}    ${FilterEntity}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${j}
-    #7.管理员模式下查询该访客的历史会话
+    #管理员模式下查询该访客的历史会话
     set to dictionary    ${FilterEntity}    isAgent=false
-    ${j}    Get History    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${j}    Get History    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    \    Exit For Loop If    (${j['items'][0]['enquirySummary']} > 0) & (${j['total_entries']} == 1)
+    \    sleep    ${delay}
     Should Be True    ${j['total_entries']} ==1    管理员模式历史会话未查到该会话：${j}
     Should Be True    ${j['items'][0]['enquirySummary']} == 5    管理员模式历史会话下会话满意度评价不正确：${j}

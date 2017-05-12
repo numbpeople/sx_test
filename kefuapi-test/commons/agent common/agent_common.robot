@@ -8,6 +8,7 @@ Library           calendar
 Resource          ../../api/KefuApi.robot
 Resource          ../../api/RoutingApi.robot
 Resource          ../../api/SystemSwitch.robot
+Resource          ../../api/ConversationApi.robot
 
 *** Keywords ***
 Access Conversation
@@ -206,6 +207,23 @@ Agent Send Message
     ...    请求结果：${j}
     #坐席发送消息
     ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages    ${agent}    ${visitoruserid}    ${servicesessionid}    ${msg}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Send InviteEnquiry
+    [Arguments]    ${agent}    ${servicesessionid}
+    [Documentation]    坐席发送满意度评价消息给访客
+    ...
+    ...    Arguments：
+    ...
+    ...    ${agent} | \ ${servicesessionid} | ${timeout}
+    ...
+    ...    Return：
+    ...
+    ...    请求结果：${j}
+    #坐席发送消息
+    ${resp}=    /v6/tenants/{tenantId}/serviceSessions/{serviceSessionId}/inviteEnquiry    ${agent}    ${servicesessionid}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}

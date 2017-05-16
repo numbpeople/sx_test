@@ -130,7 +130,7 @@ Resource          api/SessionCurrentApi.robot
     ${j}    to json    ${resp.content}
     Should Be True    ${j['last']}    返回的留言信息不正确：${resp.content}
 
-获取访客中心列表(/v1/crm/tenants/{tenantId}/agents/{agentId}/visitors)
+获取访客中心列表(/v1/crm/tenants/{tenantId}/agents/{agentId}/customers)
     ${resp}=    /v1/crm/tenants/{tenantId}/agents/{agentId}/customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}

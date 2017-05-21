@@ -1,5 +1,4 @@
 *** Settings ***
-Suite Setup
 Force Tags        tool
 Library           json
 Library           requests
@@ -15,6 +14,11 @@ Resource          ../api/RoutingApi.robot
 Resource          ../commons/admin common/admin_common.robot
 Resource          ../commons/agent common/agent_common.robot
 Library           OperatingSystem
+Resource          ../api/IMApi.robot
+Resource          ../commons/IM_Common/IM Common.robot
+
+*** Variables ***
+${datadir}        ${CURDIR}${/}${/}resource
 
 *** Test Cases ***
 批量删除技能组
@@ -122,3 +126,85 @@ Library           OperatingSystem
     : FOR    ${i}    IN    @{j}
     \    Stop Processing Conversation    ${AdminUser}    ${i['user']['userId']}    ${i['serviceSessionId']}
     \    sleep    50ms
+
+发送多种格式消息
+    [Documentation]    发送各种格式的消息
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #文件基准
+    &{fileEntity}    create dictionary    url=    filename=    filepath=    contentType=    size={"width":0,"height":0}
+    ...    type=
+    #初始化参数：消息、渠道信息、客户信息
+    set test variable    ${originType}    app
+    ${curTime}    get time    epoch
+    #创建技能组
+    ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
+    #将规则排序设置为渠道优先
+    Set RoutingPriorityList    入口    渠道    关联
+    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${DateRange}    beginDate=${empty}    endDate=${empty}
+    #根据访客昵称查询待接入列表
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
+    Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
+    Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
+    #根据查询结果接入会话
+    Access Conversation    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}
+    #1、发送文本格式消息
+    set to dictionary    ${MsgEntity}    msg=测试文本消息格式
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #2、发送图片格式消息
+    ${picpath}    set variable    ${datadir}${/}${/}IMG_0024.JPG
+    set to dictionary    ${fileEntity}    filename=IMG_0024.JPG    filepath=${picpath}    contentType=image/jpeg    type=img
+    ${j}=    Upload File    ${restentity}    ${fileEntity}    ${timeout}
+    ${share-secret}    set variable    ${j['entities'][0]['share-secret']}
+    ${uuid}    set variable    ${j['entities'][0]['uuid']}
+    set to dictionary    ${fileEntity}    url=http://${restentity.restDomain}/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}    secret=${share-secret}
+    set to dictionary    ${MsgEntity}    msg={"type":"${fileEntity.type}","url":"${fileEntity.url}","secret":"${fileEntity.secret}","filename":"${fileEntity.filename}","size":${fileEntity.size}}    key=filename
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #3、发送文件格式消息
+    ${filepath}    set variable    ${datadir}${/}${/}IMG_0024.JPG
+    set to dictionary    ${fileEntity}    filename=IMG_0024.JPG    filepath=${filepath}    contentType=image/jpeg    type=file
+    ${j}=    Upload File    ${restentity}    ${fileEntity}    ${timeout}
+    ${share-secret}    set variable    ${j['entities'][0]['share-secret']}
+    ${uuid}    set variable    ${j['entities'][0]['uuid']}
+    set to dictionary    ${fileEntity}    url=http://${restentity.restDomain}/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}    secret=${share-secret}
+    set to dictionary    ${MsgEntity}    msg={"type":"${fileEntity.type}","url":"${fileEntity.url}","secret":"${fileEntity.secret}","filename":"${fileEntity.filename}","size":${fileEntity.size}}    key=filename
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #4、发送语音格式消息
+    ${audiopath}    set variable    ${datadir}${/}${/}audio.amr
+    set to dictionary    ${fileEntity}    filename=audio.amr    filepath=${audiopath}    contentType=audio/amr    type=audio
+    ${j}=    Upload File    ${restentity}    ${fileEntity}    ${timeout}
+    ${share-secret}    set variable    ${j['entities'][0]['share-secret']}
+    ${uuid}    set variable    ${j['entities'][0]['uuid']}
+    set to dictionary    ${fileEntity}    url=http://${restentity.restDomain}/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}    secret=${share-secret}
+    set to dictionary    ${MsgEntity}    msg={"type":"${fileEntity.type}","url":"${fileEntity.url}","secret":"${fileEntity.secret}","filename":"${fileEntity.filename}","size":${fileEntity.size}}    key=filename
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #5、发送视频邀请格式消息
+    set to dictionary    ${MsgEntity}    msg=邀请客服进行实时视频    type=txt    ext={"type":"rtcmedia/video","msgtype":{"liveStreamInvitation":{"msg":"邀请客服进行实时视频","orgName":"${restentity.orgName}","appName":"${restentity.appName}","userName":"${GuestEntity.userName}","imServiceNumber":"${restentity.serviceEaseMobIMNumber}","resource":"${originType}"}},"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #6、发送order订单格式消息
+    ${orderEntity}    create dictionary    imageName=IMG_0024.JPG    type=custom    img_url=C:/Users/leo/Desktop/picture/IMG_0024.JPG    title=测试order消息    desc=端午节粽子四
+    ...    order_title=订单号：123456789012345678901234567890    price=￥1200    item_url=http://kefu.easemob.com
+    set to dictionary    ${MsgEntity}    msg=order    ext={"imageName":"${orderEntity.imageName}","type":"${orderEntity.type}","msgtype":{"order":{"img_url":"${orderEntity.img_url}","title":"${orderEntity.title}","desc":"${orderEntity.desc}","order_title":"${orderEntity.order_title}","price":"${orderEntity.price}","item_url":"${orderEntity.item_url}"}}}
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #7、发送track订单格式消息
+    ${orderEntity}    create dictionary    imageName=IMG_0024.JPG    type=custom    img_url=C:/Users/leo/Desktop/picture/IMG_0024.JPG    title=测试track消息    desc=端午节粽子四
+    ...    order_title=订单号：123456789012345678901234567890    price=￥1200    item_url=http://kefu.easemob.com
+    set to dictionary    ${MsgEntity}    msg=track    ext={"imageName":"${orderEntity.imageName}","type":"${orderEntity.type}","msgtype":{"track":{"img_url":"${orderEntity.img_url}","title":"${orderEntity.title}","desc":"${orderEntity.desc}","order_title":"${orderEntity.order_title}","price":"${orderEntity.price}","item_url":"${orderEntity.item_url}"}}}
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #8、发送位置格式消息
+    ${locEntity}    create dictionary    addr=西城区西便门桥    lat=39.9053    lng=116.36302    type=loc
+    set to dictionary    ${MsgEntity}    msg={"addr":"${locEntity.addr}","lat":${locEntity.lat},"lng":${locEntity.lng},"type":"${locEntity.type}"}    key=addr    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}

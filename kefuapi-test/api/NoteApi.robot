@@ -127,3 +127,57 @@
     ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/${ticketEntity.ticketId}/assign/${agent.userId}
     ${params}=    set variable    userId=${agent.userId}&tenantId=${agent.tenantId}&userRoles=${agent.roles}
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/tenants/{tenantId}/projects/{projectId}/tickets/countAll
+    [Arguments]    ${agent}    ${timeout}    ${str}
+    [Documentation]    Description:
+    ...
+    ...    获取租户全部留言数据
+    ...
+    ...    Request URL:/tenants/{tenantId}/projects/{projectId}/tickets/count
+    ...
+    ...    Request Method:GET
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/count
+    ${params}=    set variable    statusIds=${str}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+v1/tickets/tenants/{tenantId}/projects/{projectId}/tickets/unassignee/count
+    [Arguments]    ${agent}    ${timeout}
+    [Documentation]    获取租户的project的未分配留言数据
+    ...
+    ...    Request URL:v1/tickets/tenants/{tenantId}/projects/{projectId}/tickets/unassignee/count
+    ...
+    ...    \ \ \ \ \ \ \ \ \ \ \ v1/tickets/tenants/28076/projects/398001/tickets/unassignee/count
+    ...
+    ...    Request Method:GET
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    v1/tickets/tenants/${agent.tenantId}/projects/${projectId}/tickets/unassignee/count
+    Comment    ${params}=    set variable    tenantId=${agent.tenantId}&userId=${agent.userId}&userRoles=${agent.roles}&
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/tenants/{tenantId}/projects/{projectId}/tickets/countUnfix
+    [Arguments]    ${agent}    ${timeout}    ${statusIds}    ${str}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/count
+    ${params}=    set variable    statusIds=${statusIds[2]}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/tenants/{tenantId}/projects/{projectId}/tickets/countFixed
+    [Arguments]    ${agent}    ${timeout}    ${statusIds}    ${str}
+    [Documentation]    已解决
+    ...
+    ...
+    ...    /tenants/{tenantId}/projects/{projectId}/tickets/countfixed
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/count
+    ${params}=    set variable    statusIds=${statusIdS[1]}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/tenants/{tenantId}/projects/{projectId}/tickets/countFixing
+    [Arguments]    ${agent}    ${timeout}    ${statusIds}    ${str}
+    [Documentation]    获取处理中留言
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/count
+    ${params}=    set variable    statusIds=${statusIds[0]}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

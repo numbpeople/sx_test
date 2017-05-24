@@ -115,3 +115,59 @@ Resource          JsonDiff/KefuJsonDiff.robot
     [Documentation]    下载留言文件
     ${resp}=    /v1/tenants/{tenantId}/projects/{projectId}/tickets/file    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+获取全部留言(/tenants/{tenantId}/projects/{projectId}/tickets/count）
+    [Documentation]    获取全部留言
+    ${resp}=    /tenants/{tenantId}/projects/{projectId}/status    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j['entities'][0]['tenant_id']}
+    Should Be Equal    ${j['entities'][0]['tenant_id']}    ${AdminUser['tenantId']}    获取租户ID不正确：${resp.content}
+    Should Be Equal    ${j['entities'][0]['project_id']}    ${projectId}    获取ProjectID不正确：${resp.content}
+    #获取全部留言状态id列表
+    ${r1}    create list
+    ${listlength}=    Get Length    ${j['entities']}
+    log    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${r2}=    Convert To String    ${j['entities'][${i}]['id']}
+    \    Append To List    ${r1}    ${r2}
+    log    ${r1}
+    set global variable    ${statusIds}    ${r1}
+    log    ${statusIds[0]}
+    #获取全部留言
+    Log List    ${statusIds}
+    ${str}=    evaluate    ','.join(${statusIds})    string
+    log    ${str}
+    ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets/countall    ${AdminUser}    ${timeout}    ${str}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be True    ${j} >= 0    返回值中不是数字:${j}
+
+获取未分配留言(v1/tickets/tenants/{tenantId}/projects/{projectId}/tickets/unassignee/count)
+    ${resp}=    v1/tickets/tenants/{tenantId}/projects/{projectId}/tickets/unassignee/count    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be True    ${j} >= 0    返回值中不是数字:${j}
+
+获取未处理留言(/tenants/{tenantId}/projects/{projectId}/tickets/countUnfix)
+    ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets/countUnfix    ${AdminUser}    ${timeout}    ${statusIds}    ${Empty}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be True    ${j} >= 0    返回值中不是数字:${j}
+
+获取已解决留言(/tenants/{tenantId}/projects/{projectId}/tickets/countFixed)
+    ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets/countFixed    ${AdminUser}    ${timeout}    ${statusIds}    ${Empty}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be True    ${j} >= 0    返回值中不是数字:${j}
+
+获取处理中留言(/tenants/{tenantId}/projects/{projectId}/tickets/countFixing)
+    ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets/countFixing    ${AdminUser}    ${timeout}    ${statusIds}    ${Empty}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    Should Be True    ${j} >= 0    返回值中不是数字:${j}

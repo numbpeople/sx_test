@@ -22,7 +22,7 @@ Delete Agentusers
     ${listlength}=    Get Length    ${userNameList}
     log    ${agentlist}
     #循环判断技能组名称是否包含模板信息，是则删除，不是则跳过
-    :FOR    ${i}    IN RANGE    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
     \    ${username}=    convert to string    ${userNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
     \    ${userIdValue}=    Get From Dictionary    ${agentlist}    ${userNameList[${i}]}
@@ -58,3 +58,11 @@ Delete Channels
     \    ${channelIdValue}=    Get From Dictionary    ${channellist}    ${channelNameList[${i}]}
     \    Run Keyword If    ${status}    Close Conversations By ChannelId    ${channelIdValue}
     \    Run Keyword If    ${status}    Delete Channel    ${channelIdValue}
+
+Decode Bytes To String In Dict
+    [Arguments]    ${dict}    ${encoding}=UTF-8
+    ${keys}    Get Dictionary Keys    ${dict}
+    :FOR    ${i}    IN    @{keys}
+    \    ${s}    Decode Bytes To String    ${dict['${i}']}    ${encoding}
+    \    Set To Dictionary    ${dict}    ${i}=${s}
+    Return From Keyword    ${dict}

@@ -41,7 +41,7 @@
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/evaluationdegrees/${evaluationdegreeId}/appraisetags
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-Get evaluationdegreeId id
+Get evaluationdegreeId
     ${resp}=    /v1/tenants/{tenantId}/evaluationdegrees    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}

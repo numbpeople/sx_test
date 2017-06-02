@@ -78,7 +78,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     [Documentation]    获取租户的留言的comments信息
     #发送一条comments评论
     ${secs} =    Get Time    epoch
-    &{CommentsEntity}=    create dictionary    username=${TenantsMeAgentsMeJson['username']}    nicename=${TenantsMeAgentsMeJson['nicename']}    phone=${TenantsMeAgentsMeJson['mobilePhone']}    content=my_content_${secs}
+    &{CommentsEntity}=    create dictionary    username=${TenantsMeAgentsMeJson['username']}    nicename=${TenantsMeAgentsMeJson['nicename']}    phone=15077778888    content=my_content_${secs}
     log    ${CommentsEntity}
     ${data}=    set variable    {"content":"${CommentsEntity.content}","creator":{"username":"${CommentsEntity.username}","name":"${CommentsEntity.nicename}","avatar":"","type":"AGENT","phone":"${CommentsEntity.phone}","email":"","qq":"","company":"","description":""},"attachments":[],"status_id":${statusIds[0]}}
     ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}/comments    post    ${AdminUser}    ${timeout}    ${data}

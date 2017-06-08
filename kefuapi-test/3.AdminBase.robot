@@ -9,7 +9,7 @@ Library           String
 Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
-Resource          Api/SettingsApi.robot
+Resource          api/SettingsApi.robot
 Resource          api/SystemSwitch.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 

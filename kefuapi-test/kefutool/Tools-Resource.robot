@@ -62,7 +62,62 @@ Delete Channels
 Decode Bytes To String In Dict
     [Arguments]    ${dict}    ${encoding}=UTF-8
     ${keys}    Get Dictionary Keys    ${dict}
-    :FOR    ${i}    IN    @{keys}
+    : FOR    ${i}    IN    @{keys}
     \    ${s}    Decode Bytes To String    ${dict['${i}']}    ${encoding}
     \    Set To Dictionary    ${dict}    ${i}=${s}
     Return From Keyword    ${dict}
+
+Create Queue And Add Agents To Queue
+    [Arguments]    ${agent}    ${agentslist}    ${queuename}
+    #添加技能组
+    ${data}=    set variable    {"queueName":"${queuename}"}
+    ${resp}=    /v1/AgentQueue    post    ${agent}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    #添加坐席到技能组
+    ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${agent}    ${j['queueId']}    ${agentslist}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+    @{agentslist}    create list    ${empty}
+    set global variable    @{agentslist}
+
+Close Valid New Session
+    [Arguments]    ${agent}    ${rest}    ${originType}    ${maxcount}=200
+    : FOR    ${i}    IN RANGE    ${maxcount}
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-${curTime}    originType=${originType}
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${guestentity.originType}"}}
+    \    Send Message    ${rest}    ${guestentity}    ${msgentity}
+    \    sleep    200ms
+    sleep    1s
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=200
+    ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN    @{j['items']}
+    \    Access Conversation    ${agent}    ${i['userWaitQueueId']}
+    \    sleep    50ms
+    sleep    1
+    #坐席回复消息
+    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN    @{j}
+    \    ${curTime}    get time    epoch
+    \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
+    \    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
+    \    sleep    50ms
+    sleep    1
+    #关闭进行中会话
+    : FOR    ${i}    IN    @{j}
+    \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms
+
+Close Waiting Sessions
+    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${maxcount}=200
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=${maxcount}
+    ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    :FOR    ${i}    IN    @{j['items']}
+    \    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${i['userWaitQueueId']}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    sleep    1s

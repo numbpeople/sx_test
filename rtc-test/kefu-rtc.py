@@ -11,12 +11,12 @@ from selenium.webdriver.common.keys import Keys #keys提供键盘操作
 #启动driver
 def start_webdriver():
     global dr
-    dr = webdriver.Chrome("/Users/TWY-/Downloads/chromedriver")  # 找chromedriver
+    dr = webdriver.Chrome("/Users/easemob/Downloads/chromedriver")  # 找chromedriver
     dr.implicitly_wait(15)
     dr.set_script_timeout(5)
     dr.set_page_load_timeout(5)
     global dr1
-    dr1 = webdriver.Chrome("/Users/TWY-/Downloads/chromedriver")
+    dr1 = webdriver.Chrome("/Users/easemob/Downloads/chromedriver")
     dr1.implicitly_wait(15)
     dr1.set_script_timeout(5)
     dr1.set_page_load_timeout(5)
@@ -101,7 +101,7 @@ def hangUP_kefu_webim_call():
             return True
     else:
         print "pelase recall!!!"
-        return False
+        raise
 
 #kefu 关掉视频窗口
 def close_kefu_call_page():
@@ -112,7 +112,7 @@ def close_kefu_call_page():
         return True
     else:
         print "no call page"
-        return False
+        raise
 
 #多次呼叫视频
 def call(url1,url2):
@@ -121,8 +121,9 @@ def call(url1,url2):
     open_chrome_login_kefu(url2)
     open_chrome_login_kefu_webim(url1)
     a = 1
-    while a <= 2:
-        print "*********循环次数:",a,"***********"
+    i = 5
+    while a <= i:
+        print "********call次数:",a,"***********"
         if kefu_webim_call()==True:
             time.sleep(1)
             if kefu_call()==True:

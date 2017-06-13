@@ -18,11 +18,11 @@ Resource          JsonDiff/KefuJsonDiff.robot
     [Tags]    org
     set test variable    ${tadmin}    ${OrgAdminUser}
     ${data}    set variable    {"username": "${tadmin.username}","password": "${tadmin.password}"}
-    ${resp}=    /v1/organs/{orgName}/token    ${OrgAdminUser}    ${AdminUser}    ${data}    ${timeout}
+    ${resp}=    /v1/organs/{orgName}/token    ${tadmin}    ${AdminUser}    ${data}    ${timeout}
     should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["entity"]["name"]}    token    获取organ的token值不正确:${resp.content}
-    set suite variable    ${orgToken}    ${j["entity"]["value"]}
+    set global variable    ${orgToken}    ${j["entity"]["value"]}
 
 今日新会话数(/v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount)
     log    ${RestEntity}
@@ -854,5 +854,3 @@ Resource          JsonDiff/KefuJsonDiff.robot
     ${resp}=    /tenants/{tenantId}/webhook    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-
-

@@ -78,8 +78,8 @@
     ${uri}=    set variable    /v2/orgs/${agent.orgId}/template
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/organs/{organName}/tenants/{tenantId}
-    [Arguments]        ${kefuagent}    ${OrgAdmin}    ${timeout}    ${Cookie}
-    ${header}=    Create Dictionary    Content-Type=application/json   Cookie=${Cookie}
-    ${uri}=    set variable    /v1/organs/${OrgAdmin.orgname}/tenants/${kefuagent.tenantId}
-    Run Keyword And Return    Delete Request    ${kefuagent.session}    ${uri}    headers=${header}    timeout=${timeout}
+/v2/orgs/{orgId}/tenants/{tenantId}
+    [Arguments]        ${OrgAdminUser}    ${OrgUser1}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/orgs/${OrgAdminUser.orgId}/tenants/${OrgUser1.tenantId}
+    Run Keyword And Return    Delete Request    ${OrgAdminUser.session}    ${uri}    headers=${header}    timeout=${timeout}

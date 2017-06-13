@@ -844,10 +844,10 @@ GetChannel
     run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/organs/{orgName}/token
-    [Arguments]    ${OrgAdminUser}    ${agent}    ${data}    ${timeout}
+    [Arguments]    ${tadmin}    ${AdminUser}    ${data}    ${timeout}
     ${header}=    create dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/token
-    run keyword and return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    ${uri}=    set variable    /v1/organs/${tadmin.orgname}/token
+    run keyword and return    Post Request    ${AdminUser.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /v1/organs/{organName}/tenants/{tenantId}/statistics/external/visitor/count
     [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}

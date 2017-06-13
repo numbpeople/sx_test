@@ -32,8 +32,13 @@ Resource          JsonDiff/KefuJsonDiff.robot
     ${resp}=    /logout    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
-org管理员登出(/v2/orgs/{orgId}/token)
+org管理员删除租户账号并退出
+    [Documentation]    org退出接口依赖org登录接口，但如果同时执行AdminBase下的“获取organ的token值接口”，会报401；
     [Tags]    org
+    ##删除新增的租户账号
+    ${resp}=    /v2/orgs/{orgId}/tenants/{tenantId}    ${OrgAdminUser}    ${OrgUser1}    ${timeout}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ##退出
     ${resp}=    /v2/orgs/{orgId}/token    delete    ${OrgAdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
     Should Not Be Empty    ${resp.content}    返回值为空

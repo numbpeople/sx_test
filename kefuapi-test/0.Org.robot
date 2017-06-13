@@ -71,9 +71,8 @@ org管理员登录(/v2/orgs/{orgId}/token)
     set global variable    ${OrgusersJson}    ${j}
     : FOR    ${d}    IN    @{j['entities']}
     \    Run Keyword If    '${OrgtokenJson['entity']['user']['username']}' == '${d['username']}'    Exit For Loop
-    log    ${OrgtokenJson['entity']['user']}
-    log    ${d}
-    Dictionaries Should Be Equal    ${OrgtokenJson['entity']['user']}    ${d}    用户信息不正确
+    should be true    '${OrgtokenJson['entity']['user']['userId']}' == '${d['userId']}'    用户信息不正确
+    should be true    '${OrgtokenJson['entity']['user']['orgId']}' == '${d['orgId']}'    用户信息不正确
 
 获取统计数据(/v2/orgs/{orgId}/metrics)
     set test variable    ${tadmin}    ${OrgAdminUser}
@@ -128,7 +127,7 @@ org管理员登录(/v2/orgs/{orgId}/token)
     ${resp}=    /v2/orgs/{OrgId}/tenants    get    ${tadmin}    ${OrgFilterEntity}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    Should Be True    ${j['totalElements']}>=4    获取租户列表不正确：${resp.content}
+    Should Be True    ${j['totalElements']}>=1    获取租户列表不正确：${resp.content}
     Should Be True    '${j['entities'][0]['tenantId']}'=='${OrgUser1.tenantId}'    获取租户列表不正确：${resp.content}
     set to dictionary    ${AdminUser}    username=${OrgUser1.username}    password=${OrgUser1.password}
     set global variable    ${AdminUser}    ${AdminUser}

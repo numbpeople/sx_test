@@ -1,10 +1,10 @@
 *** Variables ***
 &{OrgRegInfo}     phone=    codeValue=    name=    desc=    username=leoli-org081701@easemob.com    password=111111    orgName=leoli081701
-&{OrgFilterEntity}    page=0    size=15    originType=${EMPTY}    state=Terminal,Abort    isAgent=${True}    techChannelId=    visitorName=
+&{OrgFilterEntity}    page=0    size=20    originType=${EMPTY}    state=Terminal,Abort    isAgent=${True}    techChannelId=    visitorName=
 ...               summaryIds=    sortOrder=desc    techChannelType=    categoryId=-1    subCategoryId=-1    userTagIds=    enquirySummary=
 ...               total_pages=1    total_entries=1    firstResponseTime=0    sessionTime=0    avgResponseTime=0    visitorMark=    sessionTag=all
 ...               asc=false    channelId=    dateInterval=1d    sessionType=S_ALL    queryType=ORIGIN    visitorTag=    waitTime=60000
-...               objectType=O_AGENT
+...               objectType=O_AGENT    pagesize=20
 &{OrgDateRange}    beginDate=    endDate=    beginDateTime=    endDateTime=    beginWeekDate=    endWeekDate=    beginWeekDateTime=
 ...               endWeekDateTime=    beginMonthDate=    endMonthDate=    beginMonthDateTime=    endMonthDateTime=
 
@@ -54,11 +54,17 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v2/orgs/{orgId}/tenants
-    [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}
+    #    [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}
+    #    ${header}=    Create Dictionary    Content-Type=application/json
+    #    ${uri}=    set variable    /v2/orgs/${agent.orgId}/tenants
+    #    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
+    #    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    [Arguments]    ${method}    ${agent}    ${OrgFilterEntity}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v2/orgs/${agent.orgId}/tenants
-    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    ${params}    set variable    page=${OrgFilterEntity.page}&pagesize=${OrgFilterEntity.pagesize}&size=${OrgFilterEntity.size}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /v2/orgs/{orgId}
     [Arguments]    ${agent}    ${timeout}
@@ -71,3 +77,9 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v2/orgs/${agent.orgId}/template
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}
+    [Arguments]        ${kefuagent}    ${OrgAdmin}    ${timeout}    ${Cookie}
+    ${header}=    Create Dictionary    Content-Type=application/json   Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdmin.orgname}/tenants/${kefuagent.tenantId}
+    Run Keyword And Return    Delete Request    ${kefuagent.session}    ${uri}    headers=${header}    timeout=${timeout}

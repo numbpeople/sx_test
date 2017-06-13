@@ -815,6 +815,118 @@ GetChannel
     ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&total_pages=${FilterEntity.total_pages}&totalElements=${FilterEntity.total_entries}&order=${FilterEntity.order}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&agentId=${agent.userId}&locale=${FilterEntity.locale}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
+/statistics/feign/orgs/{organId}/tenants/{tenantId}/quality/mark
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    create dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/feign/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/quality/mark
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&order=workTime&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&asc=${FilterEntity.asc}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/feign/orgs/{organId}/tenants/{tenantId}/data/detail/invalid
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    create dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/feign/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/data/detail/invalid
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/today
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${timeout}
+    ${header}=    create dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/internal/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/agent/detail/today
+    ${params}=    set variable    agentId=${agent.userId}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/statistics/feign/orgs/{organId}/tenants/{tenantId}/wait/detail
+    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    create dictionary    Content-Type=application/json
+    ${uri}=    set variable    /statistics/feign/orgs/${orgEntity.organId}/tenants/${agent.tenantId}/wait/detail
+    ${params}=    set variable    page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{orgName}/token
+    [Arguments]    ${OrgAdminUser}    ${agent}    ${data}    ${timeout}
+    ${header}=    create dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/token
+    run keyword and return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/visitor/count
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/visitor/count
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/visitor/total
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/visitor/total
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/today/processing
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/session/today/processing
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/count/type
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/message/count/type
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/total
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/message/total
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/today/total
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/message/today/total
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/message/trend
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/message/trend
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&dateInterval=${FilterEntity.dateInterval}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v2/organs/{organName}/tenants/{tenantId}/statistics/external/session/workLoad
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v2/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/session/workLoad
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&sessionTag=all&sessionType=${FilterEntity.sessionType}
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v2/organs/{organName}/tenants/{tenantId}/statistics/external/session/workQuality
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v2/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/session/workQuality
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&sessionTag=all
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/workload
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/session/workload
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&sessionTag=all
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/organs/{organName}/tenants/{tenantId}/statistics/external/session/workquality
+    [Arguments]    ${agent}    ${OrgAdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}    ${Cookie}
+    ${header}=    create dictionary    Content-Type=application/json    Cookie=${Cookie}
+    ${uri}=    set variable    /v1/organs/${OrgAdminUser.orgname}/tenants/${agent.tenantId}/statistics/external/session/workquality
+    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&sessionTag=all
+    run keyword and return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+
 /v1/organs/{organName}/tenants/{tenantId}/statistics/internal/session/workLoad/agent/file
     [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
@@ -1332,3 +1444,4 @@ Create Agent TxtMsg
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/infos
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+

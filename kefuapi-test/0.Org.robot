@@ -71,9 +71,9 @@ org管理员登录(/v2/orgs/{orgId}/token)
     set global variable    ${OrgusersJson}    ${j}
     : FOR    ${d}    IN    @{j['entities']}
     \    Run Keyword If    '${OrgtokenJson['entity']['user']['username']}' == '${d['username']}'    Exit For Loop
-    Dictionaries Should Be Equal    ${OrgtokenJson['entity']['user']}    ${d}    用户信息不正确
     log    ${OrgtokenJson['entity']['user']}
     log    ${d}
+    Dictionaries Should Be Equal    ${OrgtokenJson['entity']['user']}    ${d}    用户信息不正确
 
 获取统计数据(/v2/orgs/{orgId}/metrics)
     set test variable    ${tadmin}    ${OrgAdminUser}
@@ -99,17 +99,39 @@ org管理员登录(/v2/orgs/{orgId}/token)
     Should Be True    ${r['ValidJson']}    获取导出数据不正确：${r}
     set global variable    ${OrgdownloadmetricsJson}    ${j}
 
-获取租户管理数据(/v2/orgs/{orgId}/tenants)
+
+    #获取租户管理数据(/v2/orgs/{orgId}/tenants)
+    #    set test variable    ${tadmin}    ${OrgAdminUser}
+    #    ${resp}=    /v2/orgs/{orgId}/tenants    ${tadmin}    ${OrgFilterEntity}    ${timeout}
+    #    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    #    Should Not Be Empty    ${resp.content}    返回值为空
+    #    ${j}    to json    ${resp.content}
+    #    ${temp}    to json    ${OrgtenantsJson}
+    #    set to dictionary    ${temp}    size=${OrgFilterEntity.size}    number=${OrgFilterEntity.page}
+    #    ${r}=    OrgtenantsJsonDiff    ${temp}    ${j}
+    #    Should Be True    ${r['ValidJson']}    获取租户管理数据不正确：${r}
+    #    set global variable    ${OrgtenantsJsonDiff}    ${j}
+新增租户(/v2/orgs/{orgId}/tenants)
     set test variable    ${tadmin}    ${OrgAdminUser}
-    ${resp}=    /v2/orgs/{orgId}/tenants    ${tadmin}    ${OrgFilterEntity}    ${timeout}
+    ${curTime}    get time    epoch
+    set to dictionary    ${OrgUser1}    username=${tadmin.orgId}${curTime}@test.com    password=test2015    name=${tadmin.orgId}${curTime}@test.com    phone=111222333
+    ${data}=    set variable    {"name":"${OrgUser1.username}","username":"${OrgUser1.username}","password":"${OrgUser1.password}","phone":"${OrgUser1.phone}"}
+    ###新增租户
+    ${resp}=    /v2/orgs/{OrgId}/tenants    post    ${tadmin}    ${OrgFilterEntity}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
-    ${temp}    to json    ${OrgtenantsJson}
-    set to dictionary    ${temp}    size=${OrgFilterEntity.size}    number=${OrgFilterEntity.page}
-    ${r}=    OrgtenantsJsonDiff    ${temp}    ${j}
-    Should Be True    ${r['ValidJson']}    获取租户管理数据不正确：${r}
-    set global variable    ${OrgtenantsJsonDiff}    ${j}
+    Should Be True    '${j["entity"]["tenant"]["orgId"]}'=='${tadmin.orgId}'    返回的OrgId不正确：${resp.content}
+    set to dictionary    ${OrgUser1}    tenantId=${j["entity"]["tenant"]["tenantId"]}    username=${j["entity"]["agentUser"]["username"]}
+    set global variable    ${OrgUser1}    ${OrgUser1}
+    ###获取租户列表
+    set to dictionary    ${AgentFilterEntity}    keyValue=${curTime}
+    ${resp}=    /v2/orgs/{OrgId}/tenants    get    ${tadmin}    ${OrgFilterEntity}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be True    ${j['totalElements']}>=4    获取租户列表不正确：${resp.content}
+    Should Be True    '${j['entities'][0]['tenantId']}'=='${OrgUser1.tenantId}'    获取租户列表不正确：${resp.content}
+    set to dictionary    ${AdminUser}    username=${OrgUser1.username}    password=${OrgUser1.password}
+    set global variable    ${AdminUser}    ${AdminUser}
 
 获取设置基本信息(/v2/orgs/{orgId})
     set test variable    ${tadmin}    ${OrgAdminUser}
@@ -122,6 +144,7 @@ org管理员登录(/v2/orgs/{orgId}/token)
     ${r}=    OrgJsonDiff    ${temp}    ${j}
     Should Be True    ${r['ValidJson']}    获取设置基本信息不正确：${r}
     set global variable    ${OrgJson}    ${j}
+    set to dictionary    ${OrgAdminUser}    orgname=${j["entity"]["name"]}
 
 获取设置模板(/v2/orgs/{orgId}/template)
     set test variable    ${tadmin}    ${OrgAdminUser}

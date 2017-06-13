@@ -54,3 +54,5 @@ ${retryTimes}     10
 &{ProjectEntity}    id=
 &{PriorityEntity}    渠道=Channel    关联=ChannelData    入口=UserSpecifiedChannel
 ${UIdelay}        2
+&{OrgUser1}       username=    password=    name=    phone=    tenantId=
+&{OrgAdmin1}      username=    password=    nicename=    phone=    model=

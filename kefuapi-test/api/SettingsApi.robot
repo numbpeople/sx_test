@@ -51,7 +51,13 @@ Get evaluationdegreeId
     ${r1}    create list
     ${listlength}=    Get Length    ${j['entities']}
     log    ${listlength}
-    :FOR    ${i}    IN RANGE    ${listlength}
+    : FOR    ${i}    IN RANGE    ${listlength}
     \    ${r2}=    Convert To String    ${j['entities'][${i}]['id']}
     \    Append To List    ${r1}    ${r2}
     set global variable    ${evaluationdegreeId}    ${r1}
+
+/v1/tenants/{tenantId}/sms/create-remind
+    [Arguments]    ${agent}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/sms/create-remind
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}

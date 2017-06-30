@@ -267,7 +267,7 @@ Resource          api/SessionCurrentApi.robot
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人设置信息不正确：${resp.content}
 
 获取机器人信息(/v1/Tenants/me/robot/profile/personalInfo)
-    [Tags]    unused
+    [Tags]
     ${resp}=    /v1/Tenants/me/robot/profile/personalInfo    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}

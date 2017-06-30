@@ -117,7 +117,105 @@ Close Waiting Sessions
     set to dictionary    ${FilterEntity}    per_page=${maxcount}
     ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
-    :FOR    ${i}    IN    @{j['items']}
+    : FOR    ${i}    IN    @{j['items']}
     \    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${i['userWaitQueueId']}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     sleep    1s
+
+Close And Create Valid Rated Session
+    [Arguments]    ${agent}    ${rest}    ${originType}    ${maxcount}=200
+    [Documentation]    创建有效会话，发送邀请评价，关闭会话后评价
+    @{guestlist}    Create List    ${empty}
+    : FOR    ${i}    IN RANGE    ${maxcount}
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-${curTime}    originType=${originType}
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${guestentity.originType}"}}
+    \    Send Message    ${rest}    ${guestentity}    ${msgentity}
+    \    Append to list    ${guestlist}    ${guestentity}
+    \    log    ${guestlist}
+    \    sleep    200ms
+    remove from list    ${guestlist}    0
+    sleep    1s
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=200
+    ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN    @{j['items']}
+    \    Access Conversation    ${agent}    ${i['userWaitQueueId']}
+    \    sleep    50ms
+    sleep    1
+    #坐席回复消息并发送邀请评价
+    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN    @{j}
+    \    ${curTime}    get time    epoch
+    \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
+    \    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
+    \    sleep    50ms
+    \    Send InviteEnquiry    ${agent}    ${i['serviceSessionId']}
+    \    sleep    50ms
+    sleep    1
+    #关闭进行中会话
+    : FOR    ${i}    IN    @{j}
+    \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms
+    #访客发送评价
+    sleep    1
+    : FOR    ${i}    IN    @{guestlist}
+    \    log    ${i}
+    \    set to dictionary    ${msgentity}    msg=5
+    \    Send Message    ${rest}    ${i}    ${msgentity}
+    \    sleep    200ms
+
+Encode String To Bytes In Dict
+    [Arguments]    ${dict}    ${encoding}=UTF-8
+    ${keys}    Get Dictionary Keys    ${dict}
+    : FOR    ${i}    IN    @{keys}
+    \    ${s}    encode String To Bytes    ${dict['${i}']}    ${encoding}
+    \    Set To Dictionary    ${dict}    ${i}=${s}
+    Return From Keyword    ${dict}
+
+Close Valid Rated Session
+    [Arguments]    ${agent}    ${rest}    ${originType}    ${maxcount}=200
+    [Documentation]    创建有效会话，发送邀请评价，评价后关闭会话
+    @{guestlist}    Create List    ${empty}
+    :FOR    ${i}    IN RANGE    ${maxcount}
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-${curTime}    originType=${originType}
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${guestentity.originType}"}}
+    \    Send Message    ${rest}    ${guestentity}    ${msgentity}
+    \    Append to list    ${guestlist}    ${guestentity}
+    \    log    ${guestlist}
+    \    sleep    200ms
+    remove from list    ${guestlist}    0
+    sleep    1s
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=200
+    ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    :FOR    ${i}    IN    @{j['items']}
+    \    Access Conversation    ${agent}    ${i['userWaitQueueId']}
+    \    sleep    50ms
+    sleep    1
+    #坐席回复消息并发送邀请评价
+    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
+    ${j}    to json    ${resp.content}
+    :FOR    ${i}    IN    @{j}
+    \    ${curTime}    get time    epoch
+    \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
+    \    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
+    \    sleep    50ms
+    \    Send InviteEnquiry    ${agent}    ${i['serviceSessionId']}
+    \    sleep    50ms
+    sleep    1
+    #访客发送评价
+    :FOR    ${i}    IN    @{guestlist}
+    \    log    ${i}
+    \    set to dictionary    ${msgentity}    msg=5
+    \    Send Message    ${rest}    ${i}    ${msgentity}
+    \    sleep    200ms
+    sleep    1
+    #关闭进行中会话
+    :FOR    ${i}    IN    @{j}
+    \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms

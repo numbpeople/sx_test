@@ -10,10 +10,12 @@ Library           calendar
 Resource          AgentRes.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/KefuApi.robot
+Resource          api/TeamApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
 Library           jsonschema
 Resource          api/RoutingApi.robot
+Resource          kefutool/Tools-Resource.robot
 
 *** Test Cases ***
 客服登录(/login)
@@ -105,6 +107,14 @@ Resource          api/RoutingApi.robot
     ${r}=    TenantsMeJsonDiff    ${temp}    ${j}
     Should Be True    ${r['ValidJson']}    获取登录状态失败：${r}
     set global variable    ${TenantsMeJson}    ${j}
+
+获取坐席语言信息(/tenants/{tenantId}/options/agentUserLanguage_{userId})
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /tenants/{tenantId}/options/agentUserLanguage_{userId}    ${tadmin}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    language=${j['data'][0]['optionValue']}
+    set global variable    ${AdminUser}    ${AdminUser}
 
 添加客服并获取客服列表(/v1/Admin/Agents)
     set test variable    ${tadmin}    ${AdminUser}
@@ -216,6 +226,7 @@ webim获取关联信息(/v1/webimplugin/targetChannels)
     set global variable    ${RestEntity}    ${RestEntity}
 
 获取开关状态(/tenants/{tenantId}/options)
+    log    ${AdminUser}
     ${resp}=    /tenants/{tenantId}/options    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}

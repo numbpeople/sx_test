@@ -1,9 +1,9 @@
 *** Variables ***
 ${kefuurl}        http://sandbox.kefu.easemob.com
 ${orgurl}         http://sandbox.kefuorg.easemob.com
-&{AdminUser}      username=0216l@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
-...               cookies=    session=    userId=    nicename=    browser=chrome
-&{OrgAdminUser}    username=zk1@organ.com    password=123456    orgId=2057    cookies=    session=    userId=    nicename=
+&{AdminUser}      username=08081@test.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+...               cookies=    session=    userId=    nicename=    browser=chrome    language=en_US
+&{OrgAdminUser}    username=test@qq.com    password=test2015    orgId=2057    cookies=    session=    userId=    nicename=
 ...               browser=chrome
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=

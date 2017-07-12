@@ -40,7 +40,7 @@ Get Processing Conversation
     ...
     ...    请求结果：${j}
     #查询进行中会话是否有该访客
-    :FOR    ${i}    IN RANGE    ${retryTimes}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
@@ -135,7 +135,7 @@ Stop Processing Conversation
     Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
 
 Get Admin Customers
-    [Arguments]    ${agent}    ${filter}    ${date}
+    [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}=10
     [Documentation]    获取管理模式下访客的信息
     ...
     ...    Arguments：
@@ -155,7 +155,7 @@ Get Admin Customers
     Return From Keyword    ${j}
 
 Get Agent Customers
-    [Arguments]    ${agent}    ${filter}    ${date}
+    [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}=10
     [Documentation]    获取坐席模式下访客的信息
     ...
     ...    Arguments：

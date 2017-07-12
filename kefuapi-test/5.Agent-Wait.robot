@@ -51,12 +51,12 @@ Resource          kefutool/Tools-Resource.robot
     ${j}    to json    ${resp.content}
     #获取管理员模式下客户中心
     set to dictionary    ${FilterEntity}    page=0
-    ${r}    Search Customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${retryTimes}
-    Should Be True    ${r}    客服模式下未查到该访客：${guestentity.userName}
+    ${j}    Get Admin Customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${retryTimes}
+    Should Be True    ${j['numberOfElements']} ==1    待接入结束的会话，管理员模式未查到该访客：${j}
     #获取坐席模式下客户中心
     set test variable    ${retryTimes}    1
-    ${r}    Search My Customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${retryTimes}
-    Should Not Be True    ${r}    坐席模式下查到该访客：${guestentity.userName}
+    ${j}    Get Agent Customers    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${retryTimes}
+    Should Be True    ${j['numberOfElements']} ==0    待接入结束的会话，坐席模式能查到该访客：${j}
     set test variable    ${retryTimes}    10
     #获取管理员模式下历史会话
     set to dictionary    ${FilterEntity}    isAgent=False    page=1

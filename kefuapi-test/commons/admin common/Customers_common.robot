@@ -11,7 +11,7 @@ Resource          ../../api/SystemSwitch.robot
 Resource          ../../api/SessionCurrentApi.robot
 
 *** Keywords ***
-Search Customers
+Search Crm Customers
     [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}
     [Documentation]    根据查询条件查询客户中心
     ...
@@ -31,7 +31,7 @@ Search Customers
     \    sleep    ${delay}
     Return From Keyword if    ${j['numberOfElements']} ==1    ${true}    ${false}
 
-Search My Customers
+Search My Crm Customers
     [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}
     [Documentation]    根据查询条件查询客户中心
     ...

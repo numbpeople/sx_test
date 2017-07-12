@@ -211,21 +211,21 @@ Library           RequestsLibrary
     should be true    ${j["totalElements"]}>=0    进线量趋势不正确:${resp.content}
 
 排队统计-24小时排队趋势(/daas/internal/wait/hour/wait)
-    ${resp}=    /daas/internal/wait/hour/wait   ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
+    ${resp}=    /daas/internal/wait/hour/wait    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    24小时排队趋势不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    24小时排队趋势不正确:${resp.content}
 
 排队统计-排队趋势(/daas/internal/wait/trend)
-    ${resp}=    /daas/internal/wait/trend   ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
+    ${resp}=    /daas/internal/wait/trend    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    排队趋势不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    排队趋势不正确:${resp.content}
 
 排队统计-排队次数分布按会话标签维度(/daas/internal/wait/session/tag)
-    ${resp}=    /daas/internal/wait/session/tag   ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
+    ${resp}=    /daas/internal/wait/session/tag    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    排队次数分布按会话标签维度不正确:${resp.content}
@@ -327,3 +327,25 @@ Library           RequestsLibrary
 统计文件导出-客服时长明细(/daas/internal/agent/file/serve/detail)
     ${resp}=    /daas/internal/agent/file/serve/detail    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+
+客服模式-工作综合(/daas/internal/agent/detail/total)
+    ${resp}=    /daas/internal/agent/detail/total    ${AdminUser}    ${timeout}    ${DateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    工作综合不正确:${resp.content}
+    should be true    ${j["totalElements"]}==1    工作综合不正确:${resp.content}
+
+客服模式-工作时长(/daas/internal/agent/detail/serve)
+    ${resp}=    /daas/internal/agent/detail/serve    ${AdminUser}    ${timeout}    ${DateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    工作时长不正确:${resp.content}
+    should be true    ${j["totalElements"]}==1    工作时长不正确:${resp.content}
+
+客服模式-工作趋势(/daas/internal/agent/detail/trend)
+    ${resp}=    /daas/internal/agent/detail/trend    ${AdminUser}    ${timeout}    ${DateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    工作时长不正确:${resp.content}
+    should be true    ${j["totalElements"]}>=0    工作时长不正确:${resp.content}

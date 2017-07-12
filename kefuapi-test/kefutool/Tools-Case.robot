@@ -569,3 +569,20 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     #
     Repeat Keyword    20    Close Valid Rated Session    ${AdminUser}    ${restentity}    weixin    10
+
+批量关闭当前会话的数据
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #设置查询当前会话的参数
+    set to dictionary    ${FilterEntity}    page=1    per_page=150    state=Processing,Resolved    isAgent=${False}    agentIds=b45e3530d2714f23b7246e97537b3eee
+    set to dictionary    ${DateRange}    beginDate=2017-03-01T00:00:00.000Z    endDate=2017-04-01T00:00:00.000Z
+    #关闭进行中会话
+    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    : FOR    ${i}    IN    @{j['items']}
+    \    Stop Processing Conversation    ${AdminUser}    ${i['visitorUser']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms

@@ -30,17 +30,6 @@
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/evaluationdegrees
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/tenants/{tenantId}/evaluationdegrees/{evaluationdegreeId}/appraisetags
-    [Arguments]    ${agent}    ${evaluationdegreeId}    ${timeout}
-    [Documentation]    分页获取租户满意度评价标签
-    ...
-    ...    GET
-    ...
-    ...    /v1/tenants/{tenantId}/evaluationdegrees/{evaluationdegreeId}/appraisetags
-    ${header}=    Create Dictionary    Content-Type=application/json;
-    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/evaluationdegrees/${evaluationdegreeId}/appraisetags
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
-
 Get evaluationdegreeId
     ${resp}=    /v1/tenants/{tenantId}/evaluationdegrees    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -54,7 +43,8 @@ Get evaluationdegreeId
     : FOR    ${i}    IN RANGE    ${listlength}
     \    ${r2}=    Convert To String    ${j['entities'][${i}]['id']}
     \    Append To List    ${r1}    ${r2}
-    set global variable    ${evaluationdegreeId}    ${r1}
+    set global variable    ${degreeId}    ${r1}
+    set global variable    ${evaluationdegreeId}    ${degreeId[0]}
 
 /v1/tenants/{tenantId}/sms/create-remind
     [Arguments]    ${agent}    ${data}    ${timeout}
@@ -87,3 +77,10 @@ Get evaluationdegreeId
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/sms/reminds/${remindentity.id}/status
     ${params}=    set variable    status=${remindentity.status}
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/evaluationdegrees/{evaluationdegreeId}/appraisetags
+    [Arguments]    ${agent}    ${timeout}    ${evaluationdegreeId}
+    ${header}=    Create Dictionary    Content-Type=application/json;
+    set global variable    ${evaluationdegreeId}    ${degreeId[0]}
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/evaluationdegrees/${evaluationdegreeId}/appraisetags
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}

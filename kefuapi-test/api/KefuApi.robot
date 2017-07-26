@@ -1372,13 +1372,6 @@ GetChannel
     ${uri}=    set variable    /v1/tenants/${tenantId}/queues/waitings/abort
     Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    headers=${header}    timeout=${timeout}
 
-/tenants/{tenantId}/serviceSessionHistoryFiles
-    [Arguments]    ${agent}    ${FilterEntity}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /tenants/${agent.tenantId}/serviceSessionHistoryFiles
-    ${params}=    set variable    AdminUserId=${agent.userId}&page=${FilterEntity.page}&size=${FilterEntity.per_page}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
-
 /v1/Tenant/me/ServiceSessionHistorys
     [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
@@ -1443,4 +1436,3 @@ Create Agent TxtMsg
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/infos
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
-

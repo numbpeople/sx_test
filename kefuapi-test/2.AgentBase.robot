@@ -11,6 +11,7 @@ Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/SessionCurrentApi.robot
+Resource          api/historyApi.robot
 
 *** Test Cases ***
 获取机器人推荐状态(/v1/Tenants/{tenantId}/robots/recommendation/status)
@@ -98,7 +99,7 @@ Resource          api/SessionCurrentApi.robot
     ...    ELSE    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    获取app关联失败:${resp.content}
 
 获取默认导出管理数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${AdminUser}    ${FilterEntity}    ${timeout}
+    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    get    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Should Be True    ${j['numberOfElements']} >= 0    导出管理数据不正确

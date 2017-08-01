@@ -9,7 +9,7 @@ Library           String
 Library           calendar
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
-Resource          AgentsApi.robot
+Resource          api/AgentsApi.robot
 Library           uuid
 Library           jsonschema
 Library           urllib

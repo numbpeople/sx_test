@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Setup       Login And Set Browser Cookies    ${AdminUser}
+Suite Setup       Login And Set Browser Cookies&localStorage    ${AdminUser}
 Suite Teardown    Close Browser
 Force Tags        ui
 Library           json

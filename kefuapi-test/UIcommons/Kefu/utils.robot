@@ -1,5 +1,5 @@
 *** Keywords ***
-Login And Set Browser Cookies
+Login And Set Browser Cookies&localStorage
     [Arguments]    ${agent}
     #接口登录并打开浏览器
     set global variable    ${uiagent}    ${agent}
@@ -20,3 +20,7 @@ Login And Set Browser Cookies
     \    log    ${key}
     \    ${value}=    Get From Dictionary    ${uiagent.cookies}    ${key}
     \    Add Cookie    ${key}    ${value}
+    #设置浏览器语言
+    Execute Javascript    localStorage.setItem('language','${uiagent.language}')
+    #设置tenantId
+    Execute Javascript    localStorage.setItem('tenantId','${uiagent.tenantId}')

@@ -11,6 +11,7 @@ Resource          ../api/KefuApi.robot
 Resource          ../commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          ../api/RoutingApi.robot
+Resource          ../api/WaitApi.robot
 Resource          ../commons/admin common/admin_common.robot
 Resource          ../commons/agent common/agent_common.robot
 Library           OperatingSystem
@@ -94,12 +95,12 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
-    : FOR    ${i}    IN RANGE    8
+    : FOR    ${i}    IN RANGE    5
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
-    \    sleep    500ms
+    \    sleep    100ms
 
 批量创建会话、接入
     Create Session    testsession    ${kefuurl}
@@ -293,7 +294,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     &{fileEntity}    create dictionary    url=    filename=    filepath=    contentType=    size={"width":0,"height":0}
     ...    type=
     #初始化参数：消息、渠道信息、客户信息
-    set test variable    ${originType}    webim
+    set test variable    ${originType}    app
     ${curTime}    get time    epoch
     #创建技能组
     ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
@@ -325,7 +326,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${j}=    Upload File    ${restentity}    ${fileEntity}    ${timeout}
     ${share-secret}    set variable    ${j['entities'][0]['share-secret']}
     ${uuid}    set variable    ${j['entities'][0]['uuid']}
-    set to dictionary    ${fileEntity}    url=https://${restentity.restDomain}:443/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}    secret=${share-secret}
+    set to dictionary    ${fileEntity}    url=http://${restentity.restDomain}/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}    secret=${share-secret}
     set to dictionary    ${MsgEntity}    msg={"type":"${fileEntity.type}","url":"${fileEntity.url}","secret":"${fileEntity.secret}","filename":"${fileEntity.filename}","size":${fileEntity.size}}    key=filename
     Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
     #3、发送文件格式消息
@@ -725,3 +726,96 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${msgentity}=    create dictionary    msg=test msg ${i}!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    200ms
+
+发送两种格式的图片消息
+    [Documentation]    发送各种格式的消息
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #文件基准
+    &{fileEntity}    create dictionary    url=    filename=    filepath=    contentType=    size={"width":0,"height":0}
+    ...    type=
+    #初始化参数：消息、渠道信息、客户信息
+    set test variable    ${originType}    webim
+    ${curTime}    get time    epoch
+    #创建技能组
+    ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
+    #将规则排序设置为渠道优先
+    Set RoutingPriorityList    入口    渠道    关联
+    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${DateRange}    beginDate=${empty}    endDate=${empty}
+    #根据访客昵称查询待接入列表
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    Should Be True    ${j['total_entries']} ==1    查询结果为空：${resp.content}
+    Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
+    Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
+    #根据查询结果接入会话
+    Access Conversation    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}
+    #2、发送图片格式消息
+    ${picpath}    set variable    ${datadir}${/}${/}IMG_0024.JPG
+    set to dictionary    ${fileEntity}    filename=IMG_0024.JPG    filepath=${picpath}    contentType=image/jpeg    type=img
+    ${j}=    Upload File    ${restentity}    ${fileEntity}    ${timeout}
+    ${share-secret}    set variable    ${j['entities'][0]['share-secret']}
+    ${uuid}    set variable    ${j['entities'][0]['uuid']}
+    set to dictionary    ${fileEntity}    url=https://${restentity.restDomain}:443/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}    secret=${share-secret}
+    set to dictionary    ${MsgEntity}    msg={"type":"${fileEntity.type}","url":"${fileEntity.url}","secret":"${fileEntity.secret}","filename":"${fileEntity.filename}","size":${fileEntity.size}}    key=filename
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    sleep    200ms
+    #3发是urlencode后的图片消息
+    ${picpath}    set variable    ${datadir}${/}${/}IMG_0024.JPG
+    set to dictionary    ${fileEntity}    filename=IMG_0024.JPG    filepath=${picpath}    contentType=image/jpeg    type=img
+    ${j}=    Upload File    ${restentity}    ${fileEntity}    ${timeout}
+    ${share-secret}    set variable    ${j['entities'][0]['share-secret']}
+    ${uuid}    set variable    ${j['entities'][0]['uuid']}
+    ${url}    Quote    ${restentity.restDomain}:443/${restentity.orgName}/${restentity.appName}/chatfiles/${uuid}
+    set to dictionary    ${fileEntity}    url=https://${url}    secret=${share-secret}
+    set to dictionary    ${MsgEntity}    msg={"type":"${fileEntity.type}","url":"${fileEntity.url}","secret":"${fileEntity.secret}","filename":"${fileEntity.filename}","size":${fileEntity.size}}    key=filename
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+
+创建待接入并发送继续排队请求
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #发送消息并创建访客
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=app    key=IM    dutyType=Allday
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    #将规则排序设置为渠道优先
+    Set RoutingPriorityList    渠道    关联    入口
+    #判断渠道是否有绑定关系
+    ${j}    Get Routing
+    ${listlength}=    Get Length    ${j['content']}
+    #判断如果没有渠道数据，使用post请求，反之使用put请求
+    Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
+    Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #发送消息并创建访客
+    Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
+    Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
+    : FOR    ${i}    IN RANGE    1
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    #待接入查询该访客会话，并保存会话id
+    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}    page=0
+    ${resp}    Search New Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${guestentity}    sessionServiceId=${j['entities'][0]['session_id']}
+    Comment    sleep    120s
+    Comment    :FOR    ${i}    IN RANGE    ${retryTimes}

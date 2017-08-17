@@ -15,6 +15,7 @@ Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
 Library           jsonschema
 Resource          api/RoutingApi.robot
+Resource          api/WebGrayApi.robot
 Resource          kefutool/Tools-Resource.robot
 
 *** Test Cases ***
@@ -74,6 +75,12 @@ Resource          kefutool/Tools-Resource.robot
     set global variable    ${infosJson}    ${j}
     set to dictionary    ${orgEntity}    organId=${j['entity']['orgId']}    organName=${j['entity']['orgName']}
     set global variable    ${orgEntity}    ${orgEntity}
+
+获取灰度列表(/v1/grayscale/tenants/{tenantId})
+    set test variable    ${tadmin}    ${AdminUser}
+    ${resp}=    /v1/grayscale/tenants/{tenantId}    ${tadmin}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
 
 获取登录状态(/v1/Agents/me)
     set test variable    ${tadmin}    ${AdminUser}

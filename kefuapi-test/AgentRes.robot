@@ -1,7 +1,7 @@
 *** Variables ***
 ${kefuurl}        http://sandbox.kefu.easemob.com
 ${orgurl}         http://sandbox.kefuorg.easemob.com
-&{AdminUser}      username=0216l@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+&{AdminUser}      username=0808@test.com    password=123456    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome    language=en_US
 &{OrgAdminUser}    username=test@qq.com    password=test2015    orgId=2057    cookies=    session=    userId=    nicename=
 ...               browser=chrome
@@ -9,7 +9,7 @@ ${orgurl}         http://sandbox.kefuorg.easemob.com
 ...               cookies=    session=    userId=    nicename=
 @{kefustatus}     Busy    Leave    Hidden    Online
 @{SessionState}    ${empty}    Wait    Processing
-${timeout}        ${30.0}
+${timeout}        ${5.0}
 ${delay}          1
 ${shortcutMessageGroupId}    ${EMPTY}
 ${shortcutMessageGroupName}    ${EMPTY}
@@ -55,3 +55,4 @@ ${retryTimes}     10
 ${UIdelay}        2
 &{OrgUser1}       username=    password=    name=    phone=    tenantId=
 &{OrgAdmin1}      username=    password=    nicename=    phone=    model=
+@{graylist}       base

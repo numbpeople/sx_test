@@ -45,6 +45,7 @@ Library           urllib
     log    ${j}
 
 获取会话详情(/agents/{sessionId})
+    [Tags]    unused
     set test variable    ${tadmin}    ${AdminUser}
     ${resp}=    /agents/{sessionId}    ${tadmin}    ${sessionId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -52,6 +53,7 @@ Library           urllib
     log    ${j}
 
 获取会话消息(/agents/{sessionId}/messages)
+    [Tags]    unused
     set test variable    ${tadmin}    ${AdminUser}
     ${resp}=    /agents/{sessionId}/messages    ${tadmin}    ${sessionId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

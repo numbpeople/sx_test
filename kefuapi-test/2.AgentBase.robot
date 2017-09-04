@@ -268,7 +268,7 @@ Resource          api/historyApi.robot
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人设置信息不正确：${resp.content}
 
 获取机器人信息(/v1/Tenants/me/robot/profile/personalInfo)
-    [Tags]
+    [Tags]    unused
     ${resp}=    /v1/Tenants/me/robot/profile/personalInfo    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -315,7 +315,8 @@ Resource          api/historyApi.robot
     ${resp}=    /v1/tenants/{tenantId}/agents/{agentId}/news/latest    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
-    Should Not Be Empty    ${j['entity']['content']}    获取版本更新信息不正确：${resp.content}
+    ${status}    Run Keyword And Return Status    Should Not Be Empty    ${j['entity']['content']}    获取版本更新信息不正确：${resp.content}
+    Should Be True    ('${j['entity']['content']}' == 'None') or ${status}
 
 获取新手任务信息(/v1/tenants/{tenantId}/agents/{agentId}/checkisnewuser)
     ${resp}=    /v1/tenants/{tenantId}/agents/{agentId}/checkisnewuser    ${AdminUser}    ${timeout}
@@ -450,7 +451,7 @@ Resource          api/historyApi.robot
     Should Be Equal    '${j['logistics']['name']}'    '物流'    返回的机器人只能场景应答信息不正确：${resp.content}
 
 个人统计数据概况(/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/total)
-    [Tags]
+    [Tags]    unused
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/total    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -458,7 +459,7 @@ Resource          api/historyApi.robot
     Should Be True    ${j['totalElements']}==1    个人统计数据概况数量不正确：${resp.content}
 
 个人统计数据消息/会话数趋势(/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/trend)
-    [Tags]
+    [Tags]    unused
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/trend    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -466,7 +467,7 @@ Resource          api/historyApi.robot
     Should Be True    ${j['totalElements']}>=0    个人统计数据消息/会话数趋势数量不正确：${resp.content}
 
 个人统计数据工作时长(/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/serve)
-    [Tags]
+    [Tags]    unused
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/trend    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}

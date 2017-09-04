@@ -797,6 +797,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     should be true    ${j["totalElements"]}>=0    获取统计内部调用-无效服务不正确:${resp.content}
 
 统计内部调用-客服今日数据(/statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/today)
+    [Tags]    unused
     ${resp}=    /statistics/internal/orgs/{organId}/tenants/{tenantId}/agent/detail/today    ${AdminUser}    ${orgEntity}    ${FilterEntity}    ${timeout}
     should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -926,6 +927,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
     Should Be True    ${j['totalElements']} >= 0    访客中心人数不正确：${resp.content}
 
 获取是否入口指定优先(/tenants/{tenantId}/options/userSpecifiedQueueId)
+    [Tags]    unused
     log    ${easemobtechchannel}
     log    ${targetchannel}
     ${resp}=    /tenants/{tenantId}/options/userSpecifiedQueueId    ${AdminUser}    ${timeout}

@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup
-Force Tags        base
+Force Tags        base    unused
 Library           json
 Library           requests
 Library           Collections

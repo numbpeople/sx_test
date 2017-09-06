@@ -10,6 +10,7 @@ Resource          ../../api/KefuApi.robot
 Library           uuid
 Library           jsonschema
 Library           urllib
+Resource          Setting_common.robot
 
 *** Keywords ***
 InitFilterTime
@@ -101,3 +102,34 @@ Get Current Weekend
     ${weekday}=    Convert To Integer    ${weekday}
     ${weekday}=    Evaluate    ${weekday}+1
     Return From Keyword    ${weekday}
+
+Get Current Date
+    [Documentation]    获取当前日期
+    #返回当前日期
+    @{time} =    get time    year month day
+    ${s}    set variable    ${EMPTY}
+    : FOR    ${i}    IN    @{time}
+    \    ${s}    evaluate    '${s}-${i}'
+    ${s}    Strip String    ${s}    mode=left    characters=-
+    log    ${s}
+    Return From Keyword    ${s}
+
+Set Work Day
+    [Arguments]    ${agent}    ${scheduleId}
+    #设置自定义工作时间
+    ${currentdate}    Get Current Date
+    ${data}    set variable    [{"name":"自定义上班时间","beginDate":"${currentdate}","endDate":"${currentdate}","timePlanItems":[{"startTime":"00:00:00","stopTime":"23:59:59"}]}]
+    ${j}=    Custom Workdays    ${agent}    ${scheduleId}    put    ${data}
+    should be equal    ${j['status']}    OK
+    #设置节假日时间为空，避免下班
+    ${data1}    set variable    []
+    ${j}=    Holidays    ${agent}    ${scheduleId}    put    ${data1}
+    should be equal    ${j['status']}    OK
+
+Set Non-work Day
+    [Arguments]    ${agent}    ${scheduleId}
+    #设置节假日时间为当日
+    ${currentdate}    Get Current Date
+    ${data}    set variable    [{"name":"今天放假","beginDate":"${currentdate}","endDate":"${currentdate}"}]
+    ${j}=    Holidays    ${agent}    ${scheduleId}    put    ${data}
+    should be equal    ${j['status']}    OK

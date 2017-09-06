@@ -16,6 +16,7 @@ Resource          api/SettingsApi.robot
 Resource          api/ChannelsApi.robot
 Resource          kefutool/Tools-Resource.robot
 Library           lib/KefuUtils.py
+Resource          commons/admin common/Setting_common.robot
 
 *** Test Cases ***
 查询所有短信配置(/v1/tenants/{tenantId}/sms/reminds)
@@ -58,11 +59,8 @@ Library           lib/KefuUtils.py
 
 获取所有的时间计划(/v1/tenants/{tenantId}/timeplans/schedules)
     #获取时间计划
-    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}=    Business hours    ${AdminUser}
     should be equal    ${j['status']}    OK
-    log    ${j}
     #将返回的时间列表设置为全局变量
     set global variable    ${timePlanSchedulesIds}    ${j}
 
@@ -70,28 +68,19 @@ Library           lib/KefuUtils.py
     #使用第一个时间计划数据
     ${scheduleId}    set variable    ${timePlanSchedulesIds['entities'][0]['scheduleId']}
     #根据时间计划获取工作日设置
-    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/weekdays    ${AdminUser}    ${timeout}    ${scheduleId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    ${j}=    Workdays    ${AdminUser}    ${scheduleId}
     should be equal    ${j['status']}    OK
-    log    ${j}
 
 获取自定义工作日设置(/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes)
     #使用第一个时间计划数据
     ${scheduleId}    set variable    ${timePlanSchedulesIds['entities'][0]['scheduleId']}
-    #根据时间计划获取工作日设置
-    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes    ${AdminUser}    ${timeout}    ${scheduleId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    #根据时间计划获取自定义工作设置
+    ${j}=    Custom Workdays    ${AdminUser}    ${scheduleId}
     should be equal    ${j['status']}    OK
-    log    ${j}
 
 获取节假日设置(/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays)
     #使用第一个时间计划数据
     ${scheduleId}    set variable    ${timePlanSchedulesIds['entities'][0]['scheduleId']}
-    #根据时间计划获取工作日设置
-    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays    ${AdminUser}    ${timeout}    ${scheduleId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    #根据时间计划获取节假日设置
+    ${j}=    Holidays    ${AdminUser}    ${scheduleId}
     should be equal    ${j['status']}    OK
-    log    ${j}

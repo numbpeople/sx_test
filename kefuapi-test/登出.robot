@@ -1,5 +1,6 @@
 *** Settings ***
 Suite Setup       set suite variable    ${session}    ${AdminUser.session}
+Force Tags        unused
 Library           json
 Library           requests
 Library           Collections

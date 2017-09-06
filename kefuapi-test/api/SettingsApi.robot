@@ -84,3 +84,31 @@ Get evaluationdegreeId
     set global variable    ${evaluationdegreeId}    ${degreeId[0]}
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/evaluationdegrees/${evaluationdegreeId}/appraisetags
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/timeplans/schedules
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json;
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/timeplans/schedules
+    ${params}=    set variable    _=1504607966982
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/weekdays
+    [Arguments]    ${agent}    ${timeout}    ${scheduleId}
+    ${header}=    Create Dictionary    Content-Type=application/json;
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/timeplans/schedules/${scheduleId}/weekdays
+    ${params}=    set variable    _=1504607966982
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes
+    [Arguments]    ${agent}    ${timeout}    ${scheduleId}
+    ${header}=    Create Dictionary    Content-Type=application/json;
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/timeplans/schedules/${scheduleId}/worktimes
+    ${params}=    set variable    _=1504607966982
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays
+    [Arguments]    ${agent}    ${timeout}    ${scheduleId}
+    ${header}=    Create Dictionary    Content-Type=application/json;
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/timeplans/schedules/${scheduleId}/holidays
+    ${params}=    set variable    _=1504607966982
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

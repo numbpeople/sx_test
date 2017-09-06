@@ -121,6 +121,37 @@ Update Routing
     ${resp}=    /v1/tenants/{tenantId}/channel-binding    put    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
+Update Routing Ext
+    [Arguments]    ${originTypeentity}    ${agentQueueId}=0    ${secondQueueId}=0    ${robotId}=null    ${secondRobotId}=null
+    [Documentation]    渠道指定技能组/机器人
+    ...
+    ...    describtion：包含字段
+    ...
+    ...    参数：
+    ...
+    ...    ${originTypeentity} 渠道设置的值
+    ...
+    ...    ${agentQueueId}=0 第一个技能组Id值，默认为0
+    ...
+    ...    ${secondQueueId}=0 第二个技能组Id值，默认为0
+    ...
+    ...    ${robotId}=null \ 第一个机器人Id值，默认为null
+    ...
+    ...    ${secondRobotId}=null 第二个机器人Id值，默认为null
+    #获取对应渠道的信息
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    get    ${AdminUser}    ${timeout}    ${Empty}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    Get Length    ${j['content']}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    Exit For Loop If    '${j['content'][${i}]['channelType']}' =='${originTypeentity.originType}'
+    Comment    Return From Keyword If    '${j['content'][${i}]['channelType']}' !='${originTypeentity.originType}'
+    set to dictionary    ${originTypeentity}    id=${j['content'][${i}]['id']}
+    #修改渠道绑定关系
+    ${data}=    set variable    {"id":${originTypeentity.id},"tenantId":${AdminUser.tenantId},"channelType":"${originTypeentity.originType}","dutyType":"${originTypeentity.dutyType}","agentQueueId":${agentQueueId},"secondQueueId":${secondQueueId},"robotId":${robotId},"secondRobotId":${secondRobotId},"createDateTime":1489485870000,"timeScheduleId":${originTypeentity.scheduleId}}
+    ${resp}=    /v1/tenants/{tenantId}/channel-binding    put    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
 Delete Routing
     [Arguments]    ${originTypeentity}    ${queueentity}
     [Documentation]    删除渠道绑定关系
@@ -199,6 +230,21 @@ Set Worktime
     Run Keyword If    '${iswork}' == 'off'    set test variable    ${data}    {"timePlans":[]}
     ${resp}=    /v1/tenants/{tenantId}/timeplans    put    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Set Worktime Ext
+    [Arguments]    ${iswork}    ${agent}    ${scheduleId}
+    [Documentation]    设置工作时间
+    ...
+    ...    Describtion：
+    ...
+    ...    参数：${iswork} | ${weekend} | ${agent}
+    ...
+    ...    ${iswork}代表是否上班， 值为on，则为上班，为off，则为下班
+    ...
+    ...    ${weekend}代表当前是礼拜几
+    #设置上下班的时间
+    Run Keyword If    '${iswork}' == 'on'    Set Work Day    ${agent}    ${scheduleId}
+    Run Keyword If    '${iswork}' == 'off'    Set Non-work Day    ${agent}    ${scheduleId}
 
 Get Agentqueue
     [Documentation]    获取所有技能组信息，返回queueName和queueId的字典集

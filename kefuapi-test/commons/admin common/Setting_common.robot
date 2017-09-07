@@ -47,3 +47,9 @@ Holidays
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
+
+Get ScheduleId
+    #获取时间计划列表
+    ${j}=    Business hours    ${AdminUser}
+    ${scheduleId}    set variable    ${j['entities'][0]['scheduleId']}
+    set global variable    ${timeScheduleId}    ${scheduleId}

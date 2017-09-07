@@ -1,4 +1,9 @@
 *** Settings ***
+Documentation     使用该路由规则，需要在webapp版本为：47.16及以下版本才可以。47.17版本请走楼上
+...
+...               ***
+...
+...               在执行用例时，使用或跳过路由case，tag名请确认为routing
 Suite Setup       Run Keywords    Create Channel
 ...               AND    log    routing case 执行开始
 Suite Teardown    Run Keywords    Delete Agentusers

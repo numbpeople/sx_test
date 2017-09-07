@@ -237,11 +237,11 @@ Set Worktime Ext
     ...
     ...    Describtion：
     ...
-    ...    参数：${iswork} | ${weekend} | ${agent}
+    ...    参数：${iswork} | ${agent} | ${scheduleId}
     ...
     ...    ${iswork}代表是否上班， 值为on，则为上班，为off，则为下班
     ...
-    ...    ${weekend}代表当前是礼拜几
+    ...    ${scheduleId}代表哪个时间计划
     #设置上下班的时间
     Run Keyword If    '${iswork}' == 'on'    Set Work Day    ${agent}    ${scheduleId}
     Run Keyword If    '${iswork}' == 'off'    Set Non-work Day    ${agent}    ${scheduleId}

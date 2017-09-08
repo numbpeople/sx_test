@@ -1,9 +1,9 @@
 *** Variables ***
-${kefuurl}        http://sandbox.kefu.easemob.com
+${kefuurl}        http://kefu.jx.zto.com
 ${orgurl}         http://sandbox.kefuorg.easemob.com
-&{AdminUser}      username=0808@test.com    password=123456    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
-...               cookies=    session=    userId=    nicename=    browser=chrome    language=en_US
-&{OrgAdminUser}    username=test@qq.com    password=test2015    orgId=2057    cookies=    session=    userId=    nicename=
+&{AdminUser}      username=test2@qq.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+...               cookies=    session=    userId=    nicename=    browser=chrome    language=en_US    graylist=
+&{OrgAdminUser}    username=test4@qq.com    password=test2015    orgId=2057    cookies=    session=    userId=    nicename=
 ...               browser=chrome
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
@@ -52,7 +52,7 @@ ${retryTimes}     10
 &{AgentMsgEntity}    msg=    type=    ext=
 &{ProjectEntity}    id=
 &{PriorityEntity}    渠道=Channel    关联=ChannelData    入口=UserSpecifiedChannel
-${UIdelay}        2
+${SeleniumTimeout}    10
 &{OrgUser1}       username=    password=    name=    phone=    tenantId=
 &{OrgAdmin1}      username=    password=    nicename=    phone=    model=
 @{graylist}       base

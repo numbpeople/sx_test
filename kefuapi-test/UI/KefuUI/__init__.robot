@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Setup       Login And Set Browser Cookies&localStorage    ${AdminUser}
+Suite Setup       Browser Init    ${AdminUser}
 Suite Teardown    Close Browser
 Force Tags        ui
 Library           json
@@ -11,8 +11,9 @@ Library           calendar
 Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
 Resource          ../../api/TeamApi.robot
+Resource          ../../api/WebGrayApi.robot
+Resource          ../../UIcommons/Utils/base.robot
 Library           uuid
 Library           jsonschema
 Library           urllib
 Library           Selenium2Library
-Resource          ../../UIcommons/Kefu/utils.robot

@@ -11,10 +11,13 @@ Library           uuid
 Library           jsonschema
 Library           urllib
 Library           Selenium2Library
+Resource          ../../UIcommons/Utils/base.robot
 Resource          ../../UIcommons/Kefu/statisticindexres.robot
 Resource          ../../UIcommons/Kefu/teamres.robot
 Resource          ../../UIcommons/Kefu/channelsres.robot
 Resource          ../../UIcommons/Kefu/robotres.robot
+Resource          ../../UIcommons/Kefu/sessionsearchres.robot
+Resource          ../../UIcommons/Kefu/notesres.robot
 
 *** Test Cases ***
 查看首页
@@ -53,3 +56,21 @@ Resource          ../../UIcommons/Kefu/robotres.robot
     #查看技能组
     go to    ${kefuurl}${robotmaterialUri}
     Check Basic Robotmaterial Element    ${uiagent.language}
+
+查看搜索
+    ${jbase}    to json    ${sessionsearchbasejson}
+    goto    ${kefuurl}${jbase['entities'][0]['uri']}
+    #如果灰度列表没有该key，输出log，否则检查元素
+    :FOR    ${e}    IN    @{jbase['entities']}
+    \    ${i}    Get Index From List    ${uiagent.graylist}    ${e['GrayKey']}
+    \    Run Keyword If    ${i}==-1    log    未灰度此功能：${jbase['entities'][0]['GrayKey']}
+    \    ...    ELSE    Check Element Contains Text    ${e['TitleXPath']}    ${e['Title']['${uiagent.language}']}
+
+查看留言
+    ${jbase}    to json    ${notesbasejson}
+    goto    ${kefuurl}${jbase['entities'][0]['uri']}
+    #如果灰度列表没有该key，输出log，否则检查元素
+    :
+    ${i}    Get Index From List    ${uiagent.graylist}    ${jbase['entities'][0]['GrayKey']}
+    Run Keyword If    ${i}==-1    log    未灰度此功能：${jbase['entities'][0]['GrayKey']}
+    ...    ELSE    Check Element Contains Text    ${jbase['entities'][0]['TitleXPath']}    ${jbase['entities'][0]['Title']['${uiagent.language}']}

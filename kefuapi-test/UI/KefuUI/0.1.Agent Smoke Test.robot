@@ -8,7 +8,6 @@ Library           calendar
 Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
 Library           uuid
-Library           jsonschema
 Library           urllib
 Library           Selenium2Library
 Resource          ../../UIcommons/Kefu/chatres.robot

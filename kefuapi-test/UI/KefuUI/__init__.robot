@@ -12,8 +12,7 @@ Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
 Resource          ../../api/TeamApi.robot
 Resource          ../../api/WebGrayApi.robot
-Resource          ../../UIcommons/Utils/base.robot
+Resource          ../../UIcommons/Utils/baseUtils.robot
 Library           uuid
-Library           jsonschema
 Library           urllib
 Library           Selenium2Library

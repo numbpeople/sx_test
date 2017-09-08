@@ -8,10 +8,9 @@ Library           calendar
 Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
 Library           uuid
-Library           jsonschema
 Library           urllib
 Library           Selenium2Library
-Resource          ../../UIcommons/Utils/base.robot
+Resource          ../../UIcommons/Utils/baseUtils.robot
 Resource          ../../UIcommons/Kefu/statisticindexres.robot
 Resource          ../../UIcommons/Kefu/teamres.robot
 Resource          ../../UIcommons/Kefu/channelsres.robot
@@ -61,7 +60,7 @@ Resource          ../../UIcommons/Kefu/notesres.robot
     ${jbase}    to json    ${sessionsearchbasejson}
     goto    ${kefuurl}${jbase['entities'][0]['uri']}
     #如果灰度列表没有该key，输出log，否则检查元素
-    :FOR    ${e}    IN    @{jbase['entities']}
+    : FOR    ${e}    IN    @{jbase['entities']}
     \    ${i}    Get Index From List    ${uiagent.graylist}    ${e['GrayKey']}
     \    Run Keyword If    ${i}==-1    log    未灰度此功能：${jbase['entities'][0]['GrayKey']}
     \    ...    ELSE    Check Element Contains Text    ${e['TitleXPath']}    ${e['Title']['${uiagent.language}']}

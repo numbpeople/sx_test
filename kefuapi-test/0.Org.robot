@@ -12,7 +12,6 @@ Resource          JsonDiff/OrgJsonDiff.robot
 Resource          api/OrgApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
-Library           jsonschema
 
 *** Test Cases ***
 org管理员登录(/v2/orgs/{orgId}/token)
@@ -97,8 +96,6 @@ org管理员登录(/v2/orgs/{orgId}/token)
     ${r}=    OrgdownloadmetricsJsonDiff    ${temp}    ${j}
     Should Be True    ${r['ValidJson']}    获取导出数据不正确：${r}
     set global variable    ${OrgdownloadmetricsJson}    ${j}
-
-
     #获取租户管理数据(/v2/orgs/{orgId}/tenants)
     #    set test variable    ${tadmin}    ${OrgAdminUser}
     #    ${resp}=    /v2/orgs/{orgId}/tenants    ${tadmin}    ${OrgFilterEntity}    ${timeout}
@@ -110,6 +107,7 @@ org管理员登录(/v2/orgs/{orgId}/token)
     #    ${r}=    OrgtenantsJsonDiff    ${temp}    ${j}
     #    Should Be True    ${r['ValidJson']}    获取租户管理数据不正确：${r}
     #    set global variable    ${OrgtenantsJsonDiff}    ${j}
+
 新增租户(/v2/orgs/{orgId}/tenants)
     set test variable    ${tadmin}    ${OrgAdminUser}
     ${curTime}    get time    epoch

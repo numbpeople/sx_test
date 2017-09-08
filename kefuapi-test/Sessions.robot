@@ -12,7 +12,6 @@ Resource          api/KefuApi.robot
 Resource          api/AgentsApi.robot
 Resource          api/SessionsApi.robot
 Library           uuid
-Library           jsonschema
 Library           urllib
 
 *** Test Cases ***

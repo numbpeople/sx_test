@@ -1,5 +1,4 @@
 *** Settings ***
-Library           jsonschema
 Library           Collections
 
 *** Variables ***

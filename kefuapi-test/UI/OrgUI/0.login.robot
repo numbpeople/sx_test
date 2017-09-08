@@ -12,7 +12,6 @@ Resource          ../../api/OrgApi.robot
 Resource          ../../commons/admin common/BaseKeyword.robot
 Resource          ../../UIcommons/Org/dashboard.robot
 Library           uuid
-Library           jsonschema
 Library           urllib
 Library           Selenium2Library
 

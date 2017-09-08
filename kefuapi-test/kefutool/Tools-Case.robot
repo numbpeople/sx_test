@@ -19,7 +19,6 @@ Resource          ../api/IMApi.robot
 Resource          ../commons/IM_Common/IM Common.robot
 Library           ../lib/ReadFile.py
 Resource          Tools-Resource.robot
-Library           ExcelLibrary
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource

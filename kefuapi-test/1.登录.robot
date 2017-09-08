@@ -13,7 +13,6 @@ Resource          api/KefuApi.robot
 Resource          api/TeamApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
-Library           jsonschema
 Resource          api/RoutingApi.robot
 Resource          api/WebGrayApi.robot
 Resource          kefutool/Tools-Resource.robot

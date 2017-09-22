@@ -70,6 +70,7 @@ Library           lib/KefuUtils.py
     ${j}    to json    ${resp.content}
     Should Be True    '${j['status']}'=='OK'
     set test variable    ${diffs1}    ${PutRestChannelJson['entity']['name']}${PutRestChannelJson['entity']['callbackUrl']}${PutRestChannelJson['entity']['channelId']}${PutRestChannelJson['entity']['postMessageUrl']}
+    ${diffs2}    set variable    ${EMPTY}
     : FOR    ${i}    IN    @{j['entities']}
     \    set test variable    ${diffs2}    ${i['name']}${i['callbackUrl']}${i['channelId']}${i['postMessageUrl']}
     \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop

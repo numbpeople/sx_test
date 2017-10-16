@@ -110,3 +110,32 @@ Show Message
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
+
+Show Company Greeting
+    [Documentation]    网页渠道获取系统欢迎语
+    #获取系统欢迎语
+    ${resp}=    WebimChannels./v1/webimplugin/welcome    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
+    Return From Keyword    ${resp.content}
+
+Decode Bytes To String In
+    [Arguments]    ${msg}    ${code}
+    ${data}    Decode Bytes To String    ${msg}    ${code}
+    Return From Keyword    ${data}
+
+Show Robot Greeting
+    [Arguments]    ${paramData}
+    [Documentation]    网页渠道获取系统欢迎语
+    #获取系统欢迎语
+    ${resp}=    WebimChannels./v1/webimplugin/tenants/robots/welcome    ${AdminUser}    ${timeout}    ${paramData}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Get Skillgroup-menu
+    [Documentation]    获取网页插件技能组绑定欢迎语
+    #获取网页插件技能组绑定欢迎语
+    ${resp}=    WebimChannels./v1/webimplugin/tenants/{tenantId}/skillgroup-menu    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}

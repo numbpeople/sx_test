@@ -96,3 +96,45 @@ Library           RequestsLibrary
     ${uri}=    set variable    /v1/webimplugin/tenants/show-message
     ${params}=    set variable    channelType=${paramData.channelType}&originType=${paramData.originType}&channelId=${paramData.channelId}&tenantId=${paramData.tenantId}&queueName=${paramData.queueName}&agentUsername=${paramData.agentUsername}&timeScheduleId=${paramData.timeScheduleId}&_v=1508145602025
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/welcome
+    [Arguments]    ${agent}    ${timeout}
+    [Documentation]    Description:
+    ...
+    ...    获取系统欢迎语
+    ...
+    ...    Request URL:/v1/webimplugin/welcome
+    ...
+    ...    Request Method: GET
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/welcome
+    ${params}=    set variable    tenantId=${agent.tenantId}&_v=1508139785894
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/tenants/robots/welcome
+    [Arguments]    ${agent}    ${timeout}    ${paramData}
+    [Documentation]    Description:
+    ...
+    ...    获取网页插件机器人欢迎语
+    ...
+    ...    Request URL:/v1/webimplugin/tenants/robots/welcome
+    ...
+    ...    Request Method: GET
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/tenants/robots/welcome
+    ${params}=    set variable    channelType=${paramData.channelType}&originType=${paramData.originType}&channelId=${paramData.channelId}&tenantId=${paramData.tenantId}&queueName=${paramData.queueName}&agentUsername=${paramData.agentUsername}&_v=1508145602025
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/tenants/{tenantId}/skillgroup-menu
+    [Arguments]    ${agent}    ${timeout}
+    [Documentation]    Description:
+    ...
+    ...    获取网页插件技能组绑定欢迎语
+    ...
+    ...    Request URL:/v1/webimplugin/tenants/{tenantId}/skillgroup-menu
+    ...
+    ...    Request Method: GET
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/tenants/${agent.tenantId}/skillgroup-menu
+    ${params}=    set variable    _=1505908063604
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

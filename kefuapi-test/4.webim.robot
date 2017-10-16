@@ -108,3 +108,26 @@ Resource          commons/admin common/Setting_common.robot
     ...    agentUsername=    timeScheduleId=${timeScheduleId}
     ${j}    Show Message    ${paramData}
     Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
+
+获取网页渠道系统欢迎语(/v1/webimplugin/welcome)
+    #获取网页插件系统欢迎语
+    ${j}    Show Company Greeting
+    #断言返回状态值和json结构与值是否一致
+    ${status}    Run Keyword And Return Status    Should Be Empty    ${j}
+    Run Keyword if    ${status}    Pass Execution    该租户没有设置系统欢迎语
+    ${data}    Run Keyword Unless    ${status}    Decode Bytes To String In    ${j}    UTF-8
+    Run Keyword Unless    ${status}    log    该租户系统欢迎语为：${data}
+
+获取网页渠道机器人欢迎语(/v1/webimplugin/tenants/robots/welcome)
+    #获取关联
+    ${channelId}    Get Channels
+    #获取网页插件机器人欢迎语
+    ${paramData}    create dictionary    channelType=easemob    originType=webim    channelId=${channelId[0]['channelId']}    tenantId=${AdminUser.tenantId}    queueName=
+    ...    agentUsername=
+    ${j}    Show Robot Greeting    ${paramData}
+    Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
+
+获取网页插件技能组绑定欢迎语(/v1/webimplugin/tenants/{tenantId}/skillgroup-menu)
+    #获取技能组绑定欢迎语列表
+    ${j}    Get Skillgroup-menu
+    Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}

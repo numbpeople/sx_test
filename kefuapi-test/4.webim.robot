@@ -1,5 +1,8 @@
 *** Settings ***
-Suite Setup       set suite variable    ${session}    ${AdminUser.session}
+Suite Setup       Run Keywords    Create Template
+...               AND    log    设置全局config ,【Webim】case 执行开始
+Suite Teardown    Run Keywords    Delete Template
+...               AND    log    删除新增加的config ,【Webim】case 执行结束
 Force Tags        webim
 Library           json
 Library           requests
@@ -12,6 +15,7 @@ Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/Webim_Common.robot
 Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
+Resource          commons/admin common/Setting_common.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)
@@ -61,19 +65,46 @@ Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
     #获取网页插件配置返回值
     ${curTime}    get time    epoch
     ${j}    Configs    ${AdminUser}    get
-    should be equal    ${j['status']}    OK
+    should be equal    ${j['status']}    OK    结果中不包含"OK", ${j}
     #创建新的网页插件配置
     ${data}    set variable    {"configName":"测试${curTime}","isDefault":false}
     ${j}    Configs    ${AdminUser}    post    ${data}
-    should be equal    ${j['status']}    OK
+    should be equal    ${j['status']}    OK    结果中不包含"OK", ${j}
     #获取configId
     ${configId}    set variable    ${j['entity']['configId']}
     #修改网页插件配置
     &{WebimTemplateChannelJson1}    loads    ${WebimTemplateChannelJson}
     ${data}    set variable    ${WebimTemplateChannelJson1.entity}
     ${j}    Update Config    ${AdminUser}    ${configId}    ${data}
-    should be equal    ${j['status']}    OK
+    should be equal    ${j['status']}    OK    结果中不包含"OK", ${j}
     #删除网页插件配置
     ${j}    Configs    ${AdminUser}    delete    ${EMPTY}    ${configId}
-    should be equal    ${j['status']}    OK
-    should be true    ${j['entity']} == 1
+    should be equal    ${j['status']}    OK    结果中不包含"OK", ${j}
+    should be true    ${j['entity']} == 1    结果中获取entity不为1, ${j}
+
+根据configId获取访客端配置(/v1/webimplugin/settings/visitors/configs/${configId})
+    #获取网页插件配置返回值
+    ${j}    Get Configinfo Via ConfigId    ${AdminUser}    ${templateConfigId}
+    #断言返回状态值和json结构与值是否一致
+    Should Be Equal    ${j['status']}    OK    获取的模板返回值status不等于OK: {j}
+    Should Be Equal    ${j['entity']['configId']}    ${templateConfigId}    返回值的configId与预期不相等: {j}
+    Should Be Equal    ${j['entity']['tenantId']}    ${AdminUser.tenantId}    返回值的tenantId与预期不相等: {j}
+
+获取网页插件的所有关联(/v1/webimplugin/targetChannels)
+    #获取网页插件配置返回值
+    ${j}    Get Channels
+    #断言返回状态值和json结构与值是否一致
+    ${status}    Run Keyword And Return Status    Should Contain    ${j}    channelId
+    Run Keyword If    "${j}" == "[]"    Fail    租户下没有创建关联 ，请创建关联，返回结果为：-- > ${j}
+    Run Keyword If    ${status}    Should Be Equal    ${j[0]['run']}    true    接口返回值不正确：${j}
+
+获取网页插件是否上下班(/v1/webimplugin/tenants/show-message)
+    #获取时间计划并设置默认时间计划为全局变量使用
+    Get ScheduleId
+    #获取关联
+    ${channelId}    Get Channels
+    #获取网页插件配置返回值
+    ${paramData}    create dictionary    channelType=easemob    originType=webim    channelId=${channelId[0]['channelId']}    tenantId=${AdminUser.tenantId}    queueName=
+    ...    agentUsername=    timeScheduleId=${timeScheduleId}
+    ${j}    Show Message    ${paramData}
+    Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}

@@ -49,6 +49,7 @@ Holidays
     Return From Keyword    ${j}
 
 Get ScheduleId
+    [Documentation]    获取时间计划列表，并取默认时间的${scheduleId}作为全局变量
     #获取时间计划列表
     ${j}=    Business hours    ${AdminUser}
     ${scheduleId}    set variable    ${j['entities'][0]['scheduleId']}

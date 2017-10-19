@@ -1,9 +1,9 @@
 *** Variables ***
-${kefuurl}        http://kefu.jx.zto.com
-${orgurl}         http://sandbox.kefuorg.easemob.com
-&{AdminUser}      username=test2@qq.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+${kefuurl}        http://xw-kefu.bestwehotel.com
+${orgurl}         http://vpc10.kefu.easemob.com:8000
+&{AdminUser}      username=test@qq.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome    language=en_US    graylist=
-&{OrgAdminUser}    username=test4@qq.com    password=test2015    orgId=2057    cookies=    session=    userId=    nicename=
+&{OrgAdminUser}    username=admin@org.com    password=ORGadmin    orgId=1034    cookies=    session=    userId=    nicename=
 ...               browser=chrome
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
@@ -52,7 +52,9 @@ ${retryTimes}     10
 &{AgentMsgEntity}    msg=    type=    ext=
 &{ProjectEntity}    id=
 &{PriorityEntity}    渠道=Channel    关联=ChannelData    入口=UserSpecifiedChannel
-${SeleniumTimeout}    10
+${SeleniumTimeout}    20
 &{OrgUser1}       username=    password=    name=    phone=    tenantId=
 &{OrgAdmin1}      username=    password=    nicename=    phone=    model=
 @{graylist}       base
+&{NotesEntity}    ProjectId=    OpenNum=    PendingNum=    SolvedNum=    AllNum=    UnassignedNum=    CustomNum=
+...               NotesId=

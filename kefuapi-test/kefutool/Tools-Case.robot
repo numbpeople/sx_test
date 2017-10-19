@@ -80,7 +80,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建访客
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
-    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=app    key=IM    dutyType=Allday
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     #将规则排序设置为渠道优先
@@ -94,12 +94,12 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
-    : FOR    ${i}    IN RANGE    5
+    : FOR    ${i}    IN RANGE    300
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
-    \    sleep    100ms
+    \    sleep    250ms
 
 批量创建会话、接入
     Create Session    testsession    ${kefuurl}
@@ -124,7 +124,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
-    : FOR    ${i}    IN RANGE    2
+    : FOR    ${i}    IN RANGE    200
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
@@ -206,7 +206,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
-    : FOR    ${i}    IN RANGE    2
+    : FOR    ${i}    IN RANGE    1
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
@@ -225,7 +225,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${j}    to json    ${resp.content}
     : FOR    ${i}    IN    @{j}
     \    ${curTime}    get time    epoch
-    \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
+    \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:111222333    type=txt
     \    Agent Send Message    ${AdminUser}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
     \    sleep    50ms
 
@@ -293,7 +293,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     &{fileEntity}    create dictionary    url=    filename=    filepath=    contentType=    size={"width":0,"height":0}
     ...    type=
     #初始化参数：消息、渠道信息、客户信息
-    set test variable    ${originType}    app
+    set test variable    ${originType}    webim
     ${curTime}    get time    epoch
     #创建技能组
     ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
@@ -492,16 +492,16 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    sleep    50ms
 
 批量创建坐席和技能组，并添加坐席到技能组
-    set test variable    ${AgentCount}    10000
-    set test variable    ${PerAgent}    2
+    set test variable    ${AgentCount}    1000
+    set test variable    ${PerAgent}    1
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
-    @{agentslist}    create list    ${empty}
-    set global variable    @{agentslist}
-    : FOR    ${i}    IN RANGE    ${AgentCount}
+    set global variable    @{agentslist}    ${empty}
+    remove from list    ${agentslist}    0
+    : FOR    ${i}    IN RANGE    1087    2087
     \    #添加坐席
     \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}-${i}-3    password=test2015    maxServiceSessionCount=10    tenantId=${AdminUser.tenantId}
     \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
@@ -510,8 +510,10 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${j}    to json    ${resp.content}
     \    Append To list    ${agentslist}    ${j['userId']}
     \    #每n个坐席创建一个技能
-    \    ${t}    evaluate    ${i}%${PerAgent}
-    \    Run Keyword If    ${t} == 1    Create Queue And Add Agents To Queue    ${AdminUser}    ${agentslist}    ${AdminUser.tenantId}-Queue-${i}-3
+    \    log    ${agentslist}
+    \    ${l}    get length    ${agentslist}
+    \    Comment    ${t}    evaluate    ${i}%${PerAgent}
+    \    Run Keyword If    ${l} == ${PerAgent}    Create Queue And Add Agents To Queue    ${AdminUser}    ${agentslist}    ${AdminUser.tenantId}-Queue-${i}-3
     \    sleep    100ms
 
 批量创建并关闭有效会话
@@ -552,7 +554,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     #
-    Repeat Keyword    20    Close And Create Valid Rated Session    ${AdminUser}    ${restentity}    weixin    10
+    Repeat Keyword    1    Close And Create Valid Rated Session    ${AdminUser}    ${restentity}    weixin    100
 
 批量创建有效会话，发送邀请评价，评价后关闭会话
     Create Session    testsession    ${kefuurl}
@@ -818,3 +820,54 @@ ${datadir}        ${CURDIR}${/}${/}resource
     set to dictionary    ${guestentity}    sessionServiceId=${j['entities'][0]['session_id']}
     Comment    sleep    120s
     Comment    :FOR    ${i}    IN RANGE    ${retryTimes}
+
+批量登录并接入会话
+    : FOR    ${i}    IN RANGE    100
+    \    set to dictionary    ${AdminUser}    username=5831${i}@qq.com    password=test2015
+    \    Login And Callin Session    ${AdminUser}
+
+批量创建会话、接入并重复回复消息
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #发送消息并创建访客
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    #将规则排序设置为渠道优先
+    #Set RoutingPriorityList    渠道    关联    入口
+    #判断渠道是否有绑定关系
+    #${j}    Get Routing
+    #${listlength}=    Get Length    ${j['content']}
+    #判断如果没有渠道数据，使用post请求，反之使用put请求
+    #Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #发送消息并创建200访客
+    Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
+    : FOR    ${i}    IN RANGE    1
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    \    sleep    200ms
+    sleep    1s
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=200
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN    @{j['items']}
+    \    Access Conversation    ${AdminUser}    ${i['userWaitQueueId']}
+    \    sleep    50ms
+    #坐席回复消息
+    ${resp}=    /v1/Agents/me/Visitors    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    : FOR    ${i}    IN RANGE    1000000
+    \    ${curTime}    get time    epoch
+    \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:11223344556677889900    type=txt
+    \    Agent Send Message    ${AdminUser}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}    ${AgentMsgEntity}
+    \    sleep    10ms

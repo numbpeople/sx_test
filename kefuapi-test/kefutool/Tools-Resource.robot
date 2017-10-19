@@ -77,8 +77,8 @@ Create Queue And Add Agents To Queue
     #添加坐席到技能组
     ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${agent}    ${j['queueId']}    ${agentslist}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
-    @{agentslist}    create list    ${empty}
-    set global variable    @{agentslist}
+    set global variable    @{agentslist}    ${empty}
+    remove from list    ${agentslist}    0
 
 Close Valid New Session
     [Arguments]    ${agent}    ${rest}    ${originType}    ${maxcount}=200
@@ -179,7 +179,7 @@ Close Valid Rated Session
     [Arguments]    ${agent}    ${rest}    ${originType}    ${maxcount}=200
     [Documentation]    创建有效会话，发送邀请评价，评价后关闭会话
     @{guestlist}    Create List    ${empty}
-    :FOR    ${i}    IN RANGE    ${maxcount}
+    : FOR    ${i}    IN RANGE    ${maxcount}
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-${curTime}    originType=${originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${guestentity.originType}"}}
@@ -193,14 +193,14 @@ Close Valid Rated Session
     set to dictionary    ${FilterEntity}    per_page=200
     ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
     ${j}    to json    ${resp.content}
-    :FOR    ${i}    IN    @{j['items']}
+    : FOR    ${i}    IN    @{j['items']}
     \    Access Conversation    ${agent}    ${i['userWaitQueueId']}
     \    sleep    50ms
     sleep    1
     #坐席回复消息并发送邀请评价
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     ${j}    to json    ${resp.content}
-    :FOR    ${i}    IN    @{j}
+    : FOR    ${i}    IN    @{j}
     \    ${curTime}    get time    epoch
     \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
     \    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
@@ -209,13 +209,33 @@ Close Valid Rated Session
     \    sleep    50ms
     sleep    1
     #访客发送评价
-    :FOR    ${i}    IN    @{guestlist}
+    : FOR    ${i}    IN    @{guestlist}
     \    log    ${i}
     \    set to dictionary    ${msgentity}    msg=5
     \    Send Message    ${rest}    ${i}    ${msgentity}
     \    sleep    200ms
     sleep    1
     #关闭进行中会话
-    :FOR    ${i}    IN    @{j}
+    : FOR    ${i}    IN    @{j}
     \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms
+
+Login And Callin Session
+    [Arguments]    ${agent}    ${maxcount}=200
+    [Documentation]    创建有效会话，发送邀请评价，关闭会话后评价
+    #登录
+    Create Session    tmpsession    ${kefuurl}
+    ${resp}=    /login    tmpsession    ${agent}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${agent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=tmpsession    nicename=${j['agentUser']['nicename']}
+    set to dictionary    ${DateRange}    beginDate=2015-08-01T00%3A00%3A00.000Z    endDate=2027-08-31T23%3A59%3A00.000Z
+    set global variable    ${DateRange}    ${DateRange}
+    #接入200个访客
+    set to dictionary    ${FilterEntity}    per_page=${maxcount}
+    ${resp}    Search Waiting Conversation    ${agent}    ${FilterEntity}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    log    ${j}
+    : FOR    ${i}    IN    @{j['items']}
+    \    Access Conversation    ${agent}    ${i['userWaitQueueId']}
     \    sleep    50ms

@@ -42,8 +42,37 @@ Browser Init
     set global variable    ${uiagent}    ${uiagent}
 
 Check Element Contains Text
-    [Arguments]    ${xpath}    ${text}
-    Wait Until Page Contains Element    xpath=${xpath}
-    Wait Until Element Contains    xpath=${xpath}    ${text}
+    [Arguments]    ${locator}    ${text}
+    log    ${text}
+    Wait Until Page Contains Element    ${locator}
+    Wait Until Element Contains    ${locator}    ${text}
 
-test
+Check Base Elements
+    [Arguments]    ${lang}    ${elements}
+    log    ${elements}
+    : FOR    ${i}    IN    @{elements}
+    \    ${locator}    set variable    xpath=${i['xPath']}
+    \    ${lt}    Get Length    ${i['text']}
+    \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${lang}']}
+    \    ${la}    Get Length    ${i['attributes']}
+    \    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${lang}    ${i['attributes']}
+    \    ${le}    Get Length    ${i['elements']}
+    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}
+
+Check Attributes
+    [Arguments]    ${locator}    ${lang}    ${attributes}
+    log    ${attributes}
+    : FOR    ${i}    IN    @{attributes}
+    \    log    ${locator}@${i['name']}
+    \    ${a}    Get Element Attribute    ${locator}@${i['name']}
+    \    log    ${a}
+    \    Should be True    '${a}'=='${i['value']['${lang}']}'
+
+Check Base Module
+    [Arguments]    ${url}    ${agent}    ${json}
+    [Documentation]    判断整个模块是否灰度，若灰度，跳转到url，检查基础元素
+    ${ig}    Get Index From List    ${agent.graylist}    ${json['GrayKey']}
+    #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
+    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${jbase['GrayKey']}
+    go to    ${url}
+    Check Base Elements    ${agent.language}    ${json['elements']}

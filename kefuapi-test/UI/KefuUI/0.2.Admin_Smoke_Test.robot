@@ -17,6 +17,9 @@ Resource          ../../UIcommons/Kefu/channelsres.robot
 Resource          ../../UIcommons/Kefu/robotres.robot
 Resource          ../../UIcommons/Kefu/sessionsearchres.robot
 Resource          ../../UIcommons/Kefu/notesres.robot
+Resource          ../../UIcommons/Kefu/visitorsres.robot
+Resource          ../../UIcommons/Kefu/historyres.robot
+Resource          ../../UIcommons/Kefu/qualityres.robot
 
 *** Test Cases ***
 查看首页
@@ -58,18 +61,20 @@ Resource          ../../UIcommons/Kefu/notesres.robot
 
 查看搜索
     ${jbase}    to json    ${sessionsearchbasejson}
-    goto    ${kefuurl}${jbase['entities'][0]['uri']}
-    #如果灰度列表没有该key，输出log，否则检查元素
-    : FOR    ${e}    IN    @{jbase['entities']}
-    \    ${i}    Get Index From List    ${uiagent.graylist}    ${e['GrayKey']}
-    \    Run Keyword If    ${i}==-1    log    未灰度此功能：${jbase['entities'][0]['GrayKey']}
-    \    ...    ELSE    Check Element Contains Text    ${e['TitleXPath']}    ${e['Title']['${uiagent.language}']}
+    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
 
 查看留言
     ${jbase}    to json    ${notesbasejson}
-    goto    ${kefuurl}${jbase['entities'][0]['uri']}
-    #如果灰度列表没有该key，输出log，否则检查元素
-    :
-    ${i}    Get Index From List    ${uiagent.graylist}    ${jbase['entities'][0]['GrayKey']}
-    Run Keyword If    ${i}==-1    log    未灰度此功能：${jbase['entities'][0]['GrayKey']}
-    ...    ELSE    Check Element Contains Text    ${jbase['entities'][0]['TitleXPath']}    ${jbase['entities'][0]['Title']['${uiagent.language}']}
+    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
+
+查看客户中心
+    ${jbase}    to json    ${visitorsbasejson}
+    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
+
+查看历史会话
+    ${jbase}    to json    ${historybasejson}
+    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
+
+查看质量检查
+    ${jbase}    to json    ${qualitybasejson}
+    Check Base Module    ${kefuurl}${jbase['uri']}    ${uiagent}    ${jbase}

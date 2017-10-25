@@ -1,4 +1,7 @@
 *** Settings ***
+Suite Setup       Run Keywords    Clear Stickers
+...               AND    log    【Admin-Setting】case 执行开始
+Suite Teardown    log    【Admin-Setting】case 执行结束
 Library           json
 Library           requests
 Library           Collections
@@ -17,6 +20,7 @@ Resource          api/ChannelsApi.robot
 Resource          kefutool/Tools-Resource.robot
 Library           lib/KefuUtils.py
 Resource          commons/admin common/Setting_common.robot
+Resource          commons/admin common/Stickers_Common.robot
 
 *** Test Cases ***
 查询所有短信配置(/v1/tenants/{tenantId}/sms/reminds)
@@ -84,3 +88,56 @@ Resource          commons/admin common/Setting_common.robot
     #根据时间计划获取节假日设置
     ${j}=    Holidays    ${AdminUser}    ${scheduleId}
     should be equal    ${j['status']}    OK
+
+获取自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
+    #获取表情包
+    ${j}    Get Stickers    ${AdminUser}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${length} =    get length    ${j['entities']}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['type']}    CUSTOM    返回值中type字段不等于CUSTOM: ${j}
+
+上传自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
+    #获取当前的表情包个数
+    ${length}    Get Stickers Numbers    ${AdminUser}
+    Run Keyword If    ${length} >= 5    Fail    租户下的表情包超过5个，该用例会执行失败，标识为fail
+    #上传表情包
+    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
+    ${j}    Upload Stickers    ${AdminUser}    ${fileEntity}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
+    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl.jpeg    返回值中压缩包里的图片名字与预期不符: ${j}
+    should be equal    ${j['entities'][0]['packageName']}.zip    ${fileEntity.filename}    返回值中压缩包名称与预期不符: ${j}
+
+删除自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
+    #上传表情包
+    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
+    ${j}    Upload Stickers    ${AdminUser}    ${fileEntity}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    #删除表情包
+    ${j}    Delete Stickers    ${AdminUser}    ${j['entities'][0]['packageId']}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+
+排序自定义表情包(/v1/emoj/tenants/{tenantId}/packages/sort)
+    #上传表情包
+    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
+    @{list}    Create List
+    #获取当前的表情包个数
+    ${length}    Get Stickers Numbers    ${AdminUser}
+    Run Keyword If    ${length} >= 3    Fail    租户下的表情包超过3个，该用例会执行失败，标识为fail
+    #上传多个表情包
+    : FOR    ${i}    IN RANGE    2
+    \    Upload Stickers    ${AdminUser}    ${fileEntity}
+    #获取表情包
+    ${j}    Get Stickers    ${AdminUser}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    #将所有的packageId存入list
+    : FOR    ${i}    IN    @{j['entities']}
+    \    ${id}    convert to integer    ${i['id']}
+    \    Append To List    ${list}    ${id}
+    #将所得到的list进行排序
+    ${k}    Sort Stickers    ${AdminUser}    ${list}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${k}

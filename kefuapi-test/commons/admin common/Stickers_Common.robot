@@ -69,3 +69,12 @@ Clear Stickers
     \    ${id}    convert to integer    ${i['id']}
     \    ${j}    Delete Stickers    ${AdminUser}    ${id}
     \    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+
+Get Stickers Files
+    [Arguments]    ${agent}    ${packageId}
+    [Documentation]    获取自定义表情文件
+    #获取自定义表情文件
+    ${resp}=    /v1/emoj/tenants/{tenantId}/packages/{packageId}/files    ${AdminUser}    ${timeout}    ${packageId}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}

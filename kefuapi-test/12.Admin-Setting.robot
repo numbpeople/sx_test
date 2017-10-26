@@ -141,3 +141,22 @@ Resource          commons/admin common/Stickers_Common.robot
     #将所得到的list进行排序
     ${k}    Sort Stickers    ${AdminUser}    ${list}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${k}
+
+获取自定义表情包文件(/v1/emoj/tenants/{tenantId}/packages/{packageId}/files)
+    #获取当前的表情包个数
+    ${length}    Get Stickers Numbers    ${AdminUser}
+    Run Keyword If    ${length} >= 5    Fail    租户下的表情包超过5个，该用例会执行失败，标识为fail
+    #上传表情包
+    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
+    ${j1}    Upload Stickers    ${AdminUser}    ${fileEntity}
+    should be equal    ${j1['status']}    OK    返回值中status不等于OK: ${j1}
+    #获取表情文件
+    ${j}    Get Stickers Files    ${AdminUser}    ${j1['entities'][0]['packageId']}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${length} =    get length    ${j['entities']}
+    Run Keyword if    ${length} == 0    Fail    租户下的表情包文件不存在，需要检查下，${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl.jpeg    返回值中压缩包里的图片名字与预期不符: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['packageId']}    ${j1['entities'][0]['packageId']}    返回值中压缩包的id不是预期: ${j}

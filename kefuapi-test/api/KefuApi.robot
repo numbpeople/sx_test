@@ -115,13 +115,6 @@ GetChannel
     ${params}=    set variable    visitorId=${visitorId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-/v1/webimplugin/welcome
-    [Arguments]    ${agent}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/webimplugin/welcome
-    ${params}=    set variable    tenantId=${agent.tenantId}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
-
 /v1/Agents/{AdminUserId}/Agents
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

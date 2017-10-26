@@ -114,7 +114,7 @@ Show Message
 Show Company Greeting
     [Documentation]    网页渠道获取系统欢迎语
     #获取系统欢迎语
-    ${resp}=    WebimChannels./v1/webimplugin/welcome    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/webimplugin/welcome    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
     Return From Keyword    ${resp.content}
 
@@ -137,5 +137,21 @@ Get Skillgroup-menu
     #获取网页插件技能组绑定欢迎语
     ${resp}=    WebimChannels./v1/webimplugin/tenants/{tenantId}/skillgroup-menu    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Get Webim Stickers
+    [Documentation]    获取访客端自定义表情
+    #获取访客端自定义表情
+    ${resp}=    /v1/webimplugin/emoj/tenants/{tenantId}/packages    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Get Webim Stickers Files
+    [Documentation]    获取访客端自定义表情
+    #获取访客端自定义表情
+    ${resp}=    /v1/webimplugin/emoj/tenants/{tenantId}/files    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}

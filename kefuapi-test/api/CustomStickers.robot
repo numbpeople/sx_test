@@ -24,3 +24,10 @@
     ${uri}=    set variable    /v1/emoj/tenants/${agent.tenantId}/packages/sort
     ${data}    set variable    {"ordered_ids":${orderList}}
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/emoj/tenants/{tenantId}/packages/{packageId}/files
+    [Arguments]    ${agent}    ${timeout}    ${packageId}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/emoj/tenants/${agent.tenantId}/packages/${packageId}/files
+    ${params}=    set variable    _=1508998740649
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

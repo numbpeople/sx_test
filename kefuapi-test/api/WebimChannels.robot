@@ -138,3 +138,17 @@ Library           RequestsLibrary
     ${uri}=    set variable    /v1/webimplugin/tenants/${agent.tenantId}/skillgroup-menu
     ${params}=    set variable    _=1505908063604
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/emoj/tenants/{tenantId}/packages
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/emoj/tenants/${agent.tenantId}/packages
+    ${params}=    set variable    _=1508830444702
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/emoj/tenants/{tenantId}/files
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/emoj/tenants/${agent.tenantId}/files
+    ${params}=    set variable    _=1508830444702
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

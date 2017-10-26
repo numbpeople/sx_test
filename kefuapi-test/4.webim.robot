@@ -1,7 +1,9 @@
 *** Settings ***
 Suite Setup       Run Keywords    Create Template
+...               AND    Clear Stickers
 ...               AND    log    设置全局config ,【Webim】case 执行开始
 Suite Teardown    Run Keywords    Delete Template
+...               AND    Clear Stickers
 ...               AND    log    删除新增加的config ,【Webim】case 执行结束
 Force Tags        webim
 Library           json
@@ -16,6 +18,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/Webim_Common.robot
 Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
 Resource          commons/admin common/Setting_common.robot
+Resource          commons/admin common/Stickers_Common.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)
@@ -131,3 +134,30 @@ Resource          commons/admin common/Setting_common.robot
     #获取技能组绑定欢迎语列表
     ${j}    Get Skillgroup-menu
     Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
+
+获取自定义表情包(/v1/webimplugin/emoj/tenants/{tenantId}/packages)
+    #获取表情包
+    ${j}    Get Webim Stickers
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${length} =    get length    ${j['entities']}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['type']}    CUSTOM    返回值中type字段不等于CUSTOM: ${j}
+
+获取自定义表情包文件(/v1/emoj/tenants/{tenantId}/packages/{packageId}/files)
+    #获取当前的表情包个数
+    ${length}    Get Stickers Numbers    ${AdminUser}
+    Run Keyword If    ${length} >= 5    Fail    租户下的表情包超过5个，该用例会执行失败，标识为fail
+    #上传表情包
+    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
+    ${j1}    Upload Stickers    ${AdminUser}    ${fileEntity}
+    should be equal    ${j1['status']}    OK    返回值中status不等于OK: ${j1}
+    #获取表情文件
+    ${j}    Get Webim Stickers Files
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${length} =    get length    ${j['entities']}
+    Run Keyword if    ${length} == 0    Fail    租户下的表情包文件不存在，需要检查下，${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl.jpeg    返回值中压缩包里的图片名字与预期不符: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['packageId']}    ${j1['entities'][0]['packageId']}    返回值中压缩包的id不是预期: ${j}

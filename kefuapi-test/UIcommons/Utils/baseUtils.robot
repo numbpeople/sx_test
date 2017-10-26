@@ -69,10 +69,11 @@ Check Attributes
     \    Should be True    '${a}'=='${i['value']['${lang}']}'
 
 Check Base Module
-    [Arguments]    ${url}    ${agent}    ${json}
+    [Arguments]    ${url}    ${showkey}    ${agent}    ${json}
     [Documentation]    判断整个模块是否灰度，若灰度，跳转到url，检查基础元素
-    ${ig}    Get Index From List    ${agent.graylist}    ${json['GrayKey']}
+    ${ig}    Get Index From List    ${agent.graylist}    ${showkey}
     #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
-    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${jbase['GrayKey']}
+    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${showkey}
+    log    ${url}
     go to    ${url}
     Check Base Elements    ${agent.language}    ${json['elements']}

@@ -20,6 +20,8 @@ Resource          ../../UIcommons/Kefu/notesres.robot
 Resource          ../../UIcommons/Kefu/visitorsres.robot
 Resource          ../../UIcommons/Kefu/historyres.robot
 Resource          ../../UIcommons/Kefu/qualityres.robot
+Resource          ../../UIcommons/Kefu/exportsres.robot
+Resource          ../../UIcommons/Kefu/currentres.robot
 
 *** Test Cases ***
 查看首页
@@ -61,7 +63,7 @@ Resource          ../../UIcommons/Kefu/qualityres.robot
 
 查看搜索
     ${jbase}    to json    ${sessionsearchbasejson}
-    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
+    Check Base Module    ${kefuurl}${jbase['navigator']['Admin']['uri']}    ${jbase['navigator']['Admin']['ShowKey']}    ${uiagent}    ${jbase}
 
 查看留言
     ${jbase}    to json    ${notesbasejson}
@@ -73,8 +75,16 @@ Resource          ../../UIcommons/Kefu/qualityres.robot
 
 查看历史会话
     ${jbase}    to json    ${historybasejson}
-    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
+    Check Base Module    ${kefuurl}${jbase['navigator']['Admin']['uri']}    ${jbase['navigator']['Admin']['ShowKey']}    ${uiagent}    ${jbase}
 
 查看质量检查
     ${jbase}    to json    ${qualitybasejson}
-    Check Base Module    ${kefuurl}${jbase['uri']}    ${uiagent}    ${jbase}
+    Check Base Module    ${kefuurl}${jbase['navigator']['Admin']['uri']}    ${jbase['navigator']['Admin']['ShowKey']}    ${uiagent}    ${jbase}
+
+查看导出管理
+    ${jbase}    to json    ${exportsbasejson}
+    Check Base Module    ${kefuurl}${jbase['navigator']['Admin']['uri']}    ${jbase['navigator']['Admin']['ShowKey']}    ${uiagent}    ${jbase}
+
+查看当前会话
+    ${jbase}    to json    ${currentbasejson}
+    Check Base Module    ${kefuurl}${jbase['navigator']['Admin']['uri']}    ${jbase['navigator']['Admin']['ShowKey']}    ${uiagent}    ${jbase}

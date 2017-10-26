@@ -80,7 +80,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建访客
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
-    ${originTypeentity}=    create dictionary    name=网页渠道    originType=app    key=IM    dutyType=Allday
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     #将规则排序设置为渠道优先
@@ -94,10 +94,11 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
-    : FOR    ${i}    IN RANGE    300
+    : FOR    ${i}    IN RANGE    600
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    250ms
 
@@ -871,3 +872,34 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:11223344556677889900    type=txt
     \    Agent Send Message    ${AdminUser}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}    ${AgentMsgEntity}
     \    sleep    10ms
+
+创建一个会话并发送多条消息
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #发送消息并创建访客
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    #将规则排序设置为渠道优先
+    #Set RoutingPriorityList    渠道    关联    入口
+    #判断渠道是否有绑定关系
+    #${j}    Get Routing
+    #${listlength}=    Get Length    ${j['content']}
+    #判断如果没有渠道数据，使用post请求，反之使用put请求
+    #Run Keyword If    ${listlength} == 0    Add Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
+    #发送消息并创建200访客
+    Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
+    Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
+    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
+    : FOR    ${i}    IN RANGE    10000
+    \    ${curTime}    get time    epoch
+    \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    \    sleep    200ms

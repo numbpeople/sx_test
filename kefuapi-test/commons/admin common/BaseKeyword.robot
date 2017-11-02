@@ -21,7 +21,7 @@ InitFilterTime
     ${sec1}=    Get Time    epoch    ${yyyy}-${mm}-01 0:0:0
     ${sec2}=    Get Time    epoch    ${yyyy}-${mm}-${mr[1]} 23:59:59
     &{DR}=    create dictionary    beginMonthDateTime=${sec1}000    endMonthDateTime=${sec2}000    beginMonthDate=${yyyy}-${mm}-01T00%3A00%3A00.000Z    endMonthDate=${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z    beginDateTime=${sec1}000
-    ...    endDateTime=${sec2}000    beginDate=${yyyy}-${mm}-01T00%3A00%3A00.000Z    endDate=${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z
+    ...    endDateTime=${sec2}000    beginDate=${yyyy}-${mm}-01T00%3A00%3A00.000Z    endDate=${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z    stopDateFrom=${yyyy}-${mm}-01T00%3A00%3A00.000Z    stopDateTo=${yyyy}-${mm}-${mr[1]}T23%3A59%3A59.000Z
     Return From Keyword    &{DR}
     #set global variable    ${DateRange.beginMonthDateTime}    ${sec1}000
     #set global variable    ${DateRange.endMonthDateTime}    ${sec2}000

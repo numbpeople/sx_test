@@ -61,7 +61,7 @@ Resource          kefutool/Tools-Resource.robot
     #获取管理员模式下历史会话
     set to dictionary    ${FilterEntity}    isAgent=False    page=1
     ${r}    Search History    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${retryTimes}
-    Should Be True    ${r}    客服模式下未查到该访客的历史会话：${guestentity.userName}
+    Should Be True    ${r}    管理员模式下未查到该访客的历史会话：${guestentity.userName}
     #获取坐席模式下历史会话
     set to dictionary    ${FilterEntity}    isAgent=True
     set test variable    ${retryTimes}    1

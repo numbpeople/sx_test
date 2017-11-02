@@ -1,7 +1,8 @@
 *** Settings ***
 Suite Setup       Run Keywords    Clear Stickers
 ...               AND    log    【Admin-Setting】case 执行开始
-Suite Teardown    log    【Admin-Setting】case 执行结束
+Suite Teardown    Run Keywords    Clear Roles
+...               AND    log    【Admin-Setting】case 执行结束
 Library           json
 Library           requests
 Library           Collections
@@ -193,3 +194,60 @@ Resource          commons/admin common/Questionnaire_Common.robot
     should be equal    ${j['entity']['type']}    WJW    返回值中的类型不正确: ${j}
     should be equal    ${j['entity']['status']}    Deleted    返回值中的状态不正确: ${j}
     Should Contain    ${j['entity']['username']}    ${tenantid}    返回值中的账号名称不正确: ${j}
+
+获取权限角色列表(/v1/permission/tenants/{tenantId}/roles)
+    #获取角色列表
+    ${j}    Set Roles    get    ${EMPTY}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entities'][0]['role_name']}    admin    返回值中role_name不正确: ${j}
+    should be equal    ${j['entities'][0]['role_type']}    SYSTEM    返回值中role_type不正确: ${j}
+    should be equal    ${j['entities'][0]['role_description']}    管理员    返回值中role_description不正确: ${j}
+    should be equal    ${j['entities'][1]['role_name']}    agent    返回值中role_name不正确: ${j}
+    should be equal    ${j['entities'][1]['role_description']}    座席    返回值中role_description不正确: ${j}
+    should be equal    ${j['entities'][0]['status']}    ENABLE    返回值中status不正确: ${j}
+
+获取权限菜单列表(/v1/permission/tenants/{tenantId}/users/{userId}/resource_categories)
+    #获取菜单列表
+    ${j}    Get Resource Categories
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entity']['user_id']}    ${AdminUser.userId}    返回值中user_id不正确: ${j}
+
+新增权限角色(/v1/permission/tenants/{tenantId}/roles)
+    #新增角色
+    ${uuid}    Uuid 4
+    ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}
+    ${data}    set variable    {"role_name":"${role_name}"}
+    ${j}    Set Roles    post    ${data}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entity']['role_name']}    ${role_name}    返回值中role_name不正确: ${j}
+    should be equal    ${j['entity']['role_type']}    CUSTOMIZED    返回值中role_type不正确: ${j}
+    should be equal    ${j['entity']['status']}    ENABLE    返回值中status不正确: ${j}
+
+根据roleId查询菜单(/v1/permission/tenants/{tenantId}/roles/{roleId}/resource_categories)
+    #新增角色
+    ${uuid}    Uuid 4
+    ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}
+    ${data}    set variable    {"role_name":"${role_name}"}
+    ${j}    Set Roles    post    ${data}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entity']['role_name']}    ${role_name}    返回值中role_name不正确: ${j}
+    should be equal    ${j['entity']['role_type']}    CUSTOMIZED    返回值中role_type不正确: ${j}
+    should be equal    ${j['entity']['status']}    ENABLE    返回值中status不正确: ${j}
+    #根据roleId设置菜单
+    ${j}    Set Resource Categories Via RoleId    get    ${j['entity']['role_id']}    ${EMPTY}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+
+根据roleId新增菜单(/v1/permission/tenants/{tenantId}/roles/{roleId}/resource_categories)
+    #新增角色
+    ${uuid}    Uuid 4
+    ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}
+    ${data}    set variable    {"role_name":"${role_name}"}
+    ${j}    Set Roles    post    ${data}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entity']['role_name']}    ${role_name}    返回值中role_name不正确: ${j}
+    should be equal    ${j['entity']['role_type']}    CUSTOMIZED    返回值中role_type不正确: ${j}
+    should be equal    ${j['entity']['status']}    ENABLE    返回值中status不正确: ${j}
+    #根据roleId设置菜单
+    ${data}    set variable    {"resource_categories":["agent_currentsession"]}
+    ${j}    Set Resource Categories Via RoleId    post    ${j['entity']['role_id']}    ${data}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}

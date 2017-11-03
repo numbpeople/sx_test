@@ -303,7 +303,7 @@ Close Conversations By ChannelId
     [Documentation]    根据channelId查找所有processing或wait的会话
     #查询会话
     set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait    per_page=150
-    ...    visitorName=${EMPTY}
+    ...    visitorName=${EMPTY}    sortField=startDateTime
     set to dictionary    ${DateRange}    beginDate=${EMPTY}    endDate=${EMPTY}
     #根据channelId查询会话
     ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}

@@ -5,13 +5,13 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../api/KefuApi.robot
-Resource          ../../api/RoutingApi.robot
-Resource          ../../api/SystemSwitch.robot
-Resource          ../../api/SessionCurrentApi.robot
-Resource          ../../api/SettingsApi.robot
-Resource          ../../api/WebimChannels.robot
-Resource          ../../api/CustomStickers.robot
+Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/RoutingApi.robot
+Resource          ../../../api/SystemSwitch.robot
+Resource          ../../../api/SessionCurrentApi.robot
+Resource          ../../../api/SettingsApi.robot
+Resource          ../../../api/WebimChannels.robot
+Resource          ../../../api/CustomStickers.robot
 
 *** Keywords ***
 Get Stickers
@@ -65,7 +65,7 @@ Clear Stickers
     ${j}    Get Stickers    ${AdminUser}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     #删除表情包
-    :FOR    ${i}    IN    @{j['entities']}
+    : FOR    ${i}    IN    @{j['entities']}
     \    ${id}    convert to integer    ${i['id']}
     \    ${j}    Delete Stickers    ${AdminUser}    ${id}
     \    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}

@@ -27,11 +27,13 @@ Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
-Resource          commons/admin common/admin_common.robot
+Resource          commons/admin common/Setting/Routing_Common.robot
+Resource          commons/admin common/Robot/Robot_Common.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/SystemSwitch.robot
 Resource          kefutool/Tools-Resource.robot
-Resource          commons/admin common/Setting_common.robot
+Resource          commons/admin common/Channels/App_Common.robot
+Resource          commons/admin common/Setting/Business-Hours_Common.robot
 
 *** Test Cases ***
 渠道指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)

@@ -9,7 +9,7 @@ Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
 Library           uuid
 Library           urllib
-Resource          Setting_common.robot
+Resource          Setting/Business-Hours_Common.robot
 
 *** Keywords ***
 InitFilterTime
@@ -87,6 +87,122 @@ Close All Session In Waitlist
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     log    ${j}
+
+Close Conversations By ChannelId
+    [Arguments]    ${techChannelId}    ${techChannelType}=easemob
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #查询会话
+    set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait    per_page=150
+    ...    visitorName=${EMPTY}    sortField=startDateTime
+    set to dictionary    ${DateRange}    beginDate=${EMPTY}    endDate=${EMPTY}
+    #根据channelId查询会话
+    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    ${listlength}=    set variable    ${j['total_entries']}
+    Return From Keyword If    ${listlength} == 0
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${state}=    set variable    ${j['items'][${i}]['state']}
+    \    ${serviceSessionId}=    set variable    ${j['items'][${i}]['serviceSessionId']}
+    \    ${visitoruserid}=    set variable    ${j['items'][${i}]['visitorUser']['userId']}
+    \    Close Conversation    ${state}    ${serviceSessionId}    ${visitoruserid}
+
+Close Conversation
+    [Arguments]    ${status}    ${sessionServiceId}    ${userId}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    #关闭processing或wait的会话
+    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}
+    Run Keyword If    '${status}' == 'Processing'    Close Processing Conversation    ${sessionServiceId}    ${userId}
+
+Close Waiting Conversation
+    [Arguments]    ${sessionServiceId}
+    [Documentation]    关闭待接入的会话
+    #清理待接入会话
+    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+
+Close Processing Conversation
+    [Arguments]    ${sessionServiceId}    ${userId}
+    [Documentation]    关闭processing的会话
+    #关闭进行中会话
+    ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${AdminUser}    ${userId}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
+
+Search Waiting Conversation
+    [Arguments]    ${agent}    ${filter}    ${date}
+    [Documentation]    根据筛选条件查询待接入会话
+    ...
+    ...    Arguments：
+    ...
+    ...    ${AdminUser}、${FilterEntity}、${DateRange}
+    ...
+    ...    Return：
+    ...
+    ...    返回符合筛选的符合结果：resp
+    #根据访客昵称查询待接入列表
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${agent}    ${filter}    ${date}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.content}
+    \    Exit For Loop If    ${j['total_entries']} > 0
+    \    sleep    ${delay}
+    Return From Keyword    ${resp}
+
+Get Current Conversation
+    [Arguments]    ${agent}    ${filter}    ${date}
+    [Documentation]    获取当前会话，返回符合筛选条件的值并返回
+    ...
+    ...    Arguments：
+    ...
+    ...    ${AdminUser}、${FilterEntity}、${DateRange}
+    ...
+    ...    Return：
+    ...
+    ...    返回符合筛选的符合结果：resp
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${resp}=    /v1/tenants/{tenantId}/servicesessioncurrents    ${agent}    ${filter}    ${date}    ${timeout}
+    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.content}
+    \    Exit For Loop If    ${j['total_entries']} > 0
+    \    sleep    ${delay}
+    Return From Keyword    ${resp}
+
+Close Processing Conversations By SessionList
+    [Arguments]    @{SessionList}
+    [Documentation]    根据channelId查找所有processing或wait的会话
+    : FOR    ${i}    IN RANGE    @{SessionList}
+    \    Close Conversation    ${state}    ${i.serviceSessionId}    ${i.visitoruserid}
+
+Get Appkey Token
+    [Arguments]    ${session}    ${channelJson}
+    [Documentation]    获取appkey的管理员token
+    ...
+    ...    Arguments：
+    ...
+    ...    ${session} 、${channelJson}
+    ...
+    ...    Return：
+    ...
+    ...    ${resp}
+    #获取管理员的token
+    ${resp1}    get token by credentials    restsession    ${channelJson}    ${timeout}
+    ${j}    to json    ${resp1.content}
+    Return From Keyword    ${j}
+
+Send Message
+    [Arguments]    ${rest}    ${guest}    ${msg}
+    [Documentation]    模拟访客发送消息
+    ...
+    ...    Arguments：
+    ...
+    ...    ${restentity} ${guestentity} ${msgentity}
+    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    ${resp}=    Send Msg    ${rest}    ${guest}    ${msg}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    ${j['data']['${rest.serviceEaseMobIMNumber}']}    success    发送消息失败
 
 Get Current Weekend
     [Documentation]    获取当前日期是星期几

@@ -15,10 +15,10 @@ Library           calendar
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
-Resource          commons/admin common/Webim_Common.robot
+Resource          commons/admin common/Setting/Webim_Common.robot
 Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
-Resource          commons/admin common/Setting_common.robot
-Resource          commons/admin common/Stickers_Common.robot
+Resource          commons/admin common/Setting/Stickers_Common.robot
+Resource          commons/admin common/Setting/Business-Hours_Common.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)

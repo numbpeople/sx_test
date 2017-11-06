@@ -5,11 +5,11 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../api/KefuApi.robot
-Resource          ../../api/RoutingApi.robot
-Resource          ../../api/SystemSwitch.robot
-Resource          ../../api/SessionCurrentApi.robot
-Resource          ../../api/SettingsApi.robot
+Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/RoutingApi.robot
+Resource          ../../../api/SystemSwitch.robot
+Resource          ../../../api/SessionCurrentApi.robot
+Resource          ../../../api/SettingsApi.robot
 
 *** Keywords ***
 Business hours
@@ -55,50 +55,52 @@ Get ScheduleId
     ${scheduleId}    set variable    ${j['entities'][0]['scheduleId']}
     set global variable    ${timeScheduleId}    ${scheduleId}
 
-Set Roles
-    [Arguments]    ${method}    ${data}
-    [Documentation]    获取权限列表
-    #获取权限列表
-    ${resp}=    /v1/permission/tenants/{tenantId}/roles    ${AdminUser}    ${timeout}    ${method}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
-
-Delete Roles
-    [Arguments]    ${roleId}
-    [Documentation]    获取权限列表
-    #获取权限列表
-    ${resp}=    /v1/permission/tenants/{tenantId}/roles/{roleId}    ${AdminUser}    ${timeout}    ${roleId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
-
-Get Resource Categories
-    [Documentation]    获取权限列表
-    #获取权限列表
-    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/resource_categories    ${AdminUser}    ${timeout}
+Set Worktime
+    [Arguments]    ${iswork}    ${weekend}    ${agent}
+    [Documentation]    设置工作时间
+    ...
+    ...    Describtion：
+    ...
+    ...    参数：${iswork} | ${weekend} | ${agent}
+    ...
+    ...    ${iswork}代表是否上班， 值为on，则为上班，为off，则为下班
+    ...
+    ...    ${weekend}代表当前是礼拜几
+    #获取上下班时间
+    ${r1}    create list
+    &{timePlanIds}=    create dictionary
+    ${data}=    set variable    NULL
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    get    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
+    #存储timePlanId值
+    ${listlength}=    Get Length    ${j['entities']}
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${day}=    convert to string    ${j['entities'][${i}]['day']}
+    \    ${timePlanId}=    convert to integer    ${j['entities'][${i}]['timePlanId']}
+    \    set to dictionary    ${timePlanIds}    ${day}=${timePlanId}
+    log    ${timePlanIds}
+    #修改工作时间为上班或者下班时间
+    ${weekend}=    convert to string    ${weekend}
+    ${keys}=    Get Dictionary Keys    ${timePlanIds}
+    ${Values}=    Get Dictionary Values    ${timePlanIds}
+    ${timePlanId}=    Get From Dictionary    ${timePlanIds}    ${weekend}
+    Run Keyword If    '${iswork}' == 'on'    set test variable    ${data}    {"timePlans":[{"timePlanId":${timePlanId},"tenantId":${agent.tenantId},"day":"${weekend}","timePlanItems":[{"startTime":"00:00:00","stopTime":"23:59:59"}]}]}
+    Run Keyword If    '${iswork}' == 'off'    set test variable    ${data}    {"timePlans":[]}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    put    ${AdminUser}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
-Set Resource Categories Via RoleId
-    [Arguments]    ${method}    ${roleId}    ${data}
-    [Documentation]    根据roleId设置菜单
-    #根据roleId设置菜单
-    ${resp}=    /v1/permission/tenants/{tenantId}/roles/{roleId}/resource_categories    ${AdminUser}    ${timeout}    ${method}    ${roleId}    ${data}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
-
-Clear Roles
-    [Documentation]    清除包含指定关键字的角色
-    #设置技能组名称模板
-    ${preRoleName}=    convert to string    ${AdminUser.tenantId}
-    #获取角色列表
-    ${j}    Set Roles    get    ${EMPTY}
-    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
-    #循环删除包含${preRoleName}的角色
-    :FOR    ${i}    IN    @{j['entities']}
-    \    ${roleName}=    convert to string    ${i['role_name']}
-    \    ${status}=    Run Keyword And Return Status    Should Contain    ${roleName}    ${preRoleName}
-    \    Run Keyword If    '${status}' == 'True'    Delete Roles    ${i['role_id']}
+Set Worktime Ext
+    [Arguments]    ${iswork}    ${agent}    ${scheduleId}
+    [Documentation]    设置工作时间
+    ...
+    ...    Describtion：
+    ...
+    ...    参数：${iswork} | ${agent} | ${scheduleId}
+    ...
+    ...    ${iswork}代表是否上班， 值为on，则为上班，为off，则为下班
+    ...
+    ...    ${scheduleId}代表哪个时间计划
+    #设置上下班的时间
+    Run Keyword If    '${iswork}' == 'on'    Set Work Day    ${agent}    ${scheduleId}
+    Run Keyword If    '${iswork}' == 'off'    Set Non-work Day    ${agent}    ${scheduleId}

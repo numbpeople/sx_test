@@ -1175,13 +1175,6 @@ GetChannel
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/recommendation/status
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/organs/{organName}/tenants/{tenantId}/commonphrases
-    [Arguments]    ${agent}    ${orgEntity}    ${timeout}    ${systemOnly}=${False}    ${buildChildren}=${True}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/organs/${orgEntity.organName}/tenants/${agent.tenantId}/commonphrases
-    ${params}=    set variable    systemOnly=${systemOnly}&buildChildren=${buildChildren}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
-
 /v1/tenants/{tenantId}/servicesessions/{serviceSessions}/attributes
     [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

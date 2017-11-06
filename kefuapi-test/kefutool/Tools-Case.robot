@@ -12,13 +12,15 @@ Resource          ../commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          ../api/RoutingApi.robot
 Resource          ../api/WaitApi.robot
-Resource          ../commons/admin common/admin_common.robot
 Resource          ../commons/agent common/agent_common.robot
 Library           OperatingSystem
 Resource          ../api/IMApi.robot
 Resource          ../commons/IM_Common/IM Common.robot
 Library           ../lib/ReadFile.py
 Resource          Tools-Resource.robot
+Resource          ../commons/admin common/Members/AgentQueue_Common.robot
+Resource          ../commons/admin common/Members/Agents_Common.robot
+Resource          ../commons/admin common/Channels/App_Common.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource

@@ -13,16 +13,16 @@ Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Library           uuid
-Resource          commons/admin common/admin_common.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/SessionCurrentApi.robot
 Resource          api/SettingsApi.robot
 Resource          api/ChannelsApi.robot
 Resource          kefutool/Tools-Resource.robot
 Library           lib/KefuUtils.py
-Resource          commons/admin common/Setting_common.robot
-Resource          commons/admin common/Stickers_Common.robot
-Resource          commons/admin common/Questionnaire_Common.robot
+Resource          commons/admin common/Setting/Business-Hours_Common.robot
+Resource          commons/admin common/Setting/Permissions_Common.robot
+Resource          commons/admin common/Setting/Stickers_Common.robot
+Resource          commons/admin common/Setting/Questionnaire_Common.robot
 
 *** Test Cases ***
 查询所有短信配置(/v1/tenants/{tenantId}/sms/reminds)
@@ -238,6 +238,21 @@ Resource          commons/admin common/Questionnaire_Common.robot
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
 
 根据roleId新增菜单(/v1/permission/tenants/{tenantId}/roles/{roleId}/resource_categories)
+    #新增角色
+    ${uuid}    Uuid 4
+    ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}
+    ${data}    set variable    {"role_name":"${role_name}"}
+    ${j}    Set Roles    post    ${data}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    should be equal    ${j['entity']['role_name']}    ${role_name}    返回值中role_name不正确: ${j}
+    should be equal    ${j['entity']['role_type']}    CUSTOMIZED    返回值中role_type不正确: ${j}
+    should be equal    ${j['entity']['status']}    ENABLE    返回值中status不正确: ${j}
+    #根据roleId设置菜单
+    ${data}    set variable    {"resource_categories":["agent_currentsession"]}
+    ${j}    Set Resource Categories Via RoleId    post    ${j['entity']['role_id']}    ${data}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+
+获取公共常用语(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
     #新增角色
     ${uuid}    Uuid 4
     ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}

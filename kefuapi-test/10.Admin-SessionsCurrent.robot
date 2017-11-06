@@ -9,7 +9,6 @@ Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
-Resource          commons/admin common/admin_common.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/SessionCurrentApi.robot
 Resource          kefutool/Tools-Resource.robot
@@ -23,7 +22,7 @@ Resource          kefutool/Tools-Resource.robot
     log    ${j}
 
 查询指定状态的会话数(/v1/tenants/{tenantId}/processingsessions/count)
-    :FOR    ${i}    IN    @{SessionState}
+    : FOR    ${i}    IN    @{SessionState}
     \    ${resp}=    /v1/tenants/{tenantId}/processingsessions/count    ${AdminUser}    ${i}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     \    log    ${resp.content}

@@ -9,7 +9,6 @@ Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Library           uuid
-Resource          commons/admin common/admin_common.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/SessionCurrentApi.robot
 Resource          api/ChannelsApi.robot

@@ -104,7 +104,7 @@ Resource          commons/admin common/Setting/Questionnaire_Common.robot
     ${length}    Get Stickers Numbers    ${AdminUser}
     Run Keyword If    ${length} >= 5    Fail    租户下的表情包超过5个，该用例会执行失败，标识为fail
     #上传表情包
-    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${picpath}    set variable    ${CURDIR}${/}${/}resource${/}${/}stickers.zip
     ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
     ${j}    Upload Stickers    ${AdminUser}    ${fileEntity}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
@@ -114,7 +114,7 @@ Resource          commons/admin common/Setting/Questionnaire_Common.robot
 
 删除自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
     #上传表情包
-    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${picpath}    set variable    ${CURDIR}${/}${/}resource${/}${/}stickers.zip
     ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
     ${j}    Upload Stickers    ${AdminUser}    ${fileEntity}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
@@ -124,7 +124,7 @@ Resource          commons/admin common/Setting/Questionnaire_Common.robot
 
 排序自定义表情包(/v1/emoj/tenants/{tenantId}/packages/sort)
     #上传表情包
-    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${picpath}    set variable    ${CURDIR}${/}${/}resource${/}${/}stickers.zip
     ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
     @{list}    Create List
     #获取当前的表情包个数
@@ -149,7 +149,7 @@ Resource          commons/admin common/Setting/Questionnaire_Common.robot
     ${length}    Get Stickers Numbers    ${AdminUser}
     Run Keyword If    ${length} >= 5    Fail    租户下的表情包超过5个，该用例会执行失败，标识为fail
     #上传表情包
-    ${picpath}    set variable    ${EXECDIR}${/}${/}resource${/}${/}stickers.zip
+    ${picpath}    set variable    ${CURDIR}${/}${/}resource${/}${/}stickers.zip
     ${fileEntity}    create dictionary    filename=stickers.zip    filepath=${picpath}    contentType=application/zip
     ${j1}    Upload Stickers    ${AdminUser}    ${fileEntity}
     should be equal    ${j1['status']}    OK    返回值中status不等于OK: ${j1}

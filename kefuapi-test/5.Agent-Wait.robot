@@ -16,12 +16,12 @@ Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/Members/AgentQueue_Common.robot
-Resource          commons/agent common/agent_common.robot
-Resource          commons/admin common/Setting/Customers_common.robot
+Resource          commons/admin common/Customers/Customers_common.robot
 Resource          commons/admin common/History/History_common.robot
 Resource          api/SystemSwitch.robot
 Resource          kefutool/Tools-Resource.robot
 Resource          commons/admin common/Setting/Routing_Common.robot
+Resource          commons/agent common/Customers/Customers_Common.robot
 
 *** Test Cases ***
 关闭待接入列表search出的指定访客

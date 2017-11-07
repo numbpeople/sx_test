@@ -5,29 +5,12 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../api/KefuApi.robot
-Resource          ../../api/RoutingApi.robot
-Resource          ../../api/SystemSwitch.robot
-Resource          ../../api/ConversationApi.robot
+Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/RoutingApi.robot
+Resource          ../../../api/SystemSwitch.robot
+Resource          ../../../api/ConversationApi.robot
 
 *** Keywords ***
-Access Conversation
-    [Arguments]    ${agent}    ${servicesessionid}
-    [Documentation]    手动从待接入接入会话
-    ...
-    ...    Arguments：
-    ...
-    ...    ${agent} | ${servicesessionid}
-    ...
-    ...    Return：
-    ...
-    ...    请求结果：${j}
-    #根据查询结果接入会话
-    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/{waitingId}    ${agent}    ${servicesessionid}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
-
 Get Processing Conversation
     [Arguments]    ${agent}
     [Documentation]    获取进行中的所有会话
@@ -133,66 +116,6 @@ Stop Processing Conversation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
-
-Get Admin Customers
-    [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}=10
-    [Documentation]    获取管理模式下访客的信息
-    ...
-    ...    Arguments：
-    ...
-    ...    ${agent} | ${filter} | ${date}
-    ...
-    ...    Return：
-    ...
-    ...    请求结果：${j}
-    #获取管理员模式下客户中心
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/crm/tenants/{tenantId}/customers    ${agent}    ${filter}    ${date}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['numberOfElements']} > 0
-    \    sleep    ${delay}
-    Return From Keyword    ${j}
-
-Get Agent Customers
-    [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}=10
-    [Documentation]    获取坐席模式下访客的信息
-    ...
-    ...    Arguments：
-    ...
-    ...    ${agent} | ${filter} | ${date}
-    ...
-    ...    Return：
-    ...
-    ...    请求结果：${j}
-    #获取客服模式下客户中心
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/crm/tenants/{tenantId}/agents/{agentId}/customers    ${agent}    ${filter}    ${date}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['numberOfElements']} > 0
-    \    sleep    ${delay}
-    Return From Keyword    ${j}
-
-Get History
-    [Arguments]    ${agent}    ${filter}    ${date}
-    [Documentation]    获取历史会话的会话信息
-    ...
-    ...    Arguments：
-    ...
-    ...    ${agent} | ${filter} | ${date}
-    ...
-    ...    Return：
-    ...
-    ...    请求结果：${j}
-    #管理员模式下查询该访客的历史会话
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${agent}    ${filter}    ${date}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} > 0
-    \    sleep    ${delay}
-    Return From Keyword    ${j}
 
 Agent Send Message
     [Arguments]    ${agent}    ${visitoruserid}    ${servicesessionid}    ${msg}

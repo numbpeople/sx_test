@@ -13,6 +13,8 @@ Resource          ../api/RoutingApi.robot
 Resource          ../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../commons/admin common/Members/Agents_Common.robot
 Resource          ../commons/admin common/Channels/App_Common.robot
+Resource          ../commons/agent common/Queue/Queue_Common.robot
+Resource          ../commons/agent common/Conversations/Conversations_Common.robot
 
 *** Keywords ***
 Delete Agentusers

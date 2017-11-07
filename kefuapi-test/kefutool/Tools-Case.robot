@@ -12,7 +12,6 @@ Resource          ../commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          ../api/RoutingApi.robot
 Resource          ../api/WaitApi.robot
-Resource          ../commons/agent common/agent_common.robot
 Library           OperatingSystem
 Resource          ../api/IMApi.robot
 Resource          ../commons/IM_Common/IM Common.robot
@@ -21,6 +20,9 @@ Resource          Tools-Resource.robot
 Resource          ../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../commons/admin common/Members/Agents_Common.robot
 Resource          ../commons/admin common/Channels/App_Common.robot
+Resource          ../commons/agent common/Conversations/Conversations_Common.robot
+Resource          ../commons/agent common/Queue/Queue_Common.robot
+Resource          ../commons/admin common/Setting/Routing_Common.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource

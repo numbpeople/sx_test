@@ -19,6 +19,7 @@ Resource          commons/admin common/Channels/Webim_Common.robot
 Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
 Resource          commons/admin common/Setting/Stickers_Common.robot
 Resource          commons/admin common/Setting/Business-Hours_Common.robot
+Resource          api/AdminMode/Channels/WebimApi.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)

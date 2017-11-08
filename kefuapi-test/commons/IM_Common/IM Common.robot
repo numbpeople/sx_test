@@ -5,11 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../api/KefuApi.robot
-Resource          ../../api/RoutingApi.robot
-Resource          ../../api/SystemSwitch.robot
-Resource          ../../api/SessionCurrentApi.robot
-Resource          ../../api/IMApi.robot
+Resource          ../../api/IM/IMApi.robot
 
 *** Keywords ***
 Upload File

@@ -7,8 +7,7 @@ Library           String
 Library           calendar
 Resource          ../../../api/KefuApi.robot
 Resource          ../../../api/RoutingApi.robot
-Resource          ../../../api/SystemSwitch.robot
-Resource          ../../../api/ConversationApi.robot
+Resource          ../../../api/AgentMode/Conversations/InviteEnquiryApi.robot
 
 *** Keywords ***
 Get Processing Conversation

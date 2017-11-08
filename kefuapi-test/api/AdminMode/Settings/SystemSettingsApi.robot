@@ -1,5 +1,3 @@
-*** Variables ***
-
 *** Keywords ***
 /v1/tenants/{tenantId}/timeplans
     [Arguments]    ${method}    ${agent}    ${timeout}    ${data}

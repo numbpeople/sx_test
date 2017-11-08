@@ -5,14 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
-Resource          ../../../api/RoutingApi.robot
-Resource          ../../../api/SystemSwitch.robot
-Resource          ../../../api/SessionCurrentApi.robot
-Resource          ../../../api/SettingsApi.robot
-Resource          ../../../api/WebimChannels.robot
-Resource          ../../../api/CustomStickers.robot
-Resource          ../../../api/PhrasesApi.robot
+Resource          ../../../api/AdminMode/Settings/PhrasesApi.robot
 
 *** Keywords ***
 Set Phrases
@@ -35,7 +28,7 @@ Clear Phrases
     should be equal    ${j['status']}    OK    获取常用语分类数据不正确：${j}
     should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId值不正确: ${j}
     #循环删除包含${prePhrasesName}的常用语分类
-    :FOR    ${i}    IN    @{j['entities']}
+    : FOR    ${i}    IN    @{j['entities']}
     \    ${PhrasesName}=    convert to string    ${i['phrase']}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${PhrasesName}    ${prePhrasesName}
     \    Run Keyword If    '${status}' == 'True'    Set Phrases    ${AdminUser}    delete    ${orgEntity}

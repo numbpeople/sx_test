@@ -334,7 +334,6 @@ Library           uuid
     ${uri}=    set variable    /daas/internal/agent/file/serve/detail
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
-
 /daas/internal/agent/detail/total
     [Arguments]    ${agent}    ${timeout}    ${DateRange}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}

@@ -1,5 +1,3 @@
-*** Variables ***
-
 *** Keywords ***
 /tenants/{tenantId}/projects
     [Arguments]    ${agent}    ${timeout}

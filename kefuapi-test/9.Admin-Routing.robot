@@ -23,7 +23,6 @@ Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/admin common/BaseKeyword.robot
-Resource          api/SystemSwitch.robot
 Resource          kefutool/Tools-Resource.robot
 Resource          commons/admin common/Robot/Robot_Common.robot
 

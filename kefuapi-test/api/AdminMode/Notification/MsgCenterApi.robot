@@ -1,5 +1,3 @@
-*** Variables ***
-
 *** Keywords ***
 /v1/tenants/{tenantId}/activities
     [Arguments]    ${agent}    ${timeout}    ${data}

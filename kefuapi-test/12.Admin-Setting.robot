@@ -16,7 +16,6 @@ Library           uuid
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/SessionCurrentApi.robot
 Resource          api/SettingsApi.robot
-Resource          api/ChannelsApi.robot
 Resource          kefutool/Tools-Resource.robot
 Library           lib/KefuUtils.py
 Resource          commons/admin common/Setting/Business-Hours_Common.robot

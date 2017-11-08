@@ -5,12 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
-Resource          ../../../api/RoutingApi.robot
-Resource          ../../../api/SystemSwitch.robot
-Resource          ../../../api/SessionCurrentApi.robot
-Resource          ../../../api/SettingsApi.robot
-Resource          ../../../api/WebimChannels.robot
+Resource          ../../../api/AdminMode/Channels/WebimApi.robot
 
 *** Keywords ***
 Get Template
@@ -97,7 +92,7 @@ Delete Config
 Get Channels
     [Documentation]    获取租户下所有的关联信息（网页访客端使用的接口）
     #获取网页插件的所有关联
-    ${resp}=    WebimChannels./v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
+    ${resp}=    WebimApi./v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
@@ -127,7 +122,7 @@ Show Robot Greeting
     [Arguments]    ${paramData}
     [Documentation]    网页渠道获取系统欢迎语
     #获取系统欢迎语
-    ${resp}=    WebimChannels./v1/webimplugin/tenants/robots/welcome    ${AdminUser}    ${timeout}    ${paramData}
+    ${resp}=    WebimApi./v1/webimplugin/tenants/robots/welcome    ${AdminUser}    ${timeout}    ${paramData}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
@@ -135,7 +130,7 @@ Show Robot Greeting
 Get Skillgroup-menu
     [Documentation]    获取网页插件技能组绑定欢迎语
     #获取网页插件技能组绑定欢迎语
-    ${resp}=    WebimChannels./v1/webimplugin/tenants/{tenantId}/skillgroup-menu    ${AdminUser}    ${timeout}
+    ${resp}=    WebimApi./v1/webimplugin/tenants/{tenantId}/skillgroup-menu    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} , 返回结果：${resp}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}

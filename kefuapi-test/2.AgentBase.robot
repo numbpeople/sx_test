@@ -11,8 +11,8 @@ Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/SessionCurrentApi.robot
-Resource          api/historyApi.robot
-Resource          api/PhrasesApi.robot
+Resource          api/AgentMode/History/HistoryApi.robot
+Resource          api/AdminMode/Settings/PhrasesApi.robot
 
 *** Test Cases ***
 获取机器人推荐状态(/v1/Tenants/{tenantId}/robots/recommendation/status)

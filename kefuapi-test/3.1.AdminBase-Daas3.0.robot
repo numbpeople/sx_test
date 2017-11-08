@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup       set suite variable    ${session}    ${AdminUser.session}
 Resource          AgentRes.robot
-Resource          api/DaasApi.robot
+Resource          api/Daas/DaasApi.robot
 Library           requests
 Library           RequestsLibrary
 
@@ -43,7 +43,6 @@ Library           RequestsLibrary
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     log    ${j}
-
 
 工作量-客服工作量(/daas/internal/agent/kpi/wl)
     ${resp}=    /daas/internal/agent/kpi/wl    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
@@ -93,7 +92,6 @@ Library           RequestsLibrary
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    会话数分布按会话时长维度不正确:${resp.content}
     should be true    ${j["totalElements"]}==5    会话数分布按会话时长维度不正确:${resp.content}
-
 
 工作质量-客服工作质量(/daas/internal/agent/kpi/wq)
     ${resp}=    /daas/internal/agent/kpi/wq    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
@@ -151,7 +149,6 @@ Library           RequestsLibrary
     should be equal    ${j["status"]}    OK    会话数分布按响应时长维度不正确:${resp.content}
     should be true    ${j["totalElements"]}==5    会话数分布按响应时长维度不正确:${resp.content}
 
-
 客服时长统计-客服在线时长(/daas/internal/agent/serve)
     ${resp}=    /daas/internal/agent/serve    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -165,7 +162,6 @@ Library           RequestsLibrary
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    客服在线时长明细不正确:${resp.content}
     should be true    ${j["totalElements"]}>=1    客服在线时长明细不正确:${resp.content}
-
 
 访客统计-独立访客数(/daas/internal/visitor/total)
     ${resp}=    /daas/internal/visitor/total    ${AdminUser}    ${timeout}    ${DateRange}
@@ -188,7 +184,6 @@ Library           RequestsLibrary
     should be equal    ${j["status"]}    OK    独立访客数列表不正确:${resp.content}
     should be true    ${j["totalElements"]}==7    独立访客数列表不正确:${resp.content}
 
-
 排队统计-排队综合(/daas/internal/wait/total)
     ${resp}=    /daas/internal/wait/total    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -197,14 +192,14 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["cnt_wc"]}>=0    排队综合不正确:${resp.content}
 
 排队统计-24小时进线量(/daas/internal/wait/hour/create)
-    ${resp}=    /daas/internal/wait/hour/create   ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
+    ${resp}=    /daas/internal/wait/hour/create    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    24小时进线量不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    24小时进线量不正确:${resp.content}
 
 排队统计-进线量趋势(/daas/internal/wait/day/create)
-    ${resp}=    /daas/internal/wait/day/create   ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
+    ${resp}=    /daas/internal/wait/day/create    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    进线量趋势不正确:${resp.content}
@@ -231,9 +226,8 @@ Library           RequestsLibrary
     should be equal    ${j["status"]}    OK    排队次数分布按会话标签维度不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    排队次数分布按会话标签维度不正确:${resp.content}
 
-
 实时监控-客服状态分布(/daas/internal/monitor/agent/status/dist)
-    ${resp}=    /daas/internal/monitor/agent/status/dist   ${AdminUser}    ${timeout}
+    ${resp}=    /daas/internal/monitor/agent/status/dist    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    客服状态分布不正确:${resp.content}
@@ -241,68 +235,67 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["offline"]}>=0    客服状态分布不正确:${resp.content}
 
 实时监控-客服负载情况(/daas/internal/monitor/agent/load)
-    ${resp}=    /daas/internal/monitor/agent/load   ${AdminUser}    ${timeout}
+    ${resp}=    /daas/internal/monitor/agent/load    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    客服负载情况不正确:${resp.content}
     should be equal    ${j["entity"]["tenantId"]}    ${AdminUser.tenantId}    客服负载情况不正确:${resp.content}
 
 实时监控-访客排队情况(/daas/internal/monitor/wait/count)
-    ${resp}=    /daas/internal/monitor/wait/count   ${AdminUser}    ${timeout}
+    ${resp}=    /daas/internal/monitor/wait/count    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    访客排队情况不正确:${resp.content}
     should be true    ${j["totalElements"]}==1    访客排队情况不正确:${resp.content}
 
 实时监控-会话数(/daas/internal/monitor/session/total)
-    ${resp}=    /daas/internal/monitor/session/total   ${AdminUser}    ${timeout}
+    ${resp}=    /daas/internal/monitor/session/total    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    会话数不正确:${resp.content}
     should be true    ${j["totalElements"]}==1    会话数不正确:${resp.content}
 
 实时监控-访客来源(/daas/internal/monitor/visitor/total)
-    ${resp}=    /daas/internal/monitor/visitor/total   ${AdminUser}    ${timeout}
+    ${resp}=    /daas/internal/monitor/visitor/total    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    访客来源不正确:${resp.content}
     should be true    ${j["totalElements"]}==1    访客来源不正确:${resp.content}
 
 实时监控-服务质量(/daas/internal/monitor/quality/total)
-    ${resp}=    /daas/internal/monitor/quality/total   ${AdminUser}    ${timeout}
+    ${resp}=    /daas/internal/monitor/quality/total    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    服务质量不正确:${resp.content}
     should be true    ${j["totalElements"]}==1    服务质量不正确:${resp.content}
 
 实时监控-接起会话数(/daas/internal/monitor/list/session/start)
-    ${resp}=    /daas/internal/monitor/list/session/start   ${AdminUser}    ${timeout}    ${FilterEntity}
+    ${resp}=    /daas/internal/monitor/list/session/start    ${AdminUser}    ${timeout}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    接起会话数不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    接起会话数不正确:${resp.content}
 
 实时监控-平均首次响应时长(/daas/internal/monitor/list/first/response)
-    ${resp}=    /daas/internal/monitor/list/first/response   ${AdminUser}    ${timeout}    ${FilterEntity}
+    ${resp}=    /daas/internal/monitor/list/first/response    ${AdminUser}    ${timeout}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    平均首次响应时长不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    平均首次响应时长不正确:${resp.content}
 
 实时监控-满意度(/daas/internal/monitor/list/visitor/mark)
-    ${resp}=    /daas/internal/monitor/list/visitor/mark   ${AdminUser}    ${timeout}    ${FilterEntity}
+    ${resp}=    /daas/internal/monitor/list/visitor/mark    ${AdminUser}    ${timeout}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    满意度不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    满意度不正确:${resp.content}
 
 实时监控-平均响应时长(/daas/internal/monitor/list/response/time)
-    ${resp}=    /daas/internal/monitor/list/response/time   ${AdminUser}    ${timeout}    ${FilterEntity}
+    ${resp}=    /daas/internal/monitor/list/response/time    ${AdminUser}    ${timeout}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    平均响应时长不正确:${resp.content}
     should be true    ${j["totalElements"]}>=0    平均响应时长不正确:${resp.content}
-
 
 统计文件导出-工作量(/daas/internal/session/file/wl)
     ${resp}=    /daas/internal/session/file/wl    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
@@ -327,7 +320,6 @@ Library           RequestsLibrary
 统计文件导出-客服时长明细(/daas/internal/agent/file/serve/detail)
     ${resp}=    /daas/internal/agent/file/serve/detail    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-
 
 客服模式-工作综合(/daas/internal/agent/detail/total)
     ${resp}=    /daas/internal/agent/detail/total    ${AdminUser}    ${timeout}    ${DateRange}

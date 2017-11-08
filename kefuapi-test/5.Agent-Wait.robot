@@ -18,7 +18,6 @@ Library           uuid
 Resource          commons/admin common/Members/AgentQueue_Common.robot
 Resource          commons/admin common/Customers/Customers_common.robot
 Resource          commons/admin common/History/History_common.robot
-Resource          api/SystemSwitch.robot
 Resource          kefutool/Tools-Resource.robot
 Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/agent common/Customers/Customers_Common.robot

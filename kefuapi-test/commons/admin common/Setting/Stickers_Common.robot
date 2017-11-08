@@ -5,13 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
-Resource          ../../../api/RoutingApi.robot
-Resource          ../../../api/SystemSwitch.robot
-Resource          ../../../api/SessionCurrentApi.robot
-Resource          ../../../api/SettingsApi.robot
-Resource          ../../../api/WebimChannels.robot
-Resource          ../../../api/CustomStickers.robot
+Resource          ../../../api/AdminMode/Settings/CustomStickersApi.robot
 
 *** Keywords ***
 Get Stickers

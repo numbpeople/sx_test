@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/AdminMode/Settings/CustomStickersApi.robot
+Resource          ../../../api/BaseApi/Settings/CustomStickersApi.robot
 
 *** Keywords ***
 Get Stickers

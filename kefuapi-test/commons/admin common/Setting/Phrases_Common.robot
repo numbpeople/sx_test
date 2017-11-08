@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/AdminMode/Settings/PhrasesApi.robot
+Resource          ../../../api/BaseApi/Settings/PhrasesApi.robot
 
 *** Keywords ***
 Set Phrases

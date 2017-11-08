@@ -11,7 +11,7 @@ Resource          ../api/KefuApi.robot
 Resource          ../commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          ../api/RoutingApi.robot
-Resource          ../api/AgentMode/Queue/WaitApi.robot
+Resource          ../api/BaseApi/Queue/WaitApi.robot
 Library           OperatingSystem
 Resource          ../api/IM/IMApi.robot
 Resource          ../commons/IM_Common/IM Common.robot

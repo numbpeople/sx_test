@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/AdminMode/Channels/WebimApi.robot
+Resource          ../../../api/BaseApi/Channels/WebimApi.robot
 
 *** Keywords ***
 Get Template

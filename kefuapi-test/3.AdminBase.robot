@@ -10,7 +10,7 @@ Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          api/SettingsApi.robot
-Resource          api/AdminMode/Settings/SystemSettingsApi.robot
+Resource          api/BaseApi/Settings/SystemSettingsApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***

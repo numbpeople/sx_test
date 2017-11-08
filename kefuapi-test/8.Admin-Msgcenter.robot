@@ -7,7 +7,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          api/AdminMode/Notification/MsgCenterApi.robot
+Resource          api/BaseApi/Notification/MsgCenterApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 

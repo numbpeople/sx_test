@@ -12,7 +12,7 @@ Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/SessionCurrentApi.robot
 Resource          api/historyApi.robot
-Resource          api/SettingsApi.robot
+Resource          api/PhrasesApi.robot
 
 *** Test Cases ***
 获取机器人推荐状态(/v1/Tenants/{tenantId}/robots/recommendation/status)
@@ -38,12 +38,6 @@ Resource          api/SettingsApi.robot
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    '${j['status']}'    'OK'    callcenter属性数据不正确：${resp.content}
-
-获取常用语信息（个人&企业）(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
-    ${resp}=    /v1/organs/{organName}/tenants/{tenantId}/commonphrases    ${AdminUser}    ${orgEntity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    '${j['status']}'    'OK'    获取常用语数据不正确：${resp.content}
 
 客服设置状态&接待数(/v1/Agents/{agentId})
     : FOR    ${s}    IN    @{kefustatus}

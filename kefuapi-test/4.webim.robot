@@ -15,7 +15,7 @@ Library           calendar
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
-Resource          commons/admin common/Setting/Webim_Common.robot
+Resource          commons/admin common/Channels/Webim_Common.robot
 Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
 Resource          commons/admin common/Setting/Stickers_Common.robot
 Resource          commons/admin common/Setting/Business-Hours_Common.robot

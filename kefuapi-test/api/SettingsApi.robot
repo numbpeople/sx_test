@@ -202,10 +202,3 @@ Get evaluationdegreeId
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
     ...    timeout=${timeout}
-
-/v1/organs/{organName}/tenants/{tenantId}/commonphrases
-    [Arguments]    ${agent}    ${orgEntity}    ${timeout}    ${systemOnly}=${False}    ${buildChildren}=${True}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/organs/${orgEntity.organName}/tenants/${agent.tenantId}/commonphrases
-    ${params}=    set variable    systemOnly=${systemOnly}&buildChildren=${buildChildren}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

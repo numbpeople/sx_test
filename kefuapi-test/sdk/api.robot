@@ -8,7 +8,7 @@ Library           RequestsLibrary
 Library           String
 Library           urllib
 Resource          ../AgentRes.robot
-Resource          ../api/SDKApi.robot
+Resource          ../api/MicroService/SDK/SDKApi.robot
 Resource          ../JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***

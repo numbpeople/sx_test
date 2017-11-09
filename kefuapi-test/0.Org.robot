@@ -9,7 +9,7 @@ Library           String
 Library           calendar
 Resource          AgentRes.robot
 Resource          JsonDiff/OrgJsonDiff.robot
-Resource          api/OrgApi.robot
+Resource          api/MicroService/Organ/OrgApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
 

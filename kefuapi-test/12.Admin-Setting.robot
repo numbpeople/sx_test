@@ -8,22 +8,21 @@ Library           requests
 Library           Collections
 Library           RequestsLibrary
 Library           String
+Library           uuid
+Library           lib/KefuUtils.py
 Resource          AgentRes.robot
 Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
-Library           uuid
 Resource          commons/admin common/BaseKeyword.robot
-Resource          api/SessionCurrentApi.robot
-Resource          api/SettingsApi.robot
 Resource          kefutool/Tools-Resource.robot
-Library           lib/KefuUtils.py
 Resource          commons/admin common/Setting/Business-Hours_Common.robot
 Resource          commons/admin common/Setting/Permissions_Common.robot
 Resource          commons/admin common/Setting/Stickers_Common.robot
 Resource          commons/admin common/Setting/Questionnaire_Common.robot
 Resource          commons/admin common/Setting/Phrases_Common.robot
 Resource          commons/CollectionData/Setting Colletion.robot
+Resource          api/BaseApi/Settings/RemindApi.robot
 
 *** Test Cases ***
 查询所有短信配置(/v1/tenants/{tenantId}/sms/reminds)

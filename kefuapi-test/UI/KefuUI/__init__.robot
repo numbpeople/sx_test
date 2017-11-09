@@ -10,8 +10,8 @@ Library           String
 Library           calendar
 Resource          ../../AgentRes.robot
 Resource          ../../api/KefuApi.robot
-Resource          ../../api/TeamApi.robot
-Resource          ../../api/WebGrayApi.robot
+Resource          ../../api/MicroService/Webapp/TeamApi.robot
+Resource          ../../api/MicroService/WebGray/WebGrayApi.robot
 Resource          ../../UIcommons/Utils/baseUtils.robot
 Library           uuid
 Library           urllib

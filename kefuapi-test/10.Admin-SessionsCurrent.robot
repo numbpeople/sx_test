@@ -10,7 +10,7 @@ Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/BaseKeyword.robot
-Resource          api/SessionCurrentApi.robot
+Resource          api/BaseApi/SessionCurrent/SessionCurrent_Api.robot
 Resource          kefutool/Tools-Resource.robot
 
 *** Test Cases ***

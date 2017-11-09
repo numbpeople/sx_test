@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup       set suite variable    ${session}    ${AdminUser.session}
 Resource          AgentRes.robot
-Resource          api/Daas/DaasApi.robot
+Resource          api/MicroService/Daas/DaasApi.robot
 Library           requests
 Library           RequestsLibrary
 

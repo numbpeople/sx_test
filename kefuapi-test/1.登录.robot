@@ -10,11 +10,11 @@ Library           calendar
 Resource          AgentRes.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/KefuApi.robot
-Resource          api/TeamApi.robot
+Resource          api/MicroService/Webapp/TeamApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
 Resource          api/RoutingApi.robot
-Resource          api/WebGrayApi.robot
+Resource          api/MicroService/WebGray/WebGrayApi.robot
 Resource          kefutool/Tools-Resource.robot
 
 *** Test Cases ***

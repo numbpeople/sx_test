@@ -7,8 +7,7 @@ Library           String
 Library           calendar
 Resource          ../../../api/KefuApi.robot
 Resource          ../../../api/RoutingApi.robot
-Resource          ../../../api/SessionCurrentApi.robot
-Resource          ../../../api/SettingsApi.robot
+Resource          ../../../api/BaseApi/Settings/PermissionApi.robot
 
 *** Keywords ***
 Set Roles

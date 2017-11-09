@@ -8,7 +8,7 @@ Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
-Resource          api/OrgApi.robot
+Resource          api/MicroService/Organ/OrgApi.robot
 Resource          api/RoutingApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 

@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/SettingsApi.robot
+Resource          ../../../api/BaseApi/Settings/QuestionnaireApi.robot
 
 *** Keywords ***
 Set Questionnaire

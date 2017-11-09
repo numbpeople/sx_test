@@ -10,7 +10,6 @@ Resource          api/KefuApi.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/BaseKeyword.robot
-Resource          api/SessionCurrentApi.robot
 Resource          api/BaseApi/Channels/AppApi.robot
 Resource          kefutool/Tools-Resource.robot
 Library           lib/KefuUtils.py

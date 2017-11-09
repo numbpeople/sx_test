@@ -10,6 +10,7 @@ Resource          ../../api/KefuApi.robot
 Library           uuid
 Library           urllib
 Resource          Setting/Business-Hours_Common.robot
+Resource          ../../api/BaseApi/SessionCurrent/SessionCurrent_Api.robot
 
 *** Keywords ***
 InitFilterTime

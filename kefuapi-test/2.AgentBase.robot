@@ -10,7 +10,7 @@ Library           urllib
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
-Resource          api/SessionCurrentApi.robot
+Resource          api/BaseApi/SessionCurrent/SessionCurrent_Api.robot
 Resource          api/BaseApi/History/HistoryApi.robot
 Resource          api/BaseApi/Settings/PhrasesApi.robot
 

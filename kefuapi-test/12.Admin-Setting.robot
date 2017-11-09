@@ -11,7 +11,6 @@ Library           String
 Library           uuid
 Library           lib/KefuUtils.py
 Resource          AgentRes.robot
-Resource          api/RoutingApi.robot
 Resource          api/KefuApi.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Resource          commons/admin common/BaseKeyword.robot

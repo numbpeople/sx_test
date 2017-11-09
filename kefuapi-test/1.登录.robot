@@ -13,7 +13,7 @@ Resource          api/KefuApi.robot
 Resource          api/MicroService/Webapp/TeamApi.robot
 Resource          commons/admin common/BaseKeyword.robot
 Library           uuid
-Resource          api/RoutingApi.robot
+Resource          api/BaseApi/Settings/RoutingApi.robot
 Resource          api/MicroService/WebGray/WebGrayApi.robot
 Resource          kefutool/Tools-Resource.robot
 

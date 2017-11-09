@@ -9,7 +9,6 @@ Resource          ../AgentRes.robot
 Resource          ../AgentRes.robot
 Resource          ../api/KefuApi.robot
 Resource          ../commons/admin common/BaseKeyword.robot
-Resource          ../api/RoutingApi.robot
 Resource          ../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../commons/admin common/Members/Agents_Common.robot
 Resource          ../commons/admin common/Channels/App_Common.robot

@@ -7,10 +7,8 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../AgentRes.robot
-Resource          ../api/KefuApi.robot
 Resource          ../commons/admin common/BaseKeyword.robot
 Library           uuid
-Resource          ../api/RoutingApi.robot
 Resource          ../api/BaseApi/Queue/WaitApi.robot
 Library           OperatingSystem
 Resource          ../api/IM/IMApi.robot

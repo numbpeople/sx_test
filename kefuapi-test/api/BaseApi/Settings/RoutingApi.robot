@@ -1,5 +1,3 @@
-*** Variables ***
-
 *** Keywords ***
 /tenants/{tenantId}/options/RoutingPriorityList
     [Arguments]    ${agent}    ${timeout}    ${data}

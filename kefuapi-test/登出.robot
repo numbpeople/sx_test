@@ -9,7 +9,7 @@ Library           String
 Resource          AgentRes.robot
 Resource          api/KefuApi.robot
 Resource          api/MicroService/Organ/OrgApi.robot
-Resource          api/RoutingApi.robot
+Resource          api/BaseApi/Settings/RoutingApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***

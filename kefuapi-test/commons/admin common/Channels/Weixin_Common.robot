@@ -6,6 +6,5 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../../api/KefuApi.robot
-Resource          ../../../api/RoutingApi.robot
 
 *** Keywords ***

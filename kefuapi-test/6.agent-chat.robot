@@ -12,7 +12,6 @@ Library           RequestsLibrary
 Library           String
 Library           urllib
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/Members/AgentQueue_Common.robot
 Resource          kefutool/Tools-Resource.robot
@@ -21,6 +20,7 @@ Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/agent common/Customers/Customers_Common.robot
 Resource          commons/agent common/History/History_Common.robot
 Resource          commons/agent common/Conversations/Conversations_Common.robot
+Resource          api/MicroService/Daas/StatisticsApi.robot
 
 *** Test Cases ***
 从待接入接起会话查看attribute、track、会话信息、历史消息接口并关闭，查看历史会话、访客中心

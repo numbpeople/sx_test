@@ -54,13 +54,11 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v2/orgs/{orgId}/tenants
-    [Arguments]    ${method}    ${agent}    ${OrgFilterEntity}    ${data}    ${timeout}
-    #    [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}
-    #    ${header}=    Create Dictionary    Content-Type=application/json
-    #    ${uri}=    set variable    /v2/orgs/${agent.orgId}/tenants
-    #    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}
-    #    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
-    ...    # timeout=${timeout}
+    [Arguments]    ${method}    ${agent}    ${OrgFilterEntity}    ${data}    ${timeout}    #
+    ...    # [Arguments]    ${agent}    ${OrgFilterEntity}    ${timeout}    #    ${header}=
+    ...    # Create Dictionary    Content-Type=application/json    #    ${uri}=    set variable    /v2/orgs/${agent.orgId}/tenants
+    ...    #    ${params}=    set variable    page=${OrgFilterEntity.page}&size=${OrgFilterEntity.size}    #    Run Keyword And Return
+    ...    # Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    # timeout=${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v2/orgs/${agent.orgId}/tenants
     ${params}    set variable    page=${OrgFilterEntity.page}&pagesize=${OrgFilterEntity.pagesize}&size=${OrgFilterEntity.size}
@@ -86,3 +84,9 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v2/orgs/${OrgAdminUser.orgId}/tenants/${OrgUser1.tenantId}
     Run Keyword And Return    Delete Request    ${OrgAdminUser.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v2/infos
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v2/infos
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}

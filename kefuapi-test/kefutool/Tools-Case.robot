@@ -6,14 +6,14 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Library           uuid
+Library           OperatingSystem
+Library           ../lib/ReadFile.py
 Resource          ../AgentRes.robot
 Resource          ../commons/admin common/BaseKeyword.robot
-Library           uuid
 Resource          ../api/BaseApi/Queue/WaitApi.robot
-Library           OperatingSystem
 Resource          ../api/IM/IMApi.robot
 Resource          ../commons/IM_Common/IM Common.robot
-Library           ../lib/ReadFile.py
 Resource          Tools-Resource.robot
 Resource          ../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../commons/admin common/Members/Agents_Common.robot
@@ -21,6 +21,9 @@ Resource          ../commons/admin common/Channels/App_Common.robot
 Resource          ../commons/agent common/Conversations/Conversations_Common.robot
 Resource          ../commons/agent common/Queue/Queue_Common.robot
 Resource          ../commons/admin common/Setting/Routing_Common.robot
+Resource          ../api/BaseApi/Members/Agent_Api.robot
+Resource          ../api/MicroService/Webapp/InitApi.robot
+Resource          ../api/HomePage/Login/Login_Api.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource

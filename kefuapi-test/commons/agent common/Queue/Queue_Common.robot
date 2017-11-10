@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/BaseApi/Queue/WaitApi.robot
 
 *** Keywords ***
 Access Conversation

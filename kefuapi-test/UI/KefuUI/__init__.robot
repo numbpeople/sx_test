@@ -9,7 +9,6 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../AgentRes.robot
-Resource          ../../api/KefuApi.robot
 Resource          ../../api/MicroService/Webapp/TeamApi.robot
 Resource          ../../api/MicroService/WebGray/WebGrayApi.robot
 Resource          ../../UIcommons/Utils/baseUtils.robot

@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/BaseApi/Customers/Customers_Api.robot
 
 *** Keywords ***
 Search Crm Customers

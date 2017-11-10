@@ -7,15 +7,25 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Library           uuid
 Resource          AgentRes.robot
 Resource          JsonDiff/KefuJsonDiff.robot
-Resource          api/KefuApi.robot
 Resource          api/MicroService/Webapp/TeamApi.robot
 Resource          commons/admin common/BaseKeyword.robot
-Library           uuid
 Resource          api/BaseApi/Settings/RoutingApi.robot
 Resource          api/MicroService/WebGray/WebGrayApi.robot
 Resource          kefutool/Tools-Resource.robot
+Resource          api/IM/IMApi.robot
+Resource          api/BaseApi/Channels/AppApi.robot
+Resource          api/BaseApi/Channels/WebimApi.robot
+Resource          api/BaseApi/Settings/CompanyApi.robot
+Resource          api/BaseApi/Members/Agent_Api.robot
+Resource          api/BaseApi/Members/Queue_Api.robot
+Resource          api/BaseApi/Robot/Robot_Api.robot
+Resource          api/MicroService/Organ/OrgApi.robot
+Resource          api/MicroService/Webapp/InitApi.robot
+Resource          api/MicroService/Webapp/OutDateApi.robot
+Resource          api/HomePage/Login/Login_Api.robot
 
 *** Test Cases ***
 客服登录(/login)

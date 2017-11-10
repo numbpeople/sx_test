@@ -13,7 +13,6 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/Channels/Webim_Common.robot
 Resource          JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot

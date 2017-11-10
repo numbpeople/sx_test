@@ -70,3 +70,16 @@
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
     ...    timeout=${timeout}
+
+/users/{agentId}/feed/info
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /users/${agent.userId}/feed/info
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/users/{agentId}/activities
+    [Arguments]    ${agent}    ${FilterEntity}    ${MsgCenterEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/me/ServiceSessionHistorys
+    ${params}=    set variable    page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&total_pages=${MsgCenterEntity.total_pages}&total_entries=${MsgCenterEntity.total_entries}&status=${MsgCenterEntity.status}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

@@ -1,11 +1,3 @@
-*** Settings ***
-Library           json
-Library           requests
-Library           Collections
-Library           RequestsLibrary
-Library           String
-Library           urllib
-
 *** Keywords ***
 /sessions
     [Arguments]    ${agent}    ${params}    ${timeout}

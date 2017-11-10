@@ -5,7 +5,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/BaseApi/Channels/AppApi.robot
+Resource          ../../../api/BaseApi/Channels/WebimApi.robot
 
 *** Keywords ***
 Get Channels

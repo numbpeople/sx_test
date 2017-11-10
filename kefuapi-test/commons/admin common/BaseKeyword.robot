@@ -5,12 +5,15 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../AgentRes.robot
-Resource          ../../api/KefuApi.robot
 Library           uuid
 Library           urllib
+Resource          ../../AgentRes.robot
 Resource          Setting/Business-Hours_Common.robot
 Resource          ../../api/BaseApi/SessionCurrent/SessionCurrent_Api.robot
+Resource          ../../api/IM/IMApi.robot
+Resource          ../../api/BaseApi/Conversations/ConversationApi.robot
+Resource          ../../api/BaseApi/Queue/WaitApi.robot
+Resource          ../../api/BaseApi/History/HistoryApi.robot
 
 *** Keywords ***
 InitFilterTime

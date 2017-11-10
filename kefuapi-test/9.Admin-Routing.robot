@@ -16,15 +16,15 @@ Library           requests
 Library           Collections
 Library           RequestsLibrary
 Library           String
+Library           uuid
 Resource          AgentRes.robot
 Resource          api/BaseApi/Settings/RoutingApi.robot
-Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
-Library           uuid
 Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          kefutool/Tools-Resource.robot
 Resource          commons/admin common/Robot/Robot_Common.robot
+Resource          api/IM/IMApi.robot
 
 *** Test Cases ***
 渠道指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)

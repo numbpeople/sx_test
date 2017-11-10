@@ -7,7 +7,6 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          api/ThirdPart/ThirdPartApi_Xueersi.robot
 
 *** Test Cases ***

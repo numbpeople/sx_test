@@ -1,8 +1,3 @@
-*** Settings ***
-Library           RequestsLibrary
-
-*** Variables ***
-
 *** Keywords ***
 /v1/webimplugin/settings/template
     [Arguments]    ${agent}    ${timeout}
@@ -151,4 +146,39 @@ Library           RequestsLibrary
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/webimplugin/emoj/tenants/${agent.tenantId}/files
     ${params}=    set variable    _=1508830444702
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/showMessage
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/showMessage
+    ${params}=    set variable    tenantId=${agent.tenantId}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/visitors/password
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/visitors/password
+    ${params}=    set variable    tenantId=${agent.tenantId}&userId=${agent.userId}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/agentnicename/options
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/agentnicename/options
+    ${params}=    set variable    tenantId=${agent.tenantId}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/theme/options
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/theme/options
+    ${params}=    set variable    tenantId=${agent.tenantId}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/notice/options
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/notice/options
+    ${params}=    set variable    tenantId=${agent.tenantId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

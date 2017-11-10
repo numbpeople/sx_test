@@ -8,7 +8,6 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          api/BaseApi/Conversations/AgentsApi.robot
 Resource          api/BaseApi/Conversations/SessionsApi.robot
 Library           uuid

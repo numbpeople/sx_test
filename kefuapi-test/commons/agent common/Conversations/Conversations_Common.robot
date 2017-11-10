@@ -5,8 +5,11 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
 Resource          ../../../api/BaseApi/Conversations/InviteEnquiryApi.robot
+Resource          ../../../api/BaseApi/Conversations/ConversationApi.robot
+Resource          ../../../api/MicroService/Attributes/AttributesApi.robot
+Resource          ../../../api/MicroService/IntegrationSysinfoManage/GrowingIOApi.robot
+Resource          ../../../api/MicroService/Webapp/InitApi.robot
 
 *** Keywords ***
 Get Processing Conversation

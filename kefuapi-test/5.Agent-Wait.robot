@@ -11,7 +11,6 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/Members/AgentQueue_Common.robot
@@ -20,6 +19,7 @@ Resource          commons/admin common/History/History_common.robot
 Resource          kefutool/Tools-Resource.robot
 Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/agent common/Customers/Customers_Common.robot
+Resource          api/BaseApi/Queue/WaitApi.robot
 
 *** Test Cases ***
 关闭待接入列表search出的指定访客

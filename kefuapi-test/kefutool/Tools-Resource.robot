@@ -7,13 +7,16 @@ Library           String
 Library           calendar
 Resource          ../AgentRes.robot
 Resource          ../AgentRes.robot
-Resource          ../api/KefuApi.robot
 Resource          ../commons/admin common/BaseKeyword.robot
 Resource          ../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../commons/admin common/Members/Agents_Common.robot
 Resource          ../commons/admin common/Channels/App_Common.robot
 Resource          ../commons/agent common/Queue/Queue_Common.robot
 Resource          ../commons/agent common/Conversations/Conversations_Common.robot
+Resource          ../api/BaseApi/Members/Queue_Api.robot
+Resource          ../api/MicroService/Webapp/InitApi.robot
+Resource          ../api/BaseApi/Queue/WaitApi.robot
+Resource          ../api/HomePage/Login/Login_Api.robot
 
 *** Keywords ***
 Delete Agentusers

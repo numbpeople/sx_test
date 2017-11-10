@@ -8,7 +8,6 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../AgentRes.robot
-Resource          ../../api/KefuApi.robot
 Resource          ../../JsonDiff/OrgJsonDiff.robot
 Resource          ../../api/MicroService/Organ/OrgApi.robot
 Resource          ../../commons/admin common/BaseKeyword.robot

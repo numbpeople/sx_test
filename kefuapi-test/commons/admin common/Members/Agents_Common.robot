@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../../api/KefuApi.robot
+Resource          ../../../api/BaseApi/Members/Agent_Api.robot
 
 *** Keywords ***
 Get Agents

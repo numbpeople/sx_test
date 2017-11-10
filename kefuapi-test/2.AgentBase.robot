@@ -8,11 +8,33 @@ Library           RequestsLibrary
 Library           String
 Library           urllib
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/BaseApi/SessionCurrent/SessionCurrent_Api.robot
 Resource          api/BaseApi/History/HistoryApi.robot
 Resource          api/BaseApi/Settings/PhrasesApi.robot
+Resource          api/IM/IMApi.robot
+Resource          api/BaseApi/Conversations/ConversationApi.robot
+Resource          api/MicroService/IntegrationSysinfoManage/CheckisnewuserApi.robot
+Resource          api/BaseApi/Channels/AppApi.robot
+Resource          api/BaseApi/Channels/WebimApi.robot
+Resource          api/BaseApi/Channels/WeixinApi.robot
+Resource          api/BaseApi/Channels/WeiboApi.robot
+Resource          api/BaseApi/Conversations/ColleagueApi.robot
+Resource          api/BaseApi/Channels/PhoneApi.robot
+Resource          api/BaseApi/Robot/Robot_Api.robot
+Resource          api/MicroService/Webapp/OutDateApi.robot
+Resource          api/BaseApi/Settings/PhrasesApi.robot
+Resource          api/MicroService/Daas/StatisticsApi.robot
+Resource          api/BaseApi/Search/Search_Api.robot
+Resource          api/BaseApi/Settings/CustomerTagApi.robot
+Resource          api/BaseApi/Channels/PhoneApi.robot
+Resource          api/MicroService/Webapp/InitApi.robot
+Resource          api/BaseApi/Settings/ConversationTagApi.robot
+Resource          api/MicroService/Note/NoteApi.robot
+Resource          api/BaseApi/Queue/WaitApi.robot
+Resource          api/BaseApi/Notification/MsgCenterApi.robot
+Resource          api/MicroService/IntegrationSysinfoManage/CheckisnewuserApi.robot
+Resource          api/BaseApi/Customers/Customers_Api.robot
 
 *** Test Cases ***
 获取机器人推荐状态(/v1/Tenants/{tenantId}/robots/recommendation/status)

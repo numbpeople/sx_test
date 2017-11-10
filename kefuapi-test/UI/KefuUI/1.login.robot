@@ -8,10 +8,10 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../AgentRes.robot
-Resource          ../../api/KefuApi.robot
 Library           uuid
 Library           urllib
 Library           Selenium2Library
+Resource          ../../api/HomePage/Login/Login_Api.robot
 
 *** Test Cases ***
 调度1：坐席登录（可接待状态），关闭机器人，通过绑定该坐席所在技能组的关联发消息，能自动调度

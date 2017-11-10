@@ -5,7 +5,6 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/BaseKeyword.robot

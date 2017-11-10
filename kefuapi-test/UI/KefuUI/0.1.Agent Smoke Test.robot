@@ -6,7 +6,6 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../AgentRes.robot
-Resource          ../../api/KefuApi.robot
 Library           uuid
 Library           urllib
 Library           Selenium2Library

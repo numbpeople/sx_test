@@ -8,12 +8,16 @@ Library           RequestsLibrary
 Library           String
 Library           urllib
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          api/BaseApi/Settings/SingleSignOnApi.robot
 Resource          api/BaseApi/Settings/SystemSettingsApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          api/BaseApi/Settings/WebhookApi.robot
 Resource          api/BaseApi/Settings/SatisfactionSurveyApi.robot
+Resource          api/MicroService/Daas/StatisticsApi.robot
+Resource          api/BaseApi/Review/QualityReviews_Api.robot
+Resource          api/MicroService/IntegrationSysinfoManage/GrowingIOApi.robot
+Resource          api/BaseApi/Customers/Customers_Api.robot
+Resource          api/MicroService/Webapp/OutDateApi.robot
 
 *** Test Cases ***
 获取organ的token值(/v1/organs/{orgName}/token)

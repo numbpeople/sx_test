@@ -7,10 +7,12 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          AgentRes.robot
-Resource          api/KefuApi.robot
 Resource          api/MicroService/Organ/OrgApi.robot
 Resource          api/BaseApi/Settings/RoutingApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
+Resource          api/MicroService/Webapp/LogoutApi.robot
+Resource          api/BaseApi/Members/Agent_Api.robot
+Resource          api/BaseApi/Channels/AppApi.robot
 
 *** Test Cases ***
 客服删除新增加关联、账号和技能组并登出

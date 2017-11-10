@@ -11,3 +11,59 @@
     ${uri}=    set variable    /waitings
     ${params}=    set variable    page=${FilterEntity.page}&size=${FilterEntity.per_page}&originType=${FilterEntity.originType}&beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&visitorName=${FilterEntity.visitorName}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenant/me/Agents/me/UserWaitQueues
+    [Arguments]    ${agent}    ${FilterEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/me/Agents/me/UserWaitQueues
+    ${params}=    set variable    page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&originType=${FilterEntity.originType}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenant/me/Agents/me/UserWaitQueues/search
+    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/me/Agents/me/UserWaitQueues/search
+    ${params}=    set variable    page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&originType=${FilterEntity.originType}&beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&visitorName=${FilterEntity.visitorName}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenant/me/Agents/me/UserWaitQueues/count
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/me/Agents/me/UserWaitQueues/count
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/agents/{agentId}/queues
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/agents/${agent.userId}/queues
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/queues/count
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/queues/count
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/queues
+    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/queues?page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&originType=${FilterEntity.originType}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort
+    [Arguments]    ${agent}    ${waitingId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/queues/waitqueue/waitings/${waitingId}/abort
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/Tenant/me/Agents/me/UserWaitQueues/{waitingId}
+    [Arguments]    ${agent}    ${waitingId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/me/Agents/me/UserWaitQueues/${waitingId}
+    Run Keyword And Return    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/queues/waitings/abort forbidden
+    [Arguments]    ${session}    ${timeout}    ${tenantId}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${tenantId}/queues/waitings/abort
+    Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    headers=${header}    timeout=${timeout}

@@ -9,7 +9,7 @@ Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/BaseApi/Channels/AppApi.robot
-Resource          kefutool/Tools-Resource.robot
+Resource          tool/Tools-Resource.robot
 Library           lib/KefuUtils.py
 
 *** Test Cases ***

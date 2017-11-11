@@ -22,7 +22,7 @@ Resource          api/BaseApi/Settings/RoutingApi.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/admin common/BaseKeyword.robot
-Resource          kefutool/Tools-Resource.robot
+Resource          tool/Tools-Resource.robot
 Resource          commons/admin common/Robot/Robot_Common.robot
 Resource          api/IM/IMApi.robot
 

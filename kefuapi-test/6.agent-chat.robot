@@ -14,7 +14,7 @@ Library           urllib
 Resource          AgentRes.robot
 Resource          JsonDiff/KefuJsonDiff.robot
 Resource          commons/admin common/Members/AgentQueue_Common.robot
-Resource          kefutool/Tools-Resource.robot
+Resource          tool/Tools-Resource.robot
 Resource          commons/admin common/BaseKeyword.robot
 Resource          commons/admin common/Setting/Routing_Common.robot
 Resource          commons/agent common/Customers/Customers_Common.robot

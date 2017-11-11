@@ -13,7 +13,7 @@ Library           lib/KefuUtils.py
 Resource          AgentRes.robot
 Resource          JsonDiff/Channels/RestChannelsJsonDiff.robot
 Resource          commons/admin common/BaseKeyword.robot
-Resource          kefutool/Tools-Resource.robot
+Resource          tool/Tools-Resource.robot
 Resource          commons/admin common/Setting/Business-Hours_Common.robot
 Resource          commons/admin common/Setting/Permissions_Common.robot
 Resource          commons/admin common/Setting/Stickers_Common.robot

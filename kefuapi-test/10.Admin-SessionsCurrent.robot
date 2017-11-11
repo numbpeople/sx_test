@@ -9,7 +9,7 @@ Resource          JsonDiff/KefuJsonDiff.robot
 Library           uuid
 Resource          commons/admin common/BaseKeyword.robot
 Resource          api/BaseApi/SessionCurrent/SessionCurrent_Api.robot
-Resource          kefutool/Tools-Resource.robot
+Resource          tool/Tools-Resource.robot
 
 *** Test Cases ***
 查询当前会话(/v1/tenants/{tenantId}/servicesessioncurrents)

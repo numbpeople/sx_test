@@ -1,7 +1,7 @@
 *** Variables ***
-${kefuurl}        http://xw-kefu.bestwehotel.com
+${kefuurl}        http://sandbox.kefu.easemob.com
 ${orgurl}         http://vpc10.kefu.easemob.com:8000
-&{AdminUser}      username=test@qq.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+&{AdminUser}      username=0216l@t.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome    language=en_US    graylist=
 &{OrgAdminUser}    username=admin@org.com    password=ORGadmin    orgId=1034    cookies=    session=    userId=    nicename=
 ...               browser=chrome

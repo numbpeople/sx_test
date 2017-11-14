@@ -10,7 +10,7 @@
     ...    Request Method:GET
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /tenants/${agent.tenantId}/projects
-    ${params}=    set variable    tenantId=${agent.tenantId}&userId=${agent.userId}&userRoles=${agent.roles}&_=1487571783832
+    ${params}=    set variable    tenantId=${agent.tenantId}&userId=${agent.userId}&userRoles=${agent.roles}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /tenants/{tenantId}/projects/{projectId}/status

@@ -14,6 +14,6 @@ Setup Init Data
     agentUserLanguage Init    #坐席登录后，获取坐席的当前浏览器语言
     Create Channel Init    #快速创建关联后，获取关联的appKey、clientId、clientSecret、im号等信息
     TargetChannels Init    #获取租户下的关联列表，如：token、restserver、xmppserver、Im登录的restSession
-    Options List Init    #获取租户的开关信息，如optionName和optionValue
+    Comment    Options List Init    #获取租户的开关信息，如optionName和optionValue
     UserChannelSwitches Init    #获取机器人渠道开关信息
     Channel Data Init    #获取关联的数据，包括：关联的appKey、clientId、clientSecret、im号等信息外，加入绑定的queueId和queueName

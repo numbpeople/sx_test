@@ -7,6 +7,7 @@ Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/Channels/AppApi.robot
 Resource          ../../../api/BaseApi/Channels/WebimApi.robot
+Resource          ../BaseKeyword.robot
 
 *** Keywords ***
 Get Channels

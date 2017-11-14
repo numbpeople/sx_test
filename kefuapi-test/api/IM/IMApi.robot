@@ -14,12 +14,6 @@ Library           urllib
     ${uri}=    set variable    /${rest.orgName}/${rest.appName}/chatfiles
     Run Keyword And Return    Post Request    ${rest.session}    ${uri}    files=${files}    headers=${header}    timeout=${timeout}
 
-/v1/tenantapp/imUser
-    [Arguments]    ${agent}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/tenantapp/imUser
-    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
-
 get token by credentials
     [Arguments]    ${session}    ${channel}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

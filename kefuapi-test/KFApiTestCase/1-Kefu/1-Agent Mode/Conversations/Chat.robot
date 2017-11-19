@@ -295,3 +295,11 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
     ${j}    to json    ${resp.content}
     Run Keyword If    ${j}==[]    log    没有访客列表
     ...    ELSE    Should Be Equal    '${j[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    获取访客列表失败
+
+根据会话Id获取official-accounts信息(/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/official-accounts)
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #获取official-accounts信息
+    ${j}=    Get Official-accounts    ${AdminUser}    ${sessionInfo.sessionServiceId}
+    should be equal    ${j['status']}    OK    返回值中status值不正确：${j}
+    should be equal    ${j['entity']['type']}    SYSTEM    返回值中type值不正确：${j}

@@ -14,6 +14,7 @@ Resource          ../../api/IM/IMApi.robot
 Resource          ../../api/BaseApi/Conversations/ConversationApi.robot
 Resource          ../../api/BaseApi/Queue/WaitApi.robot
 Resource          ../../api/BaseApi/History/HistoryApi.robot
+Resource          ../IM_Common/IM Common.robot
 
 *** Keywords ***
 InitFilterTime

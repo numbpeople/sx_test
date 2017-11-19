@@ -74,3 +74,10 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /Tenants/${agent.tenantId}/Agents/${agent.userId}/PreSchedule/Ack?answer=true
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/expire_info
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/expire_info
+    ${params}    set variable    _=1510727292732
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

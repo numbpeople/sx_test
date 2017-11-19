@@ -1,5 +1,6 @@
 *** Settings ***
 Suite Setup       Setup Init Data
+Suite Teardown    Teardown Data
 Force Tags        base
 Library           json
 Library           requests

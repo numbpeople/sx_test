@@ -9,6 +9,6 @@ Conversation Setup
 
 Conversation Teardown
     [Documentation]    删除创建的坐席、关联、技能组
-    Delete Agentusers
-    Delete Queues
-    Delete Channels
+    Delete Agentusers    #删除坐席
+    Delete Queues    #删除技能组
+    Delete Channels    #删除关联

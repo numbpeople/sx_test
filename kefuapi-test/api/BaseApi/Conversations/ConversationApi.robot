@@ -24,3 +24,10 @@
     ${uri}=    set variable    /v1/Tenants/me/Agents/me/customInfoParam
     ${params}=    set variable    visitorId=${visitorId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/official-accounts
+    [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/official-accounts
+    ${params}=    set variable    _=1510727292733
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

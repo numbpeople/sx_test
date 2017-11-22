@@ -253,3 +253,11 @@ Set Non-work Day
     ${data}    set variable    [{"name":"今天放假","beginDate":"${currentdate}","endDate":"${currentdate}"}]
     ${j}=    Holidays    ${agent}    ${scheduleId}    put    ${data}
     should be equal    ${j['status']}    OK
+
+Clear Dictionary
+    [Arguments]    &{dict}
+    [Documentation]    字典中所有value置为空
+    ${keys}    Get Dictionary Keys    ${dict}
+    :FOR    ${i}    IN    @{keys}
+    \    Set to Dictionary    ${dict}    ${i}=${empty}
+    Return From Keyword    ${dict}

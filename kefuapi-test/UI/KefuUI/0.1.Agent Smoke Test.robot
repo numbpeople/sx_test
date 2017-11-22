@@ -24,8 +24,11 @@ Resource          ../../UIcommons/Kefu/exportsres.robot
 
 *** Test Cases ***
 查看会话列表
-    go to    ${kefuurl}${chatUri}
-    Check Basic Chat Element    ${uiagent.language}
+    ${t}    Clear Dictionary    &{ChatListSelected}
+    ${k}    Get Dictionary Keys    ${t}
+    Update Tab Selector    &{ChatListSelected}
+    Comment    go to    ${kefuurl}${chatUri}
+    Comment    Check Basic Chat Element    ${uiagent.language}
 
 查看待接入列表
     go to    ${kefuurl}${waitUri}

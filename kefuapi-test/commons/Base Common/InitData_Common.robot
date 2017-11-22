@@ -134,6 +134,8 @@ Create Channel Init
     ${j}    to json    ${resp.content}
     set to dictionary    ${RestEntity}    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}    clientSecret=${j['entity']['clientSecret']}
     ...    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}    agentQueueId=${j['entity']['agentQueueId']}    robotId=${j['entity']['robotId']}
+    Comment    set to dictionary    ${RestEntity}    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}
+    ...    clientSecret=${j['entity']['clientSecret']}    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}
     #查询关联id
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${tadmin}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -158,6 +160,7 @@ TargetChannels Init
     ${j}    to json    ${resp.content}
     ${temp}    to json    ${targetchannelJson}
     set to dictionary    ${temp}    tenantName=${TenantsMeJson['name']}    tenantAvatar=${TenantsMeJson['avatar']}    tenantLogo=${TenantsMeJson['logo']}
+    Comment    set to dictionary    ${temp}    tenantName=${TenantsMeJson['name']}    tenantAvatar=${TenantsMeJson['avatar']}    tenantLogo=${TenantsMeJson['logo']}
     : FOR    ${d}    IN    @{j}
     \    ${r}=    targetchannelJsonDiff    ${temp}    ${d}
     \    Should Be True    ${r['ValidJson']}    webim获取关联信息失败：${r}

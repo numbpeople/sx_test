@@ -13,7 +13,6 @@ Resource          ../AgentRes.robot
 Resource          ../commons/admin common/BaseKeyword.robot
 Resource          ../api/BaseApi/Queue/WaitApi.robot
 Resource          ../api/IM/IMApi.robot
-Resource          ../commons/IM_Common/IM Common.robot
 Resource          Tools-Resource.robot
 Resource          ../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../commons/admin common/Members/Agents_Common.robot
@@ -120,7 +119,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${msgentity}=    create dictionary    msg=转人工    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
-    \    sleep    250ms
+    \    sleep    150ms
 
 批量创建会话、接入
     Create Session    testsession    ${kefuurl}
@@ -391,7 +390,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${j}    to json    ${resp.content}
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
-    : FOR    ${t}    IN RANGE    200
+    : FOR    ${t}    IN RANGE    50    100
     \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}${t}    password=test2015    maxServiceSessionCount=10    tenantId=${AdminUser.tenantId}
     \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
     \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}

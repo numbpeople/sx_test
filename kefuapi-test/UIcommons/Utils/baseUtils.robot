@@ -77,3 +77,10 @@ Check Base Module
     log    ${url}
     go to    ${url}
     Check Base Elements    ${agent.language}    ${json['elements']}
+
+Update Tab Selector
+    [Arguments]    ${key}    &{tab}
+    :FOR    ${i}    IN    ${tab}
+    \    ${value}    Get Dictionary Values    ${i}
+    \    \    Run Keyword If
+    \    log    ${value}

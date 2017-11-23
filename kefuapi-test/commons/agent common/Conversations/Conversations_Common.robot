@@ -7,12 +7,14 @@ Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/Conversations/InviteEnquiryApi.robot
 Resource          ../../../api/BaseApi/Conversations/ConversationApi.robot
-Resource          ../../../api/MicroService/Attributes/AttributesApi.robot
-Resource          ../../../api/MicroService/IntegrationSysinfoManage/GrowingIOApi.robot
-Resource          ../../../api/MicroService/Webapp/InitApi.robot
 Resource          ../../admin common/Members/AgentQueue_Common.robot
 Resource          ../../admin common/Setting/Routing_Common.robot
 Resource          ../../admin common/BaseKeyword.robot
+Resource          ../../../api/MicroService/Attributes/AttributesApi.robot
+Resource          ../../../api/MicroService/IntegrationSysinfoManage/GrowingIOApi.robot
+Resource          ../../../api/MicroService/Webapp/InitApi.robot
+Resource          ../../../api/MicroService/Webapp/WebappApi.robot
+Resource          ../../../api/MicroService/Enquiry/EnquiryApi.robot
 Resource          ../Queue/Queue_Common.robot
 
 *** Keywords ***
@@ -203,3 +205,40 @@ Create Processiong Conversation
     Should Be Equal    ${a['techChannelId']}    ${restentity.channelId}    关联id不正确：${a}
     set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}
     Return From Keyword    ${GuestEntity}
+
+Get EnquiryStatus
+    [Arguments]    ${agent}    ${serviceSessionId}
+    [Documentation]    查询会话的满意度评价信息
+    #查询会话的满意度评价信息
+    ${resp}=    /tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus    ${agent}    ${serviceSessionId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Get ServiceSessionSummaryResults
+    [Arguments]    ${agent}    ${serviceSessionId}
+    [Documentation]    查询会话标签信息
+    #查询会话标签信息
+    ${resp}=    /v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults    ${agent}    ${serviceSessionId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Get Comment
+    [Arguments]    ${agent}    ${serviceSessionId}
+    [Documentation]    查询会话备注信息
+    #查询会话备注信息
+    ${resp}=    /tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment    ${agent}    ${serviceSessionId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    #如果请求结果为空，则返回空，不为空，返回数据
+    Run Keyword And Return If    '${resp.content}' != '${EMPTY}'    to json    ${resp.content}
+    Return From Keyword    {}
+
+Read Message
+    [Arguments]    ${agent}    ${serviceSessionId}    ${data}
+    [Documentation]    将消息标记为已读
+    #将消息标记为已读
+    ${resp}=    /v1/tenants/{tenantId}/sessions/{serviceSessionId}/messages/read    ${agent}    ${serviceSessionId}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}

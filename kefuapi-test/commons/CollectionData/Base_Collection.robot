@@ -1,6 +1,5 @@
 *** Settings ***
 Resource          ../Base Common/InitData_Common.robot
-Resource          Agent Mode/Conversation_Collection.robot
 
 *** Keywords ***
 Setup Init Data
@@ -18,7 +17,8 @@ Setup Init Data
     Comment    Options List Init    #获取租户的开关信息，如optionName和optionValue
     UserChannelSwitches Init    #获取机器人渠道开关信息
     Channel Data Init    #获取关联的数据，包括：关联的appKey、clientId、clientSecret、im号等信息外，加入绑定的queueId和queueName
+    Create Channel    #快速创建一个关联，以便于全局使用
 
 Teardown Data
     [Documentation]    清除创建了的坐席、技能组、关联等信息
-    Conversation Teardown    #清除创建的多余数据
+    Clear Data    #清除创建的多余数据

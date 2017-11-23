@@ -219,3 +219,8 @@ Channel Data Init
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     set to dictionary    ${RestEntity}    queueId=${AgentQueue1.queueId}    queueName=${AgentQueue1.queueName}
     set global variable    ${RestEntity}    ${RestEntity}
+
+Clear Data
+    Delete Agentusers    #删除坐席
+    Delete Queues    #删除技能组
+    Delete Channels    #删除关联

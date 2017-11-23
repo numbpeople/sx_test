@@ -18,7 +18,7 @@ Resource          ../../../../tool/Tools-Resource.robot
     #添加rest channel
     ${data}    create dictionary    name=测试rest    callbackUrl=http://www.test.com
     ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    添加rest channel返回不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    200    添加rest channel返回不正确的状态码:${resp.status_code},${resp.content}
     ${j}    to json    ${resp.content}
     ${temp}    to json    ${PostRestChannelJson}
     set to dictionary    ${temp['entity']}    name=${data.name}    callbackUrl=${data.callbackUrl}    tenantId=${AdminUser.tenantId}

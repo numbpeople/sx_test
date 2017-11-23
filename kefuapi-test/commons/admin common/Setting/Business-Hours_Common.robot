@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Resource          ../../../AgentRes.robot
 Resource          ../../../api/BaseApi/Settings/SystemSettingsApi.robot
 Resource          ../../../api/BaseApi/Settings/BusinessHoursApi.robot
 

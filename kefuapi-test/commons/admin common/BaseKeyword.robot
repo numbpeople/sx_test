@@ -205,7 +205,7 @@ Send Message
     ...    ${restentity} ${guestentity} ${msgentity}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     ${resp}=    Send Msg    ${rest}    ${guest}    ${msg}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}, ${resp.content}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${j['data']['${rest.serviceEaseMobIMNumber}']}    success    发送消息失败
 

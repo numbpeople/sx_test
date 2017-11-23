@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Resource          ../../../AgentRes.robot
 Resource          ../../../api/MicroService/Webapp/InitApi.robot
 
 *** Keywords ***

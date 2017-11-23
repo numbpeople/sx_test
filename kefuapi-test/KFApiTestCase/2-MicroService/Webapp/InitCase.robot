@@ -1,7 +1,7 @@
 *** Settings ***
 Force Tags
 Resource          ../../../AgentRes.robot
-Resource          ../../../commons/MicroService/Webapp/Init_Common.robot
+Resource          ../../../commons/admin common/Setting/Company_Common.robot
 
 *** Test Cases ***
 查看租户过期时间(/v1/tenants/{tenantId}/expire_info)

@@ -26,6 +26,25 @@ Add Agentqueue
     set to dictionary    ${agentqueue}    queueId=${j['queueId']}
     Return From Keyword    ${agentqueue}
 
+Create Agentqueue
+    [Arguments]    ${queueName}
+    [Documentation]    创建一个技能组，返回该技能组的id和名字
+    ...
+    ...    describtion：参数技能组名字
+    ...
+    ...    返回值：
+    ...
+    ...    queueId、queueName
+    #添加技能组
+    ${data}=    set variable    {"queueName":"${queueName}"}
+    ${agentqueue}    create dictionary    queueName=${queueName}
+    ${resp}=    /v1/AgentQueue    post    ${AdminUser}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.content}
+    set to dictionary    ${agentqueue}    queueId=${j['queueId']}
+    Return From Keyword    ${agentqueue}
+
 Set Queue Agents
     [Arguments]    ${agent}    ${userIds}    ${queueId}
     [Documentation]    设置技能组坐席列表
@@ -59,3 +78,12 @@ Get Agentqueue
     \    log    ${queueName}
     \    set to dictionary    ${queueList}    ${queueName}=${j[${i}]['agentQueue']['queueId']}
     Return From Keyword    ${queueList}
+
+Get Time-Options
+    [Arguments]    ${agent}    ${queueId}
+    [Documentation]    获取技能组时间和开关设置
+    #获取技能组时间和开关设置
+    ${resp}=    /v1/tenants/{tenantId}/skillgroups/{queueId}/time-options    ${agent}    ${queueId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}

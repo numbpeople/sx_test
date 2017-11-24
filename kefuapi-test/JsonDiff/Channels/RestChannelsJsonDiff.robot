@@ -1,6 +1,7 @@
 *** Variables ***
 ${PostRestChannelJson}    {"status":"OK","entity":{"tenantId":5833,"channelId":29,"name":"fs","description":null,"clientId":"e06021c9-edc3-423e-aa94-a22a33d7ed41","clientSecret":"dce9a4fa6c8a4fba6ede54a1b480c7a4","postMessageUrl":"/api/tenants/5833/rest/channels/29/messages","callbackUrl":"http://www.test.com","agentQueueId":null,"createDateTime":1496737508258}}
 ${PutRestChannelJson}    {"status":"OK","entity":{"tenantId":5833,"channelId":29,"name":"fs","description":null,"clientId":"e06021c9-edc3-423e-aa94-a22a33d7ed41","clientSecret":"dce9a4fa6c8a4fba6ede54a1b480c7a4","postMessageUrl":"/api/tenants/5833/rest/channels/29/messages","callbackUrl":"http://www.test.com","agentQueueId":null,"createDateTime":1496737508258}}
+${RestChannelJson}    ${EMPTY}
 
 *** Keywords ***
 PostRestChannelJsonDiff

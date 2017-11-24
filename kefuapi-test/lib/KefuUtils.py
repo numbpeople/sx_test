@@ -4,12 +4,12 @@ import base64
 
 
 
-def GenerateRestSignature(secret, verb, path, expires, content):
+def GenerateRestSignature(secret, path, content,expires='-1',verb='POST'):
     m = hashlib.md5()
     m.update(content)
 
-    message = bytes(verb+"\n"+path+"\n"+expires+"\n"+m.hexdigest()).encode('utf-8')
-    secret = bytes("dce9a4fa6c8a4fba6ede54a1b480c7a4").encode('utf-8')
+    msg = bytes(verb+"\n"+path+"\n"+expires+"\n"+m.hexdigest()).encode('utf-8')
+    s = bytes(secret).encode('utf-8')
 
-    return base64.b64encode(hmac.new(secret, message, digestmod=hashlib.sha256).digest())
+    return base64.b64encode(hmac.new(s, msg, digestmod=hashlib.sha256).digest())
    

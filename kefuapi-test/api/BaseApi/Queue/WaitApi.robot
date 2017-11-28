@@ -6,10 +6,10 @@
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /waitings
-    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${range}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /waitings
-    ${params}=    set variable    page=${FilterEntity.page}&size=${FilterEntity.per_page}&originType=${FilterEntity.originType}&beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&visitorName=${FilterEntity.visitorName}
+    ${params}=    set variable    page=${filter.page}&size=${filter.per_page}&originType=${filter.originType}&beginDate=${range.beginDate}&endDate=${range.endDate}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&visitorName=${filter.visitorName}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenant/me/Agents/me/UserWaitQueues
@@ -20,10 +20,10 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenant/me/Agents/me/UserWaitQueues/search
-    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenant/me/Agents/me/UserWaitQueues/search
-    ${params}=    set variable    page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&originType=${FilterEntity.originType}&beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&visitorName=${FilterEntity.visitorName}
+    ${params}=    set variable    page=${filter.page}&per_page=${filter.per_page}&originType=${filter.originType}&beginDate=${data.beginDate}&endDate=${data.endDate}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&visitorName=${filter.visitorName}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenant/me/Agents/me/UserWaitQueues/count

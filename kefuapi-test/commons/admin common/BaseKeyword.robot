@@ -125,6 +125,8 @@ Close Waiting Conversation
     #清理待接入会话
     ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
 
 Close Processing Conversation
     [Arguments]    ${sessionServiceId}    ${userId}

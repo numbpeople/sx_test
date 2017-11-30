@@ -34,3 +34,10 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     #获取访客的筛选filters
     ${j}=    Get Visitor Filters    ${AdminUser}    ${sessionInfo.userId}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
+
+获取访客的黑名单列表(/v1/tenants/{tenantId}/visitors/{visitorUserId}/blacklists)
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #获取访客黑名单列表
+    ${j}    Get Visitor Blacklists    ${AdminUser}    ${sessionInfo.userId}
+    Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}

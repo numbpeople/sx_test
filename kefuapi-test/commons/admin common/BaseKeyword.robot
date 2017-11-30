@@ -83,25 +83,17 @@ Create Agent TxtMsg
     ${uuid}=    Uuid1
     Return From Keyword    {"msg":"${msg}","type":"txt","ext":{"weichat":{"msgId":"${uuid}","originType":null,"visitor":null,"agent":null,"queueId":null,"queueName":null,"agentUsername":null,"ctrlType":null,"ctrlArgs":null,"event":null,"metadata":null,"callcenter":null,"language":null,"service_session":null,"html_safe_body":{"type":"txt","msg":""},"msg_id_for_ack":null,"ack_for_msg_id":null}}}
 
-Close All Session In Waitlist
-    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
-    #查询待接入总数
-    set to dictionary    ${FilterEntity}    originType=${empty}    techChannelId=${empty}    techChannelType=${empty}    visitorName=${empty}
-    set to dictionary    ${DateRange}    beginDate=${empty}    endDate=${empty}
-    ${resp}=    /v1/Tenant/me/Agents/me/UserWaitQueues/search    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
-    log    ${j}
-
 Close Conversations By ChannelId
     [Arguments]    ${techChannelId}    ${techChannelType}=easemob
     [Documentation]    根据channelId查找所有processing或wait的会话
     #查询会话
-    set to dictionary    ${FilterEntity}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait    per_page=150
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    set to dictionary    ${filter}    isAgent=false    techChannelId=${techChannelId}    techChannelType=${techChannelType}    state=Processing%2CWait    per_page=150
     ...    visitorName=${EMPTY}    sortField=startDateTime
-    set to dictionary    ${DateRange}    beginDate=${EMPTY}    endDate=${EMPTY}
+    set to dictionary    ${range}    beginDate=${EMPTY}    endDate=${EMPTY}
     #根据channelId查询会话
-    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
+    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${filter}    ${range}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     ${listlength}=    set variable    ${j['total_entries']}
@@ -260,6 +252,6 @@ Clear Dictionary
     [Arguments]    &{dict}
     [Documentation]    字典中所有value置为空
     ${keys}    Get Dictionary Keys    ${dict}
-    :FOR    ${i}    IN    @{keys}
+    : FOR    ${i}    IN    @{keys}
     \    Set to Dictionary    ${dict}    ${i}=${empty}
     Return From Keyword    ${dict}

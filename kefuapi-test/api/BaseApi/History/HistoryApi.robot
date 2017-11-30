@@ -1,19 +1,19 @@
 *** Keywords ***
 /tenants/{tenantId}/serviceSessionHistoryFiles
-    [Arguments]    ${method}    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}=
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /tenants/${agent.tenantId}/serviceSessionHistoryFiles
-    ${params}=    set variable    beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&customerName=${FilterEntity.customerName}&sortOrder=${FilterEntity.sortOrder}&state=${FilterEntity.state}&originType=${FilterEntity.originType}&transfered=${FilterEntity.transfered}&fromAgentCallback=${FilterEntity.fromAgentCallback}&summaryIds=${FilterEntity.summaryIds}&queueId=${FilterEntity.queueId}&isAgent=${FilterEntity.isAgent}&withMessage=${FilterEntity.withMessage}
-    ${rs}=    Run Keyword If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}
+    ${params}=    set variable    beginDate=${range.beginDate}&endDate=${range.endDate}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&customerName=${filter.customerName}&sortOrder=${filter.sortOrder}&state=${filter.state}&originType=${filter.originType}&transfered=${filter.transfered}&fromAgentCallback=${filter.fromAgentCallback}&summaryIds=${filter.summaryIds}&queueId=${filter.queueId}&isAgent=${filter.isAgent}&withMessage=${filter.withMessage}
+    Run Keyword If    '${method}'=='get'    set suite variable    ${params}    agentUserId=${userId}&page=0&size=15&_=1511953848655
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
-    ...    ELSE IF    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
-    Return From Keyword    ${rs}
 
 /v1/Tenant/me/ServiceSessionHistorys
-    [Arguments]    ${agent}    ${FilterEntity}    ${DateRange}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${range}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenant/me/ServiceSessionHistorys
-    ${params}=    set variable    page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&state=${FilterEntity.state}&isAgent=${FilterEntity.isAgent}&originType=${FilterEntity.originType}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&visitorName=${FilterEntity.visitorName}&summaryIds=${FilterEntity.summaryIds}&sortOrder=${FilterEntity.sortOrder}&stopDateFrom=${DateRange.stopDateFrom}&stopDateTo=${DateRange.stopDateTo}&sortField=${FilterEntity.sortField}
-    run keyword if    '${FilterEntity.sortField}' == 'startDateTime'    Set Suite Variable    ${params}    page=${FilterEntity.page}&per_page=${FilterEntity.per_page}&state=${FilterEntity.state}&isAgent=${FilterEntity.isAgent}&originType=${FilterEntity.originType}&techChannelId=${FilterEntity.techChannelId}&techChannelType=${FilterEntity.techChannelType}&visitorName=${FilterEntity.visitorName}&summaryIds=${FilterEntity.summaryIds}&sortOrder=${FilterEntity.sortOrder}&beginDate=${DateRange.beginDate}&endDate=${DateRange.endDate}&sortField=${FilterEntity.sortField}
+    ${params}=    set variable    page=${filter.page}&per_page=${filter.per_page}&state=${filter.state}&isAgent=${filter.isAgent}&originType=${filter.originType}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&visitorName=${filter.visitorName}&summaryIds=${filter.summaryIds}&sortOrder=${filter.sortOrder}&stopDateFrom=${range.stopDateFrom}&stopDateTo=${range.stopDateTo}&sortField=${filter.sortField}
+    run keyword if    '${filter.sortField}' == 'startDateTime'    Set Suite Variable    ${params}    page=${filter.page}&per_page=${filter.per_page}&state=${filter.state}&isAgent=${filter.isAgent}&originType=${filter.originType}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&visitorName=${filter.visitorName}&summaryIds=${filter.summaryIds}&sortOrder=${filter.sortOrder}&beginDate=${range.beginDate}&endDate=${range.endDate}&sortField=${filter.sortField}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

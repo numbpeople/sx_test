@@ -33,7 +33,7 @@ Login Init
     ${resp}=    /login    adminsession    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
     Should Not Be Empty    ${resp.content}    返回值为空
-    ${j}    to json    ${resp.content}
+    ${j}    to json    ${resp.text}
     ${temp}    to json    ${loginJson}
     set to dictionary    ${temp['agentUser']}    username=${AdminUser.username}    onLineState=${AdminUser.status}    state=${AdminUser.status}    currentOnLineState=${AdminUser.status}
     ${r}=    loginJsonDiff    ${temp}    ${j}
@@ -44,7 +44,6 @@ Login Init
     set global variable    ${AdminUser}    ${AdminUser}
     ${DR}=    InitFilterTime
     set global variable    ${DateRange}    ${DR}
-    #Close All Session In Waitlist    ${AdminUser}    ${FilterEntity}    ${DateRange}    ${timeout}
 
 Initdata Init
     [Documentation]    获取租户的initdata数据，存储角色、sessionid、resource数据

@@ -27,3 +27,18 @@ Get History
     \    Exit For Loop If    ${j['total_entries']} > 0
     \    sleep    ${delay}
     Return From Keyword    ${j}
+
+Export My History
+    [Arguments]    ${method}    ${agent}    ${filter}    ${range}
+    [Documentation]    导出自己的历史会话数据
+    ...
+    ...    Arguments：
+    ...
+    ...    ${method} | ${agent} | ${filter} | ${date}
+    ...
+    ...    Return：
+    ...
+    ...    请求结果：${j}
+    #导出自己的历史会话数据
+    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}:${resp.text}

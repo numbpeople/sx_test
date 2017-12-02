@@ -58,3 +58,4 @@ ${SeleniumTimeout}    20
 @{graylist}       base
 &{NotesEntity}    ProjectId=    OpenNum=    PendingNum=    SolvedNum=    AllNum=    UnassignedNum=    CustomNum=
 ...               NotesId=
+&{msgGateway}     im=    secondGateway=    rest=    # 设置发送消息的方式，如果im设置为1，则使用im，以此类推如果secondGateway设置1，则使用第二通道发送消息，等等

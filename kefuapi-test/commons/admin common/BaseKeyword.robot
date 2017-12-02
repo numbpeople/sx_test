@@ -15,6 +15,7 @@ Resource          ../../api/BaseApi/Conversations/ConversationApi.robot
 Resource          ../../api/BaseApi/Queue/WaitApi.robot
 Resource          ../../api/BaseApi/History/HistoryApi.robot
 Resource          ../IM_Common/IM Common.robot
+Resource          ../Base Common/SecondGateway_Common.robot
 
 *** Keywords ***
 InitFilterTime
@@ -197,6 +198,8 @@ Send Message
     ...    Arguments：
     ...
     ...    ${restentity} ${guestentity} ${msgentity}
+    #增加使用第二通道判断
+    Run Keyword And Return If    '${msgGateway.secondGateway}' == '1'    Send SecondGateway Msg    ${AdminUser}    ${rest}    ${guest}    ${msg}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     ${resp}=    Send Msg    ${rest}    ${guest}    ${msg}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}, ${resp.content}

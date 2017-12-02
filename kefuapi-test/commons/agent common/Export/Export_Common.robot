@@ -6,6 +6,7 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/History/HistoryApi.robot
+Resource          ../../../api/BaseApi/Export/Export_Api.robot
 
 *** Variables ***
 ${diffCreatetimeValue}    10
@@ -28,6 +29,7 @@ Diff CreateTime Value
     : FOR    ${i}    IN    @{j['content']}
     \    @{fileCreateTime}    get time    year month day hour min sec    ${i['createTime']}
     \    ${diffValue}    Evaluate    ${fileCreateTime[5]} - ${localTime[5]}
+    \    ${diffValue}    convert to integer    ${diffValue}
     \    Run Keyword If    '${localTime[0]}'=='${fileCreateTime[0]}' and '${localTime[1]}'=='${fileCreateTime[1]}' and '${localTime[2]}'=='${fileCreateTime[2]}' and '${localTime[3]}'=='${fileCreateTime[3]}' and '${localTime[4]}'=='${fileCreateTime[4]}'    Return From Keyword If    ${diffValue} < ${diffCreatetimeValue}    ${i}
     Return From Keyword    {}
 
@@ -46,3 +48,12 @@ Get My Export And Check Status
     \    Exit For Loop If    '${value['status']}' == 'Finished'
     \    sleep    ${delay}
     Return From Keyword    ${value}
+
+Set Download Records
+    [Arguments]    ${method}    ${agent}    ${serviceSessionHistoryFileId}
+    [Documentation]    查询下载记录情况
+    #查询下载记录情况
+    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles/{serviceSessionHistoryFileId}/downloadDetails    ${method}    ${agent}    ${serviceSessionHistoryFileId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

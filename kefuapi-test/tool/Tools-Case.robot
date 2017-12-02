@@ -23,6 +23,7 @@ Resource          ../commons/admin common/Setting/Routing_Common.robot
 Resource          ../api/BaseApi/Members/Agent_Api.robot
 Resource          ../api/MicroService/Webapp/InitApi.robot
 Resource          ../api/HomePage/Login/Login_Api.robot
+Resource          ../commons/Base Common/SecondGateway_Common.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource
@@ -922,3 +923,21 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    200ms
+
+第二通道发消息
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #初始化参数：消息、渠道信息、客户信息
+    ${originType}    set variable    weixin
+    ${curTime}    get time    epoch
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
+    #使用第二通道发送消息
+    ${j}    Send SecondGateway Msg    ${AdminUser}    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    should be equal    ${j['status']}    OK

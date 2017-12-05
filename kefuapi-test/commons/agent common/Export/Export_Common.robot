@@ -28,8 +28,9 @@ Diff CreateTime Value
     #判断导出文件的时间，比较当前本地时间和接口返回的createTime相差秒数不小于10，即返回true，否则返回false
     : FOR    ${i}    IN    @{j['content']}
     \    @{fileCreateTime}    get time    year month day hour min sec    ${i['createTime']}
-    \    ${diffValue}    Evaluate    ${fileCreateTime[5]} - ${localTime[5]}
-    \    ${diffValue}    convert to integer    ${diffValue}
+    \    ${diffValue}    Evaluate    ${${fileCreateTime[5]}} - ${${localTime[5]}}    #获取差值
+    \    ${diffValue}    set variable    ${diffValue.__abs__()}    #取差值的绝对值
+    \    #判断创建时间差值是否在规定范围内
     \    Run Keyword If    '${localTime[0]}'=='${fileCreateTime[0]}' and '${localTime[1]}'=='${fileCreateTime[1]}' and '${localTime[2]}'=='${fileCreateTime[2]}' and '${localTime[3]}'=='${fileCreateTime[3]}' and '${localTime[4]}'=='${fileCreateTime[4]}'    Return From Keyword If    ${diffValue} < ${diffCreatetimeValue}    ${i}
     Return From Keyword    {}
 

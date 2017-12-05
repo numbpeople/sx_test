@@ -98,10 +98,12 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
     Set RoutingPriorityList    入口    渠道    关联
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
-    set to dictionary    ${FilterEntity}    visitorName=${GuestEntity.userName}
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    set to dictionary    ${filter}    visitorName=${GuestEntity.userName}
     #根据访客昵称查询待接入列表
-    set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
-    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Comment    set to dictionary    ${filter}    visitorName=${guestentity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${range}
     ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${j}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
@@ -149,20 +151,20 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
     #关闭会话
     Stop Processing Conversation    ${AdminUser}    ${GuestEntity.userId}    ${GuestEntity.sessionServiceId}
     #获取管理员模式下客户中心
-    set to dictionary    ${FilterEntity}    page=0
-    ${j}    Get Admin Customers    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${filter}    page=0
+    ${j}    Get Admin Customers    ${AdminUser}    ${filter}    ${range}
     Should Be True    ${j['numberOfElements']} ==1    访客中心人数不正确：${j}
     #获取坐席模式下客户中心
-    ${j}    Get Agent Customers    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${j}    Get Agent Customers    ${AdminUser}    ${filter}    ${range}
     Should Be True    ${j['numberOfElements']} ==1    访客中心人数不正确：${j}
-    set to dictionary    ${FilterEntity}    page=1
+    set to dictionary    ${filter}    page=1
     #6.管理员模式下查询该访客的历史会话
-    set to dictionary    ${FilterEntity}    isAgent=false
-    ${j}    Get History    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${filter}    isAgent=false
+    ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     Should Be True    ${j['total_entries']} ==1    管理员模式历史会话未查到该会话：${j}
     #7.坐席模式下查询该访客的会话
-    set to dictionary    ${FilterEntity}    isAgent=true
-    ${j}    Get History    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    set to dictionary    ${filter}    isAgent=true
+    ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${j}
     #以下为统计相关的代码注释掉
     #以下为统计相关的代码注释掉

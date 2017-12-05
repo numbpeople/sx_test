@@ -246,7 +246,7 @@ Create Terminal Conversation
     ...
     ...    Return：
     ...
-    ...    userId、chatGroupId、sessionServiceId、chatGroupSeqId
+    ...    userId、chatGroupId、sessionServiceId、chatGroupSeqId、userName、originType、${MsgEntity}
     ${originType}    set variable    weixin
     ${curTime}    get time    epoch
     #创建技能组
@@ -285,7 +285,8 @@ Create Terminal Conversation
     ${j}    Get History    ${AdminUser}    ${filter}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${j}
     #将需要的信息返回
-    set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}
+    set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}
+    ...    msg=${MsgEntity}
     Return From Keyword    ${GuestEntity}
 
 Get EnquiryStatus

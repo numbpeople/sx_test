@@ -28,3 +28,21 @@ Delete Agent
     [Documentation]    删除客服，参数为客服userId
     ${resp}=    /v1/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Delete AgentUser
+    [Arguments]    ${userId}
+    [Documentation]    删除客服，参数为客服userId
+    ${resp}=    /v6/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    return from keyword    ${j}
+
+Set Agents
+    [Arguments]    ${method}    ${agent}    ${agentFilter}    ${data}
+    [Documentation]    对客服模块的增和查操作
+    #对客服模块的增和查操作
+    ${resp}=    /v1/Admin/Agents    ${method}    ${agent}    ${agentFilter}    ${data}    ${timeout}
+    run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='get'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    return from keyword    ${j}

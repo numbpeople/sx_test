@@ -21,8 +21,8 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
 
 新增坐席并查询坐席信息(/v1/Admin/Agents)
     #设置局部变量
-    ${curTime}    get time    epoch
-    ${name}    set variable    ${AdminUser.tenantId}${curTime}
+    ${uuid}    Uuid 4
+    ${name}    set variable    ${AdminUser.tenantId}${uuid}
     &{agent}=    create dictionary    username=${name}@qq.com    password=lijipeng123    maxServiceSessionCount=10    nicename=${name}    permission=1
     ...    roles=admin,agent
     ${data}=    set variable    {"nicename":"${agent.nicename}","username":"${agent.username}","password":"${agent.password}","confirmPassword":"${agent.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${agent.maxServiceSessionCount}","permission":${agent.permission},"roles":"${agent.roles}"}
@@ -46,8 +46,8 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
 
 新增坐席并删除坐席(/v1/Admin/Agents)
     #设置局部变量
-    ${curTime}    get time    epoch
-    ${name}    set variable    ${AdminUser.tenantId}${curTime}
+    ${uuid}    Uuid 4
+    ${name}    set variable    ${AdminUser.tenantId}${uuid}
     &{agent}=    create dictionary    username=${name}@qq.com    password=lijipeng123    maxServiceSessionCount=10    nicename=${name}    permission=1
     ...    roles=admin,agent
     ${data}=    set variable    {"nicename":"${agent.nicename}","username":"${agent.username}","password":"${agent.password}","confirmPassword":"${agent.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${agent.maxServiceSessionCount}","permission":${agent.permission},"roles":"${agent.roles}"}

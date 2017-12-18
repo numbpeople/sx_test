@@ -6,7 +6,7 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../../AgentRes.robot
-Resource          ../../../api/BaseApi/Supervision/Supervision_Api.robot
+Resource          ../../../api/BaseApi/Supervision/SupervisionApi.robot
 
 *** Keywords ***
 Get Monitor Agentqueues

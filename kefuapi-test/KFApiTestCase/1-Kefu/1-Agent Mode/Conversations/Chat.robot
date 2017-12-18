@@ -68,11 +68,9 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
     run keyword if    ${j} != {}    Should Be Equal    ${j['serviceSessionId']}    ${data}    获取接口返回会话id不正确: ${j}
 
 获取未读消息数(/v1/Tenants/me/Agents/me/UnReadTags/Count)
-    ${resp}=    /v1/Tenants/me/Agents/me/UnReadTags/Count    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Should Not Be Empty    ${resp.content}    返回值为空
-    ${j}    to json    ${resp.content}
-    Should Be True    ${j}>=0    未读消息数不正确
+    #获取未读消息数
+    ${j}    Get UnRead Count    ${AdminUser}
+    Should Be True    ${j}>=0    未读消息数不正确,${j}
 
 标记消息为已读(/v1/tenants/{tenantId}/sessions/{serviceSessionId}/messages/read)
     #创建会话并手动接入到进行中会话

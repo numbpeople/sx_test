@@ -325,3 +325,10 @@ Read Message
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
+
+Get UnRead Count
+    [Arguments]    ${agent}
+    ${resp}=    /v1/Tenants/me/Agents/me/UnReadTags/Count    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

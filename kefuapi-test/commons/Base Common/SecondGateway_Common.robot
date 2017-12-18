@@ -39,7 +39,7 @@ Send SecondGateway Msg
     &{j1}    loads    ${weichatJson}    #转化为字典
     set to dictionary    ${j1}    msg_id_for_ack=${msg_id_for_ack}    #在weichat的扩展中增加msg_id_for_ack字段
     ${ext}    Dumps    ${j1}    #转化成json
-    Remove From Dictionary    ${msg.ext}    \    #避免重复key，先移除ext字段
+    Remove From Dictionary    ${msg}    ext    #避免重复key，先移除ext字段
     ${weichatExt}    set variable    {"weichat":${ext}}    #重新设置weichat扩展
     set to dictionary    ${msg}    ext=${weichatExt}    #将ext字段重新设置到${msg}变量中
     log dictionary    ${msg}

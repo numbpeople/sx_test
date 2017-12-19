@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Library           ../../../lib/KefuUtils.py
 
 *** Keywords ***
 SendMsg By Rest

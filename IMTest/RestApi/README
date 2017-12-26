@@ -1,0 +1,11 @@
+环境：
+Python2.7
+
+
+需要安装以下模块：
+1、HTMLTestRunner
+2、requests
+
+
+备注：
+可以安装pip管理工具来安装扩展包，如：easy_install、pip等

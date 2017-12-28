@@ -1,0 +1,36 @@
+*** Settings ***
+Library           AppiumLibrary
+
+*** Test Cases ***
+Prepare_startDemo
+    Import Library    D:/robot/Android_v1/pyscripts/xmpptest_2bp.py
+    Import Library    D:/robot/Android_v1/pyscripts/rest.py
+    startDemo
+
+登录/正确账号
+    ${username}    Evaluate    'dxx1'
+    ${password}    Evaluate    'asd'
+    login_validAccount    ${username}    ${password}
+
+群组/拉人进群(被拉方同意)
+    ${testacccount}    Set Variable    dxx1
+    ${password}    Set Variable    1
+    gotoContact
+    gotoGroup
+    ${groupname}    Set Variable    testgroup
+    ${membernum}    Evaluate    200
+    ${groupid}=    getgroupid2    ${groupname}    ${testacccount}
+    rest_delallmember    ${groupid}
+    addmanyGroupmember_agree    ${groupname}    ${membernum}
+    #    back2
+    #    back2
+    #    back2
+
+创建群组/拉人进群
+    ${testacccount}    Set Variable    dxx1
+    ${password}    Set Variable    1
+    gotoContact
+    gotoGroup
+    ${groupname}    Set Variable    test
+    ${membernum}    Evaluate    199
+    createaddmanyGroupmember_agree    ${groupname}    ${membernum}

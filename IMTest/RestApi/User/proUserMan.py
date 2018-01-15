@@ -290,14 +290,15 @@ class UserManage:
                                    headers=self.headers)
                 if get.status_code == 200:
                     data2 = get.json()
-                    if friend not in data2["data"]:
+                    if friend in data2["data"]:
+                        print "user %s delete friend %s failed" % (user, friend)
+                        print json.dumps(data1, sort_keys=True, indent=2)
+                        print json.dumps(data2, sort_keys=True, indent=2)
+                        return False
+                    else:
                         print "user %s delete friend %s success" % (user, friend)
                         print json.dumps(data1, sort_keys=True, indent=2)
                         return True
-                    else:
-                        print "user %s delete friend %s failed" % (user, friend)
-                        print json.dumps(data1, sort_keys=True, indent=2)
-                        return False
                 else:
                     print "status code is %s, request error" % get.status_code
                     print json.dumps(get.json(), sort_keys=True, indent=2)
@@ -322,7 +323,7 @@ class UserManage:
                     print json.dumps(data1, sort_keys=True, indent=2)
                     return True
                 else:
-                    print "get friend list failed，error status code is: %s" % self.r.status_code
+                    print "get friend list failed, friend list is not exist"
                     print json.dumps(data1, sort_keys=True, indent=2)
                     return False
             else:

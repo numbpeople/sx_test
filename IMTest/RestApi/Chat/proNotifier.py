@@ -24,7 +24,7 @@ class Notifiers:
     @ornament
     def UpNotifierHuaW(self):
         # upload HuaWei Nofitier
-        upHuaWeiBody = {"name": "10493098",
+        upHuaWeiBody = {"name": "10492024",
             "provider": "HUAWEIPUSH",
             "environment": "PRODUCTION",
             "certificate": "8o42az0cej2i2wgefk2y46yyed44sq4n"
@@ -51,7 +51,7 @@ class Notifiers:
     @ornament
     def UpNotifierXiaoMi(self):
         # upload XiaoMi Nofitier
-        upXiaoMiBody = {     "name": "2882308766617936952",
+        upXiaoMiBody = {     "name": "2882303761517426801",
                 "provider": "XIAOMIPUSH",
                 "environment": "PRODUCTION",
                 "certificate": "XZpWGpMfeEizuWn1Auh2Dg==",

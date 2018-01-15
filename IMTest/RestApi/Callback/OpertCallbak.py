@@ -79,7 +79,7 @@ class HxCallback:
             self.r = requests.put("%s/%s/%s/callbacks/%s" %(url,org,app,CBName),data=json.dumps(self.modifybody),headers=self.headers)
             if self.r.status_code == 200:
                 data1 = self.r.json()
-                if data1["entities"][0]["actionParams"]["hxSecret"] == modifybody["hxSecret"] and data1["entities"][0]["actionParams"]["secret"] ==modifybody["secret"]:
+                if data1["entities"][0]["hxSecret"] == modifybody["hxSecret"] and data1["entities"][0]["secret"] ==modifybody["secret"]:
                     print "callback modify success"
                     print json.dumps(data1, sort_keys=True, indent=2)
                     return True

@@ -178,7 +178,7 @@ Resource          ../../../../api/BaseApi/Robot/Robot_Api.robot
 
 获取机器人自定义菜单new(/v1/Tenants/{tenantId}/robot/menu/items)
     [Tags]
-    ${resp}=    /v1/Tenants/{tenantId}/robot/menu/items    ${AdminUser}    ${RobotFilter}    ${timeout}
+    ${resp}=    /v1/Tenants/{tenantId}/robot/menu/items    get    ${AdminUser}    ${RobotFilter}    ${empty}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Not Be Empty    ${j}    返回的机器人菜单素材库不正确：${resp.content}

@@ -403,7 +403,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    sleep    200ms
 
 批量创建坐席（从excel读取）
-    @{account}=    Read Xls File    z:/网电坐席开通环信账号.xlsx    Sheet2
+    @{account}=    Read Xls File    R:/1.18.xlsx    sheet2
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
@@ -951,7 +951,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     #添加rest channel
-    ${data}    create dictionary    name=测试rest    callbackUrl=http://9kspze.natappfree.cc
+    ${data}    create dictionary    name=rest11    callbackUrl=http://9kspze.natappfree.cc
     ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    添加rest channel返回不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -1039,3 +1039,17 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    250ms
+
+创建多个机器人问题
+    #登录
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #批量创建问题
+    :FOR    ${i}    IN RANGE    100    300
+    \    ${curTime}    get time    epoch
+    \    ${d}    set variable    {"itemType":0,"itemText":"你在哪里-${curTime}-${i}","itemTextType":0,"groupId":"59685358-40d5-4245-ba09-c18c694b92bb"}
+    \    ${resp}    /v1/Tenants/{tenantId}/robot/rule/item    ${AdminUser}    ${d}    ${timeout}
+    \    log    ${resp.status_code}:${resp.text}

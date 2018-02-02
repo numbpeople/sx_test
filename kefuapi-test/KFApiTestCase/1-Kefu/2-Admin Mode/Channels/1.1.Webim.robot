@@ -159,7 +159,7 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
     Run Keyword if    ${length} == 0    Fail    租户下的表情包文件不存在，需要检查下，${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
-    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl.jpeg    返回值中压缩包里的图片名字与预期不符: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl    返回值中压缩包里的图片名字与预期不符: ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['packageId']}    ${j1['entities'][0]['packageId']}    返回值中压缩包的id不是预期: ${j}
 
 获取租户设置访客端是否显示坐席昵称的OPTION(/v1/webimplugin/agentnicename/options)

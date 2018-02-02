@@ -9,6 +9,8 @@ Library           calendar
 Library           uuid
 Library           OperatingSystem
 Library           ../lib/ReadFile.py
+Library           ../lib/KefuUtils.py
+Library           ../lib/SendReport/Sender.py
 Resource          ../AgentRes.robot
 Resource          ../commons/admin common/BaseKeyword.robot
 Resource          ../api/BaseApi/Queue/WaitApi.robot
@@ -24,8 +26,8 @@ Resource          ../api/BaseApi/Members/Agent_Api.robot
 Resource          ../api/MicroService/Webapp/InitApi.robot
 Resource          ../api/HomePage/Login/Login_Api.robot
 Resource          ../commons/Base Common/SecondGateway_Common.robot
-Library           ../lib/KefuUtils.py
 Resource          ../api/BaseApi/Channels/RestApi.robot
+Resource          ../commons/CollectionData/Base_Collection.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource
@@ -1067,3 +1069,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${d}    set variable    {"itemType":1,"itemText":"就在这里aaaaaa-${i}","itemTextType":0,"groupId":"${g['groupId']}"}
     \    ${resp}    /v1/Tenants/{tenantId}/robot/rule/item    ${AdminUser}    ${d}    ${timeout}
     \    log    ${resp.status_code}:${resp.text}
+
+发送邮件
+    should be equal    1    2
+    [Teardown]    Test Init Data

@@ -90,14 +90,8 @@ Get Visitor Blacklists
 Create Time Value
     [Arguments]    ${param}
     [Documentation]    获取接口的参数时间戳，类似：1512921600000,1513007940000
-    ...
-    ...    param：
-    ...
-    ...    参数值为1、2、3、4、5，分别对应：今天、昨天、本周、本月、上月
-    ...
-    ...    return:
-    ...
-    ...    返回结果格式为：1512921600000,1513007940000
+    ...    - param：为 1、2、3、4、5，分别对应：今天、昨天、本周、本月、上月
+    ...    - return: 结果格式为：1512921600000,1513007940000
     #获取时间范围
     ${begintimeDate}    ${endtimeDate}    Get Time Range    ${param}
     #获取时间范围
@@ -116,14 +110,8 @@ Create Time Value
 Get Time Range
     [Arguments]    ${param}
     [Documentation]    获取接口的参数时间戳，类似：1512921600000,1513007940000
-    ...
-    ...    param：
-    ...
-    ...    参数值为1、2、3、4、5，分别对应：今天、昨天、本周、本月、上月
-    ...
-    ...    return:
-    ...
-    ...    返回结果为：&{begintimeDate}和&{endtimeDate}两个字典集
+    ...    - param：参数值为1、2、3、4、5，分别对应：今天、昨天、本周、本月、上月
+    ...    - return: \ 返回结果为：&{begintimeDate}和&{endtimeDate}两个字典集
     #设置今天为默认时间筛选
     ${yyyy}    ${mm}    ${day}    Get Time    year,month,day
     &{begintimeDate}    create dictionary    yyyy=${yyyy}    mm=${mm}    day=${day}

@@ -16,7 +16,13 @@ One Service Valid Conversation
     ${curTimeVisitor}    get time    epoch
     ${curTime}    get time    epoch
     ${guestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
-    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType}}}
+    #创建技能组
+    ${agentqueue}   create dictionary    queueName=${AdminUser.tenantId}${curTime}AA
+    ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
+    #创建指定技能组的扩展消息体
+    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType},"queueName":"${queueentityAA.queueName}"}}
+    #将入口指定设置优先顺序
+    Set RoutingPriorityList    入口    渠道    关联
     #发送消息并创建访客
     Send Message    ${rest}    ${guestEntity}    ${msgEntity}
     #根据访客昵称查询待接入列表
@@ -46,3 +52,4 @@ One Service Valid Conversation
     Send Message    ${rest}    ${guestEntity}    ${msgEntity}
     #记录会话创建时间、结束时间
     set to dictionary    ${ConDateRange}    beginDateTime=${curTimeVisitor}000    endDateTime=${curTimeStop}000
+    return from keyword    ${queueentityAA}

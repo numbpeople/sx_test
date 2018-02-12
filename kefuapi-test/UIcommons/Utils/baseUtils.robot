@@ -10,16 +10,19 @@ Browser Init
     Create Session    uisession    ${kefuurl}
     #登录
     ${resp}=    /login    uisession    ${uiagent}    ${timeout}
+    : FOR    ${i}    IN    @{resp}
+    \    log    ${i}
     ${j}    to json    ${resp.content}
     set to dictionary    ${uiagent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=uisession
     #打开浏览器并写入cookie
     @{t}=    Get Dictionary Keys    ${uiagent.cookies}
     open browser    ${kefuurl}    ${uiagent.browser}
+    ${protocol}    ${domain}    Split String    ${kefuurl}    ://
     : FOR    ${key}    IN    @{t}
     \    log    ${key}
     \    ${value}=    Get From Dictionary    ${uiagent.cookies}    ${key}
-    \    Add Cookie    ${key}    ${value}
+    \    Add Cookie    ${key}    ${value}    /    .${domain}
     #设置浏览器语言
     Execute Javascript    localStorage.setItem('language','${uiagent.language}')
     #设置tenantId
@@ -39,6 +42,14 @@ Browser Init
     : FOR    ${i}    IN    @{j['entities']}
     \    Append to List    ${graylist}    ${i['grayName']}
     ${uiagent.graylist}    copy list    ${graylist}
+    #添加
+    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/resource_categories    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    #base加入灰度默认值中
+    @{resourcelist}    Create List    base
+    #添加所有灰度name到graylist
+    Append to List    ${resourcelist}    @{j['entity']['resource_categories']}
+    ${uiagent.resourcelist}    copy list    ${resourcelist}
     set global variable    ${uiagent}    ${uiagent}
 
 Check Element Contains Text
@@ -69,18 +80,20 @@ Check Attributes
     \    Should be True    '${a}'=='${i['value']['${lang}']}'
 
 Check Base Module
-    [Arguments]    ${url}    ${showkey}    ${agent}    ${json}
+    [Arguments]    ${url}    ${agent}    ${json}    ${mode}=Agent
     [Documentation]    判断整个模块是否灰度，若灰度，跳转到url，检查基础元素
-    ${ig}    Get Index From List    ${agent.graylist}    ${showkey}
+    set test variable    ${nav}    ${json['navigator']['${mode}']}
+    ${ig}    Get Index From List    ${agent.graylist}    ${nav['GrayKey']}
+    ${ir}    Get Index From List    ${agent.resourcelist}    ${nav['ResourceKey']}
     #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
-    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${showkey}
-    log    ${url}
-    go to    ${url}
+    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${graykey}
+    Run Keyword If    ${ir}==-1    Pass Execution    未灰度此功能：${resourcekey}
+    go to    ${url}${nav['uri']}
     Check Base Elements    ${agent.language}    ${json['elements']}
 
 Update Tab Selector
     [Arguments]    ${key}    &{tab}
-    :FOR    ${i}    IN    ${tab}
+    : FOR    ${i}    IN    ${tab}
     \    ${value}    Get Dictionary Values    ${i}
     \    \    Run Keyword If
     \    log    ${value}

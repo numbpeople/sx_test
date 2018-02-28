@@ -1,11 +1,11 @@
 *** Variables ***
 ${kefuurl}        http://kefu.easemob.com
 ${orgurl}         http://vpc10.kefu.easemob.com:8000
-&{AdminUser}      username=08081@test.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
+&{AdminUser}      username=713test30@qq.com    password=test2015    status=Hidden    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=phantomjs    language=zh_CN    graylist=
 ...               resourcelist=
 &{OrgAdminUser}    username=admin@org.com    password=ORGadmin    orgId=1034    cookies=    session=    userId=    nicename=
-...               browser=chrome
+...               browser=phantomjs
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
 @{kefustatus}     Busy    Leave    Hidden    Online
@@ -42,8 +42,8 @@ ${switchType}     0
 &{SmsRemindEntity}    id=12    status=enable    remindType=remindType    remindName=
 ${targetchannel}    {u'appKey': u'easemob-demo#jianguo9', u'clientSecret': u'YXA6iYLgfPv-wEGCsFHIbvgciRZRh4M', u'serviceEaseMobIMPassword': u'123456', u'ispass': True, u'description': None, u'appName': u'jianguo9', u'orgName': u'easemob-demo', u'isrun': False, u'agentQueueId': None, u'clientId': u'YXA6GS5loMNxEeWyjKe374xQVA', u'tenantId': 13250, u'createDateTime': 1459239386000L, u'techChannelInfo': u'easemob-demo#jianguo9#0326test', u'serviceEaseMobIMNumber': u'0326test', u'experience': False, u'id': 21620, u'name': u'sdfdf'}
 ${easemobtechchannel}    {u'appKey': u'easemob-demo#jianguo9', u'clientSecret': u'YXA6iYLgfPv-wEGCsFHIbvgciRZRh4M', u'serviceEaseMobIMPassword': u'123456', u'ispass': True, u'description': None, u'appName': u'jianguo9', u'orgName': u'easemob-demo', u'isrun': False, u'agentQueueId': None, u'clientId': u'YXA6GS5loMNxEeWyjKe374xQVA', u'tenantId': 13250, u'createDateTime': 1459239386000L, u'techChannelInfo': u'easemob-demo#jianguo9#0326test', u'serviceEaseMobIMNumber': u'0326test', u'experience': False, u'id': 21620, u'name': u'sdfdf'}
-&{RestEntity}     appName=kefuchannelapp27869    orgName=1151170513178510    token=    restDomain=    session=    serviceEaseMobIMNumber=kefuchannelimid_649666    agentQueueId=
-...               dutyType=    clientId=    clientSecret=    appKey=    channelName=    robotId=    secondQueueId=
+&{RestEntity}     appName=talent-leoli123    orgName=talent    token=    restDomain=    session=    serviceEaseMobIMNumber=robot_001    agentQueueId=
+...               dutyType=    clientId=YXA6u9MFQCJsEeaXPRdeYWKjyg    clientSecret=YXA61o01NITx6BNw-IvZ9hemzSaHgsg    appKey=    channelName=    robotId=    secondQueueId=
 ...               secondRobotId=    agentQueueName=    secondQueueName=
 &{GuestEntity}    userName=    userId=    chatGroupId=    chatGroupSeqId=    sessionServiceId=    sessionServiceSeqId=    startSessionTimestamp=
 ...               originType=app

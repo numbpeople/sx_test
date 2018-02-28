@@ -86,8 +86,8 @@ Check Base Module
     ${ig}    Get Index From List    ${agent.graylist}    ${nav['GrayKey']}
     ${ir}    Get Index From List    ${agent.resourcelist}    ${nav['ResourceKey']}
     #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
-    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${graykey}
-    Run Keyword If    ${ir}==-1    Pass Execution    未灰度此功能：${resourcekey}
+    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${ig}
+    Run Keyword If    ${ir}==-1    Pass Execution    未配置此功能：${ir}
     go to    ${url}${nav['uri']}
     Check Base Elements    ${agent.language}    ${json['elements']}
 

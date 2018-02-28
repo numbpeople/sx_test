@@ -1,42 +1,8 @@
 *** Variables ***
-${channelsappUri}    /mo/admin/webapp/channels/app
-${channelsappTitleXPath}    //*[@id="em-attach"]/header/h1
-&{channelsappTitle}    zh_CN=为您的手机APP加入环信移动客服    en_US=Bind your app with Easemob
-${channelswebUri}    /mo/admin/webapp/channels/web
-${channelswebTitleXPath}    //*[@id="em-widget"]/header/h1
-&{channelswebTitle}    zh_CN=为您的网页加入环信移动客服    en_US=Add Easemob to your website
-${channelswechatUri}    /mo/admin/webapp/channels/wechat
-${channelswechatTitleXPath}    //*[@id="em-wechat"]/header/h1
-&{channelswechatTitle}    zh_CN=将您的微信公众号绑定到环信移动客服    en_US=Bind your WeChat Official Account with Easemob
-${channelsweiboUri}    /mo/admin/webapp/channels/weibo
-${channelsweiboTitleXPath}    //*[@id="em-weibo"]/header/h1
-&{channelsweiboTitle}    zh_CN=将您的微博绑定到环信移动客服    en_US=Bind your Weibo account with Easemob
-${channelscallUri}    /mo/admin/webapp/channels/call
-${channelscallTitleXPath}    //*[@id="em-callcenter"]/header/h1
-&{channelscallTitle}    zh_CN=呼叫中心渠道    en_US=Call Center
-
-*** Keywords ***
-Check Basic Channelsapp Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${channelsappTitleXPath}
-    Wait Until Element Contains    xpath=${channelsappTitleXPath}    ${channelsappTitle.${language}}
-
-Check Basic Channelsweb Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${channelswebTitleXPath}
-    Wait Until Element Contains    xpath=${channelswebTitleXPath}    ${channelswebTitle.${language}}
-
-Check Basic Channelswechat Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${channelswechatTitleXPath}
-    Wait Until Element Contains    xpath=${channelswechatTitleXPath}    ${channelswechatTitle.${language}}
-
-Check Basic Channelsweibo Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${channelsweiboTitleXPath}
-    Wait Until Element Contains    xpath=${channelsweiboTitleXPath}    ${channelsweiboTitle.${language}}
-
-Check Basic Channelscall Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${channelscallTitleXPath}
-    Wait Until Element Contains    xpath=${channelscallTitleXPath}    ${channelscallTitle.${language}}
+${channelsappbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/app","GrayKey":"base","ResourceKey":"admin_channel_app"}},"elements":[{"name":"header","xPath":"//*[@id='em-attach']/header/h1","text":{"zh_CN":"手机APP","en_US":"App"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${channelswebimbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/web","GrayKey":"base","ResourceKey":"admin_channel_app"}},"elements":[{"name":"header","xPath":"//*[@id='em-config']/header/h1","text":{"zh_CN":"网页","en_US":"Web"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${channelswechatbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/wechat","GrayKey":"base","ResourceKey":"admin_channel_wechat"}},"elements":[{"name":"header","xPath":"//*[@id='em-wechat']/header/h1","text":{"zh_CN":"微信公众号","en_US":"WeChat Official Account"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${channelsweibobasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/weibo","GrayKey":"base","ResourceKey":"admin_channel_weibo"}},"elements":[{"name":"header","xPath":"//*[@id='em-weibo']/header/h1","text":{"zh_CN":"微博","en_US":"Bind your Weibo account with Easemob"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${channelsslackbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/slack","GrayKey":"slack","ResourceKey":"admin_channel_slack"}},"elements":[{"name":"header","xPath":"//*[@id='em-slack']/header/h1","text":{"zh_CN":"SLACK","en_US":"Slack"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${channelscallcenterbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/call","GrayKey":"base","ResourceKey":"admin_channel_call"}},"elements":[{"name":"header","xPath":"//*[@id='em-callcenter']/header/h1","text":{"zh_CN":"呼叫中心渠道","en_US":"Call Center"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${channelsrestbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/channels/rest","GrayKey":"rest","ResourceKey":"admin_channel_rest"}},"elements":[{"name":"header","xPath":"//*[@id='em-rest']/header/h1","text":{"zh_CN":"REST API","en_US":"REST API"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

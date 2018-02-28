@@ -1,18 +1,4 @@
 *** Variables ***
-${robotsettingsUri}    /mo/admin/robot/settings
-${robotsettingsTitleXPath}    //*[@id="em-robot"]/header/h1
-&{robotsettingsTitle}    zh_CN=机器人设置    en_US=Robot settings
-${robotmaterialUri}    /mo/admin/robot/material
-${robotmaterialTitleXPath}    //*[@id="em-material"]/header/h1
-&{robotmaterialTitle}    zh_CN=素材库    en_US=Library
-
-*** Keywords ***
-Check Basic Robotsettings Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${robotsettingsTitleXPath}
-    Wait Until Element Contains    xpath=${robotsettingsTitleXPath}    ${robotsettingsTitle.${language}}
-
-Check Basic Robotmaterial Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${robotmaterialTitleXPath}
-    Wait Until Element Contains    xpath=${robotmaterialTitleXPath}    ${robotmaterialTitle.${language}}
+${robotsettingsbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/robot/settings","GrayKey":"base","ResourceKey":"admin_robot_settings"}},"elements":[{"name":"h1","xPath":"//*[@id='em-robot']/header/h1","text":{"zh_CN":"机器人设置","en_US":"Robot settings"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"h2","xPath":"//*[@id='em-robot']/header/h2","text":{"zh_CN":"智能机器人帮助您的客服实现7x24小时在线服务","en_US":"The robot helps your team provide 24/7 online service."},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${robotrulaibasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/robot/rulai","GrayKey":"base","ResourceKey":"admin_robot_rulai"}},"elements":[{"name":"h1","xPath":"//*[@id='em-rulai']/header/h1","text":{"zh_CN":"人机协作模式","en_US":"Robot assistance"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"h2","xPath":"//*[@id='em-rulai']/header/h2","text":{"zh_CN":"人工坐席在智能应答的辅助下协同工作，仅需简单的点选即可快捷的回复访客","en_US":"With robot assistance, agents can reply to customers more quickly."},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${robotmaterialbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/robot/material","GrayKey":"base","ResourceKey":"admin_robot_material"}},"elements":[{"name":"h1","xPath":"//*[@id='em-material']/header/h1","text":{"zh_CN":"素材库","en_US":"Library"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

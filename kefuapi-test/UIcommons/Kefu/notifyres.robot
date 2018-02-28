@@ -1,0 +1,2 @@
+*** Variables ***
+${notifybasejson}    {"navigator":{"Agent":{"uri":"/mo/agent/webapp/mynotify","GrayKey":"base","ResourceKey":"agent_activity"},"Admin":{"uri":"/mo/admin/webapp/notify","GrayKey":"base","ResourceKey":"admin_activity"}},"elements":[{"name":"header","xPath":"//*[@id='em-msgcenter']/header/h1","text":{"zh_CN":"消息中心","en_US":"Notification"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

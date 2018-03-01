@@ -32,3 +32,10 @@
     ${uri}=    set variable    /v2/tenants/${agent.tenantId}/agents
     ${params}    set variable    page=0&size=1000&skillgroupIds=${queueId}&_=1512706603015
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/agents/{agentId}/skillgroups
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/agents/${agent.userId}/skillgroups
+    ${params}    set variable    _=1511244671763
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

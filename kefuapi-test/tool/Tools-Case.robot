@@ -1073,3 +1073,11 @@ ${datadir}        ${CURDIR}${/}${/}resource
 发送邮件
     should be equal    1    2
     [Teardown]    Test Init Data
+
+将坐席移除出所在的所有技能组
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Remove Agent From All Queues    ${AdminUser}    ${timeout}

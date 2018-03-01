@@ -9,6 +9,9 @@ Library           uuid
 Resource          ../../../api/BaseApi/Members/Queue_Api.robot
 Resource          Agents_Common.robot
 
+*** Variables ***
+@{AgentList}
+
 *** Keywords ***
 Add Agentqueue
     [Arguments]    ${agentqueue}    ${queueName}
@@ -145,3 +148,31 @@ Set Agents To Queue
     set to dictionary    ${agent}    agentId=${agentId}
     set to dictionary    ${queue}    agent=${agent}
     return from keyword    ${queue}
+
+Remove Agents From Queue
+    [Arguments]    ${agent}    ${queueId}    ${timeout}    @{userIdlist}
+    ${jqueue}    Get Queue Members    ${agent}    ${queueId}
+    #获取当前技能组用户list
+    :FOR    ${i}    IN    @{jqueue['entities']}
+    \    Append To List    ${AgentList}    ${i['userId']}
+    #从当前用户list中删除需要删除的用户list
+    Remove Values From List    ${AgentList}    @{userIdlist}
+    #更新技能组用户列表
+    Add Agents To Queue    ${agent}    ${queueId}    ${AgentList}
+
+Get Agent QueueInfo
+    [Arguments]    ${agent}    ${timeout}
+    [Documentation]    获取坐席所在的技能组信息
+    #获取坐席所属技能组信息
+    ${resp}=    /v1/tenants/{tenantId}/agents/{agentId}/skillgroups    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Remove Agent From All Queues
+    [Arguments]    ${agent}    ${timeout}
+    ${jagent}    Get Agent QueueInfo    ${agent}    ${timeout}
+    @{l}    create list    ${agent.userId}
+    :FOR    ${i}    IN    @{jagent['entities']}
+    \    Run Keyword If    '${i['queueGroupType']}'=='UserDefined'    Remove Agents From Queue    ${agent}    ${i['queueId']}    ${timeout}
+    \    ...    @{l}

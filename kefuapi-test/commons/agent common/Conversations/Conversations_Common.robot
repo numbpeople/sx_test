@@ -332,3 +332,14 @@ Get UnRead Count
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
+Stop All Processing Conversations
+    [Arguments]    ${agent}
+    [Documentation]    关闭当前坐席所有processing的会话
+    #查询当前坐席进行中会话列表
+    ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
+    ${j}    to json    ${resp.content}
+    #批量关闭进行中会话
+    :FOR    ${i}    IN    @{j}
+    \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    sleep    50ms

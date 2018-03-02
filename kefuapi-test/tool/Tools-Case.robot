@@ -28,6 +28,8 @@ Resource          ../api/HomePage/Login/Login_Api.robot
 Resource          ../commons/Base Common/SecondGateway_Common.robot
 Resource          ../api/BaseApi/Channels/RestApi.robot
 Resource          ../commons/CollectionData/Base_Collection.robot
+Resource          ../commons/agent common/Conversations/Colleague_Common.robot
+Resource          ../commons/agent common/Conversations/Conversations_Common.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource
@@ -1081,3 +1083,27 @@ ${datadir}        ${CURDIR}${/}${/}resource
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     Remove Agent From All Queues    ${AdminUser}    ${timeout}
+
+清理坐席接待状态，并移动坐席到新技能组后打开接待状态
+    [Documentation]    1.设置接待人数为0
+    ...    2.清空该坐席进行中会话
+    ...    3.将该坐席移除出所在的所有技能组
+    ...    4.创建新技能组，并将该坐席添加到新技能组
+    ...    5.设置接待人数为1
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #1.设置接待人数为0
+    ${j}    Set Agent MaxServiceUserNumber    ${AdminUser}    0
+    #2.清空该坐席进行中会话
+    Stop All Processing Conversations    ${AdminUser}
+    #3.将该坐席移除出所在的所有技能组
+    Remove Agent From All Queues    ${AdminUser}    ${timeout}
+    #4.创建新技能组，并将该坐席添加到新技能组
+    ${q}    Create Random Agentqueue    ${AdminUser}
+    @{ul}    create list    ${AdminUser.userId}
+    Add Agents To Queue    ${AdminUser}    ${q.queueId}    ${ul}
+    #5.设置接待人数为1
+    ${j}    Set Agent MaxServiceUserNumber    ${AdminUser}    1

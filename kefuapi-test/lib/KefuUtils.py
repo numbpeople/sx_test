@@ -39,7 +39,8 @@ def Get_Last_Month():
     """
 
     #上一个月的第一天
-    lst_fist = datetime.date(datetime.date.today().year,datetime.date.today().month-1,1)
+    # lst_fist = datetime.date(datetime.date.today().year,datetime.date.today().month-1,1)
+    lst_fist = (datetime.date.today().replace(day=1) - datetime.timedelta(1)).replace(day=1)
 
     #上一个月的最后一天
     lst_last = datetime.date(datetime.date.today().year,datetime.date.today().month,1)-datetime.timedelta(1)

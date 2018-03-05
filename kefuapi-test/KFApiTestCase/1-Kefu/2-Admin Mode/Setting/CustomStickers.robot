@@ -27,7 +27,7 @@ Resource          ../../../../commons/admin common/Setting/Stickers_Common.robot
     ${j}    Upload Stickers    ${AdminUser}    ${fileEntity}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
-    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl.jpeg    返回值中压缩包里的图片名字与预期不符: ${j}
+    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl    返回值中压缩包里的图片名字与预期不符: ${j}
     should be equal    ${j['entities'][0]['packageName']}.zip    ${fileEntity.filename}    返回值中压缩包名称与预期不符: ${j}
 
 删除自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
@@ -78,5 +78,5 @@ Resource          ../../../../commons/admin common/Setting/Stickers_Common.robot
     Run Keyword if    ${length} == 0    Fail    租户下的表情包文件不存在，需要检查下，${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
-    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl.jpeg    返回值中压缩包里的图片名字与预期不符: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['fileName']}    beautiful_girl    返回值中压缩包里的图片名字与预期不符: ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['packageId']}    ${j1['entities'][0]['packageId']}    返回值中压缩包的id不是预期: ${j}

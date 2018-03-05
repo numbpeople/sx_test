@@ -1,10 +1,2 @@
 *** Variables ***
-${statisticindexUri}    /mo/admin/statistic/index
-${statisticindexTitleXPath}    //*[@id="em-chart"]/header/h1/span
-&{statisticindexTitle}    zh_CN=，欢迎回来    en_US=. Welcome back.
-
-*** Keywords ***
-Check Basic Statisticindex Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${statisticindexTitleXPath}
-    Wait Until Element Contains    xpath=${statisticindexTitleXPath}    ${statisticindexTitle.${language}}
+${statisticindexbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/statistic/index","GrayKey":"base","ResourceKey":"admin_index"}},"elements":[{"name":"h1span","xPath":"//*[@id='em-chart']/header/h1/span","text":{"zh_CN":"，欢迎回来","en_US":". Welcome back."},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"h2","xPath":"//*[@id='em-chart']/header/h2","text":{"zh_CN":"下面是最近一段时间客户互动云为您统计的客服数据","en_US":"The following are the key data."},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

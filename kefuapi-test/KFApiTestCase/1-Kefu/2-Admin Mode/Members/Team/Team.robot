@@ -49,3 +49,9 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     should be true    ${j['totalElements']} == 1    技能组内的坐席不是唯一，${j}
     should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    根据账号查询结果tenantId不正确，${j}
     should be equal    ${j['entities'][0]['username']}    ${agent.username}    根据账号查询结果username不正确，${j}
+
+查询坐席所在技能组(/v1/tenants/{tenantId}/agents/{agentId}/skillgroups)
+    ${j}    Get Agent QueueInfo    ${AdminUser}    ${timeout}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${length} =    get length    ${j['entities']}
+    should be true    ${length} > 0    坐席不属于任何技能组: ${j}

@@ -9,6 +9,8 @@ Library           uuid
 Resource          ../../../api/BaseApi/Members/Queue_Api.robot
 Resource          Agents_Common.robot
 
+*** Variables ***
+
 *** Keywords ***
 Add Agentqueue
     [Arguments]    ${agentqueue}    ${queueName}
@@ -29,7 +31,7 @@ Add Agentqueue
     Return From Keyword    ${agentqueue}
 
 Create Agentqueue
-    [Arguments]    ${queueName}
+    [Arguments]    ${queueName}    ${agent}=${Adminuser}
     [Documentation]    创建一个技能组，返回该技能组的id和名字
     ...
     ...    describtion：参数技能组名字
@@ -40,7 +42,7 @@ Create Agentqueue
     #添加技能组
     ${data}=    set variable    {"queueName":"${queueName}"}
     ${agentqueue}    create dictionary    queueName=${queueName}
-    ${resp}=    /v1/AgentQueue    post    ${AdminUser}    ${data}    ${timeout}
+    ${resp}=    /v1/AgentQueue    post    ${agent}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.content}
@@ -145,3 +147,48 @@ Set Agents To Queue
     set to dictionary    ${agent}    agentId=${agentId}
     set to dictionary    ${queue}    agent=${agent}
     return from keyword    ${queue}
+
+Remove Agents From Queue
+    [Arguments]    ${agent}    ${queueId}    ${timeout}    @{userIdlist}
+    ${jqueue}    Get Queue Members    ${agent}    ${queueId}
+    #获取当前技能组用户list
+    @{AgentList}    Create List
+    : FOR    ${i}    IN    @{jqueue['entities']}
+    \    Append To List    ${AgentList}    ${i['userId']}
+    log    ${AgentList}
+    #从当前用户list中删除需要删除的用户list
+    Remove Values From List    ${AgentList}    @{userIdlist}
+    log    ${AgentList}
+    #更新技能组用户列表
+    Add Agents To Queue    ${agent}    ${queueId}    ${AgentList}
+
+Get Agent QueueInfo
+    [Arguments]    ${agent}    ${timeout}
+    [Documentation]    获取坐席所在的技能组信息
+    #获取坐席所属技能组信息
+    ${resp}=    /v1/tenants/{tenantId}/agents/{agentId}/skillgroups    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Remove Agent From All Queues
+    [Arguments]    ${agent}    ${timeout}
+    ${jagent}    Get Agent QueueInfo    ${agent}    ${timeout}
+    @{l}    create list    ${agent.userId}
+    : FOR    ${i}    IN    @{jagent['entities']}
+    \    Run Keyword If    '${i['queueGroupType']}'=='UserDefined'    Remove Agents From Queue    ${agent}    ${i['queueId']}    ${timeout}
+    \    ...    @{l}
+
+Create Random Agentqueue
+    [Arguments]    ${agent}
+    [Documentation]    创建一个修机名字的技能组，返回该技能组的id和名字
+    ...
+    ...
+    ...
+    ...    返回值：
+    ...
+    ...    queueId、queueName
+    ${curTime}    Uuid 4
+    ${queueName}    set variable    ${agent.tenantId}${curTime}
+    ${q}    Create Agentqueue    ${queueName}    ${agent}
+    Return From Keyword    ${q}

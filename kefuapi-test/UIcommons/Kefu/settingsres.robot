@@ -1,37 +1,20 @@
 *** Variables ***
-${settingsenterpriseUri}    /mo/admin/webapp/settings/enterprise
-${settingsenterpriseTitleXPath}    //*[@id="em-company"]/header/h1
-&{settingsenterpriseTitle}    zh_CN=企业信息    en_US=Company
-${settingssystemUri}    /mo/admin/webapp/settings/system
-${settingssystemTitleXPath}    //*[@id="em-formula"]/header/h1
-&{settingssystemTitle}    zh_CN=系统开关    en_US=System settings
-${settingspermissionUri}    /mo/admin/webapp/settings/permission
-${settingspermissionTitleXPath}    //*[@id="em-permissionSetting"]/header/h1
-&{settingspermissionTitle}    zh_CN=权限管理    en_US=Permissions
-${settingsphraseUri}    /mo/admin/webapp/settings/phrase
-${settingsphraseTitleXPath}    //*[@id="em-phrase"]/header/h1
-&{settingsphraseTitle}    zh_CN=公共常用语    en_US=Phrases
-${settingssummaryUri}    /mo/admin/webapp/settings/summary
-${settingssummaryTitleXPath}    //*[@id="em-summary"]/header/h1
-&{settingssummaryTitle}    zh_CN=会话标签    en_US=Conversation tags
-${settingstagUri}    /mo/admin/webapp/settings/tag
-${settingstagTitleXPath}    //*[@id="em-tag"]/header/h1
-&{settingstagTitle}    zh_CN=客户标签    en_US=Customer tags
-${settingsiframeUri}    /mo/admin/webapp/settings/iframe
-${settingsiframeTitleXPath}    //*[@id="em-ifm"]/header/h1
-&{settingsiframeTitle}    zh_CN=自定义信息接口    en_US=Iframe
-${settingsroutesUri}    /mo/admin/webapp/settings/routes
-${settingsroutesTitleXPath}    //*[@id="em-routingStrategy"]/header/h1
-&{settingsroutesTitle}    zh_CN=会话分配规则    en_US=Routing
-${settingsvisitorsUri}    /mo/admin/webapp/settings/visitors
-${settingsvisitorsTitleXPath}    //*[@id="em-visitorSetting"]/header/h1
-&{settingsvisitorsTitle}    zh_CN=客户资料自定义    en_US=Custom fields
-${settingsevaluateUri}    /mo/admin/webapp/settings/evaluate
-${settingsevaluateTitleXPath}    //*[@id="em-evaluate"]/header/h1
-&{settingsevaluateTitle}    zh_CN=满意度评价邀请设置    en_US=Satisfaction survey
-${settingsreganswerUri}    /mo/admin/webapp/settings/reganswer
-${settingsreganswerTitleXPath}    //*[@id="em-regAnswer"]/header/h1
-&{settingsreganswerTitle}    zh_CN=关键字匹配    en_US=Keyword match
-${settingsorderInfoUri}    /mo/admin/webapp/settings/orderInfo
-${settingsorderInfoTitleXPath}    //*[@id="em-orderInfo-kefu"]/header/h1
-&{settingsorderInfoTitle}    zh_CN=订单列表    en_US=Order list
+${settingsenterprisebasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/enterprise","GrayKey":"base","ResourceKey":"admin_settings_enterprise"}},"elements":[{"name":"h1","xPath":"//*[@id='em-company']/header/h1","text":{"zh_CN":"企业信息","en_US":"Company"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingssystembasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/system","GrayKey":"base","ResourceKey":"admin_settings_system"}},"elements":[{"name":"h1","xPath":"//*[@id='em-formula']/header/h1","text":{"zh_CN":"系统开关","en_US":"System settings"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingstimeplanbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/time_plan","GrayKey":"base","ResourceKey":"admin_settings_time_plan"}},"elements":[{"name":"h1","xPath":"//*[@id='em-timeplan']/header/h1","text":{"zh_CN":"时间计划设置","en_US":"Business hours"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingspermissionbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/permission","GrayKey":"base","ResourceKey":"admin_settings_permission"}},"elements":[{"name":"h1","xPath":"//*[@id='em-permissionSetting']/header/h1","text":{"zh_CN":"权限管理","en_US":"permissionSetting"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsphrasebasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/phrase","GrayKey":"base","ResourceKey":"admin_settings_phrase"}},"elements":[{"name":"h1","xPath":"//*[@id='em-phrase']/header/h1","text":{"zh_CN":"公共常用语","en_US":"Phrases"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsemojibasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/emoji","GrayKey":"customMagicEmoji","ResourceKey":"admin_settings_emoji"}},"elements":[{"name":"h1","xPath":"//*[@id='em-emoji']/header/h1","text":{"zh_CN":"自定义表情","en_US":"Custom stickers"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingssummarybasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/summary","GrayKey":"base","ResourceKey":"admin_settings_summary"}},"elements":[{"name":"h1","xPath":"//*[@id='em-summary']/header/h1","text":{"zh_CN":"会话标签","en_US":"Conversation tags"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingstagbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/tag","GrayKey":"base","ResourceKey":"admin_settings_tag"}},"elements":[{"name":"h1","xPath":"//*[@id='em-tag']/header/h1","text":{"zh_CN":"客户标签","en_US":"Customer tags"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsiframebasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/iframe","GrayKey":"base","ResourceKey":"admin_settings_iframe"}},"elements":[{"name":"h1","xPath":"//*[@id='em-ifm']/header/h1","text":{"zh_CN":"自定义信息接口","en_US":"Iframe"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingscallbackbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/callback","GrayKey":"base","ResourceKey":"admin_settings_callback"}},"elements":[{"name":"h1","xPath":"//*[@id='em-callback']/header/h1","text":{"zh_CN":"自定义事件推送","en_US":"Webhook"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsroutesbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/routes","GrayKey":"base","ResourceKey":"admin_settings_routes"}},"elements":[{"name":"h1","xPath":"//*[@id='em-routingStrategy']/header/h1","text":{"zh_CN":"会话分配规则","en_US":"Routing"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsvisitorsbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/visitors","GrayKey":"base","ResourceKey":"admin_settings_visitors"}},"elements":[{"name":"h1","xPath":"//*[@id='em-visitorSetting']/header/h1","text":{"zh_CN":"客户中心设置","en_US":"Customers setting"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsevaluatebasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/evaluate","GrayKey":"base","ResourceKey":"admin_settings_evaluate"}},"elements":[{"name":"h1","xPath":"//*[@id='em-evaluate']/header/h1","text":{"zh_CN":"满意度评价邀请设置","en_US":"Satisfaction survey"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsqualitysettingsbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/qualitysettings","GrayKey":"base","ResourceKey":"admin_settings_qualitysettings"}},"elements":[{"name":"h1","xPath":"//*[@id='em-qualitySetting']/header/h1","text":{"zh_CN":"质检评分设置","en_US":"Review settings"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsssobasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/sso","GrayKey":"ssocfg","ResourceKey":"admin_settings_sso"}},"elements":[{"name":"h1","xPath":"//*[@id='em-sso']/header/h1","text":{"zh_CN":"单点登录","en_US":"Single sign-on (SSO)"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsnotesbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/notes","GrayKey":"noteCategory","ResourceKey":"admin_settings_notes"}},"elements":[{"name":"h1","xPath":"//*[@id='em-noteSetting']/header/h1","text":{"zh_CN":"留言设置","en_US":"Note settings"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsreganswerbasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/reganswer","GrayKey":"reganswer","ResourceKey":"admin_settings_reganswer"}},"elements":[{"name":"h1","xPath":"//*[@id='em-regAnswer']/header/h1","text":{"zh_CN":"关键字匹配","en_US":"Keyword match"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsorderinfobasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/orderinfo","GrayKey":"base","ResourceKey":"admin_settings_orderinfo"}},"elements":[{"name":"h1","xPath":"//*[@id='em-orderInfo-kefu']/header/h1","text":{"zh_CN":"订单列表","en_US":"Order list"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}
+${settingsquestionnairebasejson}    {"navigator":{"Admin":{"uri":"/mo/admin/webapp/settings/questionnaire","GrayKey":"base","ResourceKey":"admin_settings_questionnaire"}},"elements":[{"name":"h1","xPath":"//*[@id='em-questionnaire']/header/h1","text":{"zh_CN":"问卷调查","en_US":"Questionnaire"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

@@ -1,10 +1,2 @@
 *** Variables ***
-${waitUri}        /mo/agent/webapp/center/wait
-${waitTitleXPath}    //*[@id="em-wait"]/header/h1
-&{waitTitle}      zh_CN=待接入    en_US=Queue
-
-*** Keywords ***
-Check Basic Wait Element
-    [Arguments]    ${language}
-    Wait Until Page Contains Element    xpath=${waitTitleXPath}
-    Wait Until Element Contains    xpath=${waitTitleXPath}    ${waitTitle.${language}}
+${waitbasejson}    {"navigator":{"Agent":{"uri":"/mo/agent/webapp/wait","GrayKey":"base","ResourceKey":"agent_queue"}},"elements":[{"name":"header","xPath":"//*[@id='em-wait']/header/h1","text":{"zh_CN":"待接入","en_US":"Queue"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

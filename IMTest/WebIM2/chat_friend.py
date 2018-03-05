@@ -37,7 +37,6 @@ class AloneChat(object):
         funname = sys._getframe().f_code.co_name
         try:
             self.driver.set_page_load_timeout(60)
-
             self.driver.get(self.url)
             WebDriverWait(self.driver, sleeptime).until(lambda x: x.find_element_by_id("username")).send_keys(self.user)
             WebDriverWait(self.driver, sleeptime).until(lambda x: x.find_element_by_id("password")).send_keys(self.passwd)
@@ -52,14 +51,15 @@ class AloneChat(object):
                 self.screenshot("%s_%s.png" % (funname, time.strftime('%H_%M_%S')))
                 print u"用户%s登陆失败" % self.user
                 return False
-
         except Exception,error:
             self.screenshot("%s_%s.png" % (funname, time.strftime('%H_%M_%S')))
             print u"user %s %s Failed %s" % (self.user, funname), error
             return False
     def logout(self):
         try:
-            self.driver.find_element_by_xpath("//i[@class='anticon anticon-setting ant-dropdown-trigger']").click()
+            self.driver.find_element_by_xpath("//div[@class='fl']/i").click()
+            #self.driver.find_element_by_xpath("//i[@class='anticon anticon-setting ant-dropdown-trigger']").click()
+            time.sleep(0.5)
             self.driver.find_element_by_xpath("//i[@class='anticon anticon-logout']").click()
             return True
         except Exception, error:

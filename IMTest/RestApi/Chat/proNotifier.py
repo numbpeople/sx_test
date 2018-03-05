@@ -42,7 +42,7 @@ class Notifiers:
     def DelNotifierHuaW(self):
         # del HuaWei notifiers
         try:
-            self.r = requests.delete("%s/%s/%s/notifiers/10493098" % (url, org, app), headers=self.headers)
+            self.r = requests.delete("%s/%s/%s/notifiers/10492024" % (url, org, app), headers=self.headers)
         except requests.exceptions.ConnectionError, e:
             return "Your url is error: ", e
         else:
@@ -70,7 +70,7 @@ class Notifiers:
     def DelNotifiXiaoMi(self):
         # del XianMi notifiers
         try:
-            self.r = requests.delete("%s/%s/%s/notifiers/2882308766617936952" % (url, org, app), headers=self.headers)
+            self.r = requests.delete("%s/%s/%s/notifiers/2882303761517426801" % (url, org, app), headers=self.headers)
         except requests.exceptions.ConnectionError, e:
             return "Your url is error: ", e
         else:

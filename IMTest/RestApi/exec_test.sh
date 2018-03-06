@@ -2,7 +2,7 @@
 
 rest_server="http://a1.easemob.com"
 org="easemob-demo"
-app="coco"
+app="jianguo1"
 user="easemobdemoadmin"
 password="thepushbox123"
 
@@ -32,6 +32,6 @@ UserManage="true"
 pushNotifiers="true"
 
 #test random del data class api
-DelOperate="false"
+DelOperate="true"
 
 python start.py $rest_server $org $app $user $password $sendmessage $callback $sendCommand $getGroup $OperateGroup $chatRoom $UserManage $pushNotifiers $DelOperate

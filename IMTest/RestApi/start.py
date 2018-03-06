@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
         key13 = TestNotifiers
         value13 = ["testGetNotifier_1","testUpNotifiHuaW_2","testDelHuaWeiNoti_3","testUpXiaoMiNoti_4",
-                                "testDelXizoMiNotifi_5",]
+                   "testDelXizoMiNotifi_5",]
         if sys.argv[13] == "true":
             rest[key13] = value13
 

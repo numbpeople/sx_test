@@ -13,4 +13,7 @@ Python2.7
 
 
 备注：
-可以使用python包管理工具来安装扩展，如：easy_install、pip等
+可以使用python包管理工具来安装扩展，如：easy_install、pip等，HTMLTestRunner模块安装有以下两种方法：
+1、直接使用以下命令安装，如果安装后提示导入，可能没有安装在当前python版本的site-packages目录下。
+pip install html-testRunner
+2、下载手动安装，下载地址https://pypi.python.org/pypi/HTMLTestRunner，下载后直接放在python的site-packages目录下即可。

@@ -78,7 +78,7 @@ Create Queue And Add Agents To Queue
     #添加技能组
     ${data}=    set variable    {"queueName":"${queuename}"}
     ${resp}=    /v1/AgentQueue    post    ${agent}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
+    Comment    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     #添加坐席到技能组
     ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${agent}    ${j['queueId']}    ${agentslist}    ${timeout}

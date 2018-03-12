@@ -16,6 +16,9 @@ Resource          ../../api/BaseApi/Queue/WaitApi.robot
 Resource          ../../api/BaseApi/History/HistoryApi.robot
 Resource          ../IM_Common/IM Common.robot
 Resource          ../Base Common/SecondGateway_Common.robot
+Resource          ../commons/agent common/Conversations/Conversations_Common.robot
+Resource          ../commons/agent common/Queue/Queue_Common.robot
+Resource          ../commons/agent common/Conversations/Colleague_Common.robot
 
 *** Keywords ***
 InitFilterTime
@@ -258,3 +261,25 @@ Clear Dictionary
     : FOR    ${i}    IN    @{keys}
     \    Set to Dictionary    ${dict}    ${i}=${empty}
     Return From Keyword    ${dict}
+
+Init Agent In New Queue
+    [Arguments]    ${agent}    ${MaxServiceUserNumber}
+    [Documentation]    \#1.设置接待人数为0
+    ...    #2.清空该坐席进行中会话
+    ...    #3.将该坐席移除出所在的所有技能组
+    ...    #4.创建新技能组，并将该坐席添加到新技能组
+    ...    #5.设置接待人数为指定接待数
+    ...    #6.返回技能组信息
+    #1.设置接待人数为0
+    ${j}    Set Agent MaxServiceUserNumber    ${agent}    0
+    #2.清空该坐席进行中会话
+    Stop All Processing Conversations    ${agent}
+    #3.将该坐席移除出所在的所有技能组
+    Remove Agent From All Queues    ${agent}    ${timeout}
+    #4.创建新技能组，并将该坐席添加到新技能组
+    ${q}    Create Random Agentqueue    ${agent}
+    @{ul}    create list    ${agent.userId}
+    Add Agents To Queue    ${agent}    ${q.queueId}    ${ul}
+    #5.设置接待人数为1
+    ${j}    Set Agent MaxServiceUserNumber    ${agent}    ${MaxServiceUserNumber}
+    Return From Keyword    ${q}

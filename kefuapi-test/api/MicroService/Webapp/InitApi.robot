@@ -23,6 +23,16 @@
     ${uri}=    set variable    /tenants/${agent.tenantId}/options
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
+/tenants/{tenantId}/options/{optionName}
+    [Arguments]    ${agent}    ${method}    ${optionname}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/options/${optionname}
+    ${rs}=    Run Keyword If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}
+    ...    data=${data}    timeout=${timeout}
+    ...    ELSE IF    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}
+    ...    timeout=${timeout}
+    Return From Keyword    ${rs}
+
 /v1/Agents/{agentId}
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

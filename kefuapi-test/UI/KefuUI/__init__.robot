@@ -19,3 +19,4 @@ Library           urllib
 Library           Selenium2Library
 Resource          ../../api/HomePage/Login/Login_Api.robot
 Resource          ../../commons/admin common/BaseKeyword.robot
+Resource          ../../commons/Base Common/Base_Common.robot

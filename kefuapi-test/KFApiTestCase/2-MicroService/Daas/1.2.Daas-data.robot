@@ -78,6 +78,30 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be true    ${j["entities"][0]["cnt_mc"]}>=3    工作量综合-消息数有误:${j["entities"][0]["cnt_mc"]}
     should be true    ${j["entities"][0]["cnt_ssc"]}==1    客服工作量-接起会话数有误:${j["entities"][0]["cnt_ssc"]}
     should be true    ${j["entities"][0]["cnt_sc"]}==1    客服工作量-结束会话数有误:${j["entities"][0]["cnt_sc"]}
+    #验证工作量-会话量和消息量趋势图返回值
+    ${resp}=    /daas/internal/session/trend/total    ${AdminUser}    ${timeout}    ${ConDateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    会话量和消息量趋势图不正确:${resp.content}
+    should be true    ${j["totalElements"]}==2    会话量和消息量趋势图不正确:${resp.content}
+    ${todaytime}    Get Today Begin Time
+    ${todayBeginTime}    convert to string    ${todaytime}
+    should be true    ${j["entities"][0]["value"][0]["${todayBeginTime}"]}==1    会话量和消息量趋势图-会话数不正确:${j["entities"][0]["value"][0]["${todayBeginTime}"]}
+    should be true    ${j["entities"][1]["value"][0]["${todayBeginTime}"]}>=3    会话量和消息量趋势图-消息数不正确:${j["entities"][0]["value"][0]["${todayBeginTime}"]}
+    #验证工作量-会话数分布图(按会话消息数维度)返回值
+    ${resp}=    /daas/internal/session/dist/message/count    ${AdminUser}    ${timeout}    ${ConDateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    会话数分布图(按会话消息数维度)不正确:${resp.content}
+    should be true    ${j["totalElements"]}==5    会话数分布图(按会话消息数维度)不正确:${resp.content}
+    should be true    ${j["entities"][0]["count"]}==1    会话数分布图(按会话消息数维度)-会话数不正确:${j["entities"][0]["count"]}
+    #验证工作量-会话数分布图(按会话消息数维度)返回值
+    ${resp}=    /daas/internal/session/dist/session/time    ${AdminUser}    ${timeout}    ${ConDateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    会话数分布图(按会话消息数维度)不正确:${resp.content}
+    should be true    ${j["totalElements"]}==5    会话数分布图(按会话消息数维度)不正确:${resp.content}
+    should be true    ${j["entities"][0]["count"]}==1    会话数分布图(按会话消息数维度)-会话数不正确:${j["entities"][0]["count"]}
 
     #验证工作质量-客服工作质量接口返回值
     ${resp}=    /daas/internal/agent/kpi/wq    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
@@ -131,3 +155,4 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be true    ${j["entities"][0]["avg_fr"]}>=2    工作质量综合-首响时长评价值有误:${j["entities"][0]["avg_fr"]}
     should be true    ${j["entities"][0]["max_fr"]}>=2    工作质量综合-首响时长最大值有误:${j["entities"][0]["max_fr"]}
     should be true    ${j["entities"][0]["avg_vm"]}==1    工作质量综合-满意度有误:${j["entities"][0]["avg_vm"]}
+

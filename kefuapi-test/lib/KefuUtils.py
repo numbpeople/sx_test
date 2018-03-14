@@ -3,6 +3,19 @@ import hashlib
 import hmac
 import base64
 import datetime
+import json
+
+class JSON2Object:
+   def __init__(self, d):
+     self.__dict__ = d
+
+def JsonLoadsObj(str):
+    tobj = json.loads(str,object_hook=JSON2Object)
+    return tobj
+
+def JsonDumpsObj(obj):
+    tstr = json.dumps(obj,default=lambda o: o.__dict__)
+    return tstr
 
 def GenerateRestSignature(secret, path, content,expires='-1',verb='POST'):
     m = hashlib.md5()
@@ -47,8 +60,11 @@ def Get_Last_Month():
     return str(lst_fist),str(lst_last)
 
 
+
 if __name__ == '__main__':
     vdate_str = '2017-12-14'
     print Get_Week(vdate_str)
     print Get_Last_Month()
+    print JsonLoads2Obj('{"listData":[1,2,3],"strData":"test python obj 2 json","i":{"tt":"111"}}').i.tt
 
+    

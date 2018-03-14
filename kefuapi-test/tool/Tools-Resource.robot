@@ -50,10 +50,11 @@ Delete Queues
     \    Run Keyword If    '${status}' == 'True'    Delete Agentqueue    ${queueIdValue}
 
 Delete Channels
+    [Arguments]    ${agent}=${AdminUser}
     #设置关联对比模板
-    ${preChannelname}=    convert to string    ${AdminUser.tenantId}
+    ${preChannelname}=    convert to string    ${agent.tenantId}
     #获取所有关联列表
-    ${channellist}=    Get Channels    #返回字典
+    ${channellist}=    Get Channels    ${agent}    #返回字典
     ${channelNameList}=    Get Dictionary Keys    ${channellist}
     ${listlength}=    Get Length    ${channelNameList}
     log    ${channellist}
@@ -62,8 +63,8 @@ Delete Channels
     \    ${channelname}=    convert to string    ${channelNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${channelname}    ${preChannelname}
     \    ${channelIdValue}=    Get From Dictionary    ${channellist}    ${channelNameList[${i}]}
-    \    Run Keyword If    ${status}    Close Conversations By ChannelId    ${channelIdValue}
-    \    Run Keyword If    ${status}    Delete Channel    ${channelIdValue}
+    \    Run Keyword If    ${status}    Close Conversations By ChannelId    ${channelIdValue}    ${agent}
+    \    Run Keyword If    ${status}    Delete Channel    ${channelIdValue}    ${agent}
 
 Decode Bytes To String In Dict
     [Arguments]    ${dict}    ${encoding}=UTF-8

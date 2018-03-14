@@ -63,7 +63,7 @@ Browser Init
     \    Append to List    ${graylist}    ${i['grayName']}
     #添加所有控制页面显示option项为true的optionNaem到graylist
     @{optionlist}    create list    agentVisitorCenterVisible    robotOptimizationStatus    growingioEnable
-    :FOR    ${i}    IN    @{optionlist}
+    : FOR    ${i}    IN    @{optionlist}
     \    ${t}    Get Option Value    ${uiagent}    ${i}
     \    Run Keyword If    '${t}'=='true'    Append to List    ${graylist}    ${i}
     log    ${graylist}
@@ -85,16 +85,16 @@ Check Element Contains Text
     Wait Until Element Contains    ${locator}    ${text}
 
 Check Base Elements
-    [Arguments]    ${lang}    ${elements}
+    [Arguments]    ${lang}    ${elements}    ${parentxpath}=${empty}
     log    ${elements}
     : FOR    ${i}    IN    @{elements}
-    \    ${locator}    set variable    xpath=${i['xPath']}
+    \    ${locator}    set variable    xpath=${parentxpath}${i['xPath']}
     \    ${lt}    Get Length    ${i['text']}
     \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${lang}']}
     \    ${la}    Get Length    ${i['attributes']}
     \    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${lang}    ${i['attributes']}
     \    ${le}    Get Length    ${i['elements']}
-    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}
+    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}    ${i['xPath']}
 
 Check Attributes
     [Arguments]    ${locator}    ${lang}    ${attributes}

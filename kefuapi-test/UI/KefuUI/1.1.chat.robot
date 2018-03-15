@@ -19,6 +19,7 @@ Resource          ../../api/HomePage/Login/Login_Api.robot
 Resource          ../../UIcommons/Kefu/chatres.robot
 Resource          ../../commons/Base Common/Base_Common.robot
 Resource          ../../commons/admin common/Channels/App_Common.robot
+Resource          ../../commons/admin common/Members/AgentQueue_Common.robot
 
 *** Test Cases ***
 调度1：坐席能自动调度
@@ -36,9 +37,8 @@ Resource          ../../commons/admin common/Channels/App_Common.robot
     ...    坐席自动接起该会话
     #步骤2-步骤5
     ${q}    Init Agent In New Queue    ${uiagent}    1
-    #跳转到进行中会话页面
-    ${jbase}    to json    ${chatbasejson}
-    go to    ${kefuurl}${jbase['navigator']['Agent']['uri']}
+    #跳转到进行中会话页面并确认页面加载完毕
+    goto and checkchatebasejson
     #步骤6：将入口指定设置优先顺序
     Set RoutingPriorityList    入口    渠道    关联    ${uiagent}
     #步骤7：发送消息，并指定到新技能组
@@ -51,8 +51,9 @@ Resource          ../../commons/admin common/Channels/App_Common.robot
     ${j}    format chatlistlijson    1    ${guestentity.originType}    ${guestentity.userName}    @{chatlistliclassattributes}
     ${jbase}    to json    ${j}
     Check Base Elements    ${uiagent.language}    ${jbase['elements']}
+    [Teardown]    Delete Agentqueue    ${q.queueId}    ${uiagent}
 
-调度2：坐席能心跳调度
+调度2：坐席能心跳调度（修改接待数）
     [Documentation]    步骤：
     ...    1.坐席登录
     ...    2.设置该接待数为0
@@ -68,9 +69,8 @@ Resource          ../../commons/admin common/Channels/App_Common.robot
     ...    坐席自动接起该会话
     #步骤2-步骤5
     ${q}    Init Agent In New Queue    ${uiagent}    0
-    #跳转到进行中会话页面
-    ${jbase}    to json    ${chatbasejson}
-    go to    ${kefuurl}${jbase['navigator']['Agent']['uri']}
+    #跳转到进行中会话页面并确认页面加载完毕
+    goto and checkchatebasejson
     #步骤6：将入口指定设置优先顺序
     Set RoutingPriorityList    入口    渠道    关联    ${uiagent}
     #步骤7：发送消息，并指定到新技能组，待接入中能查询到该会话
@@ -91,3 +91,51 @@ Resource          ../../commons/admin common/Channels/App_Common.robot
     ${j}    format chatlistlijson    1    ${guestentity.originType}    ${guestentity.userName}    @{chatlistliclassattributes}
     ${jbase}    to json    ${j}
     Check Base Elements    ${uiagent.language}    ${jbase['elements']}
+    [Teardown]    Delete Agentqueue    ${q.queueId}    ${uiagent}
+
+调度3：坐席能心跳调度（修改状态）
+    [Documentation]    步骤：
+    ...    1.坐席登录
+    ...    2.设置该接待数为0
+    ...    3.清空该坐席进行中会话
+    ...    4.创建一个新技能组（下面用queuea简称）并将该坐席绑定到该技能组
+    ...    5.设置坐席接待数为1，状态为非在线
+    ...    6.指定路由规则为入口优先
+    ...    7.发送消息（扩展中技能技能组queuea），会话进入待接入
+    ...    8.设置坐席状态为在线
+    ...
+    ...
+    ...    期望结果：
+    ...    坐席自动接起该会话
+    #步骤2-步骤5
+    ${q}    Init Agent In New Queue    ${uiagent}    1
+    #跳转到进行中会话页面并确认页面加载完毕
+    goto and checkchatebasejson
+    #步骤6：将入口指定设置优先顺序
+    Set RoutingPriorityList    入口    渠道    关联    ${uiagent}
+    #步骤7：发送消息，并指定到新技能组，待接入中能查询到该会话
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
+    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"${q.queueName}"}}
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    ${l}    get length    ${kefustatus}
+    : FOR    ${i}    IN RANGE    1    ${l}
+    \    #步骤5.2：设置坐席接待状态为非在线并刷新页面
+    \    Set Agent Status    ${uiagent}    ${kefustatus[${i}]}
+    \    goto and checkchatebasejson
+    \    #发送消息
+    \    ${guestentity}=    create dictionary    userName=${uiagent.tenantId}-${curTime}-${i}    originType=${originTypeentity.originType}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    \    ${resp}    Search Waiting Conversation    ${uiagent}    ${filter}    ${range}
+    \    ${j}    to json    ${resp.content}
+    \    Should Be True    ${j['total_entries']} ==1    查询结果为空：${j}
+    \    #步骤8：设置坐席接待状态为Online
+    \    Set Agent Status    ${uiagent}    ${kefustatus[0]}
+    \    #检查结果：格式化会话列表json并检查ui
+    \    ${j}    format chatlistlijson    1    ${guestentity.originType}    ${guestentity.userName}    @{chatlistliclassattributes}
+    \    ${jbase}    to json    ${j}
+    \    Check Base Elements    ${uiagent.language}    ${jbase['elements']}
+    \    #关闭会话
+    \    Stop All Processing Conversations    ${uiagent}
+    [Teardown]    Delete Agentqueue    ${q.queueId}    ${uiagent}

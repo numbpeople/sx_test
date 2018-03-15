@@ -12,3 +12,7 @@ format chatlistlijson
     [Arguments]    ${i}    ${origintype}    ${visitorname}    @{attributes}
     ${s}    evaluate    ${chatlistlistr} % (${i},${attributes[0]},${attributes[1]},${attributes[0]},${attributes[1]},'${origintype}','${origintype}','${visitorname}','${visitorname}')
     return from keyword    ${s}
+
+goto and checkchatebasejson
+    ${jbase}    to json    ${chatbasejson}
+    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}

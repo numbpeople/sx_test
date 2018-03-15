@@ -63,10 +63,10 @@ Set Queue Agents
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Delete Agentqueue
-    [Arguments]    ${queueId}
+    [Arguments]    ${queueId}    ${agent}=${AdminUser}
     [Documentation]    删除技能组，参数为技能组Id
     #删除新增技能组
-    ${resp}=    /v1/AgentQueue/{queueId}    ${AdminUser}    ${queueId}    ${timeout}
+    ${resp}=    /v1/AgentQueue/{queueId}    ${agent}    ${queueId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Get Agentqueue

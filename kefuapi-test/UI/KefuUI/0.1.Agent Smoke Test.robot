@@ -28,9 +28,7 @@ Resource          ../../UIcommons/Kefu/mystatistic.robot
 
 *** Test Cases ***
 查看会话列表
-    log    ${chattest}
-    ${jbase}    to json    ${chatbasejson}
-    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}
+    goto and checkchatebasejson
 
 查看待接入列表
     ${jbase}    to json    ${waitbasejson}

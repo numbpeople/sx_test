@@ -8,7 +8,7 @@ ${orgurl}         http://vpc10.kefu.easemob.com:8000
 ...               browser=phantomjs
 &{AgentUser1}     username=    password=    status=    roles=    tenantId=    maxServiceSessionCount=    wsconn=0
 ...               cookies=    session=    userId=    nicename=
-@{kefustatus}     Busy    Leave    Hidden    Online
+@{kefustatus}     Online    Busy    Leave    Hidden    # 第一个值必须是Online
 @{SessionState}    ${empty}    Wait    Processing
 ${timeout}        ${5.0}
 ${delay}          1

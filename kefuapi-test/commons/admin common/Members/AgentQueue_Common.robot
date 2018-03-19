@@ -192,3 +192,10 @@ Create Random Agentqueue
     ${queueName}    set variable    ${agent.tenantId}${curTime}
     ${q}    Create Agentqueue    ${queueName}    ${agent}
     Return From Keyword    ${q}
+
+Delete Agentqueues
+    [Arguments]    ${agent}    @{queueIds}
+    [Documentation]    删除一组技能组，参数为技能组Id列表
+    #循环删除新增技能组
+    : FOR    ${i}    IN    @{queueIds}
+    \    Delete Agentqueue    ${i}    ${agent}

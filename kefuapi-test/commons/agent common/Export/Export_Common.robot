@@ -81,7 +81,7 @@ Get My Export And Diff Counts
 Diff Export Count
     [Arguments]    ${exportCount}    ${preCount}
     [Documentation]    比较导出后的数据是否有增加
-    #判断导出文件的时间，比较当前本地时间和接口返回的createTime相差秒数不小于10，即返回true，否则返回false
+    比较导出后的数据是否有增加
     ${preExportCount}    evaluate    ${preCount} + 1
     Return From Keyword If    ${exportCount} == ${preExportCount}    true
     Return From Keyword    false

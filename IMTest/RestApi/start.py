@@ -11,8 +11,6 @@ app = sys.argv[3]
 username = sys.argv[4]
 password = sys.argv[5]
 
-os.system("python apiconfig.py %s %s %s %s %s" %(url,org,app,username,password))
-
 from TestInspect.Callbacktest import *
 from TestInspect.SendMessage import *
 from TestInspect.SendCmdGetInfo import *
@@ -79,8 +77,8 @@ if __name__ == "__main__":
             rest[key12] = value12
 
         key13 = TestNotifiers
-        value13 = ["testGetNotifier_1","testUpNotifiHuaW_2","testDelHuaWeiNoti_3","testUpXiaoMiNoti_4",
-                   "testDelXizoMiNotifi_5",]
+        value13 = ["testGetNotifier_1","testDelHuaWeiNoti_3","testUpNotifiHuaW_2","testDelXizoMiNotifi_5","testUpXiaoMiNoti_4",
+                   ]
         if sys.argv[13] == "true":
             rest[key13] = value13
 

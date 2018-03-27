@@ -11,10 +11,11 @@ Resource          ../BaseKeyword.robot
 
 *** Keywords ***
 Get Channels
+    [Arguments]    ${agent}=${AdminUser}
     [Documentation]    获取所有关联信息，返回appkey和channelId的字典集
     #获取关联信息
     &{channelList}    create dictionary
-    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${agent}    ${timeout}
     ${j}    to json    ${resp.content}
     log    ${j}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -28,14 +29,15 @@ Get Channels
     Return From Keyword    ${channelList}
 
 Add Channel
+    [Arguments]    ${agent}=${AdminUser}
     [Documentation]    快速创建一个关联，并返回该关联的所有信息
     ...
     ...    describtion：包含字段
     ...
     ...    appKey、appName、orgName、clientId、clientSecret、serviceEaseMobIMNumber、channelName、dutyType、agentQueueId、robotId、channelId
     #快速创建关联
-    ${data}=    create dictionary    companyName=对接移动客服 请勿移除管理员    email=${AdminUser.userId}@easemob.com    password=47iw5ytIN8Ab8f2KopaAaq    telephone=13800138000    tenantId=${AdminUser.tenantId}
-    ${resp}=    /v1/autoCreateImAssosciation    ${AdminUser}    ${data}    ${timeout}
+    ${data}=    create dictionary    companyName=对接移动客服 请勿移除管理员    email=${agent.userId}@easemob.com    password=47iw5ytIN8Ab8f2KopaAaq    telephone=13800138000    tenantId=${agent.tenantId}
+    ${resp}=    /v1/autoCreateImAssosciation    ${agent}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Comment    ${restentity}=    create dictionary    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}
@@ -43,7 +45,7 @@ Add Channel
     ${restentity}=    create dictionary    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}    clientSecret=${j['entity']['clientSecret']}
     ...    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}
     #查询关联id
-    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
@@ -55,7 +57,7 @@ Add Channel
     set to dictionary    ${restentity}    channelId=${d['id']}
     set global variable    ${easemobtechchannelJson}    ${d}
     #查询关联domain
-    ${resp}=    /v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/webimplugin/targetChannels    ${agent}    ${timeout}
     ${j}    to json    ${resp.content}
     ${diffs1}    set variable    ${restentity.appName}${restentity.orgName}${restentity.serviceEaseMobIMNumber}
     : FOR    ${d}    IN    @{j}
@@ -66,13 +68,14 @@ Add Channel
     Return From Keyword    ${restentity}
 
 Delete Channel
-    [Arguments]    ${channelId}
+    [Arguments]    ${channelId}    ${agent}=${AdminUser}
     [Documentation]    删除关联，参数为关联Id
     #删除新增关联
-    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${AdminUser}    ${channelId}    ${timeout}
+    ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${agent}    ${channelId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Create Channel
+    [Arguments]    ${agent}=${AdminUser}
     [Documentation]    快速创建关键并返回关联的所有信息
     ...
     ...    Return：
@@ -83,7 +86,7 @@ Create Channel
     ...
     ...    appKey、appName、orgName、clientId、clientSecret、serviceEaseMobIMNumber、channelName、dutyType、agentQueueId、robotId、channelId、token、restDomain、restsession
     #快速创建一个关联
-    ${restentity}=    Add Channel
+    ${restentity}=    Add Channel    ${agent}
     #获取关联appkey的token
     Create Session    restsession    http://${restentity.restDomain}
     ${j}    Get Appkey Token    restsession    ${easemobtechchannelJson}

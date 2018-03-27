@@ -7,6 +7,7 @@ Library           RequestsLibrary
 Library           calendar
 Resource          ../../../AgentRes.robot
 Resource          ../BaseKeyword.robot
+Library           DateTime
 
 *** Keywords ***
 One Service Valid Conversation
@@ -17,7 +18,7 @@ One Service Valid Conversation
     ${curTime}    get time    epoch
     ${guestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
     #创建技能组
-    ${agentqueue}   create dictionary    queueName=${AdminUser.tenantId}${curTime}AA
+    ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}AA
     ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
     #创建指定技能组的扩展消息体
     ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType},"queueName":"${queueentityAA.queueName}"}}
@@ -53,3 +54,12 @@ One Service Valid Conversation
     #记录会话创建时间、结束时间
     set to dictionary    ${ConDateRange}    beginDateTime=${curTimeVisitor}000    endDateTime=${curTimeStop}000
     return from keyword    ${queueentityAA}
+
+Get Today Begin Time
+    [Documentation]    获取当天零点的时间戳，毫秒级
+    ${yyyy}    ${mm}    ${day}    Get Time    year,month,day
+    ${time}    convert date    ${yyyy}${mm}${day} 0:0:0    epoch
+    ${time1}    convert to string    ${time}
+    ${time2}    split string from right    ${time1}    .    1
+    ${time3}    set variable    ${time2[0]}000
+    return from keyword    ${time3}

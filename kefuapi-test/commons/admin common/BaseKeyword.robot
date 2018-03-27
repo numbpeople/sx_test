@@ -16,6 +16,9 @@ Resource          ../../api/BaseApi/Queue/WaitApi.robot
 Resource          ../../api/BaseApi/History/HistoryApi.robot
 Resource          ../IM_Common/IM Common.robot
 Resource          ../Base Common/SecondGateway_Common.robot
+Resource          Members/AgentQueue_Common.robot
+Resource          ../agent common/Conversations/Colleague_Common.robot
+Resource          ../agent common/Conversations/Conversations_Common.robot
 
 *** Keywords ***
 InitFilterTime
@@ -85,7 +88,7 @@ Create Agent TxtMsg
     Return From Keyword    {"msg":"${msg}","type":"txt","ext":{"weichat":{"msgId":"${uuid}","originType":null,"visitor":null,"agent":null,"queueId":null,"queueName":null,"agentUsername":null,"ctrlType":null,"ctrlArgs":null,"event":null,"metadata":null,"callcenter":null,"language":null,"service_session":null,"html_safe_body":{"type":"txt","msg":""},"msg_id_for_ack":null,"ack_for_msg_id":null}}}
 
 Close Conversations By ChannelId
-    [Arguments]    ${techChannelId}    ${techChannelType}=easemob
+    [Arguments]    ${techChannelId}    ${agent}=${AdminUser}    ${techChannelType}=easemob
     [Documentation]    根据channelId查找所有processing或wait的会话
     #查询会话
     ${filter}    copy dictionary    ${FilterEntity}
@@ -94,7 +97,7 @@ Close Conversations By ChannelId
     ...    visitorName=${EMPTY}    sortField=startDateTime
     set to dictionary    ${range}    beginDate=${EMPTY}    endDate=${EMPTY}
     #根据channelId查询会话
-    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${AdminUser}    ${filter}    ${range}    ${timeout}
+    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${agent}    ${filter}    ${range}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     ${listlength}=    set variable    ${j['total_entries']}
@@ -103,29 +106,29 @@ Close Conversations By ChannelId
     \    ${state}=    set variable    ${j['items'][${i}]['state']}
     \    ${serviceSessionId}=    set variable    ${j['items'][${i}]['serviceSessionId']}
     \    ${visitoruserid}=    set variable    ${j['items'][${i}]['visitorUser']['userId']}
-    \    Close Conversation    ${state}    ${serviceSessionId}    ${visitoruserid}
+    \    Close Conversation    ${state}    ${serviceSessionId}    ${visitoruserid}    ${agent}
 
 Close Conversation
-    [Arguments]    ${status}    ${sessionServiceId}    ${userId}
+    [Arguments]    ${status}    ${sessionServiceId}    ${userId}    ${agent}=${AdminUser}
     [Documentation]    根据channelId查找所有processing或wait的会话
     #关闭processing或wait的会话
-    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}
-    Run Keyword If    '${status}' == 'Processing'    Close Processing Conversation    ${sessionServiceId}    ${userId}
+    Run Keyword If    '${status}' == 'Wait'    Close Waiting Conversation    ${sessionServiceId}    ${agent}
+    Run Keyword If    '${status}' == 'Processing'    Close Processing Conversation    ${sessionServiceId}    ${userId}    ${agent}
 
 Close Waiting Conversation
-    [Arguments]    ${sessionServiceId}
+    [Arguments]    ${sessionServiceId}    ${agent}=${AdminUser}
     [Documentation]    关闭待接入的会话
     #清理待接入会话
-    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${AdminUser}    ${sessionServiceId}    ${timeout}
+    ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 
 Close Processing Conversation
-    [Arguments]    ${sessionServiceId}    ${userId}
+    [Arguments]    ${sessionServiceId}    ${userId}    ${agent}=${AdminUser}
     [Documentation]    关闭processing的会话
     #关闭进行中会话
-    ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${AdminUser}    ${userId}    ${sessionServiceId}    ${timeout}
+    ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${agent}    ${userId}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
@@ -258,3 +261,26 @@ Clear Dictionary
     : FOR    ${i}    IN    @{keys}
     \    Set to Dictionary    ${dict}    ${i}=${empty}
     Return From Keyword    ${dict}
+
+Init Agent In New Queue
+    [Arguments]    ${agent}    ${MaxServiceUserNumber}    ${status}=Online
+    [Documentation]    \#1.设置接待人数为0    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置接待人数为指定接待数    #6.返回技能组信息    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置状态为在线    #6.设置接待人数为指定接待数
+    ...
+    ...
+    ...
+    ...
+    #1.设置接待人数为0
+    ${j}    Set Agent MaxServiceUserNumber    ${agent}    0
+    #2.清空该坐席进行中会话
+    Stop All Processing Conversations    ${agent}
+    #3.将该坐席移除出所在的所有技能组
+    Remove Agent From All Queues    ${agent}    ${timeout}
+    #4.创建新技能组，并将该坐席添加到新技能组
+    ${q}    Create Random Agentqueue    ${agent}
+    @{ul}    create list    ${agent.userId}
+    Add Agents To Queue    ${agent}    ${q.queueId}    ${ul}
+    #5.设置状态为指定状态
+    ${j}    Set Agent Status    ${agent}    ${status}
+    #6.设置接待人数为指定接待数
+    ${j}    Set Agent MaxServiceUserNumber    ${agent}    ${MaxServiceUserNumber}
+    Return From Keyword    ${q}

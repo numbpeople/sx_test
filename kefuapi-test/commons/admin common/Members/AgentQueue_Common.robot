@@ -45,7 +45,7 @@ Create Agentqueue
     ${resp}=    /v1/AgentQueue    post    ${agent}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.content}
+    Should Be Equal    '${j['tenantId']}'    '${agent.tenantId}'    技能组列表数据不正确：${resp.content}
     set to dictionary    ${agentqueue}    queueId=${j['queueId']}
     Return From Keyword    ${agentqueue}
 
@@ -63,10 +63,10 @@ Set Queue Agents
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Delete Agentqueue
-    [Arguments]    ${queueId}
+    [Arguments]    ${queueId}    ${agent}=${AdminUser}
     [Documentation]    删除技能组，参数为技能组Id
     #删除新增技能组
-    ${resp}=    /v1/AgentQueue/{queueId}    ${AdminUser}    ${queueId}    ${timeout}
+    ${resp}=    /v1/AgentQueue/{queueId}    ${agent}    ${queueId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
 Get Agentqueue
@@ -192,3 +192,10 @@ Create Random Agentqueue
     ${queueName}    set variable    ${agent.tenantId}${curTime}
     ${q}    Create Agentqueue    ${queueName}    ${agent}
     Return From Keyword    ${q}
+
+Delete Agentqueues
+    [Arguments]    ${agent}    @{queueIds}
+    [Documentation]    删除一组技能组，参数为技能组Id列表
+    #循环删除新增技能组
+    : FOR    ${i}    IN    @{queueIds}
+    \    Delete Agentqueue    ${i}    ${agent}

@@ -108,9 +108,6 @@ Resource          ../../UIcommons/Kefu/notifyres.robot
     #查看自定义信息接口
     ${jbase}    to json    ${settingsiframebasejson}
     Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}    Admin
-    #查看自定义事件推送
-    ${jbase}    to json    ${settingscallbackbasejson}
-    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}    Admin
     #查看会话分配规则
     ${jbase}    to json    ${settingsroutesbasejson}
     Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}    Admin
@@ -137,6 +134,9 @@ Resource          ../../UIcommons/Kefu/notifyres.robot
     Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}    Admin
     #查看问卷调查
     ${jbase}    to json    ${settingsquestionnairebasejson}
+    Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}    Admin
+    #查看自定义事件推送
+    ${jbase}    to json    ${settingscallbackbasejson}
     Check Base Module    ${kefuurl}    ${uiagent}    ${jbase}    Admin
 
 查看审批管理

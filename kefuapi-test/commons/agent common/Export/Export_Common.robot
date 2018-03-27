@@ -58,3 +58,30 @@ Set Download Records
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
+Get My Export And Diff Counts
+    [Arguments]    ${agent}    ${filter}    ${range}    ${preCount}
+    [Documentation]    判断接口返回值中status的值，如果不是Finish，则重试
+    #判断接口返回值中status的值，如果不是Finish，则重试
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    #获取当前的导出管理数据
+    \    ${j}    Get My Export    get    ${agent}    ${filter}    ${range}
+    \    ${exportCount}    set variable    ${j['totalElements']}
+    \    #判断导出管理总数是否有增加
+    \    run keyword if    ${exportCount} == 0    Fail    导出历史会话数据后，导出管理没有产生数据，${j}
+    \    ${status}    Diff Export Count    ${exportCount}    ${preCount}
+    \    run keyword if    "${status}" == "false"    Fail    导出历史会话数据后，未在导出管理中找到数据，${j}
+    \    #获取结果第一数据
+    \    ${value}    set variable    ${j['content'][0]}
+    \    #判断如果status不为Finished则循环
+    \    Exit For Loop If    '${value['status']}' == 'Finished'
+    \    sleep    ${delay}
+    Return From Keyword    ${value}
+
+Diff Export Count
+    [Arguments]    ${exportCount}    ${preCount}
+    [Documentation]    比较导出后的数据是否有增加
+    比较导出后的数据是否有增加
+    ${preExportCount}    evaluate    ${preCount} + 1
+    Return From Keyword If    ${exportCount} == ${preExportCount}    true
+    Return From Keyword    false

@@ -1,3 +1,23 @@
+*** Settings ***
+Library           json
+Library           requests
+Library           Collections
+Library           RequestsLibrary
+Library           String
+Library           calendar
+Resource          ../../AgentRes.robot
+Resource          ../../api/MicroService/Webapp/TeamApi.robot
+Resource          ../../api/MicroService/Webapp/TeamApi.robot
+Resource          ../../api/MicroService/WebGray/WebGrayApi.robot
+Resource          ../../api/MicroService/Permission/PermissionApi.robot
+Resource          ../../UIcommons/Utils/baseUtils.robot
+Library           uuid
+Library           urllib
+Library           Selenium2Library
+Resource          ../../api/HomePage/Login/Login_Api.robot
+Resource          ../../commons/admin common/BaseKeyword.robot
+Resource          ../../commons/Base Common/Base_Common.robot
+
 *** Keywords ***
 Browser Init
     [Arguments]    ${agent}
@@ -41,13 +61,19 @@ Browser Init
     #添加所有灰度name到graylist
     : FOR    ${i}    IN    @{j['entities']}
     \    Append to List    ${graylist}    ${i['grayName']}
+    #添加所有控制页面显示option项为true的optionNaem到graylist
+    @{optionlist}    create list    agentVisitorCenterVisible    robotOptimizationStatus    growingioEnable
+    : FOR    ${i}    IN    @{optionlist}
+    \    ${t}    Get Option Value    ${uiagent}    ${i}
+    \    Run Keyword If    '${t}'=='true'    Append to List    ${graylist}    ${i}
+    log    ${graylist}
     ${uiagent.graylist}    copy list    ${graylist}
-    #添加
+    #获取权限list
     ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/resource_categories    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
     #base加入灰度默认值中
     @{resourcelist}    Create List    base
-    #添加所有灰度name到graylist
+    #添加所有权限name到resourcelist
     Append to List    ${resourcelist}    @{j['entity']['resource_categories']}
     ${uiagent.resourcelist}    copy list    ${resourcelist}
     set global variable    ${uiagent}    ${uiagent}
@@ -59,16 +85,16 @@ Check Element Contains Text
     Wait Until Element Contains    ${locator}    ${text}
 
 Check Base Elements
-    [Arguments]    ${lang}    ${elements}
+    [Arguments]    ${lang}    ${elements}    ${parentxpath}=${empty}
     log    ${elements}
     : FOR    ${i}    IN    @{elements}
-    \    ${locator}    set variable    xpath=${i['xPath']}
+    \    ${locator}    set variable    xpath=${parentxpath}${i['xPath']}
     \    ${lt}    Get Length    ${i['text']}
     \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${lang}']}
     \    ${la}    Get Length    ${i['attributes']}
     \    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${lang}    ${i['attributes']}
     \    ${le}    Get Length    ${i['elements']}
-    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}
+    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}    ${i['xPath']}
 
 Check Attributes
     [Arguments]    ${locator}    ${lang}    ${attributes}
@@ -86,8 +112,8 @@ Check Base Module
     ${ig}    Get Index From List    ${agent.graylist}    ${nav['GrayKey']}
     ${ir}    Get Index From List    ${agent.resourcelist}    ${nav['ResourceKey']}
     #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
-    Run Keyword If    ${ig}==-1    Pass Execution    未灰度此功能：${ig}
-    Run Keyword If    ${ir}==-1    Pass Execution    未配置此功能：${ir}
+    Return From Keyword If    ${ig}==-1    log    未灰度此功能：${ig}
+    Return From Keyword If    ${ir}==-1    log    未配置此功能：${ir}
     go to    ${url}${nav['uri']}
     Check Base Elements    ${agent.language}    ${json['elements']}
 

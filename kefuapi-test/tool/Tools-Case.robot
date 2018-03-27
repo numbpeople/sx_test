@@ -29,7 +29,6 @@ Resource          ../commons/Base Common/SecondGateway_Common.robot
 Resource          ../api/BaseApi/Channels/RestApi.robot
 Resource          ../commons/CollectionData/Base_Collection.robot
 Resource          ../commons/agent common/Conversations/Colleague_Common.robot
-Resource          ../commons/agent common/Conversations/Conversations_Common.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource
@@ -120,10 +119,11 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber= kefuchannelimid_586788    orgName=1151170513178510    appName=kefuchannelapp27869
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
-    : FOR    ${i}    IN RANGE    100
+    : FOR    ${i}    IN RANGE    754
     \    ${curTime}    get time    epoch
-    \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
-    \    ${msgentity}=    create dictionary    msg=转人工1    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-ltvisitor-${i}    originType=${originTypeentity.originType}
+    \    ${t}    evaluate    ${i}%10+1
+    \    ${msgentity}=    create dictionary    msg=转人工1    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"5-ltQueue-${t}"}}
     \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    150ms
@@ -518,31 +518,6 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    Stop Processing Conversation    ${AdminUser}    ${i['user']['userId']}    ${i['serviceSessionId']}
     \    sleep    50ms
 
-批量创建坐席和技能组，并添加坐席到技能组
-    set test variable    ${AgentCount}    1000
-    set test variable    ${PerAgent}    1
-    Create Session    testsession    ${kefuurl}
-    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
-    ${j}    to json    ${resp.content}
-    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
-    ...    session=testsession    nicename=${j['agentUser']['nicename']}
-    set global variable    @{agentslist}    ${empty}
-    remove from list    ${agentslist}    0
-    : FOR    ${i}    IN RANGE    1087    2087
-    \    #添加坐席
-    \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}-${i}-3    password=test2015    maxServiceSessionCount=10    tenantId=${AdminUser.tenantId}
-    \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
-    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}
-    \    ...    ${timeout}
-    \    ${j}    to json    ${resp.content}
-    \    Append To list    ${agentslist}    ${j['userId']}
-    \    #每n个坐席创建一个技能
-    \    log    ${agentslist}
-    \    ${l}    get length    ${agentslist}
-    \    Comment    ${t}    evaluate    ${i}%${PerAgent}
-    \    Run Keyword If    ${l} == ${PerAgent}    Create Queue And Add Agents To Queue    ${AdminUser}    ${agentslist}    ${AdminUser.tenantId}-Queue-${i}-3
-    \    sleep    100ms
-
 批量创建并关闭有效会话
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
@@ -559,13 +534,41 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #
     Repeat Keyword    242    Close Valid New Session    ${AdminUser}    ${restentity}    webim
 
+批量创建坐席和技能组，并添加坐席到技能组
+    set test variable    ${AgentCount}    100
+    set test variable    ${PerAgent}    10
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    set global variable    @{agentslist}    ${empty}
+    remove from list    ${agentslist}    0
+    ${q}    set variable    11
+    : FOR    ${i}    IN RANGE    ${AgentCount}    200
+    \    #添加坐席
+    \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}-${i}    password=test2015    maxServiceSessionCount=20    tenantId=${AdminUser.tenantId}
+    \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
+    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}
+    \    ...    ${timeout}
+    \    ${j}    to json    ${resp.content}
+    \    Append To list    ${agentslist}    ${j['userId']}
+    \    #每n个坐席创建一个技能
+    \    log    ${agentslist}
+    \    ${l}    get length    ${agentslist}
+    \    Comment    ${t}    evaluate    ${i}%${PerAgent}
+    \    Run Keyword If    ${l} == ${PerAgent}    Create Queue And Add Agents To Queue    ${AdminUser}    ${agentslist}    ${AdminUser.tenantId}-Queue-${q}
+    \    ${q}    Run Keyword If    ${l} == ${PerAgent}    evaluate    ${q}+${1}
+    \    ...    ELSE    evaluate    ${q}+${0}
+    \    sleep    100ms
+
 批量关闭待接入
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
-    Repeat Keyword    100    Close Waiting Sessions    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Repeat Keyword    4    Close Waiting Sessions    ${AdminUser}    ${FilterEntity}    ${DateRange}
 
 批量创建有效会话，发送邀请评价，关闭会话并评价
     Create Session    testsession    ${kefuurl}
@@ -1107,3 +1110,12 @@ ${datadir}        ${CURDIR}${/}${/}resource
     Add Agents To Queue    ${AdminUser}    ${q.queueId}    ${ul}
     #5.设置接待人数为1
     ${j}    Set Agent MaxServiceUserNumber    ${AdminUser}    1
+
+更新option
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    ${data}    set variable    {"value":false}
+    ${resp}=    /tenants/{tenantId}/options/{optionName}    ${AdminUser}    put    serviceSessionPreScheduleEnable    ${data}    ${timeout}

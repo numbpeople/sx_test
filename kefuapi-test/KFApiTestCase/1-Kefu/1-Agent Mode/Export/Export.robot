@@ -32,11 +32,14 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
     #创建已结束的会话
     Create Terminal Conversation
+    #对比前的导出管理总数
+    ${j}    Get My Export    get    ${AdminUser}    ${filter}    ${range}
+    ${preCount}    set variable    ${j['totalElements']}
     #导出历史会话数据
     Export My History    post    ${AdminUser}    ${filter}    ${range}
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
-    ${i}    Get My Export And Check Status    ${AdminUser}    ${filter}    ${range}    ${localTime}
+    ${i}    Get My Export And Diff Counts    ${AdminUser}    ${filter}    ${range}    ${preCount}
     run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
@@ -62,11 +65,14 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
     #创建已结束的会话
     Create Terminal Conversation
+    #对比前的导出管理总数
+    ${j}    Get My Export    get    ${AdminUser}    ${filter}    ${range}
+    ${preCount}    set variable    ${j['totalElements']}
     #导出历史会话数据
     Export My History    post    ${AdminUser}    ${filter}    ${range}
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
-    ${i}    Get My Export And Check Status    ${AdminUser}    ${filter}    ${range}    ${localTime}
+    ${i}    Get My Export And Diff Counts    ${AdminUser}    ${filter}    ${range}    ${preCount}
     run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}

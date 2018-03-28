@@ -31,7 +31,9 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
     set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
     #创建已结束的会话
-    Create Terminal Conversation
+    ${session}    Create Terminal Conversation
+    #添加customerName为消息测试的访客，作为导出条件
+    set to dictionary    ${filter}    customerName=${session.userName}
     #对比前的导出管理总数
     ${j}    Get My Export    get    ${AdminUser}    ${filter}    ${range}
     ${preCount}    set variable    ${j['totalElements']}
@@ -64,7 +66,9 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
     set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
     #创建已结束的会话
-    Create Terminal Conversation
+    ${session}    Create Terminal Conversation
+    #添加customerName为消息测试的访客，作为导出条件
+    set to dictionary    ${filter}    customerName=${session.userName}
     #对比前的导出管理总数
     ${j}    Get My Export    get    ${AdminUser}    ${filter}    ${range}
     ${preCount}    set variable    ${j['totalElements']}

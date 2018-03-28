@@ -27,7 +27,7 @@ Library           uuid
     log    ${temp}
     ${r}=    PostRestChannelJsonDiff    ${temp}    ${j}
     Should Be True    ${r['ValidJson']}    添加rest channel返回数据不正确：${r}
-    set global variable    ${PostRestChannelJson}    ${j}
+    set test variable    ${PostRestChannelJson}    ${j}
     #查询rest channel中是否有新添加的channel
     ${resp}=    /v1/tenants/{tenantId}/channels    get    ${AdminUser}    ${empty}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    查询rest channel返回不正确的状态码:${resp.status_code}
@@ -39,7 +39,7 @@ Library           uuid
     \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
     Should Be True    '${diffs1}' == '${diffs2}'    未查询到添加的rest channel信息:${j}
     ${d}    create dictionary    channelId=${i['channelId']}    callbackUrl=${i['callbackUrl']}    clientId=${i['clientId']}    clientSecret=${i['clientSecret']}    postMessageUrl=${i['postMessageUrl']}
-    set global variable    ${RestChannelEntity}    ${d}
+    set test variable    ${RestChannelEntity}    ${d}
     #编辑rest channel
     ${data}    create dictionary    name=测试rest1    callbackUrl=http://www.test1.com
     ${resp}=    /v1/tenants/{tenantId}/channels/{channelId}    put    ${AdminUser}    ${RestChannelEntity.channelId}    ${data}    ${timeout}
@@ -77,7 +77,7 @@ Library           uuid
     Should Not Be True    '${diffs1}' == '${diffs2}'    查询到已删除的rest channel信息:${j}
     #删除成功后清空${RestEntities}
     ${d}    Clear Dictionary    &{RestChannelEntity}
-    set global variable    ${RestChannelEntity}    ${d}
+    set test variable    ${RestChannelEntity}    ${d}
 
 用rest渠道发送消息并关闭会话
     #添加rest channel

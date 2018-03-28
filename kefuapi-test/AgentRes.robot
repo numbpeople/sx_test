@@ -10,7 +10,7 @@ ${orgurl}         http://vpc10.kefu.easemob.com:8000
 ...               cookies=    session=    userId=    nicename=
 @{kefustatus}     Online    Busy    Leave    Hidden    # 第一个值必须是Online
 @{SessionState}    ${empty}    Wait    Processing
-${timeout}        ${5.0}
+${timeout}        ${30.0}
 ${delay}          1
 ${shortcutMessageGroupId}    ${EMPTY}
 ${shortcutMessageGroupName}    ${EMPTY}

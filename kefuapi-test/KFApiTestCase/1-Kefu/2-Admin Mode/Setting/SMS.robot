@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        unused
 Library           json
 Library           requests
 Library           Collections

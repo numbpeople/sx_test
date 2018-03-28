@@ -64,13 +64,9 @@ Get My Export And Diff Counts
     [Documentation]    判断接口返回值中status的值，如果不是Finish，则重试
     #判断接口返回值中status的值，如果不是Finish，则重试
     : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    #获取当前的导出管理数据
-    \    ${j}    Get My Export    get    ${agent}    ${filter}    ${range}
-    \    ${exportCount}    set variable    ${j['totalElements']}
-    \    #判断导出管理总数是否有增加
-    \    run keyword if    ${exportCount} == 0    Fail    导出历史会话数据后，导出管理没有产生数据，${j}
-    \    ${status}    Diff Export Count    ${exportCount}    ${preCount}
-    \    run keyword if    "${status}" == "false"    Fail    导出历史会话数据后，未在导出管理中找到数据，${j}
+    \    #获取导出数据并对比总数
+    \    ${j}    Diff Export Count    ${agent}    ${filter}    ${range}    ${preCount}
+    \    run keyword if    "${j}" == "{}"    Fail    导出历史会话数据后，对比没有增加
     \    #获取结果第一数据
     \    ${value}    set variable    ${j['content'][0]}
     \    #判断如果status不为Finished则循环
@@ -79,9 +75,24 @@ Get My Export And Diff Counts
     Return From Keyword    ${value}
 
 Diff Export Count
+    [Arguments]    ${agent}    ${filter}    ${range}    ${preCount}
+    [Documentation]    获取导出管理数据并对比总数
+    #获取当前的导出管理数据
+    :FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${j}    Get My Export    get    ${agent}    ${filter}    ${range}
+    \    ${exportCount}    set variable    ${j['totalElements']}
+    \    #判断导出管理总数是否有增加
+    \    run keyword if    ${exportCount} == 0    Fail    导出历史会话数据后，导出管理没有产生数据，${j}
+    \    #比较导出后的数据是否有增加
+    \    ${status}    Diff Count    ${exportCount}    ${preCount}
+    \    Return From Keyword If    '${status}' == 'true'    ${j}
+    \    sleep    ${delay}
+    Return From Keyword    {}
+
+Diff Count
     [Arguments]    ${exportCount}    ${preCount}
-    [Documentation]    比较导出后的数据是否有增加
-    比较导出后的数据是否有增加
+    [Documentation]    比较导出后的数据是否有增加，如果对比后增加1，则返回true，反之返回false
+    #比较导出后的数据是否有增加
     ${preExportCount}    evaluate    ${preCount} + 1
     Return From Keyword If    ${exportCount} == ${preExportCount}    true
     Return From Keyword    false

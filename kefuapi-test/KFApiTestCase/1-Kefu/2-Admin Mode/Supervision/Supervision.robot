@@ -24,15 +24,14 @@ Resource          ../../../../commons/admin common/Members/AgentQueue_Common.rob
     ${queue}    Create Agentqueue    ${queueName}
     #获取现场管理的技能组中坐席列表
     ${j}    Get Monitor Agentusers    ${AdminUser}    ${queue.queueId}
-    ${length}    get length    ${j['entities']}
-    should be true    ${length} == 0    现场管理中技能组中坐席不是空数据，${j}
-    should be equal    ${j['status']}    OK    接口返回值中status值不是OK , ${j}
+    should be true    "${j}" == "{}"    现场管理中技能组坐席应该为空, 但实际不为空, ${j}
 
 创建坐席并添加技能组，现场管理的技能组中坐席列表(/v1/tenants/{tenantId}/timeplans/schedules)
     #创建技能组和坐席，并将坐席设置到技能组里
     ${queue}    Set Agents To Queue
     #获取现场管理的技能组中坐席列表
     ${j}    Get Monitor Agentusers    ${AdminUser}    ${queue.queueId}
+    run keyword if    "${j}" == "{}"    Fail    现场管理中技能组不包含坐席, ${j}
     ${length}    get length    ${j['entities']}
     should be true    ${length} == 1    现场管理中技能组坐席数不是唯一，${j}
     should be equal    ${j['status']}    OK    接口返回值中status值不是OK , ${j}

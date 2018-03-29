@@ -10,6 +10,7 @@ Library           uuid
 Resource          ../../../../AgentRes.robot
 Resource          ../../../../api/BaseApi/Notification/MsgCenterApi.robot
 Resource          ../../../../JsonDiff/KefuJsonDiff.robot
+Resource          ../../../../commons/admin common/Notification/Notification_Common.robot
 
 *** Test Cases ***
 获取消息中心未读消息数据(/users/{agentUserId}/activities)
@@ -82,23 +83,20 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
     ${resp}=    /users/{agentUserId}/activities    ${AdminUser}    ${timeout}    read
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j2}    to json    ${resp.content}
-    log    ${j2['count_unread']}
-    Should Be True    ${j2['count_unread']} >= 0    count_unread返回值不正确:${j2}
-    #取出所有的activity_id值
-    ${r1}=    create list
-    : FOR    ${i}    IN RANGE    ${j['count_unread']}
-    \    log    ${j['entities'][${i}]['activity_id']}
-    \    Append To List    ${r1}    ${j['entities'][${i}]['activity_id']}
-    log    ${r1}
-    #标记消息从未读到已读
-    ${resp}=    /v2/users/{agentUserId}/activities/{activitiesId}    ${AdminUser}    ${timeout}    ${r1[0]}
-    Should Be Equal As Integers    ${resp.status_code}    202    不正确的状态码:${resp.status_code}
+    #已读消息对比前总数
+    ${preReadCounts}    evaluate    ${j2['count_total']} - ${j2['count_unread']}
+    #标记未读消息
+    ${activityId}    set variable    ${EMPTY}
+    run keyword if    ${j['count_unread']} > 0    set test variable    ${activityId}    ${j['entities'][0]['activity_id']}    #如果未读消息数据大于0，则取第一结果作为标记已读的数据
+    run keyword if    ${j['count_unread']} > 0    Mark Read Activity    ${AdminUser}    ${activityId}    ${timeout}
     #获取已读消息
     ${resp}=    /users/{agentUserId}/activities    ${AdminUser}    ${timeout}    read
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j1}    to json    ${resp.content}
-    log    ${j1['count_unread']}
-    Should Be True    ${j2['count_unread']}== ${j1['count_unread']}+1    count_unread返回值不正确 , 比较前后值分别为:${j2['count_unread']} ,${j1['count_unread']}
+    #已读消息对比前总数
+    ${currReadCounts}    evaluate    ${j1['count_total']} - ${j1['count_unread']}
+    ${afterReadCounts}    evaluate    ${currReadCounts}-1    #标记已读后，已读总数会增加
+    Should Be True    ${preReadCounts} == ${afterReadCounts}    count_unread返回值不正确 , 比较前后值分别为:${preReadCounts} ,${currReadCounts}
 
 获取已发消息列表数据(/v1/tenants/{tenantId}/agents/{userId}/activities)
     [Documentation]    获取消息中心已发消息列表数据

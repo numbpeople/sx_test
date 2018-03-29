@@ -41,7 +41,7 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v2/users/{agentUserId}/activities/{activitiesId}
-    [Arguments]    ${agent}    ${timeout}    ${activitiesId}
+    [Arguments]    ${agent}    ${activitiesId}    ${timeout}
     [Documentation]    Description:
     ...
     ...    标记已读消息

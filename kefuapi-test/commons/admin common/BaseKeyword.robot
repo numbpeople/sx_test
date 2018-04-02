@@ -120,8 +120,8 @@ Close Waiting Conversation
     [Documentation]    关闭待接入的会话
     #清理待接入会话
     ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
-    ${j}    to json    ${resp.text}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 
 Close Processing Conversation
@@ -264,7 +264,7 @@ Clear Dictionary
 
 Init Agent In New Queue
     [Arguments]    ${admin}    ${agent}
-    [Documentation]    \#1.设置接待人数为0    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置接待人数为指定接待数    #6.返回技能组信息    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置状态为在线    #6.设置接待人数为指定接待数
+    [Documentation]    \#1.设置接待人数为0    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置接待人数为指定接待数    #6.返回技能组信息    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置状态为在线    #6.设置接待人数为指定接待数    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组
     ...    #2.清空该坐席进行中会话
     ...    #3.将该坐席移除出所在的所有技能组
     ...    #4.创建新技能组，并将该坐席添加到新技能组
@@ -278,8 +278,4 @@ Init Agent In New Queue
     ${q}    Create Random Agentqueue    ${admin}
     @{ul}    create list    ${agent.userId}
     Add Agents To Queue    ${admin}    ${q.queueId}    ${ul}
-    Comment    #5.设置状态为指定状态
-    Comment    ${j}    Set Agent Status    ${agent}    ${status}
-    Comment    #6.设置接待人数为指定接待数
-    Comment    ${j}    Set Agent MaxServiceUserNumber    ${agent}    ${MaxServiceUserNumber}
     Return From Keyword    ${q}

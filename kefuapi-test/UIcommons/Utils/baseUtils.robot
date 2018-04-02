@@ -65,7 +65,6 @@ Kefu UI Init
     Run Keyword if    ${user}==0    set global variable    ${uiadmin}    ${uiagent}
     ...    ELSE IF    ${user}==1    set global variable    ${uiagent1}    ${uiagent}
     ...    ELSE IF    ${user}==2    set global variable    ${uiagent2}    ${uiagent}
-    log    ${uiadmin}
 
 Check Element Contains Text
     [Arguments]    ${locator}    ${text}

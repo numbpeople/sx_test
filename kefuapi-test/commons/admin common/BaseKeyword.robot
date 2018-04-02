@@ -263,24 +263,23 @@ Clear Dictionary
     Return From Keyword    ${dict}
 
 Init Agent In New Queue
-    [Arguments]    ${agent}    ${MaxServiceUserNumber}    ${status}=Online
+    [Arguments]    ${admin}    ${agent}
     [Documentation]    \#1.设置接待人数为0    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置接待人数为指定接待数    #6.返回技能组信息    #2.清空该坐席进行中会话    #3.将该坐席移除出所在的所有技能组    #4.创建新技能组，并将该坐席添加到新技能组    #5.设置状态为在线    #6.设置接待人数为指定接待数
-    ...
-    ...
-    ...
-    ...
+    ...    #2.清空该坐席进行中会话
+    ...    #3.将该坐席移除出所在的所有技能组
+    ...    #4.创建新技能组，并将该坐席添加到新技能组
     #1.设置接待人数为0
     ${j}    Set Agent MaxServiceUserNumber    ${agent}    0
     #2.清空该坐席进行中会话
     Stop All Processing Conversations    ${agent}
     #3.将该坐席移除出所在的所有技能组
-    Remove Agent From All Queues    ${agent}    ${timeout}
+    Remove Agent From All Queues    ${admin}    ${agent}    ${timeout}
     #4.创建新技能组，并将该坐席添加到新技能组
-    ${q}    Create Random Agentqueue    ${agent}
+    ${q}    Create Random Agentqueue    ${admin}
     @{ul}    create list    ${agent.userId}
-    Add Agents To Queue    ${agent}    ${q.queueId}    ${ul}
-    #5.设置状态为指定状态
-    ${j}    Set Agent Status    ${agent}    ${status}
-    #6.设置接待人数为指定接待数
-    ${j}    Set Agent MaxServiceUserNumber    ${agent}    ${MaxServiceUserNumber}
+    Add Agents To Queue    ${admin}    ${q.queueId}    ${ul}
+    Comment    #5.设置状态为指定状态
+    Comment    ${j}    Set Agent Status    ${agent}    ${status}
+    Comment    #6.设置接待人数为指定接待数
+    Comment    ${j}    Set Agent MaxServiceUserNumber    ${agent}    ${MaxServiceUserNumber}
     Return From Keyword    ${q}

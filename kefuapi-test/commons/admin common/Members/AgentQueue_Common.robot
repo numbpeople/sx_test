@@ -172,11 +172,13 @@ Get Agent QueueInfo
     Return From Keyword    ${j}
 
 Remove Agent From All Queues
-    [Arguments]    ${agent}    ${timeout}
+    [Arguments]    ${admin}    ${agent}    ${timeout}
+    #获取要删除坐席的信息
     ${jagent}    Get Agent QueueInfo    ${agent}    ${timeout}
     @{l}    create list    ${agent.userId}
     : FOR    ${i}    IN    @{jagent['entities']}
-    \    Run Keyword If    '${i['queueGroupType']}'=='UserDefined'    Remove Agents From Queue    ${agent}    ${i['queueId']}    ${timeout}
+    \    #用管理员账号去移除
+    \    Run Keyword If    '${i['queueGroupType']}'=='UserDefined'    Remove Agents From Queue    ${admin}    ${i['queueId']}    ${timeout}
     \    ...    @{l}
 
 Create Random Agentqueue

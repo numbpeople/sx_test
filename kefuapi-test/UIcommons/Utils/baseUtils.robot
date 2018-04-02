@@ -17,32 +17,18 @@ Library           Selenium2Library
 Resource          ../../api/HomePage/Login/Login_Api.robot
 Resource          ../../commons/admin common/BaseKeyword.robot
 Resource          ../../commons/Base Common/Base_Common.robot
+Library           uuid
 
 *** Keywords ***
-Browser Init
-    [Arguments]    ${agent}
+Kefu UI Init
+    [Arguments]    ${agent}    ${user}=0
     [Documentation]    1.接口登录
     ...    2.设置浏览器cookie和localStorage
     ...    3.获取账号语言信息
     ...    4.获取灰度列表
-    #接口登录并打开浏览器
-    set global variable    ${uiagent}    ${agent}
-    Create Session    uisession    ${kefuurl}
-    #登录
-    ${resp}=    /login    uisession    ${uiagent}    ${timeout}
-    : FOR    ${i}    IN    @{resp}
-    \    log    ${i}
-    ${j}    to json    ${resp.content}
-    set to dictionary    ${uiagent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
-    ...    session=uisession
-    #打开浏览器并写入cookie
-    @{t}=    Get Dictionary Keys    ${uiagent.cookies}
-    open browser    ${kefuurl}    ${uiagent.browser}
-    ${protocol}    ${domain}    Split String    ${kefuurl}    ://
-    : FOR    ${key}    IN    @{t}
-    \    log    ${key}
-    \    ${value}=    Get From Dictionary    ${uiagent.cookies}    ${key}
-    \    Add Cookie    ${key}    ${value}    /    .${domain}
+    open browser    ${kefuurl}    ${agent.browser}
+    ${session}    Create Random Session    ${kefuurl}
+    ${uiagent}    Login And Set Cookies    ${agent}    ${session}
     #设置浏览器语言
     Execute Javascript    localStorage.setItem('language','${uiagent.language}')
     #设置tenantId
@@ -69,14 +55,17 @@ Browser Init
     log    ${graylist}
     ${uiagent.graylist}    copy list    ${graylist}
     #获取权限list
-    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/resource_categories    ${AdminUser}    ${timeout}
+    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/resource_categories    ${uiagent}    ${timeout}
     ${j}    to json    ${resp.content}
     #base加入灰度默认值中
     @{resourcelist}    Create List    base
     #添加所有权限name到resourcelist
     Append to List    ${resourcelist}    @{j['entity']['resource_categories']}
     ${uiagent.resourcelist}    copy list    ${resourcelist}
-    set global variable    ${uiagent}    ${uiagent}
+    Run Keyword if    ${user}==0    set global variable    ${uiadmin}    ${uiagent}
+    ...    ELSE IF    ${user}==1    set global variable    ${uiagent1}    ${uiagent}
+    ...    ELSE IF    ${user}==2    set global variable    ${uiagent2}    ${uiagent}
+    log    ${uiadmin}
 
 Check Element Contains Text
     [Arguments]    ${locator}    ${text}
@@ -123,3 +112,44 @@ Update Tab Selector
     \    ${value}    Get Dictionary Values    ${i}
     \    \    Run Keyword If
     \    log    ${value}
+
+Login And Set Cookies
+    [Arguments]    ${agent}    ${session}
+    [Documentation]    1.接口登录
+    ...    2.设置浏览器cookie
+    ...    3.返回坐席信息
+    #接口登录并打开浏览器
+    ${tagent}    set variable    ${agent}
+    #登录
+    ${resp}=    /login    ${session}    ${tagent}    ${timeout}
+    : FOR    ${i}    IN    @{resp}
+    \    log    ${i}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${tagent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=${session}
+    #打开浏览器并写入cookie
+    @{t}=    Get Dictionary Keys    ${tagent.cookies}
+    ${protocol}    ${domain}    Split String    ${kefuurl}    ://
+    : FOR    ${key}    IN    @{t}
+    \    log    ${key}
+    \    ${value}=    Get From Dictionary    ${tagent.cookies}    ${key}
+    \    Add Cookie    ${key}    ${value}    /    .${domain}
+    Return From Keyword    ${tagent}
+
+Create Random Session
+    [Arguments]    ${url}
+    ${session}    Generate Random String
+    Create Session    ${session}    ${url}
+    return from keyword    ${session}
+
+Disable All Waiting Rules
+    [Arguments]    ${agent}
+    [Documentation]    1.接口登录
+    ...    2.设置浏览器cookie和localStorage
+    ...    3.获取账号语言信息
+    ...    4.获取灰度列表
+    ${ig}    Get Index From List    ${agent.graylist}    teamOverflow
+    #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
+    Return From Keyword If    ${ig}==-1    log    未灰度此功能：${ig}
+    #否则，关闭所有Waiting Rules
+    Reverse All Rules Status    ${agent}

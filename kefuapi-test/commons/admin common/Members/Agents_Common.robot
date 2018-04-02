@@ -6,6 +6,7 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/Members/Agent_Api.robot
+Library           uuid
 
 *** Keywords ***
 Get Agents
@@ -46,3 +47,13 @@ Set Agents
     run keyword if    '${method}'=='get'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
+
+Create Temp Agent
+    [Arguments]    ${agent}    ${permissionid}    #permissionid : 1为管理员；2为坐席；以后为自定义角色
+    ${t}    UUID 4
+    &{AgentUser}=    create dictionary    username=${t}    password=test2015    maxServiceSessionCount=10    tenantId=${agent.tenantId}
+    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"trueName","mobilePhone":"13800138000","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","permission":"${permissionid}","roles":"agent"}
+    ${resp}=    /v1/Admin/Agents    post    ${agent}    ${empty}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
+    ${agent}
+    return from keyword    {"tenantId":5833,"userId":"092b9776-438e-4d54-ae21-c536a1affdcd","userType":"Agent","userScope":"Tenant","nicename":"fs","password":"","username":"0216l9@test.com","roles":"admin,agent","createDateTime":"2018-03-23 17:49:47","lastUpdateDateTime":"2018-03-23 17:49:47","status":"Enable","state":"Offline","maxServiceSessionCount":10,"trueName":"","mobilePhone":"","agentType":"Message","language":"zh_CN","timeZone":"UTC+8","bizId":"5833","scope":"Tenant","onLineState":"Offline","currentOnLineState":"Offline"}

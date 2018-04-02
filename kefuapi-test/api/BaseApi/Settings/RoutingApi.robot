@@ -40,3 +40,34 @@
     ${params}    set variable    dutyType=${channeldata.dutyType}&id=${channeldata.id}&id2=${channeldata.id2}&type=${channeldata.type}&type2=${channeldata.type2}&
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    data=${data}
     ...    timeout=${timeout}
+
+/v1/tenants/{tenantId}/waiting-queue-rulesets
+    [Arguments]    ${method}    ${agent}    ${data}    ${timeout}
+    [Documentation]    Description:
+    ...
+    ...    获取/创建租户溢出规则
+    ...
+    ...    Request URL: /v1/tenants/{tenantId}/waiting-queue-rulesets
+    ...
+    ...    Request Method: GET / POST
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/waiting-queue-rulesets
+    log    ${data}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+
+/v1/tenants/{tenantId}/waiting-queue-rulesets/{ruleId}
+    [Arguments]    ${method}    ${agent}    ${ruleId}    ${data}    ${timeout}
+    [Documentation]    Description:
+    ...
+    ...    编辑/删除租户溢出规则
+    ...
+    ...    Request URL: /v1/tenants/{tenantId}/waiting-queue-rulesets/${ruleId}
+    ...
+    ...    Request Method: Delete / Put
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/waiting-queue-rulesets/${ruleId}
+    Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}

@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Setup       Browser Init    ${AdminUser}
+Suite Setup       Kefu UI Init    ${AdminUser}
 Suite Teardown    Close Browser
 Force Tags        ui
 Library           json

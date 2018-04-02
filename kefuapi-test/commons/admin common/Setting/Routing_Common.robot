@@ -156,3 +156,42 @@ Set ChannelData Routing
     #关联绑定技能组或机器人
     ${resp}=    /v1/tenants/{tenantId}/channel-data-binding    ${agent}    ${cdata}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+
+Reverse All Rules Status
+    [Arguments]    ${agent}    ${currentstatus}='true'
+    [Documentation]    ${currentstatus}只能是字符串'true'或'false'
+    ${j}    Get All Rules    ${agent}
+    ${l}    Get Length    ${j['entity']}
+    Return From Keyword If    ${l}==0    -1
+    :FOR    ${i}    IN    @{j['entity']}
+    \    Run Keyword If    '${i['rule_set_enable']}'==${currentstatus}    Reverse Rule satus    ${agent}    ${i}    ${currentstatus}
+
+Update Rule Status
+    [Arguments]    ${agent}    ${data}
+    ${resp}=    /v1/tenants/{tenantId}/waiting-queue-rulesets/{ruleId}    put    ${AdminUser}    ${data['rule_set_id']}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    开启rule返回不正确的状态码:${resp.status_code};${resp.text}
+
+Reverse RuleString Status
+    [Arguments]    ${rulestr}    ${currentstatus}='true'
+    [Documentation]    ${currentstatus}只能是字符串'true'或'false'
+    ${s}    run keyword if    ${currentstatus}=='true'    replace string    '${rulestr}'    true    false
+    ...    ELSE    replace string    '${rulestr}'    false    true
+    ${s}    replace string    ${s}    '    "
+    ${s}    replace string    ${s}    u"    "
+    ${data}    strip string    ${s}    characters="
+    ${data}    to json    ${data}
+    return from keyword    ${data}
+
+Get All Rules
+    [Arguments]    ${agent}
+    ${resp}=    /v1/tenants/{tenantId}/waiting-queue-rulesets    get    ${agent}    ${empty}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    查询rule返回不正确的状态码:${resp.status_code};${resp.text}
+    Comment    ${j}    to json    ${resp.content}
+    ${j}    to json    ${resp.text}
+    return from keyword    ${j}
+
+Reverse Rule satus
+    [Arguments]    ${agent}    ${rulestr}    ${currentstatus}='true'
+    [Documentation]    ${currentstatus}只能是字符串'true'或'false'
+    ${data}    Reverse RuleString Status    ${rulestr}    ${currentstatus}
+    Update Rule Status    ${agent}    ${data}

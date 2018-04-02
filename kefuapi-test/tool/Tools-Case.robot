@@ -959,7 +959,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     #添加rest channel
     ${restid}    uuid 4
-    ${data}    create dictionary    name=rest-${restid}    callbackUrl=http://9kspze.natappfree.cc
+    ${data}    create dictionary    name=rest-${restid}    callbackUrl=http://v6x4p2.natappfree.cc
     ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    添加rest channel返回不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -983,7 +983,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     set test variable    ${d}    ${RestChannelEntity}
     set to dictionary    ${d}    channelId=${i['channelId']}    callbackUrl=${i['callbackUrl']}    clientId=${i['clientId']}    clientSecret=${i['clientSecret']}    postMessageUrl=${i['postMessageUrl']}
     set global variable    ${RestChannelEntity}    ${d}
-    : FOR    ${i}    IN RANGE    10
+    : FOR    ${i}    IN RANGE    1
     \    #初始化参数：消息、渠道信息、客户信息
     \    ${curTime}    get time    epoch
     \    #创建技能组
@@ -994,7 +994,9 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    set test variable    ${RestMsgJson}    {"bodies":[{"msg":"${RestMsgEntity.msg}","type":"${RestMsgEntity.type}"}],"ext":{"queue_id":"${RestMsgEntity.queue_id}","queue_name":"${RestMsgEntity.queue_name}","agent_username":"${RestMsgEntity.agent_username}","visitor":{"tags":${RestMsgEntity.tags},"callback_user":"${RestMsgEntity.callback_user}","user_nickname":"${RestMsgEntity.user_nickname}","true_name":"${RestMsgEntity.true_name}","sex":"${RestMsgEntity.sex}","qq":"${RestMsgEntity.qq}","email":"${RestMsgEntity.email}","phone":"${RestMsgEntity.phone}","company_name":"${RestMsgEntity.company_name}","description":"${RestMsgEntity.description}"}},"msg_id":"${RestMsgEntity.msg_id}","origin_type":"${RestMsgEntity.origin_type}","from":"${RestMsgEntity.From}","timestamp":"${RestMsgEntity.timestamp}"}
     \    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     \    ${resp}=    /api/tenants/{tenantId}/rest/channels/{channelId}/messages    ${AdminUser}    ${RestChannelEntity}    ${RestMsgJson}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.text}
+    \    log    ${j}
 
 批量创建待接入（使用已有关联）
     Create Session    testsession    ${kefuurl}
@@ -1085,7 +1087,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${j}    to json    ${resp.content}
     set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
-    Remove Agent From All Queues    ${AdminUser}    ${timeout}
+    Remove Agent From All Queues    ${AdminUser}    ${AdminUser}    ${timeout}
 
 清理坐席接待状态，并移动坐席到新技能组后打开接待状态
     [Documentation]    1.设置接待人数为0
@@ -1103,7 +1105,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #2.清空该坐席进行中会话
     Stop All Processing Conversations    ${AdminUser}
     #3.将该坐席移除出所在的所有技能组
-    Remove Agent From All Queues    ${AdminUser}    ${timeout}
+    Remove Agent From All Queues    ${AdminUser}    ${AdminUser}    ${timeout}
     #4.创建新技能组，并将该坐席添加到新技能组
     ${q}    Create Random Agentqueue    ${AdminUser}
     @{ul}    create list    ${AdminUser.userId}
@@ -1119,3 +1121,41 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     ${data}    set variable    {"value":false}
     ${resp}=    /tenants/{tenantId}/options/{optionName}    ${AdminUser}    put    serviceSessionPreScheduleEnable    ${data}    ${timeout}
+
+批量发送消息（使用已有关联）
+    #获取token
+    ${restentity}    create dictionary    restDomain=39.107.156.84:8080    orgName=easemob-demo    appName=chatdemoui    serviceEaseMobIMNumber=robot_001    token=
+    ...    session=
+    &{channel}    create dictionary    clientId=YXA6NWbD0CgdEei9jxnvYYUEXA    clientSecret=YXA66XlAUvBllpTTx13eP7vU1_JN48A    appKey=${restentity.orgName}#${restentity.appName}
+    Create Session    restsession    http://${restentity.restDomain}
+    ${resp}    get token by credentials    restsession    ${channel}    ${timeout}
+    ${j}    to json    ${resp.text}
+    set to dictionary    ${restentity}    token=${j['access_token']}    session=restsession
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    : FOR    ${i}    IN RANGE    10000
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=visitor-${i}    originType=${originTypeentity.originType}
+    \    ${msgentity}=    create dictionary    msg=转人工    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"test3"}}
+    \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    \    sleep    25ms
+
+关闭所有溢出规则
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #关闭所有开启的规则
+    Reverse All Rules Status    ${AdminUser}
+
+开启所有溢出规则
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #关闭所有开启的规则
+    Reverse All Rules Status    ${AdminUser}    'false'

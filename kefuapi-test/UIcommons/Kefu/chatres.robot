@@ -15,5 +15,4 @@ format chatlistlijson
 
 goto and checkchatebasejson
     [Arguments]    ${agent}
-    ${jbase}    to json    ${chatbasejson}
-    Check Base Module    ${kefuurl}    ${agent}    ${jbase}
+    Check Base Module    ${kefuurl}    ${agent}    ${chatbasejson}

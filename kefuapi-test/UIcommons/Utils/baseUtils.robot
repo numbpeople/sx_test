@@ -94,8 +94,9 @@ Check Attributes
     \    Should be True    '${a}'=='${i['value']['${lang}']}'
 
 Check Base Module
-    [Arguments]    ${url}    ${agent}    ${json}    ${mode}=Agent
+    [Arguments]    ${url}    ${agent}    ${checkstr}    ${mode}=Agent
     [Documentation]    判断整个模块是否灰度，若灰度，跳转到url，检查基础元素
+    ${json}    to json    ${checkstr}
     set test variable    ${nav}    ${json['navigator']['${mode}']}
     ${ig}    Get Index From List    ${agent.graylist}    ${nav['GrayKey']}
     ${ir}    Get Index From List    ${agent.resourcelist}    ${nav['ResourceKey']}

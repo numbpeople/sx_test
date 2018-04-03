@@ -31,57 +31,44 @@ Resource          ../../UIcommons/Kefu/mystatistic.robot
     goto and checkchatebasejson    ${uiadmin}
 
 查看待接入列表
-    ${jbase}    to json    ${waitbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${waitbasejson}
 
 查看我的知识库
-    ${jbase}    to json    ${knowledgebasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${knowledgebasejson}
 
 查看我的留言列表
-    ${jbase}    to json    ${notesbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${notesbasejson}
 
 查看我的工单
-    ${jbase}    to json    ${myticketsbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${myticketsbasejson}
 
 查看我的历史会话
-    ${jbase}    to json    ${historybasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${historybasejson}
 
 查看我的质量检查
+    [Template]    Check Base Module
     #查看质检记录
-    ${jbase}    to json    ${qualityrecordbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    ${kefuurl}    ${uiadmin}    ${qualityrecordbasejson}
     #查看申述记录
-    ${jbase}    to json    ${appealrecordbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    ${kefuurl}    ${uiadmin}    ${appealrecordbasejson}
 
 查看我的搜索
-    ${jbase}    to json    ${sessionsearchbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${sessionsearchbasejson}
 
 查看我的客户中心
-    ${jbase}    to json    ${visitorsbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${visitorsbasejson}
 
 查看我的导出管理
-    ${jbase}    to json    ${exportsbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${exportsbasejson}
 
 查看客服信息
-    ${jbase}    to json    ${agentinfobasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${agentinfobasejson}
 
 查看个人常用语
-    ${jbase}    to json    ${myphrasebasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${myphrasebasejson}
 
 查看消息中心
-    ${jbase}    to json    ${notifybasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${notifybasejson}
 
 查看我的统计数据
-    ${jbase}    to json    ${mystatisticbasejson}
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${jbase}
+    Check Base Module    ${kefuurl}    ${uiadmin}    ${mystatisticbasejson}

@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup
-Force Tags        ui
+Force Tags        ui    org
 Library           json
 Library           requests
 Library           Collections

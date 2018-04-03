@@ -73,3 +73,11 @@ Get Stickers Files
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
+
+Open Sticker File
+    [Documentation]    打开resource文件夹下的stickers.zip压缩包
+    #打开表情包
+    ${picpath}    set variable    ${CURDIR}
+    ${picpath}    evaluate    os.path.abspath(os.path.dirname('${picpath}')+os.path.sep+"..")    os
+    ${picpath}    set variable    ${picpath}${/}${/}resource${/}${/}stickers.zip
+    return from keyword    ${picpath}

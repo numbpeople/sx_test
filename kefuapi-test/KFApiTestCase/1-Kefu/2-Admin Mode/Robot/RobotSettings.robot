@@ -20,42 +20,6 @@ Resource          ../../../../api/BaseApi/Robot/Robot_Api.robot
     ${resp}=    /v1/Tenants/{tenantId}/robots/recommendationSwitch    ${AdminUser}    ${switchType}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
-获取机器人知识规则(/v1/Tenants/me/robot/rules)
-    [Tags]    unused
-    ${resp}=    /v1/Tenants/me/robot/rules    ${AdminUser}    ${RobotRulesEntity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be True    ${j['totalElements']}>=0    返回的机器人知识规则不正确：${resp.content}
-
-获取机器人知识规则条数(/v1/Tenants/me/robot/rule/group/count)
-    [Tags]    unused
-    ${resp}=    /v1/Tenants/me/robot/rule/group/count    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be True    ${j} >= 0    机器人知识规则条数：${resp.content}
-
-获取机器人自定义菜单(/v1/Tenants/me/robot/menu/items)
-    [Tags]    unused
-    ${resp}=    /v1/Tenants/me/robot/menu/items    ${AdminUser}    ${RobotRulesEntity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Not Be Empty    ${j}    返回的机器人菜单素材库不正确：${resp.content}
-
-获取机器人设置(/v1/Tenants/me/robot/profile/setting)
-    [Tags]    unused
-    ${resp}=    /v1/Tenants/me/robot/profile/setting    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人设置信息不正确：${resp.content}
-
-获取机器人信息(/v1/Tenants/me/robot/profile/personalInfo)
-    [Tags]    unused
-    ${resp}=    /v1/Tenants/me/robot/profile/personalInfo    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人信息不正确：${resp.content}
-    log    ${resp.content}
-
 获取机器人闲聊开关信息(/v1/Tenants/{tenantId}/robots/freechat)
     ${resp}=    /v1/Tenants/{tenantId}/robots/freechat    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

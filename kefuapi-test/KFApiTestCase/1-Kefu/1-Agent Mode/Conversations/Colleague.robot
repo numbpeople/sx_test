@@ -9,16 +9,6 @@ Resource          ../../../../AgentRes.robot
 Resource          ../../../../commons/agent common/Conversations/Colleague_Common.robot
 
 *** Test Cases ***
-客服设置状态&接待数(/v1/Agents/{agentId})
-    [Tags]    unused
-    #设置局部变量使用
-    ${agent}    copy dictionary    ${AdminUser}
-    #客服设置状态&接待数
-    : FOR    ${s}    IN    @{kefustatus}
-    \    set to dictionary    ${agent}    status    ${s}
-    \    ${j}    Set Agent StatusOrMaxServiceUserNumber    ${agent}
-    \    Should Be Equal    ${j['status']}    ${s}    设置状态失败：${j}
-
 获取当前客服列表(/v1/Agents/{AdminUserId}/Agents)
     #获取同事列表
     ${j}    Get Colleagues    ${AdminUser}
@@ -26,7 +16,7 @@ Resource          ../../../../commons/agent common/Conversations/Colleague_Commo
     Should Be Equal    '${j[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    获取同事列表失败，返回值中tenantId不正确:${j}
 
 客服设置状态(/v1/tenants/{tenantId}/agents/{agentId}/status)
-    :FOR    ${s}    IN    @{kefustatus}
+    : FOR    ${s}    IN    @{kefustatus}
     \    ${j}    Set Agent Status    ${AdminUser}    ${s}
     \    Should Be Equal    ${j['status']}    OK    设置状态失败：${j}
     \    ${j}    Get Agent Status&MaxServiceUserNumber    ${AdminUser}
@@ -34,7 +24,7 @@ Resource          ../../../../commons/agent common/Conversations/Colleague_Commo
 
 客服设置最大接待数(/v1/tenants/{tenantId}/agents/{agentId}/max-service-number)
     @{numlist}    create list    ${1}    ${2}
-    :FOR    ${i}    IN    @{numlist}
+    : FOR    ${i}    IN    @{numlist}
     \    ${j}    Set Agent MaxServiceUserNumber    ${AdminUser}    ${i}
     \    Should Be Equal    ${j['status']}    OK    设置最大接待数失败：${j}
     \    ${j}    Get Agent Status&MaxServiceUserNumber    ${AdminUser}

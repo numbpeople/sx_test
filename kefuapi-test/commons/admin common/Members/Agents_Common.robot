@@ -38,6 +38,21 @@ Delete AgentUser
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
 
+Delete Agentusers
+    #设置客服账号名称模板
+    ${preUsername}=    convert to string    ${AdminUser.tenantId}
+    #获取所有客服列表
+    ${agentlist}=    Get Agents    #返回字典
+    ${userNameList}=    Get Dictionary Keys    ${agentlist}
+    ${listlength}=    Get Length    ${userNameList}
+    log    ${agentlist}
+    #循环判断技能组名称是否包含模板信息，是则删除，不是则跳过
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${username}=    convert to string    ${userNameList[${i}]}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
+    \    ${userIdValue}=    Get From Dictionary    ${agentlist}    ${userNameList[${i}]}
+    \    Run Keyword If    '${status}' == 'True'    Delete Agent    ${userIdValue}
+
 Set Agents
     [Arguments]    ${method}    ${agent}    ${agentFilter}    ${data}
     [Documentation]    对客服模块的增和查操作

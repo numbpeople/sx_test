@@ -69,6 +69,21 @@ Delete Agentqueue
     ${resp}=    /v1/AgentQueue/{queueId}    ${agent}    ${queueId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
+Delete Queues
+    #设置技能组名称模板
+    ${preQueuename}=    convert to string    ${AdminUser.tenantId}
+    #获取所有技能组列表
+    ${queuelist}=    Get Agentqueue    #返回字典
+    ${queueNameList}=    Get Dictionary Keys    ${queuelist}
+    ${listlength}=    Get Length    ${queueNameList}
+    log    ${queuelist}
+    #循环判断技能组名称是否包含模板信息，是则删除，不是则跳过
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${queueName}=    convert to string    ${queueNameList[${i}]}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${queueName}    ${preQueuename}
+    \    ${queueIdValue}=    Get From Dictionary    ${queuelist}    ${queueNameList[${i}]}
+    \    Run Keyword If    '${status}' == 'True'    Delete Agentqueue    ${queueIdValue}
+
 Get Agentqueue
     [Documentation]    获取所有技能组信息，返回queueName和queueId的字典集
     ###获取技能组

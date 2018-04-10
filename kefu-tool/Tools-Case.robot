@@ -8,27 +8,27 @@ Library           String
 Library           calendar
 Library           uuid
 Library           OperatingSystem
-Library           ../lib/ReadFile.py
-Library           ../lib/KefuUtils.py
-Library           ../lib/SendReport/Sender.py
-Resource          ../AgentRes.robot
-Resource          ../commons/admin common/BaseKeyword.robot
-Resource          ../api/BaseApi/Queue/WaitApi.robot
-Resource          ../api/IM/IMApi.robot
+Library           ../kefuapi-test/lib/ReadFile.py
+Library           ../kefuapi-test/lib/KefuUtils.py
+Library           ../kefuapi-test/lib/SendReport/Sender.py
+Resource          ../kefuapi-test/AgentRes.robot
+Resource          ../kefuapi-test/commons/admin common/BaseKeyword.robot
+Resource          ../kefuapi-test/api/BaseApi/Queue/WaitApi.robot
+Resource          ../kefuapi-test/api/IM/IMApi.robot
 Resource          Tools-Resource.robot
-Resource          ../commons/admin common/Members/AgentQueue_Common.robot
-Resource          ../commons/admin common/Members/Agents_Common.robot
-Resource          ../commons/admin common/Channels/App_Common.robot
-Resource          ../commons/agent common/Conversations/Conversations_Common.robot
-Resource          ../commons/agent common/Queue/Queue_Common.robot
-Resource          ../commons/admin common/Setting/Routing_Common.robot
-Resource          ../api/BaseApi/Members/Agent_Api.robot
-Resource          ../api/MicroService/Webapp/InitApi.robot
-Resource          ../api/HomePage/Login/Login_Api.robot
-Resource          ../commons/Base Common/SecondGateway_Common.robot
-Resource          ../api/BaseApi/Channels/RestApi.robot
-Resource          ../commons/CollectionData/Base_Collection.robot
-Resource          ../commons/agent common/Conversations/Colleague_Common.robot
+Resource          ../kefuapi-test/commons/admin common/Members/AgentQueue_Common.robot
+Resource          ../kefuapi-test/commons/admin common/Members/Agents_Common.robot
+Resource          ../kefuapi-test/commons/admin common/Channels/App_Common.robot
+Resource          ../kefuapi-test/commons/agent common/Conversations/Conversations_Common.robot
+Resource          ../kefuapi-test/commons/agent common/Queue/Queue_Common.robot
+Resource          ../kefuapi-test/commons/admin common/Setting/Routing_Common.robot
+Resource          ../kefuapi-test/api/BaseApi/Members/Agent_Api.robot
+Resource          ../kefuapi-test/api/MicroService/Webapp/InitApi.robot
+Resource          ../kefuapi-test/api/HomePage/Login/Login_Api.robot
+Resource          ../kefuapi-test/commons/Base Common/SecondGateway_Common.robot
+Resource          ../kefuapi-test/api/BaseApi/Channels/RestApi.robot
+Resource          ../kefuapi-test/commons/CollectionData/Base_Collection.robot
+Resource          ../kefuapi-test/commons/agent common/Conversations/Colleague_Common.robot
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource

@@ -74,6 +74,23 @@ Delete Channel
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${agent}    ${channelId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
 
+Delete Channels
+    [Arguments]    ${agent}=${AdminUser}
+    #设置关联对比模板
+    ${preChannelname}=    convert to string    ${agent.tenantId}
+    #获取所有关联列表
+    ${channellist}=    Get Channels    ${agent}    #返回字典
+    ${channelNameList}=    Get Dictionary Keys    ${channellist}
+    ${listlength}=    Get Length    ${channelNameList}
+    log    ${channellist}
+    #循环判断返回值中是否包含模板信息，是则删除，不是则跳过
+    : FOR    ${i}    IN RANGE    ${listlength}
+    \    ${channelname}=    convert to string    ${channelNameList[${i}]}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${channelname}    ${preChannelname}
+    \    ${channelIdValue}=    Get From Dictionary    ${channellist}    ${channelNameList[${i}]}
+    \    Run Keyword If    ${status}    Close Conversations By ChannelId    ${channelIdValue}    ${agent}
+    \    Run Keyword If    ${status}    Delete Channel    ${channelIdValue}    ${agent}
+
 Create Channel
     [Arguments]    ${agent}=${AdminUser}
     [Documentation]    快速创建关键并返回关联的所有信息

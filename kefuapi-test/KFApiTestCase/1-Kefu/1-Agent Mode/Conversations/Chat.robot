@@ -12,7 +12,6 @@ Resource          ../../../../commons/admin common/Setting/Routing_Common.robot
 Resource          ../../../../commons/agent common/Customers/Customers_Common.robot
 Resource          ../../../../commons/agent common/History/History_Common.robot
 Resource          ../../../../commons/agent common/Conversations/Conversations_Common.robot
-Resource          ../../../../tool/Tools-Resource.robot
 Resource          ../../../../JsonDiff/KefuJsonDiff.robot
 
 *** Test Cases ***

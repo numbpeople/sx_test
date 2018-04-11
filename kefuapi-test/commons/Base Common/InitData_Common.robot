@@ -23,6 +23,7 @@ Resource          ../../api/MicroService/Organ/OrgApi.robot
 Resource          ../../api/MicroService/Webapp/InitApi.robot
 Resource          ../../api/MicroService/Webapp/OutDateApi.robot
 Resource          ../../api/HomePage/Login/Login_Api.robot
+Resource          ../admin common/Channels/App_Common.robot
 
 *** Keywords ***
 Login Init

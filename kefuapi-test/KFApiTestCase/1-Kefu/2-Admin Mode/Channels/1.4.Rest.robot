@@ -10,7 +10,6 @@ Resource          ../../../../AgentRes.robot
 Resource          ../../../../JsonDiff/Channels/RestChannelsJsonDiff.robot
 Resource          ../../../../commons/admin common/BaseKeyword.robot
 Resource          ../../../../api/BaseApi/Channels/RestApi.robot
-Resource          ../../../../tool/Tools-Resource.robot
 Library           ../../../../lib/KefuUtils.py
 Library           uuid
 

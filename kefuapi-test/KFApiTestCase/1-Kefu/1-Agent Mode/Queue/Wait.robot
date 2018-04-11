@@ -11,7 +11,7 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
 Resource          ../../../../commons/admin common/History/History_common.robot
 Resource          ../../../../commons/admin common/Setting/Routing_Common.robot
 Resource          ../../../../commons/agent common/Customers/Customers_Common.robot
-Resource          ../../../../tool/Tools-Resource.robot
+Resource          ../../../../commons/admin common/BaseKeyword.robot
 Resource          ../../../../JsonDiff/KefuJsonDiff.robot
 Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
 

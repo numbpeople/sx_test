@@ -1,6 +1,5 @@
 *** Settings ***
 Resource          ../../admin common/Channels/App_Common.robot
-Resource          ../../../tool/Tools-Resource.robot
 
 *** Keywords ***
 Conversation Setup

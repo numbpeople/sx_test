@@ -11,7 +11,6 @@ Resource          ../../../../AgentRes.robot
 Resource          ../../../../JsonDiff/Channels/RestChannelsJsonDiff.robot
 Resource          ../../../../commons/admin common/BaseKeyword.robot
 Resource          ../../../../api/BaseApi/Channels/AppApi.robot
-Resource          ../../../../tool/Tools-Resource.robot
 
 *** Test Cases ***
 获取所有app关联(/channels)

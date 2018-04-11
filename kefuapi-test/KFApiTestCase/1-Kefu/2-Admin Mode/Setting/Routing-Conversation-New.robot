@@ -22,7 +22,6 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
 Resource          ../../../../commons/admin common/Setting/Routing_Common.robot
 Resource          ../../../../commons/admin common/Robot/Robot_Common.robot
 Resource          ../../../../commons/admin common/BaseKeyword.robot
-Resource          ../../../../tool/Tools-Resource.robot
 Resource          ../../../../commons/admin common/Channels/App_Common.robot
 Resource          ../../../../commons/admin common/Setting/Business-Hours_Common.robot
 Resource          ../../../../api/IM/IMApi.robot

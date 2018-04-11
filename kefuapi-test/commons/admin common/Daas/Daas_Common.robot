@@ -34,7 +34,7 @@ One Service Valid Conversation
     Should Be Equal    ${j['items'][0]['userName']}    ${guestEntity.userName}    访客名称不正确：${resp.content}
     #根据查询结果接入会话
     Access Conversation    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}
-    #坐席回复消息并发送邀请评价,此处sleep是为了增加会话时长,根据Vistiors接口获取会话接起时间
+    #坐席回复消息并发送邀请评价,此处sleep是为了增加会话时长,根据Vistiors接口获取会话接起时间createDateTime和创建时间visitorFirstMessageTime
     sleep    2000ms
     ${resp}=    /v1/Agents/me/Visitors    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
@@ -43,6 +43,9 @@ One Service Valid Conversation
     ${startTime3}    evaluate    ${startTime2}+3
     ${daasStartTime}    set variable    ${startTime2}000
     ${daasEndTime}    set variable    ${startTime3}000
+    ${createTime1}    set variable    ${j[0]['visitorFirstMessageTime']}
+    ${createTime2}    evaluate    ${createTime1}/1000
+    ${daasCreateTime}    set variable    ${createTime2}000
     ${curTimeAgent}    get time    epoch
     ${AgentMsgEntity}    create dictionary    msg=${curTimeAgent}:agent test msg!    type=txt
     Agent Send Message    ${agent}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}    ${AgentMsgEntity}
@@ -56,7 +59,8 @@ One Service Valid Conversation
     Send Message    ${rest}    ${guestEntity}    ${msgEntity}
     #保存会话接起的时间范围
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
-    return from keyword    ${queueentityAA}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}
+    return from keyword    ${conInfo}
 
 Get Today Begin Time
     [Documentation]    获取当天零点的时间戳，毫秒级

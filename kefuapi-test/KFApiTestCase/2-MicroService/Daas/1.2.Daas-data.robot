@@ -9,6 +9,7 @@ Library           urllib
 Resource          ../../../AgentRes.robot
 Resource          ../../../commons/admin common/Daas/Daas_Common.robot
 Resource          ../../../api/MicroService/Daas/DaasApi.robot
+Library           DateTime
 
 *** Test Cases ***
 单服务有效会话数据验证
@@ -32,8 +33,8 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be equal    ${j["entities"][0]["key"]}    ${AdminUser.userId}    客服工作量-客服有误:${j["entities"][0]["key"]}
     should be true    ${j["entities"][0]["avg_mc"]}>=3    客服工作量-单会话消息数平均值有误:${j["entities"][0]["avg_mc"]}
     should be true    ${j["entities"][0]["max_mc"]}>=3    客服工作量-单会话消息数最大值有误:${j["entities"][0]["max_mc"]}
-    should be true    ${j["entities"][0]["avg_wt"]}>=1    客服工作量-会话时长平均值有误:${j["entities"][0]["avg_wt"]}
-    should be true    ${j["entities"][0]["max_wt"]}>=1    客服工作量-会话时长最大值有误:${j["entities"][0]["max_wt"]}
+    should be true    ${j["entities"][0]["avg_wt"]}>=2    客服工作量-会话时长平均值有误:${j["entities"][0]["avg_wt"]}
+    should be true    ${j["entities"][0]["max_wt"]}>=2    客服工作量-会话时长最大值有误:${j["entities"][0]["max_wt"]}
     should be true    ${j["entities"][0]["cnt_oc"]}==1    客服工作量-接入会话数有误:${j["entities"][0]["cnt_oc"]}
     should be true    ${j["entities"][0]["cnt_sac"]}==0    客服工作量-回呼会话数有误:${j["entities"][0]["cnt_sac"]}
     should be true    ${j["entities"][0]["cnt_svc"]}==1    客服工作量-呼入会话数有误:${j["entities"][0]["cnt_svc"]}
@@ -55,8 +56,8 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be equal    ${key}    ${queueentity.queueId}    技能组工作量-技能组有误:${j["entities"][0]["key"]}
     should be true    ${j["entities"][0]["avg_mc"]}>=3    技能组工作量-单会话消息数平均值有误:${j["entities"][0]["avg_mc"]}
     should be true    ${j["entities"][0]["max_mc"]}>=3    技能组工作量-单会话消息数最大值有误:${j["entities"][0]["max_mc"]}
-    should be true    ${j["entities"][0]["avg_wt"]}>=1    技能组工作量-会话时长平均值有误:${j["entities"][0]["avg_wt"]}
-    should be true    ${j["entities"][0]["max_wt"]}>=1    技能组工作量-会话时长最大值有误:${j["entities"][0]["max_wt"]}
+    should be true    ${j["entities"][0]["avg_wt"]}>=2    技能组工作量-会话时长平均值有误:${j["entities"][0]["avg_wt"]}
+    should be true    ${j["entities"][0]["max_wt"]}>=2    技能组工作量-会话时长最大值有误:${j["entities"][0]["max_wt"]}
     should be true    ${j["entities"][0]["cnt_oc"]}==1    技能组工作量-接入会话数有误:${j["entities"][0]["cnt_oc"]}
     should be true    ${j["entities"][0]["cnt_sac"]}==0    技能组工作量-回呼会话数有误:${j["entities"][0]["cnt_sac"]}
     should be true    ${j["entities"][0]["cnt_svc"]}==1    技能组工作量-呼入会话数有误:${j["entities"][0]["cnt_svc"]}
@@ -76,8 +77,8 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be true    ${j["totalElements"]}==1    工作量综合不正确:${resp.content}
     should be true    ${j["entities"][0]["avg_mc"]}>=3    工作量综合-单会话消息数平均值有误:${j["entities"][0]["avg_mc"]}
     should be true    ${j["entities"][0]["max_mc"]}>=3    工作量综合-单会话消息数最大值有误:${j["entities"][0]["max_mc"]}
-    should be true    ${j["entities"][0]["avg_st"]}>=1    工作量综合-会话时长平均值有误:${j["entities"][0]["avg_st"]}
-    should be true    ${j["entities"][0]["max_st"]}>=1    工作量综合-会话时长最大值有误:${j["entities"][0]["max_st"]}
+    should be true    ${j["entities"][0]["avg_st"]}>=2    工作量综合-会话时长平均值有误:${j["entities"][0]["avg_st"]}
+    should be true    ${j["entities"][0]["max_st"]}>=2    工作量综合-会话时长最大值有误:${j["entities"][0]["max_st"]}
     should be true    ${j["entities"][0]["cnt_mc"]}>=3    工作量综合-消息数有误:${j["entities"][0]["cnt_mc"]}
     should be true    ${j["entities"][0]["cnt_ssc"]}==1    客服工作量-接起会话数有误:${j["entities"][0]["cnt_ssc"]}
     should be true    ${j["entities"][0]["cnt_sc"]}==1    客服工作量-结束会话数有误:${j["entities"][0]["cnt_sc"]}
@@ -142,7 +143,7 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be true    ${j["entities"][0]["avg_vm"]}==1    技能组工作质量-满意度有误:${j["entities"][0]["avg_vm"]}
     should be equal    ${j["entities"][0]["pct_qm"]}    0%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
     should be equal    ${j["entities"][0]["pct_vm"]}    100%    技能组工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
-    should be true    ${j["entities"][0]["cnt_ea"]}==1   技能组工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
+    should be true    ${j["entities"][0]["cnt_ea"]}==1    技能组工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==0    技能组工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
     should be true    ${j["entities"][0]["cnt_uaa"]}==0    技能组工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}
     should be true    ${j["entities"][0]["cnt_uaav"]}==0    技能组工作质量-无效人工会话有误(均无消息):${j["entities"][0]["cnt_uaav"]}
@@ -213,3 +214,78 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be true    ${j["totalElements"]}==7    独立访客数按渠道展示列表不正确:${resp.content}
     should be equal    ${j["entities"][0]["key"]}    weixin    独立访客数按渠道展示列表不正确:${j["entities"][3]["key"]}
     should be true    ${j["entities"][0]["count"]}==1    独立访客数按渠道展示列表不正确:${j["entities"][3]["count"]}
+
+    #排队统计-排队次数与平均排队时间
+    ${filterEntity}    create dictionary    waitTime=1000
+    ${resp}    /daas/internal/wait/total    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    排队次数与平均排队时间不正确:${resp.content}
+    should be true    ${j["entities"][0]["cnt_wc"]}==1    排队次数与平均排队时间不正确:${j["entities"][0]["cnt_wc"]}
+    should be true    ${j["entities"][0]["avg_wt"]}>=2    排队次数与平均排队时间不正确:${j["entities"][0]["avg_wt"]}
+    #排队统计-24小时进线量
+    ${daasCreateTime1}    evaluate    ${daasCreateTime}/1000
+    ${createTimeHour}    Get Time    \    ${daasCreateTime1}
+    ${hour}    Get Time    hour    ${createTimeHour}
+    ${resp}    /daas/internal/wait/hour/create    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    24小时进线量不正确:${resp.content}
+    should be equal    ${j["entities"][0]["key"]}    session    24小时进线量会话数不正确:${j["entities"][0]["key"]}
+    should be true    ${j["entities"][0]["value"][${hour}]["${hour}"]}==1    24小时进线量会话数不正确:${j["entities"][0]["value"][${hour}]["${hour}"]}
+    should be equal    ${j["entities"][1]["key"]}    message    24小时进线量消息数不正确:${j["entities"][1]["key"]}
+    should be true    ${j["entities"][1]["value"][${hour}]["${hour}"]}>=3    24小时进线量消息数不正确:${j["entities"][1]["value"][${hour}]["${hour}"]}
+    #排队统计-进线量趋势
+    ${resp}    /daas/internal/wait/day/create    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    进线量趋势不正确:${resp.content}
+    should be equal    ${j["entities"][0]["key"]}    session    进线量趋势会话数不正确:${j["entities"][0]["key"]}
+    should be true    ${j["entities"][0]["value"][0]["${todayBeginTime}"]}==1    进线量趋势会话数不正确:${j["entities"][0]["value"][0]["${todayBeginTime}"]}
+    should be equal    ${j["entities"][1]["key"]}    message    进线量趋势消息数不正确:${j["entities"][1]["key"]}
+    should be true    ${j["entities"][1]["value"][0]["${todayBeginTime}"]}>=3    进线量趋势消息数不正确:${j["entities"][1]["value"][0]["${todayBeginTime}"]}
+    #排队统计-24小时排队趋势
+    ${resp}    /daas/internal/wait/hour/wait    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    24小时排队趋势:${resp.content}
+    should be equal    ${j["entities"][0]["key"]}    cnt_wc    24小时排队趋势排队次数不正确:${j["entities"][0]["key"]}
+    should be true    ${j["entities"][0]["value"][${hour}]["${hour}"]}==1    24小时排队趋势排队次数不正确:${j["entities"][0]["value"][${hour}]["${hour}"]}
+    should be equal    ${j["entities"][1]["key"]}    avc_wc    24小时排队趋势平均排队次数不正确:${j["entities"][1]["key"]}
+    should be true    ${j["entities"][1]["value"][${hour}]["${hour}"]}==1    24小时排队趋势平均排队次数不正确:${j["entities"][1]["value"][${hour}]["${hour}"]}
+    should be equal    ${j["entities"][2]["key"]}    avg_wt    24小时排队趋势平均排队时间不正确:${j["entities"][2]["key"]}
+    should be true    ${j["entities"][2]["value"][${hour}]["${hour}"]}>=2    24小时排队趋势平均排队时间不正确:${j["entities"][2]["value"][${hour}]["${hour}"]}
+    should be equal    ${j["entities"][3]["key"]}    max_wt    24小时排队趋势最大排队时间不正确:${j["entities"][3]["key"]}
+    should be true    ${j["entities"][3]["value"][${hour}]["${hour}"]}>=2    24小时排队趋势最大排队时间不正确:${j["entities"][3]["value"][${hour}]["${hour}"]}
+    #排队统计-排队趋势
+    ${resp}    /daas/internal/wait/trend    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    排队趋势不正确:${resp.content}
+    should be equal    ${j["entities"][0]["key"]}    cnt_wc    排队趋势排队次数不正确:${j["entities"][0]["key"]}
+    should be true    ${j["entities"][0]["value"][0]["${todayBeginTime}"]}==1    排队趋势排队次数不正确:${j["entities"][0]["value"][0]["${todayBeginTime}"]}
+    should be equal    ${j["entities"][1]["key"]}    avg_wt    排队趋势平均排队时间不正确:${j["entities"][1]["key"]}
+    should be true    ${j["entities"][1]["value"][0]["${todayBeginTime}"]}>=2    排队趋势平均排队时间不正确:${j["entities"][1]["value"][0]["${todayBeginTime}"]}
+    should be equal    ${j["entities"][2]["key"]}    max_wt    排队趋势最大排队时间不正确:${j["entities"][2]["key"]}
+    should be true    ${j["entities"][2]["value"][0]["${todayBeginTime}"]}>=2    排队趋势最大排队时间不正确:${j["entities"][2]["value"][0]["${todayBeginTime}"]}
+
+    #客服模式-工作综合
+    ${resp}=    /daas/internal/agent/detail/total    ${AdminUser}    ${timeout}    ${conCreateTime}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    客服模式工作综合不正确:${resp.content}
+    should be true    ${j["entities"][0]["avg_ar"]}>=2    客服模式工作综合-平均响应时长不正确:${j["entities"][0]["avg_ar"]}
+    should be true    ${j["entities"][0]["avg_fr"]}>=2    客服模式工作综合-平均首响时长不正确:${j["entities"][0]["avg_fr"]}
+    should be true    ${j["entities"][0]["avg_vm"]}==1    客服模式工作综合-满意度不正确:${j["entities"][0]["avg_vm"]}
+    should be true    ${j["entities"][0]["avg_wt"]}>=2    客服模式工作综合-平均会话时长不正确:${j["entities"][0]["avg_wt"]}
+    should be true    ${j["entities"][0]["cnt_sc"]}==1    客服模式工作综合-接起会话数不正确:${j["entities"][0]["cnt_sc"]}
+    should be true    ${j["entities"][0]["cnt_tc"]}==1    客服模式工作综合-结束会话数不正确:${j["entities"][0]["cnt_tc"]}
+    #客服模式-消息/会话趋势
+    ${resp}=    /daas/internal/agent/detail/trend    ${AdminUser}    ${timeout}    ${conCreateTime}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    客服模式消息/会话趋势不正确:${resp.content}
+    should be equal    ${j["entities"][0]["key"]}    session    客服模式消息/会话趋势-会话数不正确:${j["entities"][0]["key"]}
+    should be true    ${j["entities"][0]["value"][0]["${todayBeginTime}"]}==1    客服模式消息/会话趋势-会话数不正确:${j["entities"][0]["value"][0]["${todayBeginTime}"]}
+    should be equal    ${j["entities"][1]["key"]}    message    客服模式消息/会话趋势-消息数不正确:${j["entities"][1]["key"]}
+    should be true    ${j["entities"][1]["value"][0]["${todayBeginTime}"]}>=3    客服模式消息/会话趋势-消息数不正确:${j["entities"][1]["value"][0]["${todayBeginTime}"]}

@@ -32,7 +32,8 @@ One Service Valid Conversation
     ${j}    to json    ${resp.content}
     Should Be True    ${j["total_entries"]} == 1    查询结果为空：${j}
     Should Be Equal    ${j['items'][0]['userName']}    ${guestEntity.userName}    访客名称不正确：${resp.content}
-    #根据查询结果接入会话
+    #根据查询结果接入会话,此处sleep是为了增加排队时长
+    sleep    2000ms
     Access Conversation    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}
     #坐席回复消息并发送邀请评价,此处sleep是为了增加会话时长,根据Vistiors接口获取会话接起时间createDateTime和创建时间visitorFirstMessageTime
     sleep    2000ms
@@ -44,7 +45,7 @@ One Service Valid Conversation
     ${daasStartTime}    set variable    ${startTime2}000
     ${daasEndTime}    set variable    ${startTime3}000
     ${createTime1}    set variable    ${j[0]['visitorFirstMessageTime']}
-    ${createTime2}    evaluate    ${createTime1}/1000
+    ${createTime2}    evaluate    ${createTime1}/1000-1
     ${daasCreateTime}    set variable    ${createTime2}000
     ${curTimeAgent}    get time    epoch
     ${AgentMsgEntity}    create dictionary    msg=${curTimeAgent}:agent test msg!    type=txt

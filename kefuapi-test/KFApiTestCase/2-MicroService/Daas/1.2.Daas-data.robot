@@ -10,17 +10,17 @@ Resource          ../../../AgentRes.robot
 Resource          ../../../commons/admin common/Daas/Daas_Common.robot
 Resource          ../../../api/MicroService/Daas/DaasApi.robot
 Library           DateTime
+Resource          ../../../api/BaseApi/Review/QualityReviews_Api.robot
 
 *** Test Cases ***
 单服务有效会话数据验证
     [Documentation]    会话：单服务有效会话、有满意度评分
-    ...    验证模块：工作量、工作质量
+    ...    验证模块：工作量、工作质量、访客统计、排队统计、客服模式下个人统计
     [Tags]    daas
     #创建单服务有效会话
     ${conInfo}    One Service Valid Conversation    ${AdminUser}    ${restentity}
     ${queueentity}    set variable    ${conInfo.queueentityAA}
     ${daasCreateTime}    set variable    ${conInfo.daasCreateTime}
-
     sleep    2000ms
     set to dictionary    ${FilterEntity}    queueId=${queueentity.queueId}
     #验证工作量-客服工作量接口返回值
@@ -106,7 +106,6 @@ Library           DateTime
     should be equal    ${j["status"]}    OK    会话数分布图(按会话消息数维度)不正确:${resp.content}
     should be true    ${j["totalElements"]}==5    会话数分布图(按会话消息数维度)不正确:${resp.content}
     should be true    ${j["entities"][0]["count"]}==1    会话数分布图(按会话消息数维度)-会话数不正确:${j["entities"][0]["count"]}
-
     #验证工作质量-客服工作质量接口返回值
     ${resp}=    /daas/internal/agent/kpi/wq    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -189,7 +188,6 @@ Library           DateTime
     should be equal    ${j["status"]}    OK    会话数分布图(按响应时长维度)不正确:${resp.content}
     should be true    ${j["totalElements"]}==5    会话数分布图(按响应时长维度)不正确:${resp.content}
     should be true    ${j["entities"][0]["count"]}==1    会话数分布图(按响应时长维度)-会话数不正确:${j["entities"][0]["count"]}
-
     #验证访客统计-独立访客数按渠道
     ${conCreateTime}    create dictionary    beginDateTime=${daasCreateTime}    endDateTime=${ConDateRange.endDateTime}
     ${resp}=    /daas/internal/visitor/total    ${AdminUser}    ${timeout}    ${conCreateTime}
@@ -214,7 +212,6 @@ Library           DateTime
     should be true    ${j["totalElements"]}==7    独立访客数按渠道展示列表不正确:${resp.content}
     should be equal    ${j["entities"][0]["key"]}    weixin    独立访客数按渠道展示列表不正确:${j["entities"][3]["key"]}
     should be true    ${j["entities"][0]["count"]}==1    独立访客数按渠道展示列表不正确:${j["entities"][3]["count"]}
-
     #排队统计-排队次数与平均排队时间
     ${filterEntity}    create dictionary    waitTime=1000
     ${resp}    /daas/internal/wait/total    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
@@ -268,7 +265,6 @@ Library           DateTime
     should be true    ${j["entities"][1]["value"][0]["${todayBeginTime}"]}>=2    排队趋势平均排队时间不正确:${j["entities"][1]["value"][0]["${todayBeginTime}"]}
     should be equal    ${j["entities"][2]["key"]}    max_wt    排队趋势最大排队时间不正确:${j["entities"][2]["key"]}
     should be true    ${j["entities"][2]["value"][0]["${todayBeginTime}"]}>=2    排队趋势最大排队时间不正确:${j["entities"][2]["value"][0]["${todayBeginTime}"]}
-
     #客服模式-工作综合
     ${resp}=    /daas/internal/agent/detail/total    ${AdminUser}    ${timeout}    ${conCreateTime}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -289,3 +285,51 @@ Library           DateTime
     should be true    ${j["entities"][0]["value"][0]["${todayBeginTime}"]}==1    客服模式消息/会话趋势-会话数不正确:${j["entities"][0]["value"][0]["${todayBeginTime}"]}
     should be equal    ${j["entities"][1]["key"]}    message    客服模式消息/会话趋势-消息数不正确:${j["entities"][1]["key"]}
     should be true    ${j["entities"][1]["value"][0]["${todayBeginTime}"]}>=3    客服模式消息/会话趋势-消息数不正确:${j["entities"][1]["value"][0]["${todayBeginTime}"]}
+
+单服务无效会话数据验证
+    [Documentation]    会话：单服务无效会话、有质检评分
+    ...    验证模块：工作质量
+    #创建单服务无效会话
+    ${conInfo}    One Service Unvalid Conversation    ${AdminUser}    ${restentity}
+    ${totalScore}    set variable    ${conInfo.totalScore}
+    ${queueentity}    set variable    ${conInfo.queueentityAA}
+    ${daasCreateTime}    set variable    ${conInfo.daasCreateTime}
+    sleep    2000ms
+    set to dictionary    ${FilterEntity}    queueId=${queueentity.queueId}
+    #验证工作质量-客服工作质量接口返回值
+    ${resp}=    /daas/internal/agent/kpi/wq    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    客服工作质量不正确:${resp.content}
+    should be true    ${j["totalElements"]}==1    客服工作质量不正确:${resp.content}
+    should be equal    ${j["entities"][0]["key"]}    ${AdminUser.userId}    客服工作质量-客服有误:${j["entities"][0]["key"]}
+    should be equal    ${j["entities"][0]["avg_qm"]}    ${totalScore}    客服工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    100%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be true    ${j["entities"][0]["cnt_ea"]}==0    客服工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
+    should be true    ${j["entities"][0]["cnt_ua"]}==1    客服工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
+    should be true    ${j["entities"][0]["cnt_uaa"]}==1    客服工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}
+    should be true    ${j["entities"][0]["cnt_uaav"]}==0    客服工作质量-无效人工会话有误(均无消息):${j["entities"][0]["cnt_uaav"]}
+    should be true    ${j["entities"][0]["cnt_uav"]}==0    客服工作质量-无效人工会话有误(访客无消息):${j["entities"][0]["cnt_uav"]}
+    #验证工作质量-技能组工作质量接口返回值
+    ${resp}=    /daas/internal/group/kpi/wq    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    客服工作质量不正确:${resp.content}
+    should be true    ${j["totalElements"]}==1    客服工作质量不正确:${resp.content}
+    ${key}    evaluate    int(${j["entities"][0]["key"]})
+    should be equal    ${key}    ${queueentity.queueId}    技能组工作量-技能组有误:${j["entities"][0]["key"]}
+    should be equal    ${j["entities"][0]["avg_qm"]}    ${totalScore}    技能组工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    100%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be true    ${j["entities"][0]["cnt_ea"]}==0    技能组工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
+    should be true    ${j["entities"][0]["cnt_ua"]}==1    技能组工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
+    should be true    ${j["entities"][0]["cnt_uaa"]}==1    技能组工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}
+    should be true    ${j["entities"][0]["cnt_uaav"]}==0    技能组工作质量-无效人工会话有误(均无消息):${j["entities"][0]["cnt_uaav"]}
+    should be true    ${j["entities"][0]["cnt_uav"]}==0    技能组工作质量-无效人工会话有误(访客无消息):${j["entities"][0]["cnt_uav"]}
+    #验证工作质量-有效人工会话占比
+    ${resp}=    /daas/internal/session/dist/effective    ${AdminUser}    ${timeout}    ${ConDateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    工作质量-有效人工会话占比不正确:${resp.content}
+    should be true    ${j["totalElements"]}==2    工作质量-有效人工会话占比不正确:${resp.content}
+    should be true    ${j["entities"][0]["count"]}==1    工作质量-有效人工会话占比无效数不正确:${j["entities"][0]["count"]}
+    should be true    ${j["entities"][1]["count"]}==0    工作质量-有效人工会话占比有效数不正确:${j["entities"][1]["count"]}

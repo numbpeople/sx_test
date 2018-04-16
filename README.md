@@ -1,15 +1,15 @@
 
 # 客服自动化
-客服自动化是一个针对客服系统内所有模块以及接口，编写包括接口&&UI自动化项目
+客服自动化是一个企业级自动化项目，包含接口&UI自动化。致力于高效、低成本、可持续集成的理念，以达到一键构建、秒级运行、快速定位问题终极目标。
 
 ## 环境搭建:
 
-1. 客服自动化使用robotframework工具进行编写：http://robotframework.org/
+1. 客服自动化使用robotframework测试自动化框架进行验收测试。[官网地址](http://robotframework.org/)
 2. 使用GIT下载项目： https://github.com/easemob/kefu-auto-test
 3. 安装依赖:
 
 	* python
-	* steuptools
+	* setuptools
 	* pip
 	* Robot Framework
 	* wxPython

@@ -8,6 +8,7 @@ Library           calendar
 Resource          ../../../AgentRes.robot
 Resource          ../../../api/BaseApi/Settings/SystemSettingsApi.robot
 Resource          ../../../api/BaseApi/Settings/BusinessHoursApi.robot
+Resource          ../BaseKeyword.robot
 
 *** Keywords ***
 Business hours

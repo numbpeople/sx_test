@@ -13,6 +13,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
 Resource          ../../../../commons/agent common/History/History_Common.robot
 Resource          ../../../../commons/agent common/Conversations/Conversations_Common.robot
 Resource          ../../../../JsonDiff/KefuJsonDiff.robot
+Resource          ../../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 获取访客列表(/v1/Agents/me/Visitors)
@@ -43,25 +44,46 @@ Resource          ../../../../JsonDiff/KefuJsonDiff.robot
     should be equal    ${j['status']}    OK    返回值中status值不正确：${j}
     should be equal    ${j['entity']['type']}    SYSTEM    返回值中type值不正确：${j}
 
-获取会话的满意度评价状态列表(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus)
+获取会话的满意度评价状态(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus)
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
-    #获取访客黑名单列表
+    #获取会话满意度评价结果
     ${j}    Get EnquiryStatus    ${AdminUser}    ${sessionInfo.userId}
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
     Should Be Equal    '${j['count']}'    '1'    获取接口返回count不是1: ${j}
 
+获取会话的满意度已评价状态(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus)
+    ${MsgEntity}    create dictionary    msg=test msg!    type=txt    ext={}
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #发送满意度评价
+    ${j}    Send InviteEnquiry    ${AdminUser}    ${sessionInfo.sessionServiceId}
+    Should Be Equal    ${j['status']}    OK    消息内容不正确：${j}
+    #访客评价会话
+    set to dictionary    ${MsgEntity}    msg=1    # 1代表5星、2代表4星 ......
+    Send Message    ${restentity}    ${sessionInfo}    ${MsgEntity}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${sessionInfo.sessionServiceId}    #该参数为Get EnquiryStatus接口的参数值
+    ${expectConstruction}    set variable    ['data'][0]    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    over    #该参数为获取接口某字段的预期值
+    #获取会话满意度评价结果
+    ${j}    Repeat Keyword Times    Get EnquiryStatus    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中
+    Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
+    Should Be Equal    '${j['count']}'    '1'    获取接口返回count不是1: ${j}
+    Should Be Equal    ${j['data'][0]}    over    获取接口返回data不是over: ${j}
+
 获取会话的会话标签信息(/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults)
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
-    #获取访客黑名单列表
+    #获取会话会话标签信息
     ${j}    Get ServiceSessionSummaryResults    ${AdminUser}    ${sessionInfo.userId}
     should be equal    '${j}'    '[]'    获取接口返回结果不正确: ${j}
 
 获取会话的会话备注信息(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
-    #获取访客黑名单列表
+    #获取会话会话备注信息
     ${j}    Get Comment    ${AdminUser}    ${sessionInfo.sessionServiceId}
     run keyword if    ${j} == {}    Pass Execution    会话没有会话备注信息
     run keyword if    ${j} != {}    Should Be Equal    ${j['serviceSessionId']}    ${data}    获取接口返回会话id不正确: ${j}

@@ -7,11 +7,14 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults
-    [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${timeout}    ${data}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/ServiceSessions/${serviceSessionId}/ServiceSessionSummaryResults
     ${params}    set variable    _=1510727292732
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
 
 /tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment
     [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}

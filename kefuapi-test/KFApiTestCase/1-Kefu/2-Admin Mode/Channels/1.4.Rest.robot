@@ -79,6 +79,8 @@ Library           uuid
     set test variable    ${RestChannelEntity}    ${d}
 
 用rest渠道发送消息并关闭会话
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
     #添加rest channel
     ${data}    create dictionary    name=测试rest    callbackUrl=http://7hqyia.natappfree.cc
     ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
@@ -118,10 +120,10 @@ Library           uuid
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     ${resp}=    /api/tenants/{tenantId}/rest/channels/{channelId}/messages    ${AdminUser}    ${RestChannelEntity}    ${RestMsgJson}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    set to dictionary    ${FilterEntity}    visitorName=${RestMsgEntity.user_nickname}
-    set to dictionary    ${DateRange}    beginDate=${empty}    endDate=${empty}
+    set to dictionary    ${filter}    visitorName=${RestMsgEntity.user_nickname}
+    set to dictionary    ${range}    beginDate=${empty}    endDate=${empty}
     #根据访客昵称查询待接入列表
-    ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${range}
     ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} ==1    查询结果为空：${j}
     Should Be Equal    ${j['items'][0]['userName']}    ${RestMsgEntity.user_nickname}    访客名称不正确：${j}

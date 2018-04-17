@@ -298,11 +298,21 @@ Get EnquiryStatus
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 
-Get ServiceSessionSummaryResults
-    [Arguments]    ${agent}    ${serviceSessionId}
+Set ServiceSessionSummaryResults
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=
     [Documentation]    查询会话标签信息
     #查询会话标签信息
-    ${resp}=    /v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults    ${agent}    ${serviceSessionId}    ${timeout}
+    ${resp}=    /v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults    ${method}    ${agent}    ${serviceSessionId}    ${timeout}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    return From Keyword If    '${method}'=='post'    ${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Add ServiceSessionSummaryResults
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=
+    [Documentation]    给会话打标签信息
+    #给会话打标签信息
+    ${resp}=    /v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults    ${method}    ${agent}    ${serviceSessionId}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
@@ -340,6 +350,6 @@ Stop All Processing Conversations
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     ${j}    to json    ${resp.content}
     #批量关闭进行中会话
-    :FOR    ${i}    IN    @{j}
+    : FOR    ${i}    IN    @{j}
     \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
     \    sleep    50ms

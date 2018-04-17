@@ -14,6 +14,7 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
 Resource          ../../../../commons/agent common/Conversations/Conversations_Common.robot
 Resource          ../../../../JsonDiff/KefuJsonDiff.robot
 Resource          ../../../../commons/Base Common/Base_Common.robot
+Resource          ../../../../commons/admin common/Setting/ConversationTags_Common.robot
 
 *** Test Cases ***
 获取访客列表(/v1/Agents/me/Visitors)
@@ -77,8 +78,25 @@ Resource          ../../../../commons/Base Common/Base_Common.robot
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #获取会话会话标签信息
-    ${j}    Get ServiceSessionSummaryResults    ${AdminUser}    ${sessionInfo.userId}
+    ${j}    Set ServiceSessionSummaryResults    get    ${AdminUser}    ${sessionInfo.sessionServiceId}
     should be equal    '${j}'    '[]'    获取接口返回结果不正确: ${j}
+
+添加会话的会话备注(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #创建参数字典
+    &{conversationTagEntity}    create dictionary    systemOnly=false    buildCount=true
+    #获取会话标签数据
+    ${j}    Get Conversation Tags    get    ${AdminUser}    0    ${conversationTagEntity}
+    #获取标签中第一个根节点的叶子标签id值
+    ${tagId}    Get Conversation TagId    ${j}
+    #判断租户下是否存在会话标签，没有则不执行一下步骤
+    run keyword if    ${tagId} == 0    Pass Execution    该租户下没有会话标签，不执行一下case
+    #获取添加标签的id
+    ${data}    set variable    [${tagId}]
+    #获取会话会话标签信息
+    ${j}    Set ServiceSessionSummaryResults    post    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${data}
+    Should Be True    '${j}' == '${EMPTY}'    获取接口返回结果不正确: ${j}
 
 获取会话的会话备注信息(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
     #创建会话并手动接入到进行中会话

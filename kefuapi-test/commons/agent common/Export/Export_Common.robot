@@ -61,7 +61,7 @@ Set Download Records
 
 Get My Export And Diff Counts
     [Arguments]    ${agent}    ${filter}    ${range}    ${preCount}
-    [Documentation]    判断接口返回值中status的值，如果不是Finish，则重试
+    [Documentation]    获取导出数据并对比总数是否增加。并且判断接口返回值中status的值，如果不是Finish，则重试
     #判断接口返回值中status的值，如果不是Finish，则重试
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    #获取导出数据并对比总数
@@ -70,9 +70,9 @@ Get My Export And Diff Counts
     \    #获取结果第一数据
     \    ${value}    set variable    ${j['content'][0]}
     \    #判断如果status不为Finished则循环
-    \    Exit For Loop If    '${value['status']}' == 'Finished'
+    \    Return From Keyword If    '${value['status']}' == 'Finished'    ${value}
     \    sleep    ${delay}
-    Return From Keyword    ${value}
+    Return From Keyword    {}
 
 Diff Export Count
     [Arguments]    ${agent}    ${filter}    ${range}    ${preCount}

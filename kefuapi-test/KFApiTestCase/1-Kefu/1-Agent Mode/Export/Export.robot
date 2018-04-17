@@ -42,6 +42,7 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
     ${i}    Get My Export And Diff Counts    ${AdminUser}    ${filter}    ${range}    ${preCount}
+    run keyword if    "${i}" == "{}"    Fail    导出历史会话数据后，数据一直不是Finished
     run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
@@ -77,6 +78,7 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
     ${i}    Get My Export And Diff Counts    ${AdminUser}    ${filter}    ${range}    ${preCount}
+    run keyword if    "${i}" == "{}"    Fail    导出历史会话数据后，数据一直不是Finished
     run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}

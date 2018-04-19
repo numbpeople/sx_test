@@ -20,6 +20,7 @@ One Service Valid Conversation
     #创建技能组
     ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}AA
     ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
+    set global variable    ${FilterEntity.queueId}    ${queueentityAA.queueId}
     #创建指定技能组的扩展消息体
     ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType},"queueName":"${queueentityAA.queueName}"}}
     #将入口指定设置优先顺序
@@ -61,6 +62,7 @@ One Service Valid Conversation
     Send Message    ${rest}    ${guestEntity}    ${msgEntity}
     #保存会话接起的时间范围
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
+    set global variable    ${ConDateRange}    ${ConDateRange}
     ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}
     return from keyword    ${conInfo}
 
@@ -68,6 +70,15 @@ Get Today Begin Time
     [Documentation]    获取当天零点的时间戳，毫秒级
     ${yyyy}    ${mm}    ${day}    Get Time    year,month,day
     ${time}    convert date    ${yyyy}${mm}${day} 0:0:0    epoch
+    ${time1}    convert to string    ${time}
+    ${time2}    split string from right    ${time1}    .    1
+    ${time3}    set variable    ${time2[0]}000
+    return from keyword    ${time3}
+
+Get Today End Time
+    [Documentation]    获取当天23点59分00秒的时间戳，毫秒级
+    ${yyyy}    ${mm}    ${day}    Get Time    year,month,day
+    ${time}    convert date    ${yyyy}${mm}${day} 23:59:00    epoch
     ${time1}    convert to string    ${time}
     ${time2}    split string from right    ${time1}    .    1
     ${time3}    set variable    ${time2[0]}000
@@ -82,6 +93,7 @@ One Service Unvalid Conversation
     #创建技能组
     ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}AA
     ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
+    set global variable    ${FilterEntity.queueId}    ${queueentityAA.queueId}
     #创建指定技能组的扩展消息体
     ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType},"queueName":"${queueentityAA.queueName}"}}
     #将入口指定设置优先顺序
@@ -110,6 +122,7 @@ One Service Unvalid Conversation
     ${createTime2}    evaluate    ${createTime1}/1000-1
     ${daasCreateTime}    set variable    ${createTime2}000
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
+    set global variable    ${ConDateRange}    ${ConDateRange}
     #关闭进行中会话
     ${sessionId}    set variable    ${j[0]['serviceSessionId']}
     Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${sessionId}
@@ -131,12 +144,92 @@ One Service Unvalid Conversation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    质检评分不正确:${resp.content}
-    #根据接起时间筛选会话,检查质检评分,此处sleep因为质检数据从统计而来
+    #筛选质检记录获取最新一条数据,检查质检评分,此处sleep因为质检数据从统计而来
     sleep    2000ms
     ${resp}=    /v1/tenants/{tenantId}/servicesessions/qualityreviews    ${AdminUser}    ${filter}    ${DateRange}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    质检记录不正确:${resp.content}
     Should Be Equal    ${j["entities"][0]["serviceSessionId"]}    ${sessionId}    会话不正确:${j["entities"][0]["serviceSessionId"]}
     ${totalScore}    set variable    ${j["entities"][0]["qualityReview"]["totalScore"]}
     #保存会话接起的时间范围
     ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}
     return from keyword    ${conInfo}
+
+Get Current Session Count
+    [Arguments]    ${orignType}    ${json}
+    [Documentation]    获取首页趋势图对应渠道的当前会话数或消息数
+    ${todayTrend}    set variable    0
+    ${length}    get length    ${json["result"]}
+    return from keyword if    ${length}==0    ${todayTrend}
+    : FOR    ${n}    IN RANGE    ${length}
+    \    run keyword if    '${json["result"][${n}]["type"]}'=='${orignType}'    set suite variable    ${todayTrend}    ${json["result"][${n}]["value"][0]["value"]}
+    \    return from keyword if    '${json["result"][${n}]["type"]}'=='${orignType}'    ${todayTrend}
+    return from keyword    ${todayTrend}
+
+Get Agent Current Session Count
+    [Arguments]    ${agentId}    ${json}
+    [Documentation]    获取首页今日客服当前会话数
+    ${sessionCount}    set variable    0
+    ${length}    get length    ${json}
+    return from keyword if    ${length}==0    ${sessionCount}
+    : FOR    ${n}    IN RANGE    ${length}
+    \    run keyword if    '${json[${n}]["key"]}'=='${agentId}'    set suite variable    ${sessionCount}    ${json[${n}]["count"]}
+    \    return from keyword if    '${json[${n}]["key"]}'=='${agentId}'    ${sessionCount}
+    return from keyword    ${sessionCount}
+
+Unvalid Conversation Setup
+    [Documentation]    创建一个单服务无效会话
+    #创建单服务无效会话
+    ${conInfo}    One Service Unvalid Conversation    ${AdminUser}    ${restentity}
+    ${totalScore}    set variable    ${conInfo.totalScore}
+    ${queueentity}    set suite variable    ${conInfo.queueentityAA}
+    ${daasCreateTime}    set suite variable    ${conInfo.daasCreateTime}
+    set global variable    ${totalScore}    ${totalScore}
+    set global variable    ${queueentity}    ${queueentity}
+    set global variable    ${daasCreateTime}    ${daasCreateTime}
+    sleep    2000ms
+
+Valid Conversation Setup
+    [Documentation]    获取首页当前数据，并创建一个单服务有效会话
+    #创建新会话前记录首页数据,待单服务有效会话创建完成后再验证首页数据的增量,"处理中会话数"与"在线客服数"暂未做验证
+    ${beginTime}    Get Today Begin Time
+    ${todayBeginTime}    convert to string    ${beginTime}
+    ${endTime}    Get Today End Time
+    ${todayEndTime}    convert to string    ${endTime}
+    ${todayDateRange}    create dictionary    beginDateTime=${todayBeginTime}    endDateTime=${todayEndTime}
+    set global variable    ${todayDateRange}    ${todayDateRange}
+    #获取首页-今日新会话数
+    ${resp}=    /daas/internal/session/today/total    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    首页不正确的状态码:${resp.status_code}
+    ${todaySession}    set variable    ${resp.content}
+    #获取首页-今日消息数
+    ${resp}=    /daas/internal/message/today/total    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    首页不正确的状态码:${resp.status_code}
+    ${todayMessage}    set variable    ${resp.content}
+    #获取首页-会话量趋势,按当天筛选
+    ${resp}=    /daas/internal/session/trend    ${AdminUser}    ${timeout}    ${todayDateRange}    ${FilterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    首页不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${todaySessionTrend}    Get Current Session Count    weixin    ${j}
+    #获取首页-消息量趋势,按当天筛选
+    ${resp}=    /daas/internal/message/trend    ${AdminUser}    ${timeout}    ${todayDateRange}    ${FilterEntity}
+    Should Be Equal As Integers    ${resp.status_code}    200    首页不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${todayMessageTrend}    Get Current Session Count    weixin    ${j}
+    #获取首页-今日客服新进会话数报表
+    ${resp}=    /daas/internal/agent/kpi/session/today    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${todayAgentSessionCount}    Get Agent Current Session Count    ${AdminUser.userId}    ${j}
+    ${todayInfo}    create dictionary    todaySession=${todaySession}    todayMessage=${todayMessage}    todaySessionTrend=${todaySessionTrend}    todayMessageTrend=${todayMessageTrend}    todayAgentSessionCount=${todayAgentSessionCount}
+    set global variable    ${todayInfo}    ${todayInfo}
+    #创建单服务有效会话
+    ${conInfo}    One Service Valid Conversation    ${AdminUser}    ${restentity}
+    ${queueentity}    set variable    ${conInfo.queueentityAA}
+    ${daasCreateTime}    set variable    ${conInfo.daasCreateTime}
+    set global variable    ${queueentity}    ${queueentity}
+    set global variable    ${daasCreateTime}    ${daasCreateTime}
+    ${conCreateTime}    create dictionary    beginDateTime=${daasCreateTime}    endDateTime=${ConDateRange.endDateTime}
+    set global variable    ${conCreateTime}    ${conCreateTime}
+    sleep    2000ms

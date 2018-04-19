@@ -31,3 +31,16 @@
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/official-accounts
     ${params}=    set variable    _=1510727292733
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/ServiceSession/{serviceSessionId}/AgentQueue/{queueId}
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/ServiceSession/${serviceSessionId}/AgentQueue/${queueId}
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    
+/v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v6/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/transfer
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+

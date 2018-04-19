@@ -18,7 +18,7 @@ Library           uuid
 *** Test Cases ***
 添加、查询、编辑并删除rule
     #获取坐席所在技能组列表
-    ${j}    Get Agent QueueInfo    ${AdminUser}    ${timeout}
+    ${j}    Get Agent QueueInfo    ${AdminUser}   ${AdminUser.userId}
     ${qid}    set variable    ${j['entities'][0]['queueId']}
     ${rname}    uuid 4
     #添加rule
@@ -67,8 +67,10 @@ Library           uuid
     ${resp}=    /v1/tenants/{tenantId}/waiting-queue-rulesets    get    ${AdminUser}    ${empty}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    查询rule返回不正确的状态码:${resp.status_code};${resp.text}
     ${j}    to json    ${resp.content}
+    run keyword if    '@{j['entity']}' == '[]'    Pass Execution    获取结果为空，该case通过
     set test variable    ${diffs1}    ${ruledict.name}${ruledict.enable}${ruledict.id}
     : FOR    ${i}    IN    @{j['entity']}
-    \    set test variable    ${diffs2}    ${i['rule_set_name']}${i['rule_set_enable']}${i['rule_set_id']}
-    \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
-    Should Not Be True    '${diffs1}' == '${diffs2}'    查询到已删除的rule信息:${j}
+    \    set test variable    ${diffs3}    ${i['rule_set_name']}${i['rule_set_enable']}${i['rule_set_id']}
+    \    Run Keyword If    '${diffs1}' == '${diffs3}'    Exit For Loop
+    Should Not Be True    '${diffs1}' == '${diffs3}'    查询到已删除的rule信息:${j}
+    

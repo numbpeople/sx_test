@@ -120,8 +120,8 @@ Close Waiting Conversation
     [Documentation]    关闭待接入的会话
     #清理待接入会话
     ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Close Processing Conversation
@@ -170,7 +170,7 @@ Get Current Conversation
     \    ${j}    to json    ${resp.content}
     \    Exit For Loop If    ${j['total_entries']} > 0
     \    sleep    ${delay}
-    Return From Keyword    ${resp}
+    Return From Keyword    ${j}
 
 Close Processing Conversations By SessionList
     [Arguments]    @{SessionList}

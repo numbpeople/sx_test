@@ -28,7 +28,7 @@ Delete Agent
     [Arguments]    ${userId}
     [Documentation]    删除客服，参数为客服userId
     ${resp}=    /v1/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text}
 
 Delete AgentUser
     [Arguments]    ${userId}
@@ -51,7 +51,7 @@ Delete Agentusers
     \    ${username}=    convert to string    ${userNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
     \    ${userIdValue}=    Get From Dictionary    ${agentlist}    ${userNameList[${i}]}
-    \    Run Keyword If    '${status}' == 'True'    Delete Agent    ${userIdValue}
+    \    Run Keyword If    '${status}' == 'True'    Delete Agent   ${userIdValue}
 
 Set Agents
     [Arguments]    ${method}    ${agent}    ${agentFilter}    ${data}
@@ -61,6 +61,13 @@ Set Agents
     run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='get'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
+    return from keyword    ${j}
+    
+Create Agent
+    [Arguments]    ${agent}    ${agentFilter}    ${data}
+    [Documentation]    创建一个坐席
+    #新增坐席
+    ${j}    Set Agents    post    ${agent}    ${agentFilter}    ${data}
     return from keyword    ${j}
 
 Create Temp Agent

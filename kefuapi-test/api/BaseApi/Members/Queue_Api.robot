@@ -34,8 +34,8 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/tenants/{tenantId}/agents/{agentId}/skillgroups
-    [Arguments]    ${agent}    ${timeout}
+    [Arguments]    ${agent}    ${timeout}    ${agentId}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/agents/${agent.userId}/skillgroups
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/agents/${agentId}/skillgroups
     ${params}    set variable    _=1511244671763
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

@@ -178,10 +178,10 @@ Remove Agents From Queue
     Add Agents To Queue    ${agent}    ${queueId}    ${AgentList}
 
 Get Agent QueueInfo
-    [Arguments]    ${agent}    ${timeout}
+    [Arguments]    ${agent}    ${agentId}
     [Documentation]    获取坐席所在的技能组信息
     #获取坐席所属技能组信息
-    ${resp}=    /v1/tenants/{tenantId}/agents/{agentId}/skillgroups    ${agent}    ${timeout}
+    ${resp}=    /v1/tenants/{tenantId}/agents/{agentId}/skillgroups    ${agent}    ${timeout}    ${agentId}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -189,7 +189,7 @@ Get Agent QueueInfo
 Remove Agent From All Queues
     [Arguments]    ${admin}    ${agent}    ${timeout}
     #获取要删除坐席的信息
-    ${jagent}    Get Agent QueueInfo    ${agent}    ${timeout}
+    ${jagent}    Get Agent QueueInfo    ${agent}    ${agent.userId}
     @{l}    create list    ${agent.userId}
     : FOR    ${i}    IN    @{jagent['entities']}
     \    #用管理员账号去移除

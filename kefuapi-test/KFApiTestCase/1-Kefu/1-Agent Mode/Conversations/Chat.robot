@@ -69,7 +69,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${expectValue}    set variable    over    #该参数为获取接口某字段的预期值
     #获取会话满意度评价结果
     ${j}    Repeat Keyword Times    Get EnquiryStatus    ${expectConstruction}    ${expectValue}    @{paramList}
-    Run Keyword If    ${j} == {}    Fail    接口返回结果中
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中不包含预期的over值
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
     Should Be Equal    '${j['count']}'    '1'    获取接口返回count不是1: ${j}
     Should Be Equal    ${j['data'][0]}    over    获取接口返回data不是over: ${j}
@@ -81,7 +81,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${j}    Set ServiceSessionSummaryResults    get    ${AdminUser}    ${sessionInfo.sessionServiceId}
     should be equal    '${j}'    '[]'    获取接口返回结果不正确: ${j}
 
-添加会话的会话备注(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
+添加会话的会话标签信息(/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults)
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #创建参数字典
@@ -102,9 +102,20 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #获取会话会话备注信息
-    ${j}    Get Comment    ${AdminUser}    ${sessionInfo.sessionServiceId}
-    run keyword if    ${j} == {}    Pass Execution    会话没有会话备注信息
-    run keyword if    ${j} != {}    Should Be Equal    ${j['serviceSessionId']}    ${data}    获取接口返回会话id不正确: ${j}
+    ${j}    Set Comment    get    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${EMPTY}
+    run keyword if    '${j}' == '${EMPTY}'    Pass Execution    会话没有会话备注信息
+    run keyword if    '${j}' != '${EMPTY}'    Should Be Equal    ${j['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口返回会话id不正确: ${j}
+    
+添加会话的会话备注信息(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #创建字典和请求体
+    ${secs}    Get Time    epoch
+    &{commentEntity}    create dictionary    serviceSessionId=${sessionInfo.sessionServiceId}    comment=${AdminUser.tenantId}_${secs}
+    ${data}    set variable    {"serviceSessionId":"${commentEntity.serviceSessionId}","comment":"${commentEntity.comment}"}
+    #添加会话会话备注信息
+    ${j}    Set Comment    post    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${data}
+    Should Be Equal    ${j['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口返回会话id不正确: ${j}
 
 获取未读消息数(/v1/Tenants/me/Agents/me/UnReadTags/Count)
     #获取未读消息数
@@ -119,6 +130,50 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${j}    Read Message    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${data}
     ${state}    Run Keyword And Return Status    Should Be True    '${j}' == 'True' or '${j}' == 'False'
     should be true    ${state}    获取接口返回结果不正确: ${j}
+    
+客服转接会话到其他技能组(/v1/ServiceSession/{serviceSessionId}/AgentQueue/{queueId})
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #客服转接会话到其他技能组
+    ${j}    Tansfer Conversation To Queue    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${sessionInfo.queueId}
+    should be true    ${j}    获取接口返回结果不是True: ${j}
+
+客服转接会话到其他坐席(/v6/tenants/{tenantId}/servicesessions/${serviceSessionId}/transfer)
+    [Documentation]    1.创建坐席    2.创建进行中会话    3.转接会话给该坐席    4.当前会话中获取该会话是否属于该坐席
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #设置创建坐席请求参数
+    ${uuid}    Uuid 4
+    ${name}    set variable    ${AdminUser.tenantId}${uuid}
+    &{agent}=    create dictionary    username=${name}@qq.com    password=lijipeng123    maxServiceSessionCount=10    nicename=${name}    permission=1
+    ...    roles=admin,agent
+    ${data}=    set variable    {"nicename":"${agent.nicename}","username":"${agent.username}","password":"${agent.password}","confirmPassword":"${agent.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${agent.maxServiceSessionCount}","permission":${agent.permission},"roles":"${agent.roles}"}
+    ${agentFilter}    copy dictionary    ${AgentFilterEntity}
+    #创建坐席并获取坐席id
+    ${agentInfo}    Create Agent    ${AdminUser}    ${agentFilter}    ${data}
+    ${userId}    set variable    ${agentInfo['userId']}
+    #获取坐席所在技能组
+    ${agentInQueueIds}    Get Agent QueueInfo    ${AdminUser}    ${userId}
+    ${agentInQueueId}    set variable    ${agentInQueueIds['entities'][0]['queueId']}
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #创建转接请求体
+    ${transferData}    set variable    {"agentUserId":"${userId}","queueId":${agentInQueueId}}
+    #客服转接会话到其他技能组
+    ${j}    Tansfer Conversation To Agent    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${sessionInfo.queueId}    ${transferData}
+    should be true    '${j['status']}' == 'OK'   获取接口返回status不是OK: ${j}
+    #设置查询当前会话的参数
+    set to dictionary    ${filter}    state=Processing    isAgent=${False}    visitorName=${sessionInfo.userName}
+    ${currentSession}    Get Current Conversation    ${AdminUser}    ${filter}    ${range}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get EnquiryStatus接口的参数值
+    ${expectConstruction}    set variable    ['items'][0]['agentUserId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${userId}    #该参数为获取接口某字段的预期值
+    #获取会话满意度评价结果
+    ${j}    Repeat Keyword Times    Get Current Conversation    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话不属于转接后的坐席
+    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口会话id不正确: ${j}
+    Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${name}    获取接口返回agentUserNiceName不正确: ${j}
 
 从待接入接起会话查看attribute、track、会话信息、历史消息接口并关闭，查看历史会话、访客中心
     [Documentation]    从待接入接起会话，查看attribute和track信息，查看会话信息和历史消息接口并关闭；

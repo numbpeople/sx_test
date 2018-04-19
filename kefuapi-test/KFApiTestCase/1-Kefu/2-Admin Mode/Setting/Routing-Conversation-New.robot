@@ -1085,9 +1085,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询的筛选条件
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 关联指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-data-binding)
     [Documentation]    设置路由规则：
@@ -1121,9 +1120,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 渠道和关联指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
     [Documentation]    设置路由规则：
@@ -1166,9 +1164,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1222,9 +1219,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1274,9 +1270,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1368,9 +1363,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1463,9 +1457,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 关联指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-data-binding)
     [Documentation]    设置路由规则：
@@ -1502,9 +1495,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 渠道和关联指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
     [Documentation]    设置路由规则：
@@ -1553,9 +1545,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1615,9 +1606,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1671,9 +1661,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1773,9 +1762,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -1870,9 +1858,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 关联指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-data-binding)
     [Documentation]    设置路由规则：
@@ -1912,9 +1899,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 渠道和关联指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
     [Documentation]    设置路由规则：
@@ -1967,9 +1953,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -2031,9 +2016,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -2091,9 +2075,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}
@@ -2199,9 +2182,8 @@ Resource          ../../../../api/IM/IMApi.robot
     #设置查询当前会话的参数
     set to dictionary    ${FilterEntity}    state=Processing    isAgent=${False}    visitorName=${guestentity.userName}
     #查询当前会话是否属于机器人
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     set to dictionary    ${msgentity}    msg=转人工    #发送转人工消息，将会话转至待接入
     Send Message    ${restentity}    ${guestentity}    ${msgentity}

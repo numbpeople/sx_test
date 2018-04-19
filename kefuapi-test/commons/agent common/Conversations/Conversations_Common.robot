@@ -15,6 +15,7 @@ Resource          ../../../api/MicroService/IntegrationSysinfoManage/GrowingIOAp
 Resource          ../../../api/MicroService/Webapp/InitApi.robot
 Resource          ../../../api/MicroService/Webapp/WebappApi.robot
 Resource          ../../../api/MicroService/Enquiry/EnquiryApi.robot
+Resource          ../../../api/BaseApi/Conversations/ConversationApi.robot
 Resource          ../Queue/Queue_Common.robot
 Resource          ../History/History_Common.robot
 
@@ -237,7 +238,7 @@ Create Processiong Conversation
     Should Be Equal    ${a['user']['nicename']}    ${GuestEntity.userName}    访客昵称不正确：${a}
     Should Be Equal    ${a['techChannelName']}    ${restentity.channelName}    关联信息不正确：${a}
     Should Be Equal    ${a['techChannelId']}    ${restentity.channelId}    关联id不正确：${a}
-    set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}
+    set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}
     Return From Keyword    ${GuestEntity}
 
 Create Terminal Conversation
@@ -317,15 +318,16 @@ Add ServiceSessionSummaryResults
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 
-Get Comment
-    [Arguments]    ${agent}    ${serviceSessionId}
-    [Documentation]    查询会话备注信息
-    #查询会话备注信息
-    ${resp}=    /tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment    ${agent}    ${serviceSessionId}    ${timeout}
+Set Comment
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=
+    [Documentation]    操作会话备注信息
+    #操作会话备注信息
+    ${resp}=    /tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment    ${method}    ${agent}    ${serviceSessionId}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     #如果请求结果为空，则返回空，不为空，返回数据
-    Run Keyword And Return If    '${resp.content}' != '${EMPTY}'    to json    ${resp.content}
-    Return From Keyword    {}
+    return From Keyword If    '${method}'=='get'    ${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
 
 Read Message
     [Arguments]    ${agent}    ${serviceSessionId}    ${data}
@@ -339,6 +341,22 @@ Read Message
 Get UnRead Count
     [Arguments]    ${agent}
     ${resp}=    /v1/Tenants/me/Agents/me/UnReadTags/Count    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Tansfer Conversation To Queue
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}
+    [Documentation]    将进行中会话转接到技能组
+    ${resp}=    /v1/ServiceSession/{serviceSessionId}/AgentQueue/{queueId}    ${agent}    ${serviceSessionId}    ${queueId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+    
+Tansfer Conversation To Agent
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${transferData}
+    [Documentation]    将进行中会话转接到技能组
+    ${resp}=    /v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer    ${agent}    ${serviceSessionId}    ${queueId}    ${transferData}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}

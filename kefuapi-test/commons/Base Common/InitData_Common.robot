@@ -220,6 +220,6 @@ Channel Data Init
     set global variable    ${RestEntity}    ${RestEntity}
 
 Clear Data
-    Delete Agentusers    #删除坐席
-    Delete Queues    #删除技能组
     Delete Channels    #删除关联
+    Delete Queues    #删除技能组
+    Delete Agentusers    #删除坐席

@@ -11,9 +11,7 @@
 *.pyc
 
 # report Files #
-*.log.html
-*.output.xml
-*.report.html
+*.html
 *.xml
 *.iml
 

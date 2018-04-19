@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           urllib
+Library           uuid
 Resource          ../../../../AgentRes.robot
 Resource          ../../../../commons/admin common/Members/AgentQueue_Common.robot
 Resource          ../../../../commons/admin common/BaseKeyword.robot
@@ -18,7 +19,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 
 *** Test Cases ***
 获取访客列表(/v1/Agents/me/Visitors)
-    [Tags]    sdk
+    [Tags]
     #获取进行中会话列表
     ${j}    Get Processing Session    ${AdminUser}
     ${length}    get length    ${j}
@@ -26,8 +27,8 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     Run Keyword If    ${length} > 0    should be equal    '${j[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    获取访客列表失败 , ${j}
 
 获取空访客列表(/v1/Agents/me/Visitors)
-    [Tags]    sdk
-    #获取进行中会话列表
+    [Tags]
+    #获取进行中空会话列表
     ${j}    Get Processing Session    ${AdminUser}
     ${length}    get length    ${j}
     Run Keyword If    ${length} > 50    Fail    进行中会话超过50个会话，case坚决不给通过 , ${j}
@@ -36,6 +37,44 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     #获取空的进行中会话列表
     ${j}    Get Processing Session    ${AdminUser}
     should be true    ${j} == []    获取空进行中会话列表有异常, ${j}
+    
+获取进行中会话访客列表最后一条消息(/v1/Agents/me/Visitors)
+    [Documentation]    1.创建一个进行中会话    2.访客发送一条消息，作为检查最后一条消息    3.获取访客列表检查lastChatMessage下的msg值    4.如果获取到的消息不是预期，尝试重试取多次，再对比结果
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #访客发送一条消息，作为检查最后一条消息的预期值
+    ${uuid}    Uuid 4
+    set to dictionary    ${sessionInfo.msgEntity}    msg=${uuid}
+    Send Message    ${restentity}    ${sessionInfo.guestEntity}    ${sessionInfo.msgEntity}
+    #获取进行中会话列表
+    &{searchDic}    create dictionary    fieldName=msg    fieldValue=${uuid}    fieldConstruction=['lastChatMessage']['body']['bodies'][0]['msg']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['lastChatMessage']['body']['bodies'][0]['msg']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${uuid}    #该参数为获取接口某字段的预期值
+    #获取会话对应的会话
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话不属于转接后的坐席
+    should be equal    ${j[0]['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取到的会话id不正确, ${j}
+
+获取进行中会话背景颜色标识(/v1/Agents/me/Visitors)
+    [Documentation]    1.创建一个进行中会话    2.获取访客列表检查backgroundColorFlag、hasUnReadMessage、isNewSession等的初始值    3.如果获取到的消息不是预期，尝试重试取多次，再对比结果
+    #创建会话并手动接入到进行中会话
+    ${sessionInfo}    Create Processiong Conversation
+    #获取进行中会话列表
+    &{searchDic}    create dictionary    fieldName=backgroundColorFlag    fieldValue=${sessionInfo.sessionServiceId}    fieldConstruction=['serviceSessionId']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['serviceSessionId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${sessionInfo.sessionServiceId}    #该参数为获取接口某字段的预期值
+    #获取会话对应的会话
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话根据会话id搜索不到相应的会话
+    should be true    ${j[0]['backgroundColorFlag']}    获取到的backgroundColorFlag不是true, ${j}
+    should be true    ${j[0]['hasUnReadMessage']}    获取到的hasUnReadMessage不是true, ${j}
+    should be true    not ${j[0]['isNewSession']}    获取到的isNewSession不是false, ${j}
+    should be true    ${j[0]['unReadMessageCount']}>0    获取到的unReadMessageCount不大于0, ${j}
+    should be true    '${j[0]['transferedFrom']}' == 'None'    获取到的transferedFrom默认不是None, ${j}
 
 根据会话Id获取official-accounts信息(/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/official-accounts)
     #创建会话并手动接入到进行中会话

@@ -24,6 +24,7 @@ Repeat Keyword Times
     ...    - param：@{paramList}，接口封装后所需要传入的参数值
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${j}    run keyword    ${functionName}    @{paramList}
+    \    Continue For Loop If    "${j}" == "[]"
     \    ${dataRes}    set variable    ${j${expectConstruction}}    #想要获取返回值中应取的字段结构，即${j}返回值中，获取${expectConstruction}结构的值 ，例如：${j['data'][0]}
     \    return from keyword if    "${dataRes}" == "${expectValue}"    ${j}
     \    sleep    ${delay}

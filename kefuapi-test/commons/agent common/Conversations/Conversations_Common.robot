@@ -57,6 +57,26 @@ Get Processing Session
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+Get Processing Conversations With FieldName
+    [Arguments]    ${agent}    ${fieldName}    ${fieldValue}    ${fieldConstruction}
+    [Documentation]    根据会话某些属性来获取进行中会话列表，并返回会话数据
+    ...    ${fieldName}: 搜索的某字段
+    ...    ${fieldValue}: 预期搜索某字段预期值
+    ...    ${fieldConstruction}：搜索的某字段的结构路径
+    ${sessionList}    create list
+    #获取进行中会话列表
+    ${j}    Get Processing Session    ${agent}
+    ${length}    get length    ${j}
+    run keyword if    ${length} > 50    ${sessionList}
+    #判断结果是否包含指定字段
+    ${status}    Run Keyword And Return Status    Should Contain    "${j}"    ${fieldName}
+    return from keyword if   not ${status}    ${sessionList}
+    #将符合预期值的结果加到列表中，并返回列表数据
+    :FOR    ${i}    IN    @{j}
+    \    log    ${i}
+    \    ${resultValue}    set variable    ${i${fieldConstruction}}
+    \    run keyword if    "${fieldValue}" == "${resultValue}"    Append To List    ${sessionList}    ${i}
+    return from keyword   ${sessionList}
 
 Get Attribute
     [Arguments]    ${agent}    ${servicesessionid}
@@ -238,7 +258,7 @@ Create Processiong Conversation
     Should Be Equal    ${a['user']['nicename']}    ${GuestEntity.userName}    访客昵称不正确：${a}
     Should Be Equal    ${a['techChannelName']}    ${restentity.channelName}    关联信息不正确：${a}
     Should Be Equal    ${a['techChannelId']}    ${restentity.channelId}    关联id不正确：${a}
-    set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}
+    set to dictionary    ${GuestEntity}    msgEntity=${MsgEntity}    guestEntity=${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}
     Return From Keyword    ${GuestEntity}
 
 Create Terminal Conversation

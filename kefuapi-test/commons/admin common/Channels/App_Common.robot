@@ -82,7 +82,7 @@ Delete Channel
     [Documentation]    删除关联，参数为关联Id
     #删除新增关联
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${agent}    ${channelId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text} 
 
 Delete Channels
     [Arguments]    ${agent}=${AdminUser}

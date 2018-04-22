@@ -9,7 +9,7 @@ Resource          ../../../api/BaseApi/History/HistoryApi.robot
 
 *** Keywords ***
 Search History
-    [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}
+    [Arguments]    ${agent}    ${filter}    ${date}    ${retryTimes}=${retryTimes}
     [Documentation]    根据查询条件查询历史会话
     ...
     ...    describtion：
@@ -19,11 +19,11 @@ Search History
     ...    ${retryTimes}:请求重试次数
     ...
     ...    返回值：
-    ...    ${true}|${false}：有|无查询结果
+    ...    查到数据则返回结果，否则返回：{}
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${resp}=    /v1/Tenant/me/ServiceSessionHistorys    ${agent}    ${filter}    ${date}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     \    ${j}    to json    ${resp.content}
-    \    Exit For Loop If    ${j['total_entries']} ==1
+    \    Return From Keyword if    ${j['total_entries']} ==1    ${j}
     \    sleep    ${delay}
-    Return From Keyword if    ${j['total_entries']} ==1    ${true}    ${false}
+    Return From Keyword    {}

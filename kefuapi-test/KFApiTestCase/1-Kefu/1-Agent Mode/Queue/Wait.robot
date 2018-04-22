@@ -12,6 +12,7 @@ Resource          ../../../../commons/admin common/History/History_common.robot
 Resource          ../../../../commons/admin common/Setting/Routing_Common.robot
 Resource          ../../../../commons/agent common/Customers/Customers_Common.robot
 Resource          ../../../../commons/admin common/BaseKeyword.robot
+Resource          ../../../../commons/Base Common/Base_Common.robot
 Resource          ../../../../JsonDiff/KefuJsonDiff.robot
 Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
 
@@ -148,3 +149,86 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be Equal    ${json['entities'][0]['session_id']}    ${j.serviceSessionId}    会话id不正确：${json}
     Should Be Equal    ${json['entities'][0]['origin_type']}    ${j.originType}    渠道信息：${json}
     Should Be Equal    ${json['entities'][0]['priority']}    vip1    vip客户等级返回不正确：${json}
+
+关闭待接入会话(/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/abort)
+    [Documentation]    1.创建待接入会话    2.手动结束待接入会话    3.历史会话根据访客昵称搜索该会话
+    #使用局部变量来使用
+    ${filter}    Copy Dictionary    ${FilterEntity}
+    #创建待接入会话
+    ${session}    Create Wait Conversation    weibo
+    #清理待接入会话
+    ${j}=    Close Waiting Session    ${session.serviceSessionId}    ${AdminUser}
+    Should Be Equal    '${j['status']}'    'OK'    待接入会话关闭发生异常：${j}
+    #获取管理员模式下历史会话
+    set to dictionary    ${filter}    isAgent=False    page=1    visitorName=${session.userName}
+    ${r}    Search History    ${AdminUser}    ${filter}    ${DateRange}
+    run keyword if    ${r} == {}    管理员模式下未查到该访客的历史会话
+    Should Be True    '${r['items'][0]['serviceSessionId']}' == '${session.serviceSessionId}'   管理员模式查到该访客的历史会话会话id不正确：${r}
+
+手动接入待接入会话(/v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId})
+    [Documentation]    1.创建待接入会话    2.手动接入会话    3.查询进行中会话该接入的会话
+    #使用局部变量来使用
+    ${filter}    Copy Dictionary    ${FilterEntity}
+    #创建待接入会话
+    ${session}    Create Wait Conversation    weibo
+    #手动接入待接入会话
+    ${j}=    Access Waiting Session    ${AdminUser}    ${session.serviceSessionId}
+    Should Be Equal    '${j['status']}'    'OK'    待接入会话关闭发生异常：${j}
+    #获取进行中会话列表
+    &{searchDic}    create dictionary    fieldName=serviceSessionId    fieldValue=${session.serviceSessionId}    fieldConstruction=['serviceSessionId']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['serviceSessionId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${session.serviceSessionId}    #该参数为获取接口某字段的预期值
+    #获取会话对应的会话
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话根据会话id搜索不到相应的会话
+    should be true    '${j[0]['user']['nicename']}'=='${session.userName}'    获取到的nicename不是${session.userName}, ${j}
+
+待接入转接会话给其他技能组(/v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId})
+    [Documentation]    1.创建待接入会话    2.待接入转接会话到技能组
+    #使用局部变量来使用
+    ${filter}    Copy Dictionary    ${FilterEntity}
+    #创建待接入会话
+    ${session}    Create Wait Conversation    weibo
+    #待接入转接会话到技能组
+    ${j}=    Assign Queue For Waiting Session    ${AdminUser}    ${session.serviceSessionId}    ${session.queueId}
+    Should Be Equal    '${j['status']}'    'OK'    转接待接入会话结果status不为OK：${j}
+    Should Be True    ${j['entity']}    转接待接入会话结果entity不为true：${j}
+
+待接入转接会话给其他坐席(/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/agents/{agentUserId})
+    [Documentation]    1.创建待接入会话    2.创建坐席    3.待接入转接会话到坐席
+    #使用局部变量来使用
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #创建待接入会话
+    ${session}    Create Wait Conversation    weibo
+    #设置创建坐席请求参数
+    ${uuid}    Uuid 4
+    ${name}    set variable    ${AdminUser.tenantId}${uuid}
+    &{agent}=    create dictionary    username=${name}@qq.com    password=lijipeng123    maxServiceSessionCount=10    nicename=${name}    permission=1
+    ...    roles=admin,agent
+    ${data}=    set variable    {"nicename":"${agent.nicename}","username":"${agent.username}","password":"${agent.password}","confirmPassword":"${agent.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${agent.maxServiceSessionCount}","permission":${agent.permission},"roles":"${agent.roles}"}
+    ${agentFilter}    copy dictionary    ${AgentFilterEntity}
+    #创建坐席并获取坐席id
+    ${agentInfo}    Create Agent    ${AdminUser}    ${agentFilter}    ${data}
+    ${userId}    set variable    ${agentInfo['userId']}
+    #获取坐席所在技能组
+    ${agentInQueueIds}    Get Agent QueueInfo    ${AdminUser}    ${userId}
+    ${agentInQueueId}    set variable    ${agentInQueueIds['entities'][0]['queueId']}
+    #创建转接请求体
+    ${assignData}    set variable    {"agentUserId":"${userId}","queueId":${agentInQueueId}}
+    #待接入转接会话到坐席
+    ${j}=    Assign Agent For Waiting Session    ${AdminUser}    ${session.serviceSessionId}    ${userId}    ${assignData} 
+    Should Be Equal    '${j['status']}'    'OK'    转接待接入会话结果status不为OK：${j}
+    #设置查询当前会话的参数
+    set to dictionary    ${filter}    state=Processing    isAgent=${False}    visitorName=${session.userName}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get EnquiryStatus接口的参数值
+    ${expectConstruction}    set variable    ['items'][0]['agentUserId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${userId}    #该参数为获取接口某字段的预期值
+    #获取会话满意度评价结果
+    ${j}    Repeat Keyword Times    Get Current Conversation    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话不属于转接后的坐席
+    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
+    Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${name}    获取接口返回agentUserNiceName不正确: ${j}

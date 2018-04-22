@@ -67,7 +67,7 @@ Library           uuid
     ${resp}=    /v1/tenants/{tenantId}/waiting-queue-rulesets    get    ${AdminUser}    ${empty}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    查询rule返回不正确的状态码:${resp.status_code};${resp.text}
     ${j}    to json    ${resp.content}
-    run keyword if    '@{j['entity']}' == '[]'    Pass Execution    获取结果为空，该case通过
+    run keyword if    "@{j['entity']}" == "[]"    Pass Execution    获取结果为空，该case通过
     set test variable    ${diffs1}    ${ruledict.name}${ruledict.enable}${ruledict.id}
     : FOR    ${i}    IN    @{j['entity']}
     \    set test variable    ${diffs3}    ${i['rule_set_name']}${i['rule_set_enable']}${i['rule_set_id']}

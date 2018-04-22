@@ -26,7 +26,7 @@ Clear Phrases
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
     #获取常用语分类
     ${j}    Set Phrases    ${AdminUser}    get    ${orgEntity}    ${phrasesEntity}    ${EMPTY}
-    run keyword if    '@{j['entities']}' == '[]'    Pass Execution    获取结果为空，标记为pass，不往下执行
+    run keyword if     "@{j['entities']}" == "[]"    Pass Execution    获取结果为空，标记为pass，不往下执行
     should be equal    ${j['status']}    OK    获取常用语分类数据不正确：${j}
     should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId值不正确: ${j}
     #循环删除包含${prePhrasesName}的常用语分类

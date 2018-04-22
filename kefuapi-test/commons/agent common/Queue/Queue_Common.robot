@@ -28,6 +28,23 @@ Access Conversation
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 
+Access Waiting Session
+    [Arguments]    ${agent}    ${servicesessionid}
+    [Documentation]    手动从待接入接入会话
+    ...
+    ...    Arguments：
+    ...
+    ...    ${agent} | ${servicesessionid}
+    ...
+    ...    Return：
+    ...
+    ...    请求结果：${j}
+    #根据查询结果接入会话
+    ${resp}=    /v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId}    ${agent}    ${servicesessionid}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
 Create Wait Conversation
     [Arguments]    ${origintype}    ${visitor}={}
     [Documentation]    创建会话到待接入，返回访客信息、渠道信息、消息信息等
@@ -116,4 +133,29 @@ Get Waiting
     ${resp}=    /waitings    ${agent}    ${filter}    ${dataRange}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Close Waiting Session
+    [Arguments]    ${sessionServiceId}    ${agent}=${AdminUser}
+    [Documentation]    关闭待接入的会话
+    #清理待接入会话
+    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Assign Queue For Waiting Session
+    [Arguments]    ${agent}    ${sessionServiceId}    ${queueId}    
+    [Documentation]    转接待接入会话到技能组
+    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/queues/{queueId}    ${agent}    ${sessionServiceId}    ${queueId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Assign Agent For Waiting Session
+    [Arguments]    ${agent}    ${sessionServiceId}    ${agengUserId}    ${data}
+    [Documentation]    转接待接入会话到其他坐席
+    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/agents/{agentUserId}    ${agent}    ${sessionServiceId}    ${agengUserId}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}

@@ -57,6 +57,7 @@ Get Processing Session
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
 Get Processing Conversations With FieldName
     [Arguments]    ${agent}    ${fieldName}    ${fieldValue}    ${fieldConstruction}
     [Documentation]    根据会话某些属性来获取进行中会话列表，并返回会话数据

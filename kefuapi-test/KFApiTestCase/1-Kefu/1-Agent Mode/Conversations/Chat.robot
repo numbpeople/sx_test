@@ -181,6 +181,10 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     [Documentation]    1.创建坐席    2.创建进行中会话    3.转接会话给该坐席    4.当前会话中获取该会话是否属于该坐席
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
+    #将转接预调度关闭掉
+    ${data}    set variable    {"value":false}
+    ${optionResult}    Set Option Value    ${AdminUser}    put    serviceSessionTransferPreScheduleEnable    ${data}
+    Should Be Equal    '${optionResult['status']}'    'OK'    设置转接预调度结果status不为OK：${optionResult}
     #设置创建坐席请求参数
     ${uuid}    Uuid 4
     ${name}    set variable    ${AdminUser.tenantId}${uuid}
@@ -203,7 +207,6 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be true    '${j['status']}' == 'OK'   获取接口返回status不是OK: ${j}
     #设置查询当前会话的参数
     set to dictionary    ${filter}    state=Processing    isAgent=${False}    visitorName=${sessionInfo.userName}
-    ${currentSession}    Get Current Conversation    ${AdminUser}    ${filter}    ${range}
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get EnquiryStatus接口的参数值
     ${expectConstruction}    set variable    ['items'][0]['agentUserId']    #该参数为接口返回值的应取的字段结构

@@ -280,3 +280,17 @@ Init Agent In New Queue
     @{ul}    create list    ${agent.userId}
     Add Agents To Queue    ${admin}    ${q.queueId}    ${ul}
     Return From Keyword    ${q}
+
+Set Option Value
+    [Arguments]    ${agent}    ${method}    ${optionName}    ${data}=
+    [Documentation]    查询或设置option
+    ...
+    ...    参数：
+    ...    - ${data}：格式为 {"value":true}或{"value":false}
+    ...    
+    ...    返回值：
+    ...    - 返回请求结果
+    #查询或设置option
+    ${resp}=    /tenants/{tenantId}/options/{optionName}    ${agent}    ${method}    ${optionName}    ${data}    ${timeout}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

@@ -153,6 +153,24 @@ Search Waiting Conversation
     \    sleep    ${delay}
     Return From Keyword    ${resp}
 
+Search Waiting Session
+    [Arguments]    ${agent}    ${filter}    ${date}
+    [Documentation]    根据筛选条件查询待接入会话
+    ...
+    ...    Arguments：
+    ...
+    ...    ${AdminUser}、${FilterEntity}、${DateRange}
+    ...
+    ...    Return：
+    ...
+    ...    返回符合筛选的符合结果：resp
+    #根据访客昵称查询待接入列表
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${j}    Get Waiting    ${agent}    ${filter}    ${date}
+    \    Exit For Loop If    ${j['totalElements']} > 0
+    \    sleep    ${delay}
+    Return From Keyword    ${j}
+
 Get Current Conversation
     [Arguments]    ${agent}    ${filter}    ${date}
     [Documentation]    获取当前会话，返回符合筛选条件的值并返回

@@ -56,7 +56,7 @@ Create Wait Conversation
     ...
     ...    Return：
     ...
-    ...    userName、originType、serviceSessionId、userId、queueId
+    ...    userName、originType、serviceSessionId、userId、queueId、channelId、channelType
     #设置渠道信息
     ${originType}    set variable    ${origintype}
     ${curTime}    get time    epoch
@@ -72,13 +72,13 @@ Create Wait Conversation
     Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
     #根据访客昵称查询待接入列表
     ${filter}    Copy Dictionary    ${FilterEntity}
-    set to dictionary    ${filter}    visitorName=${guestentity.userName}
-    ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    ${j['total_entries']} ==1    查询结果为空：${j}
-    Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
-    set to dictionary    ${GuestEntity}    serviceSessionId=${j['items'][0]['userWaitQueueId']}    userId=${j['items'][0]['userId']}    queueId=${j['items'][0]['queueId']}
+    set to dictionary    ${filter}    visitorName=${guestentity.userName}    page=0
+    ${j}    Search Waiting Session    ${AdminUser}    ${filter}    ${DateRange}
+    #断言结果
+    Should Be True    ${j['totalElements']} ==1    查询结果为空：${j}
+    Should Be Equal    ${j['entities'][0]['visitor_name']}    ${guestentity.userName}    访客名称不正确：${j}
+    Should Be Equal    ${j['entities'][0]['skill_group_id']}    ${queueentityA.queueId}    技能组id不正确：${j}
+    set to dictionary    ${GuestEntity}    serviceSessionId=${j['entities'][0]['session_id']}    userId=${j['entities'][0]['visitor_id']}    queueId=${j['entities'][0]['skill_group_id']}    channelId=${j['entities'][0]['channel_id']}    channelType=${j['entities'][0]['channel_type']}
     Return From Keyword    ${GuestEntity}
 
 Get UserWaitQueues

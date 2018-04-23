@@ -9,7 +9,7 @@
     [Arguments]    ${agent}    ${filter}    ${range}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /waitings
-    ${params}=    set variable    page=${filter.page}&size=${filter.per_page}&originType=${filter.originType}&beginDate=${range.beginDate}&endDate=${range.endDate}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&visitorName=${filter.visitorName}
+    ${params}=    set variable    page=${filter.page}&size=${filter.per_page}&originType=${filter.originType}&beginDate=${range.beginDate}&endDate=${range.endDate}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&visitorName=${filter.visitorName}&queueId=${filter.queueId}&vip=${filter.vip}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenant/me/Agents/me/UserWaitQueues

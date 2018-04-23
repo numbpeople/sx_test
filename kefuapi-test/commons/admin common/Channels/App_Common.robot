@@ -180,3 +180,21 @@ Check Valid Channel Params
     \    ${keyName}    set variable    ${keyList[${i}]}
     \    ${status}    Run Keyword And Return Status    should be empty    ${ExistChannelEntity.${keyName}}
     \    run keyword if    ${status}    Fail    AgentRes资源文件设置的ExistChannelEntity字典，字段${keyName}值为空
+
+Get Tenant Channels
+    [Arguments]    ${agent}
+    [Documentation]    获取租户下所有的渠道关联信息
+    #获取租户下所有的渠道的关联信息
+    ${resp}=    /channels    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Get Channel With ChannelId
+    [Arguments]    ${agent}    ${channelId}
+    [Documentation]    根据关联id获取该关联
+    #获取租户下所有的渠道的关联信息
+    ${j}    Get Tenant Channels    ${agent}
+    :FOR    ${i}    IN    @{j}
+    \    Return From Keyword if    "${i['id']}" == "${channelId}"    ${i}
+    Return From Keyword    {}

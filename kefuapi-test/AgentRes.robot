@@ -28,7 +28,7 @@ ${groupType}      System
 ...               objectType=O_AGENT    locale=zh_CN    order=stateCreateTime    username=    dataAuth=ROLE_SYSTEM    top=true    queryTypes=OFFLINE
 ...               agentIds=    customerName=    transfered=    fromAgentCallback=    queueId=    withMessage=    sortField=stopDateTime
 ...               message=    hasQM=    groupId=    rangeValue=    qmActorId=    amsgCount=    vmsgCount=
-...               agentUserId=    # hasQM参数的值选择为：V_ALL、V_YES、V_NO
+...               agentUserId=    vip=    # hasQM参数的值选择为：V_ALL、V_YES、V_NO; vip参数为待接入筛选使用，值默认为空，可为：true/false
 &{orgEntity}      organName=${empty}    organId=${empty}
 &{RobotFilter}    page=1    per_page=5    q=    type=0
 &{VisitorFilterEntity}    page=1    size=15    userTagIds=    categoryId=-1    subCategoryId=-1    visitorName=    summaryIds=

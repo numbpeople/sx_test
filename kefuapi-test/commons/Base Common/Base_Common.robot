@@ -29,3 +29,10 @@ Repeat Keyword Times
     \    return from keyword if    "${dataRes}" == "${expectValue}"    ${j}
     \    sleep    ${delay}
     return from keyword    {}
+
+Set Option
+    [Arguments]    ${agent}    ${optionname}    ${value}
+    [Documentation]    1.${optionname} \ ${value} 的值不能加引号
+    ...    2.${value}的值只能为小写的true和false
+    ${data}    set variable    {"value":${value}}
+    ${resp}=    /tenants/{tenantId}/options/{optionName}    ${agent}    put    ${optionname}    ${data}    ${timeout}

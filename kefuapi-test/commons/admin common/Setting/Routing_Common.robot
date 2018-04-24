@@ -168,7 +168,7 @@ Reverse All Rules Status
 
 Update Rule Status
     [Arguments]    ${agent}    ${data}
-    ${resp}=    /v1/tenants/{tenantId}/waiting-queue-rulesets/{ruleId}    put    ${AdminUser}    ${data['rule_set_id']}    ${data}    ${timeout}
+    ${resp}=    /v1/tenants/{tenantId}/waiting-queue-rulesets/{ruleId}    put    ${agent}    ${data['rule_set_id']}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    开启rule返回不正确的状态码:${resp.status_code};${resp.text}
 
 Reverse RuleString Status
@@ -178,8 +178,8 @@ Reverse RuleString Status
     ...    ELSE    replace string    '${rulestr}'    false    true
     ${s}    replace string    ${s}    '    "
     ${s}    replace string    ${s}    u"    "
-    ${data}    strip string    ${s}    characters="
-    ${data}    to json    ${data}
+    ${s}    strip string    ${s}    characters="
+    ${data}    to json    ${s}
     return from keyword    ${data}
 
 Get All Rules

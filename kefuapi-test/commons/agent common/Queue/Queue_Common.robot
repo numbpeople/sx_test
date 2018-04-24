@@ -186,3 +186,31 @@ Access Waiting And Stop Session
     should be equal    ${j[0]['serviceSessionId']}    ${session.sessionServiceId}    获取到的会话id不正确, ${j}
     #结束进行中的会话
     Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}
+
+
+Session Should Be In Watings
+    [Arguments]    ${agent}    ${filter}    ${range}
+    [Documentation]    获取待接入列表数据
+    #检查结果：格式化会话列表json并检查ui
+    @{paramList}	create list    ${agent}    ${filter}    ${range}
+    ${expectConstruction}	set variable	['totalElements']	#该参数为接口返回值的应取的字段结构		
+    ${expectValue}	set variable	1	#该参数为获取接口某字段的预期值		
+    #获取会话对应的会话					
+    ${j}	Repeat Keyword Times	Get Waiting	${expectConstruction}	${expectValue}	@{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中不包含预期的over值
+    Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
+    Should Be Equal    '${j['totalElements']}'    '1'    获取接口返回total_entries不是1: ${j}
+
+
+Stop Specified Sessions In Waitings
+    [Arguments]    ${agent}    ${filter}    ${range}
+    [Documentation]    获取待接入列表数据
+    #获取待接入列表数据
+    ${j}    Get Waiting    ${agent}    ${filter}    ${range}    
+    ${l}    Get Length    ${j['entities']}
+    Return From Keyword If    ${l}==0
+    #批量关闭符合条件得会话
+    : FOR    ${i}    IN    @{j['entities']}
+    \    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/abort    ${agent}    ${i['session_id']}    ${timeout}
+    \    sleep    ${delay}
+

@@ -388,6 +388,8 @@ Stop All Processing Conversations
     #查询当前坐席进行中会话列表
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     ${j}    to json    ${resp.content}
+    ${l}    Get Length  ${j}
+    Return From Keyword If    ${l}==0
     #批量关闭进行中会话
     : FOR    ${i}    IN    @{j}
     \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}

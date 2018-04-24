@@ -33,7 +33,7 @@ Custom Workdays
     [Arguments]    ${agent}    ${scheduleId}    ${method}=get    ${data}=
     [Documentation]    \#根据时间计划获取自定义工作日设置
     #根据时间计划获取自定义工作日设置
-    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes    ${AdminUser}    ${timeout}    ${scheduleId}    ${method}    ${data}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes    ${agent}    ${timeout}    ${scheduleId}    ${method}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
@@ -42,15 +42,16 @@ Holidays
     [Arguments]    ${agent}    ${scheduleId}    ${method}=get    ${data}=
     [Documentation]    \#根据时间计划获取节假日设置
     #根据时间计划获取节假日设置
-    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays    ${AdminUser}    ${timeout}    ${scheduleId}    ${method}    ${data}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays    ${agent}    ${timeout}    ${scheduleId}    ${method}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 
 Get ScheduleId
+    [Arguments]    ${agent}=${Adminuser}
     [Documentation]    获取时间计划列表，并取默认时间的${scheduleId}作为全局变量
     #获取时间计划列表
-    ${j}=    Business hours    ${AdminUser}
+    ${j}=    Business hours    ${agent}
     ${scheduleId}    set variable    ${j['entities'][0]['scheduleId']}
     set global variable    ${timeScheduleId}    ${scheduleId}
 
@@ -69,7 +70,7 @@ Set Worktime
     ${r1}    create list
     &{timePlanIds}=    create dictionary
     ${data}=    set variable    NULL
-    ${resp}=    /v1/tenants/{tenantId}/timeplans    get    ${AdminUser}    ${timeout}    ${data}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    get    ${agent}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     #存储timePlanId值
@@ -86,7 +87,7 @@ Set Worktime
     ${timePlanId}=    Get From Dictionary    ${timePlanIds}    ${weekend}
     Run Keyword If    '${iswork}' == 'on'    set test variable    ${data}    {"timePlans":[{"timePlanId":${timePlanId},"tenantId":${agent.tenantId},"day":"${weekend}","timePlanItems":[{"startTime":"00:00:00","stopTime":"23:59:59"}]}]}
     Run Keyword If    '${iswork}' == 'off'    set test variable    ${data}    {"timePlans":[]}
-    ${resp}=    /v1/tenants/{tenantId}/timeplans    put    ${AdminUser}    ${timeout}    ${data}
+    ${resp}=    /v1/tenants/{tenantId}/timeplans    put    ${agent}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
 
 Set Worktime Ext

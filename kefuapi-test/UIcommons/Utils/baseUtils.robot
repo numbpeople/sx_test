@@ -19,6 +19,9 @@ Resource          ../../commons/admin common/BaseKeyword.robot
 Resource          ../../commons/Base Common/Base_Common.robot
 Library           uuid
 
+*** Variables ***
+@{elementstatelist}    ''    ' noAnswer'    ' selected'    ' activated'    ' hide'
+
 *** Keywords ***
 Kefu UI Init
     [Arguments]    ${agent}    ${user}=0
@@ -65,33 +68,47 @@ Kefu UI Init
     Run Keyword if    ${user}==0    set global variable    ${uiadmin}    ${uiagent}
     ...    ELSE IF    ${user}==1    set global variable    ${uiagent1}    ${uiagent}
     ...    ELSE IF    ${user}==2    set global variable    ${uiagent2}    ${uiagent}
+    #获取时间计划scheduleId
+    Get ScheduleId    ${uiadmin}
 
 Check Element Contains Text
     [Arguments]    ${locator}    ${text}
     log    ${text}
-    Wait Until Page Contains Element    ${locator}
-    Wait Until Element Contains    ${locator}    ${text}
+    Wait Until Page Contains Element    xpath=${locator}
+    Wait Until Element Contains    xpath=${locator}    ${text}
 
 Check Base Elements
-    [Arguments]    ${lang}    ${elements}    ${parentxpath}=${empty}
+    [Arguments]    ${lang}    ${elements}    ${parentxpath}=${empty}    ${hide}=${false}
+    Return From Keyword If    ${hide}    log    隐藏元素
+    log    ${hide}
     log    ${elements}
     : FOR    ${i}    IN    @{elements}
-    \    ${locator}    set variable    xpath=${parentxpath}${i['xPath']}
+    \    ${locator}    set variable    ${parentxpath}${i['xPath']}
     \    ${lt}    Get Length    ${i['text']}
     \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${lang}']}
     \    ${la}    Get Length    ${i['attributes']}
-    \    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${lang}    ${i['attributes']}
+    \    ${hide}    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${lang}
+    \    ...    ${i['attributes']}
     \    ${le}    Get Length    ${i['elements']}
-    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}    ${i['xPath']}
+    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}    ${locator}
+    \    ...    ${hide}
 
 Check Attributes
     [Arguments]    ${locator}    ${lang}    ${attributes}
+    [Documentation]    1.检查各属性与json中是否匹配
+    ...    2.如发现hide属性，返回true，无则返回false
+    set test variable    ${hide}    ${false}
     log    ${attributes}
     : FOR    ${i}    IN    @{attributes}
     \    log    ${locator}@${i['name']}
-    \    ${a}    Get Element Attribute    ${locator}@${i['name']}
+    \    ${a}    Get Element Attribute    xpath=${locator}@${i['name']}
     \    log    ${a}
     \    Should be True    '${a}'=='${i['value']['${lang}']}'
+    \    #查询属性中是否有隐藏属性
+    \    ${t}    Get Regexp Matches    ${a}    hide
+    \    ${l}    get length    ${t}
+    \    Run Keyword If    ${l}>0    set test variable    ${hide}    ${true}
+    [Return]    ${hide}
 
 Check Base Module
     [Arguments]    ${url}    ${agent}    ${checkstr}    ${mode}=Agent
@@ -126,7 +143,7 @@ Login And Set Cookies
     \    log    ${i}
     ${j}    to json    ${resp.content}
     set to dictionary    ${tagent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
-    ...    session=${session}
+    ...    session=${session}    nicename=${j['agentUser']['nicename']}
     #打开浏览器并写入cookie
     @{t}=    Get Dictionary Keys    ${tagent.cookies}
     ${protocol}    ${domain}    Split String    ${kefuurl}    ://
@@ -153,3 +170,74 @@ Disable All Waiting Rules
     Return From Keyword If    ${ig}==-1    log    未灰度此功能：${ig}
     #否则，关闭所有Waiting Rules
     Reverse All Rules Status    ${agent}
+
+Iinit Queue In Setup
+    [Arguments]    ${admin}    ${agent}    ${type}='suite'
+    [Documentation]    1.在setup中添加坐席到新技能组
+    ...    2.
+    ${q}    Init Agent In New Queue    ${admin}    ${agent}
+    Run Keyword If    ${type}=='suite'    set suite variable    ${suitequeue}    ${q}
+    ...    ELSE    set test variable    ${testqueue}    ${q}
+
+Del Queue In Teardown
+    [Arguments]    ${admin}    ${type}='suite'
+    [Documentation]    1.在setup中添加坐席到新技能组
+    ...    2.
+    ${q}    Set Variable If    ${type}=='suite'    ${suitequeue}    ${testqueue}
+    Delete Agentqueue    ${q.queueId}    ${admin}
+
+Set Agent StatusAndMaxServiceUserNumber
+    [Arguments]    ${agent}    ${status}    ${maxServiceSessionCount}
+    [Documentation]    1.设置坐席状态
+    ...    2.设置最大接待数
+    Set Agent Status    ${agent}    ${status}
+    Set Agent MaxServiceUserNumber    ${agent}    ${maxServiceSessionCount}
+
+Kefu Chat Suite Setup
+    [Arguments]    ${admin}    ${agent}
+    [Documentation]    1.创建关联
+    ...    2.关闭所有溢出规则
+    ...    3.获取账号语言信息
+    ...    4.获取灰度列表
+    Create Channel    ${admin}
+    Disable All Waiting Rules    ${admin}
+    Iinit Queue In Setup    ${admin}    ${agent}
+    Set RoutingPriorityList    入口    渠道    关联    ${admin}
+
+Kefu Chat Suite Teardown
+    [Arguments]    ${admin}
+    [Documentation]    1.创建关联
+    ...    2.关闭所有溢出规则
+    ...    3.获取账号语言信息
+    ...    4.获取灰度列表
+    Delete Channels    ${admin}
+    Del Queue In Teardown    ${admin}
+
+Format String And Check Elements
+    [Arguments]    ${agent}    ${keyword}    @{params}
+    ${jbase}    Format String To Json    ${keyword}    @{params}
+    Check Base Elements    ${agent.language}    ${jbase['elements']}
+
+Format String To Json
+    [Arguments]    ${keyword}    @{params}
+    ${j}    Run Keyword    ${keyword}    @{params}
+    ${jbase}    to json    ${j}
+    [Return]    ${jbase}
+
+Generate Uuidguest
+    [Arguments]    ${originType}=app
+    ${u}    uuid 4
+    ${guest}=    create dictionary    userName=${u}    originType=${originType}
+    [Return]    ${guest}
+
+Send Uuidmsg By Specified Queue
+    [Arguments]    ${restentity}    ${guest}    ${queueName}
+    ${u}    uuid 4
+    ${msg}    create dictionary    msg=${u}:test msg!    type=txt    ext={"weichat":{"originType":"${guest.originType}","queueName":"${queueName}"}}
+    Send Message    ${restentity}    ${guest}    ${msg}
+
+Send Uuidmsg By Specified Agent
+    [Arguments]    ${restentity}    ${guest}    ${agentname}
+    ${u}    uuid 4
+    ${msg}    create dictionary    msg=${u}:test msg!    type=txt    ext={"weichat":{"originType":"${guest.originType}","agentUsername":"${agentname}"}}
+    Send Message    ${restentity}    ${guest}    ${msg}

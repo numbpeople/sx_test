@@ -205,8 +205,7 @@ Create Random Agentqueue
     ...    返回值：
     ...
     ...    queueId、queueName
-    ${curTime}    Uuid 4
-    ${queueName}    set variable    ${agent.tenantId}${curTime}
+    ${queueName}    UUID 4
     ${q}    Create Agentqueue    ${queueName}    ${agent}
     Return From Keyword    ${q}
 

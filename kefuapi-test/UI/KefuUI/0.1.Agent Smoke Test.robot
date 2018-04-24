@@ -25,10 +25,34 @@ Resource          ../../UIcommons/Kefu/agentinfores.robot
 Resource          ../../UIcommons/Kefu/myphraseres.robot
 Resource          ../../UIcommons/Kefu/notifyres.robot
 Resource          ../../UIcommons/Kefu/mystatistic.robot
+Resource          ../../UIcommons/Kefu/agentmoderes.robot
 
 *** Test Cases ***
 查看会话列表
+    [Documentation]    1.检查进行中会话基本元素
+    ...    2.检查昵称状态基本元素
+    ...    3.检查最大接待人数基本元素1
+    set test variable    ${maxnum}    1
+    #设置状态为在线，接待数为1
+    ${j}    Set Agent Status    ${uiadmin}    ${kefustatus[0]}
+    ${j}    Set Agent MaxServiceUserNumber    ${uiadmin}    ${maxnum}
+    #跳转到进行中会话页面并检查页面元素
     goto and checkchatebasejson    ${uiadmin}
+    #格式化昵称状态字符串并检查基本元素
+    #默认状态ul属性为hide，状态li无属性
+    @{p}    create List    '${uiadmin.nicename}'    ${elementstatelist[4]}    ${elementstatelist[0]}    ${elementstatelist[0]}    ${elementstatelist[0]}
+    ...    ${elementstatelist[0]}
+    ${jbase}    Format String To Json    format avatarloginstatstr    @{p}
+    Check Base Elements    ${uiadmin.language}    ${jbase['elements']}
+    #点击弹出状态选择列表，格式化状态列表字符串并检查基本元素
+    click element    xpath=${jbase['elements'][0]['xPath']}
+    #点击 后状态ul无属性，在线状态li为selected
+    @{p}    create List    '${uiadmin.nicename}'    ${elementstatelist[0]}    ${elementstatelist[2]}    ${elementstatelist[0]}    ${elementstatelist[0]}
+    ...    ${elementstatelist[0]}
+    Format String And Check Elements    ${uiadmin}    format avatarloginstatstr    @{p}
+    #格式化最大接待人数字符串并检查基本元素
+    @{p}    create List    ${elementstatelist[0]}    ${maxnum}
+    Format String And Check Elements    ${uiadmin}    format maxcallinselectorstr    @{p}
 
 查看待接入列表
     Check Base Module    ${kefuurl}    ${uiadmin}    ${waitbasejson}

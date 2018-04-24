@@ -91,4 +91,3 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/Tenant/me/Agents/me/UserWaitQueues/${serviceSesssionId}
     Run Keyword And Return    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
-

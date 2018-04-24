@@ -42,3 +42,20 @@ Export My History
     #导出自己的历史会话数据
     ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}:${resp.text}
+
+Agent CallingBack Conversation
+    [Arguments]    ${agent}    ${visitorUserId}
+    [Documentation]    历史会话回呼会话
+    ...
+    ...    Arguments：
+    ...
+    ...    ${agent} | ${visitorUserId}
+    ...
+    ...    Return：
+    ...
+    ...    请求结果：${j}
+    #历史会话回呼会话
+    ${resp}=    /v6/Tenants/me/Agents/me/ServiceSessions/VisitorUsers/{visitorUserId}/CreateServiceSession    ${agent}    ${visitorUserId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

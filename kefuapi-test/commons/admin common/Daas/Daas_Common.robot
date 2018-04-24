@@ -14,7 +14,7 @@ Resource          ../Setting/ReviewSettings_Common.robot
 One Service Valid Conversation
     [Arguments]    ${agent}    ${rest}
     [Documentation]    创建一个单服务有效会话，并进行满意度评价，记录会话创建时间、结束时间
-    ${originType}    set variable    "weixin"
+    ${originType}    set variable    weixin
     ${curTime}    get time    epoch
     ${guestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
     #创建技能组
@@ -22,7 +22,7 @@ One Service Valid Conversation
     ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
     set global variable    ${FilterEntity.queueId}    ${queueentityAA.queueId}
     #创建指定技能组的扩展消息体
-    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType},"queueName":"${queueentityAA.queueName}"}}
+    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityAA.queueName}"}}
     #将入口指定设置优先顺序
     Set RoutingPriorityList    入口    渠道    关联
     #发送消息并创建访客
@@ -87,7 +87,7 @@ Get Today End Time
 One Service Unvalid Conversation
     [Arguments]    ${agent}    ${rest}
     [Documentation]    创建一个单服务无效会话（客服无消息），并进行质检评分
-    ${originType}    set variable    "weixin"
+    ${originType}    set variable    weixin
     ${curTime}    get time    epoch
     ${guestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
     #创建技能组
@@ -95,7 +95,7 @@ One Service Unvalid Conversation
     ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
     set global variable    ${FilterEntity.queueId}    ${queueentityAA.queueId}
     #创建指定技能组的扩展消息体
-    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":${originType},"queueName":"${queueentityAA.queueName}"}}
+    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityAA.queueName}"}}
     #将入口指定设置优先顺序
     Set RoutingPriorityList    入口    渠道    关联
     #发送消息并创建访客

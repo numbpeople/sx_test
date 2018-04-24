@@ -140,18 +140,17 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     ${originType}    set variable    app    #渠道参数值：app、webim、weixin、weibo等值
     ${session}    Create Wait Conversation    ${originType}
     #设置查询待接入会话的参数,将筛选条件的渠道originType设置为app,从第0页获取数据
-    set to dictionary    ${filter}    originType=${originType}    page=0
+    set to dictionary    ${filter}    originType=${originType}    page=0    visitorName=${session.userName}
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get Waiting接口的参数值
-    ${expectConstruction}    set variable    ['entities'][0]['session_id']    #该参数为接口返回值的应取的字段结构
+    ${expectConstruction}    set variable    ['entities'][-1]['session_id']    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    ${session.serviceSessionId}    #该参数为获取接口某字段的预期值
     #获取待接入会话
     ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    会话在待接入中没有被找到
     Should Be Equal    ${j['status']}    OK    获取接口status不是OK: ${j}
-    Should Be Equal    ${j['entities'][0]['session_id']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
-    Should Be Equal    ${j['entities'][0]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
-    Should Be True    '${j['totalElements']}' == '1'    待接入数不正确，不唯一： ${j['totalElements']}
+    Should Be Equal    ${j['entities'][-1]['session_id']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
+    Should Be Equal    ${j['entities'][-1]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
 
 根据关联作为筛选条件，获取待接入会话数据(/waitings)
     #使用局部变量来使用
@@ -165,18 +164,17 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     run keyword if    "${channelInfo}" == "{}"    该关联id获取关联信息，关联id：${session.channelId}
     ${channelType}    set variable    ${channelInfo['type']}    #获取关联类型
     #设置查询待接入会话的参数,将筛选条件关联id,从第0页获取数据
-    set to dictionary    ${filter}    techChannelId=${session.channelId}    techChannelType=${channelType}    page=0
+    set to dictionary    ${filter}    techChannelId=${session.channelId}    techChannelType=${channelType}    page=0    visitorName=${session.userName}
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get Waiting接口的参数值
-    ${expectConstruction}    set variable    ['entities'][0]['session_id']    #该参数为接口返回值的应取的字段结构
+    ${expectConstruction}    set variable    ['entities'][-1]['session_id']    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    ${session.serviceSessionId}    #该参数为获取接口某字段的预期值
     #获取待接入会话
     ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    会话在待接入中没有被找到
     Should Be Equal    ${j['status']}    OK    获取接口status不是OK: ${j}
-    Should Be Equal    ${j['entities'][0]['session_id']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
-    Should Be Equal    ${j['entities'][0]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
-    Should Be True    '${j['totalElements']}' == '1'    待接入数不正确，不唯一： ${j['totalElements']}
+    Should Be Equal    ${j['entities'][-1]['session_id']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
+    Should Be Equal    ${j['entities'][-1]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
 
 根据技能组id作为筛选条件，获取待接入会话数据(/waitings)
     #使用局部变量来使用
@@ -229,20 +227,20 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     ${visitor}    set variable    {"tags":["vip1","vip2"]}
     ${session}    Create Wait Conversation    ${originType}    ${visitor}
     #设置查询待接入会话的参数,将筛选条件VIP标签的True值,从第0页获取数据
-    set to dictionary    ${filter}    vip=true    page=0
+    set to dictionary    ${filter}    vip=true    page=0    visitorName=${session.userName}
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get Waiting接口的参数值
-    ${expectConstruction}    set variable    ['entities'][0]['session_id']    #该参数为接口返回值的应取的字段结构
+    ${expectConstruction}    set variable    ['entities'][-1]['session_id']    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    ${session.serviceSessionId}    #该参数为获取接口某字段的预期值
     #获取待接入会话
     ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    会话在待接入中没有被找到
     Should Be Equal    ${j['status']}    OK    获取接口status不是OK: ${j}
-    Should Be Equal    ${j['entities'][0]['session_id']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
-    Should Be Equal    ${j['entities'][0]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
+    Should Be Equal    ${j['entities'][-1]['session_id']}    ${session.serviceSessionId}    获取接口会话id不正确: ${j}
+    Should Be Equal    ${j['entities'][-1]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
     Should Be True    '${j['totalElements']}' == '1'    待接入数不正确，不唯一： ${j['totalElements']}
-    Should Be True    ${j['entities'][0]['vip']}    待接入该会话vip值不是true，不唯一：${j}
-    Should Be True    '${j['entities'][0]['priority']}' == 'vip1'   待接入该会话priority值不是vip1，不唯一：${j}
+    Should Be True    ${j['entities'][-1]['vip']}    待接入该会话vip值不是true，不唯一：${j}
+    Should Be True    '${j['entities'][-1]['priority']}' == 'vip1'   待接入该会话priority值不是vip1，不唯一：${j}
 
 获取待接入的返回字段信息(/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort)
     #设置扩展visitor字段

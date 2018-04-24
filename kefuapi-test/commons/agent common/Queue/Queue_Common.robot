@@ -159,3 +159,30 @@ Assign Agent For Waiting Session
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
+Access Waiting And Stop Session
+    [Arguments]    ${agent}    ${session}   ${filter}    ${range}
+    [Documentation]    接入待接入会话并手动结束掉
+    #设置查询待接入会话的参数,将筛选条件关联id,从第0页获取数据
+    set to dictionary    ${filter}    page=0    visitorName=${session.userName}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${agent}    ${filter}    ${range}    #该参数为Get Waiting接口的参数值
+    ${expectConstruction}    set variable    ['entities'][-1]['session_id']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${session.sessionServiceId}    #该参数为获取接口某字段的预期值
+    #获取待接入会话
+    ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    会话在待接入中没有被找到
+    #根据查询结果接入会话
+    Access Conversation    ${agent}    ${j['entities'][0]['session_id']}
+    #获取进行中会话列表
+    &{searchDic}    create dictionary    fieldName=${session.sessionServiceId}    fieldValue=${session.sessionServiceId}    fieldConstruction=['serviceSessionId']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${agent}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['serviceSessionId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${session.sessionServiceId}    #该参数为获取接口某字段的预期值
+    #获取会话对应的会话
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话根据会话id搜索不到相应的会话
+    should be equal    ${j[0]['serviceSessionId']}    ${session.sessionServiceId}    获取到的会话id不正确, ${j}
+    #结束进行中的会话
+    Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}

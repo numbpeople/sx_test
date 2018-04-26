@@ -40,7 +40,7 @@ Access Waiting Session
     ...
     ...    请求结果：${j}
     #根据查询结果接入会话
-    ${resp}=    /v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId}    ${agent}    ${servicesessionid}    ${timeout}
+    ${resp}=    /v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSessionId}    ${agent}    ${servicesessionid}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -145,9 +145,9 @@ Close Waiting Session
     Return From Keyword    ${j}
 
 Assign Queue For Waiting Session
-    [Arguments]    ${agent}    ${sessionServiceId}    ${queueId}    
+    [Arguments]    ${agent}    ${sessionServiceId}    ${queueId}
     [Documentation]    转接待接入会话到技能组
-    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/queues/{queueId}    ${agent}    ${sessionServiceId}    ${queueId}    ${timeout}
+    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/assign/queues/{queueId}    ${agent}    ${sessionServiceId}    ${queueId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -155,13 +155,13 @@ Assign Queue For Waiting Session
 Assign Agent For Waiting Session
     [Arguments]    ${agent}    ${sessionServiceId}    ${agengUserId}    ${data}
     [Documentation]    转接待接入会话到其他坐席
-    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/agents/{agentUserId}    ${agent}    ${sessionServiceId}    ${agengUserId}    ${data}    ${timeout}
+    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/assign/agents/{agentUserId}    ${agent}    ${sessionServiceId}    ${agengUserId}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Access Waiting And Stop Session
-    [Arguments]    ${agent}    ${session}   ${filter}    ${range}
+    [Arguments]    ${agent}    ${session}    ${filter}    ${range}
     [Documentation]    接入待接入会话并手动结束掉
     #设置查询待接入会话的参数,将筛选条件关联id,从第0页获取数据
     set to dictionary    ${filter}    page=0    visitorName=${session.userName}
@@ -187,30 +187,27 @@ Access Waiting And Stop Session
     #结束进行中的会话
     Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}
 
-
 Session Should Be In Watings
     [Arguments]    ${agent}    ${filter}    ${range}
     [Documentation]    获取待接入列表数据
     #检查结果：格式化会话列表json并检查ui
-    @{paramList}	create list    ${agent}    ${filter}    ${range}
-    ${expectConstruction}	set variable	['totalElements']	#该参数为接口返回值的应取的字段结构		
-    ${expectValue}	set variable	1	#该参数为获取接口某字段的预期值		
-    #获取会话对应的会话					
-    ${j}	Repeat Keyword Times	Get Waiting	${expectConstruction}	${expectValue}	@{paramList}
+    @{paramList}    create list    ${agent}    ${filter}    ${range}
+    ${expectConstruction}    set variable    ['totalElements']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    1    #该参数为获取接口某字段的预期值
+    #获取会话对应的会话
+    ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    接口返回结果中不包含预期的over值
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
     Should Be Equal    '${j['totalElements']}'    '1'    获取接口返回total_entries不是1: ${j}
-
 
 Stop Specified Sessions In Waitings
     [Arguments]    ${agent}    ${filter}    ${range}
     [Documentation]    获取待接入列表数据
     #获取待接入列表数据
-    ${j}    Get Waiting    ${agent}    ${filter}    ${range}    
+    ${j}    Get Waiting    ${agent}    ${filter}    ${range}
     ${l}    Get Length    ${j['entities']}
     Return From Keyword If    ${l}==0
     #批量关闭符合条件得会话
     : FOR    ${i}    IN    @{j['entities']}
     \    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/abort    ${agent}    ${i['session_id']}    ${timeout}
     \    sleep    ${delay}
-

@@ -145,13 +145,20 @@ Login And Set Cookies
     set to dictionary    ${tagent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=${session}    nicename=${j['agentUser']['nicename']}
     #打开浏览器并写入cookie
-    @{t}=    Get Dictionary Keys    ${tagent.cookies}
-    ${protocol}    ${domain}    Split String    ${kefuurl}    ://
+    Set Browser Cookies    ${tagent}    ${kefuurl}
+    Return From Keyword    ${tagent}
+
+Set Browser Cookies
+    [Arguments]    ${agent}    ${url}
+    [Documentation]    设置浏览器cookie
+    #写入cookie
+    @{t}=    Get Dictionary Keys    ${agent.cookies}
+    ${protocol}    ${domain}    Split String    ${url}    ://
     : FOR    ${key}    IN    @{t}
     \    log    ${key}
-    \    ${value}=    Get From Dictionary    ${tagent.cookies}    ${key}
+    \    ${value}=    Get From Dictionary    ${agent.cookies}    ${key}
+    \    Comment    Add Cookie    ${key}    ${value}    /    60.205.245.1
     \    Add Cookie    ${key}    ${value}    /    .${domain}
-    Return From Keyword    ${tagent}
 
 Create Random Session
     [Arguments]    ${url}

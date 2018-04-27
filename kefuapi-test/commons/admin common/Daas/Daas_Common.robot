@@ -9,6 +9,7 @@ Resource          ../../../AgentRes.robot
 Resource          ../BaseKeyword.robot
 Library           DateTime
 Resource          ../Setting/ReviewSettings_Common.robot
+Resource          ../Review/Review_Common.robot
 
 *** Keywords ***
 One Service Valid Conversation
@@ -127,20 +128,12 @@ One Service Unvalid Conversation
     ${sessionId}    set variable    ${j[0]['serviceSessionId']}
     Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${sessionId}
     #获取租户的质检评分项id并进行质检评分
-    ${j}    Set ReviewSettings    get    ${AdminUser}    ${EMPTY}
-    ${length}    get length    ${j['entities']}
-    should be equal    ${j['status']}    OK    质检评分项状态不正确: ${j}
-    @{qualityResults}    create list
-    : FOR    ${n}    IN RANGE    ${length}
-    \    ${id}    evaluate    str(${j["entities"][${n}]["id"]})
-    \    ${fullmark}    evaluate    str(${j["entities"][${n}]["fullmark"]})
-    \    ${item}    create dictionary    itemId=${id}    score=${fullmark}
-    \    ${item}    dumps    ${item}
-    \    append to list    ${qualityResults}    ${item}
+    ${qualityResults}    Get Qualityitems
     ${sessionInfo}    create dictionary    serviceSessionId=${sessionId}    stepNum=1
     ${data}    set variable    {"agentId":"${AdminUser.userId}", "attachments": [], "comment":"", "qualityResults": ${qualityResults}}
     ${data}    Replace String    ${data}    '    ${EMPTY}
-    ${resp}=    /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/steps/{stepNum}/qualityreview    ${AdminUser}    ${timeout}    ${sessionInfo}    ${data}
+    ${method}    set variable    post
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/steps/{stepNum}/qualityreview    ${method}    ${AdminUser}    ${timeout}    ${sessionInfo}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    质检评分不正确:${resp.content}

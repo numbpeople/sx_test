@@ -28,7 +28,7 @@ ${groupType}      System
 ...               objectType=O_AGENT    locale=zh_CN    order=stateCreateTime    username=    dataAuth=ROLE_SYSTEM    top=true    queryTypes=OFFLINE
 ...               agentIds=    customerName=    transfered=    fromAgentCallback=    queueId=    withMessage=    sortField=stopDateTime
 ...               message=    hasQM=    groupId=    rangeValue=    qmActorId=    amsgCount=    vmsgCount=
-...               agentUserId=    vip=    serviceSessionId=    # hasQM参数的值选择为：V_ALL、V_YES、V_NO; vip参数为待接入筛选使用，值默认为空，可为：true/false
+...               agentUserId=    vip=    serviceSessionId=    type=    entryStates=Published    # hasQM参数的值选择为：V_ALL、V_YES、V_NO; vip参数为待接入筛选使用，值默认为空，可为：true/false
 &{orgEntity}      organName=${empty}    organId=${empty}
 &{RobotFilter}    page=1    per_page=5    q=    type=0
 &{VisitorFilterEntity}    page=1    size=15    userTagIds=    categoryId=-1    subCategoryId=-1    visitorName=    summaryIds=
@@ -60,3 +60,4 @@ ${SeleniumTimeout}    20
 &{msgGateway}     im=    secondGateway=    rest=    # 设置发送消息的方式，如果im设置为1，则使用im，以此类推如果secondGateway设置1或任意值，则使用第二通道发送消息
 &{ConDateRange}    beginDateTime=    endDateTime=    # 测试统计数据时用来筛选会话
 &{ExistChannelEntity}    orgName=    appName=    restDomain=    serviceEaseMobIMNumber=    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址
+@{originType}    app    webim    weibo    weixin    phone    rest    slack

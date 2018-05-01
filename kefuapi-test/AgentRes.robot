@@ -30,7 +30,7 @@ ${groupType}      System
 ...               message=    hasQM=    groupId=    rangeValue=    qmActorId=    amsgCount=    vmsgCount=
 ...               agentUserId=    vip=    serviceSessionId=    type=    entryStates=Published    creatorId=    appealNumber=    # hasQM参数的值选择为：V_ALL、V_YES、V_NO; vip参数为待接入筛选使用，值默认为空，可为：true/false
 &{orgEntity}      organName=${empty}    organId=${empty}
-&{RobotFilter}    page=1    per_page=5    q=    type=0
+&{RobotFilter}    page=1    per_page=10    q=    type=0    pageIndex=1    pageSize=10    start=    end=
 &{VisitorFilterEntity}    page=1    size=15    userTagIds=    categoryId=-1    subCategoryId=-1    visitorName=    summaryIds=
 ...               enquirySummary=    beginDateTime=    endDateTime=
 &{DateRange}      beginDate=    endDate=    beginDateTime=    endDateTime=    beginWeekDate=    endWeekDate=    beginWeekDateTime=

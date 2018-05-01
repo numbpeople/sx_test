@@ -6,17 +6,17 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/me/robot/menu/items
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/me/robot/menu/items
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}&q=${RobotFilter.q}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&q=${filter.q}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/menu/items
-    [Arguments]    ${method}    ${agent}    ${RobotFilter}    ${data}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${filter}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/menu/items
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}&q=${RobotFilter.q}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&q=${filter.q}
     ${rs}=    Run Keyword If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}
     ...    data=${data}    timeout=${timeout}
     ...    ELSE IF    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}
@@ -30,17 +30,17 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/me/robot/rules
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/me/robot/rules
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}&q=${RobotFilter.q}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&q=${filter.q}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/rules
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/rules
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}&q=${RobotFilter.q}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&q=${filter.q}&_=1524888233192
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/rule/item
@@ -68,10 +68,10 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/media/items
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/media/items
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/me/robot/profile/setting
@@ -87,30 +87,32 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/settings
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/settings
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&_=1524882756868
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/predefinedReplys
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/predefinedReplys
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}&type=${RobotFilter.type}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&type=${filter.type}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robots/greetings
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/greetings
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${params}    set variable    _=1524882756868
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robots/robotUserTransferKf
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/robotUserTransferKf
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${params}    set variable    _=1524882756894
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/me/robot/profile/personalInfo
     [Arguments]    ${agent}    ${timeout}
@@ -119,16 +121,17 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/personalInfo
-    [Arguments]    ${agent}    ${timeout}
+    [Arguments]    ${agent}    ${language}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/personalInfo?_=111
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/personalInfo
+    ${params}    set variable    language=${language}&_=1524820513174
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/personalInfos
-    [Arguments]    ${agent}    ${RobotFilter}    ${timeout}
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/personalInfos
-    ${params}    set variable    page=${RobotFilter.page}&per_page=${RobotFilter.per_page}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/userChannelSwitches
@@ -150,10 +153,10 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robots/recommendationSwitch
-    [Arguments]    ${agent}    ${switchType}    ${timeout}
+    [Arguments]    ${agent}    ${switchType}    ${switchId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/recommendationSwitch
-    ${params}=    set variable    switchType=${switchType}&switchId=${agent.tenantId}
+    ${params}=    set variable    switchType=${switchType}&switchId=${switchId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robots/recommendation/status
@@ -161,3 +164,84 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/recommendation/status
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robot/profile/personalInfos
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robot/profile/personalInfos
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&_=1524882756866
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/rules/search
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/rules/search
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&q=${filter.q}&_=1524891109721
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/menus/search
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/menus/search
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&q=${filter.q}&_=1524891109721
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenants/{tenantId}/robots/kb/ask
+    [Arguments]    ${agent}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/kb/ask
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/categorys/trees
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/categorys/trees
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/rules/records
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/rules/records
+    ${params}    set variable    pageIndex=${filter.pageIndex}&pageSize=${filter.pageSize}&page=${filter.page}&per_page=${filter.per_page}&start=${filter.start}&end=${filter.end}&_=1524882756904
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/rules/item
+    [Arguments]    ${method}    ${agent}    ${data}    ${ruleId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/rules/item
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/rules/item/${ruleId}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/categorys/item
+    [Arguments]    ${method}    ${agent}    ${data}    ${categoryId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/categorys/item
+    run keyword if    '${method}'=='put' or '${method}'=='delete'    set suite variable    ${uri}    /v3/Tenants/${agent.tenantId}/robots/categorys/item/${categoryId}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/rule/template
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/rule/template?locale=zh_CN
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/rule/export
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/rule/export
+    ${params}    set variable    locale=zh_CN&userId=${agent.userId}&name=${agent.nicename}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

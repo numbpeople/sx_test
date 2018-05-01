@@ -24,6 +24,7 @@ Resource          ../../api/MicroService/Webapp/InitApi.robot
 Resource          ../../api/MicroService/Webapp/OutDateApi.robot
 Resource          ../../api/HomePage/Login/Login_Api.robot
 Resource          ../admin common/Channels/App_Common.robot
+Resource          ../admin common/Robot/RobotSettings_Common.robot
 
 *** Keywords ***
 Login Init
@@ -223,3 +224,4 @@ Clear Data
     Delete Channels    #删除关联
     Delete Queues    #删除技能组
     Delete Agentusers    #删除坐席
+    Delete Robot Rules And Category With SpecifiedKey    #删除机器人菜单和知识规则

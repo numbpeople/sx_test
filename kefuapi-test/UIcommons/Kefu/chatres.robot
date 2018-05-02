@@ -76,10 +76,10 @@ Session In Waitings
     #获取进行中会话列表
 
 Session Not In Visitors
-    [Arguments]    ${agent}    ${visitorname} 
+    [Arguments]    ${agent}    ${visitorname}
     #获取会话对应的会话
-    ${j}    Get Processing Session    ${agent}  
-    should not contain    ${j}    ${visitorname}        接口返回结果不为空
+    ${j}    Get Processing Session    ${agent}
+    should not contain    ${j}    ${visitorname}    接口返回结果不为空
 
 Clear Agent All Sessions
     [Arguments]    ${agent}    ${filter}    ${range}
@@ -114,7 +114,8 @@ AutoSchedule Case
     #检查会话进入进行中：格式化会话列表json并检查ui
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     Run Keyword If    ${EnableSchedule}    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3    ${guest.userName}
+    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3
+    ...    ${guest.userName}
     [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
 
 KeepaliveSchedule By Change MaxServiceUserNumber Case
@@ -126,7 +127,7 @@ KeepaliveSchedule By Change MaxServiceUserNumber Case
     ...    ${scheduleOnDutyOnlyEnable}:是否开启仅上班调度，只能为小写的false或true，不能加引号
     ...    ${WorkState}:设置上班或下班，只能为小写的on或off，不能加引号
     ...    ${EnableSchedule}:是否能调度，只能是${true}或${false}
-    ...    ${EnableSchedule}:是否能调度，只能是${true}或${false}    
+    ...    ${EnableSchedule}:是否能调度，只能是${true}或${false}
     Set Agent MaxServiceUserNumber    ${agent}    0
     #是否开启预调度
     Set Option    ${Admin}    serviceSessionPreScheduleEnable    ${serviceSessionPreScheduleEnable}
@@ -148,11 +149,13 @@ KeepaliveSchedule By Change MaxServiceUserNumber Case
     Set MaxServiceUserNumber By UI    1
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     Run Keyword If    ${EnableSchedule}    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3    ${guest.userName}
+    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3
+    ...    ${guest.userName}
     [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
 
 KeepaliveSchedule By Change Status Case
-    [Arguments]    ${Admin}    ${agent}    ${status}    ${serviceSessionPreScheduleEnable}    ${scheduleOnDutyOnlyEnable}    ${WorkState}    ${EnableSchedule}
+    [Arguments]    ${Admin}    ${agent}    ${status}    ${serviceSessionPreScheduleEnable}    ${scheduleOnDutyOnlyEnable}    ${WorkState}
+    ...    ${EnableSchedule}
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
@@ -160,7 +163,7 @@ KeepaliveSchedule By Change Status Case
     ...    ${scheduleOnDutyOnlyEnable}:是否开启仅上班调度，只能为小写的false或true，不能加引号
     ...    ${WorkState}:设置上班或下班，只能为小写的on或off，不能加引号
     ...    ${EnableSchedule}:是否能调度，只能是${true}或${false}
-    Set Agent Status  ${agent}    ${status}
+    Set Agent Status    ${agent}    ${status}
     #是否开启预调度
     Set Option    ${Admin}    serviceSessionPreScheduleEnable    ${serviceSessionPreScheduleEnable}
     #开关打开是仅上班调度
@@ -178,11 +181,12 @@ KeepaliveSchedule By Change Status Case
     set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
     Session Should Be In Watings    ${agent}    ${filter}    ${range}
     sleep    1
-    Set AgentStatus By UI   ${agent}    0
+    Set AgentStatus By UI    ${agent}    0
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     #检查是否进行中有会话，或者会话停留在进行中
     Run Keyword If    ${EnableSchedule}    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3    ${guest.userName}
+    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3
+    ...    ${guest.userName}
     [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
 
 Specify Agent AutoSchedule Case
@@ -215,7 +219,7 @@ Specify Agent AutoSchedule Case
     [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
 
 Specify Agent KeepaliveSchedule Case
-    [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}    
+    [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
@@ -245,4 +249,3 @@ Specify Agent KeepaliveSchedule Case
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
     [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
-

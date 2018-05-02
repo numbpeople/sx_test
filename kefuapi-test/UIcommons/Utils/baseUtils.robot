@@ -33,15 +33,15 @@ Kefu UI Init
     ${session}    Create Random Session    ${kefuurl}
     ${uiagent}    Login And Set Cookies    ${agent}    ${session}
     #设置浏览器语言
-    Execute Javascript    localStorage.setItem('language','${uiagent.language}')
+    Execute Javascript    localStorage.setItem('lang','${uiagent.language}')
     #设置tenantId
     Execute Javascript    localStorage.setItem('tenantId','${uiagent.tenantId}')
     #设置selenium超时时间
     Set Selenium Timeout    ${SeleniumTimeout}
-    #获取账号语言信息
-    ${resp}=    /tenants/{tenantId}/options/agentUserLanguage_{userId}    ${uiagent}    ${timeout}
-    ${j}    to json    ${resp.content}
-    set to dictionary    ${uiagent}    language=${j['data'][0]['optionValue']}
+    Comment    #获取账号语言信息
+    Comment    ${resp}=    /tenants/{tenantId}/options/agentUserLanguage_{userId}    ${uiagent}    ${timeout}
+    Comment    ${j}    to json    ${resp.content}
+    Comment    set to dictionary    ${uiagent}    language=${j['data'][0]['optionValue']}
     #获取灰度列表信息并保存
     ${resp}=    /v1/grayscale/tenants/{tenantId}    ${uiagent}    ${timeout}
     ${j}    to json    ${resp.content}

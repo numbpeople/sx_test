@@ -32,91 +32,6 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     ${resp}=    Get Robot Rules Template(Old)    ${AdminUser}
     Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败
 
-获取机器人自定义菜单(接口较旧，蓝月亮私有版本仍使用，暂存留)(/v1/Tenants/{tenantId}/robot/menu/items)
-    [Documentation]    获取机器人自定义菜单
-    #使用局部变量进行筛选
-    ${filter}    copy dictionary    ${RobotFilter}
-    #获取机器人自定义菜单
-    ${j}    Get Robot Rules Menu(Old)    ${AdminUser}    ${filter}
-    Should Not Be Empty    ${j}    返回的机器人菜单素材库不正确：${j}
-    Should Be Equal    '${j['first']}'    'True'    返回的机器人自定义菜单不正确：${j}
-
-获取机器人人机协作推荐状态(/v1/Tenants/{tenantId}/robots/recommendation/status)
-    [Documentation]    获取人机协作推荐状态
-    #获取机器人推荐状态
-    ${j}    Get Recommendation Status    ${AdminUser}
-
-获取机器人人机协作推荐开关信息(/v1/Tenants/{tenantId}/robots/recommendationSwitch)
-    [Documentation]    获取人机协作推荐开关信息
-    #创建筛选参数
-    ${switchType}    set variable    0
-    ${switchId}    set variable    ${AdminUser.tenantId}
-    #获取机器人推荐信息
-    ${j}    Get Recommendation Info    ${AdminUser}    ${switchType}    ${switchId}
-
-获取机器人信息(/v1/Tenants/{tenantId}/robot/profile/personalInfo)
-    [Documentation]    获取机器人信息
-    ${j}    Get Robot PersonalInfo    ${AdminUser}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人信息不正确：${j}
-
-获取多机器人信息(/v1/Tenants/{tenantId}/robot/profile/personalInfos)
-    [Documentation]    获取多机器人信息
-    #使用局部变量进行筛选
-    ${filter}    copy dictionary    ${RobotFilter}
-    ${j}    Get MutilRobot PersonalInfos    ${AdminUser}    ${filter}
-
-获取多机器人设置(/v1/Tenants/{tenantId}/robot/profile/settings)
-    [Documentation]    获取多机器人设置
-    #使用局部变量进行筛选
-    ${filter}    copy dictionary    ${RobotFilter}
-    ${j}    Get MutilRobot PersonalInfos Settings    ${AdminUser}    ${filter}
-
-获取机器人欢迎语(/v1/Tenants/{tenantId}/robots/greetings)
-    [Documentation]    获取机器人欢迎语
-    ${j}=    Get Robot Greeting    ${AdminUser}
-
-获取机器人默认回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    获取机器人默认回复
-    #使用局部变量进行筛选
-    ${filter}    copy dictionary    ${RobotFilter}
-    #获取机器人默认回复
-    set to dictionary    ${filter}    type=0    #设置type=0，参数为获取默认回复数据
-    ${j}    Get Robot AutoReply    ${AdminUser}    ${filter}
-    Should Be Equal    '${j['first']}'    'True'    返回的机器人默认回复不正确：${j}
-    Should Be Equal    '${j['last']}'    'True'    返回的机器人默认回复不正确：${j}
-
-获取机器人重复回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    获取机器人重复回复
-    #使用局部变量进行筛选
-    ${filter}    copy dictionary    ${RobotFilter}
-    #获取机器人重复回复
-    set to dictionary    ${filter}    type=1    #设置type=1，参数为获取重复回复数据
-    ${j}    Get Robot AutoReply    ${AdminUser}    ${filter}
-    Should Be Equal    '${j['first']}'    'True'    返回的机器人重复回复不正确：${j}
-    Should Be Equal    '${j['last']}'    'True'    返回的机器人重复回复不正确：${j}
-
-获取机器人超时回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    获取机器人超时回复
-    #使用局部变量进行筛选
-    ${filter}    copy dictionary    ${RobotFilter}
-    #获取机器人超时回复
-    set to dictionary    ${filter}    type=2    #设置type=2，参数为获取超时回复数据
-    ${j}    Get Robot AutoReply    ${AdminUser}    ${filter}
-    Should Be Equal    '${j['first']}'    'True'    返回的机器人超时回复不正确：${j}
-    Should Be Equal    '${j['last']}'    'True'    返回的机器人超时回复不正确：${j}
-
-获取机器人转人工设置(/v1/Tenants/{tenantId}/robots/robotUserTransferKf)
-    [Documentation]    获取机器人转人工设置
-    #获取机器人转人工设置
-    ${j}    Get RobotUserTransferKf Setting    ${AdminUser}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人转人工设置不正确：${j}
-
-获取智能场景应答(/v1/Tenants/{tenantId}/robots/intent/list)
-    [Documentation]    获取机器人智能场景应答
-    #获取机器人智能场景应答
-    ${j}    Get Robot Scenarios    ${AdminUser}
-    Should Be Equal    '${j['logistics']['name']}'    '物流'    返回的机器人只能场景应答信息不正确：${j}
-
 添加知识规则(/v3/Tenants/{tenantId}/robots/rules/item)
     [Documentation]    添加知识规则
     ${uuid}    UUID 4
@@ -266,4 +181,4 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['status']}    OK    接口返回的status不正确,正确值是:OK,返回结果:${j}
     Should Be True    ${j['totalElements']}>0    接口返回的totalElements值不大于0,返回结果:${j}
     Should Be True    ${length}>0    接口返回的entity未查到有数据,返回结果:${j}
-    
+  

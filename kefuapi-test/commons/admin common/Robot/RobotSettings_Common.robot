@@ -80,6 +80,14 @@ Get MutilRobot PersonalInfos Settings
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
+Update Robot Settings
+    [Arguments]    ${agent}    ${data}
+    [Documentation]    修改机器人设置
+    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/setting    ${agent}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
 Get Robot Greeting
     [Arguments]    ${agent}
     [Documentation]    获取机器人欢迎语
@@ -88,19 +96,42 @@ Get Robot Greeting
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
-Get Robot AutoReply
-    [Arguments]    ${agent}    ${filter}
+Set Robot AutoReply
+    [Arguments]    ${method}    ${agent}    ${filter}    ${data}=    ${replyId}=
     [Documentation]    获取机器人自动回复
-    ...    参数：${filter}中  1、type=0 默认回复    2、type=1 重复回复    3、type=0 超时回复    4、type=3 图片默认回复(增值功能)
-    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/predefinedReplys    ${agent}    ${filter}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ...    参数：${filter}中  1、type=0 默认回复    2、type=1 重复回复    3、type=2 超时回复    4、type=3 图片默认回复(增值功能)
+    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/predefinedReplys    ${method}    ${agent}    ${filter}    ${data}    ${replyId}    ${timeout}
+    run keyword if    '${method}'=='get' or '${method}'=='delete'   Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
-Get RobotUserTransferKf Setting
-    [Arguments]    ${agent}
+Add Robot AutoReply
+    [Arguments]    ${agent}    ${type}
+    [Documentation]    添加机器人自动回复
+    ...    参数：${filter}中  1、type=0 默认回复    2、type=1 重复回复    3、type=2 超时回复    4、type=3 图片默认回复(增值功能)
+    #使用局部变量进行筛选
+    ${filter}    copy dictionary    ${RobotFilter}
+    set to dictionary    ${filter}    type=${type}    #设置自动回复参数
+    ${uuid}    Uuid 4
+    #创建type和文本的关系
+    ${content}    set variable    默认回复-${agent.tenantId}-${uuid}
+    run keyword if    ${type} == 1    set suite variable    ${content}    重复回复-${agent.tenantId}-${uuid}
+    run keyword if    ${type} == 2    set suite variable    ${content}    超时回复-${agent.tenantId}-${uuid}
+    run keyword if    ${type} == 3    set suite variable    ${content}    图片默认回复-${agent.tenantId}-${uuid}
+    #添加机器人自动回复
+    &{defaultReplyEntity}    create dictionary    type=${type}    content=${content}    contentType=0
+    ${data}    set variable    {"type":${defaultReplyEntity.type},"content":"${defaultReplyEntity.content}","contentType":${defaultReplyEntity.contentType}}
+    ${j}    Set Robot AutoReply    post    ${agent}    ${filter}    ${data}
+    Should Be Equal    ${j['content']}    ${defaultReplyEntity.content}    返回的机器人自动回复content值不正确：${j}
+    Should Be Equal    ${j['type']}    ${${defaultReplyEntity.type}}    返回的机器人自动回复type值不正确：${j}
+    set to dictionary    ${defaultReplyEntity}    replyId=${j['replyId']}
+    Return From Keyword    ${defaultReplyEntity}
+
+Set RobotUserTransferKf Setting
+    [Arguments]    ${method}    ${agent}    ${data}=
     [Documentation]    获取机器人转人工设置
-    ${resp}=    /v1/Tenants/{tenantId}/robots/robotUserTransferKf    ${agent}    ${timeout}
+    ${resp}=    /v1/Tenants/{tenantId}/robots/robotUserTransferKf    ${method}    ${agent}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -292,3 +323,60 @@ Get Logs Management
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
+Set Robot Menu
+    [Arguments]    ${method}    ${agent}    ${data}    ${itemId}=
+    [Documentation]    添加/修改/删除机器人菜单
+    ${resp}=    /v3/Tenants/{tenantId}/robots/menus/item    ${method}    ${agent}    ${data}    ${itemId}    ${timeout}
+    run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='delete'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Create Robot Parent Menu
+    [Arguments]    ${agent}
+    [Documentation]    添加机器人父级菜单
+    #使用局部变量进行筛选
+    ${filter}    copy dictionary    ${RobotFilter}
+    #创建数据字典
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    &{adminEntity}    create dictionary    userId=${agent.userId}    name=${agent.nicename}
+    &{menuEntity}    create dictionary    parentId=null    name=添加父级自定义菜单-${AdminUser.tenantId}-${randoNumber}    menuAnswerType=MENU    level=0    desc=    rootId=null    robotId=${agent.tenantId}    returnUpperLayer=false
+    #设置请求体
+    ${data}    set variable    {"admin":{"userId":"${adminEntity.userId}","name":"${adminEntity.name}"},"entity":{"parentId":"${menuEntity.parentId}","name":"${menuEntity.name}","menuAnswerType":"${menuEntity.menuAnswerType}","level":"${menuEntity.level}","desc":"${menuEntity.desc}","rootId":"${menuEntity.rootId}","robotId":${menuEntity.robotId},"returnUpperLayer":${menuEntity.returnUpperLayer}}}
+    #创建机器人自定义父菜单
+    ${j}    Set Robot Menu    post    ${agent}    ${data}
+    Should Be Equal    '${j['status']}'    'OK'    返回的接口字段status不正确：${j}
+    #设置菜单id到字典中，做为返回数据
+    set to dictionary    ${menuEntity}    parentId=${j['entity']['id']}
+    Return From Keyword    ${menuEntity}
+
+Create Robot Sub Menu
+    [Arguments]    ${agent}    ${parentMenuId}
+    [Documentation]    添加器人子菜单
+    #使用局部变量进行筛选
+    ${filter}    copy dictionary    ${RobotFilter}
+    #创建数据字典
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    &{adminEntity}    create dictionary    userId=${agent.userId}    name=${agent.nicename}
+    &{menuEntity}    create dictionary    parentId=${parentMenuId}    name=添加子级自定义菜单-${AdminUser.tenantId}-${randoNumber}    menuAnswerType=NULL    level=1    desc=    rootId=${parentMenuId}    robotId=${agent.tenantId}    returnUpperLayer=false
+    #设置请求体
+    ${data}    set variable    {"admin":{"userId":"${adminEntity.userId}","name":"${adminEntity.name}"},"entity":{"parentId":"${menuEntity.parentId}","name":"${menuEntity.name}","menuAnswerType":"${menuEntity.menuAnswerType}","level":"${menuEntity.level}","desc":"${menuEntity.desc}","rootId":"${menuEntity.rootId}","robotId":${menuEntity.robotId},"returnUpperLayer":${menuEntity.returnUpperLayer}}}
+    #创建机器人自定义子菜单
+    ${j}    Set Robot Menu    post    ${agent}    ${data}
+    Should Be Equal    '${j['status']}'    'OK'    返回的接口字段status不正确：${j}
+    Should Be Equal    '${j['entity']['robotId']}'    '${menuEntity.robotId}'    返回的接口字段robotId不正确：${j}
+    Should Be Equal    '${j['entity']['parentId']}'    '${menuEntity.parentId}'    返回的接口字段parentId不正确：${j}
+    Should Be Equal    ${j['entity']['name']}    ${menuEntity.name}    返回的接口字段name不正确：${j}
+    #设置菜单id到字典中，做为返回数据
+    set to dictionary    ${menuEntity}    subMenuId=${j['entity']['id']}    parentId=${menuEntity.parentId}
+    Return From Keyword    ${menuEntity}
+
+Add Menu Answer
+    [Arguments]    ${agent}    ${data}    ${itemId}
+    [Documentation]    为菜单添加答案
+    ${resp}=    /v3/Tenants/{tenantId}/robots/menus/item/{itemId}/menu-answer    ${agent}    ${data}    ${itemId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+    

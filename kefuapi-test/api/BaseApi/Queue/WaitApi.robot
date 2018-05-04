@@ -69,25 +69,25 @@
     Run Keyword And Return    Create Kefu Requests    ${session}    ${uri}    'post'    headers=${header}    timeout=${timeout}
 
 /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/abort
-    [Arguments]    ${agent}    ${serviceSesssionId}    ${timeout}
+    [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/tenants/${agent.tenantId}/queues/unused/waitings/${serviceSessionId}/abort
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/assign/queues/{queueId}
-    [Arguments]    ${agent}    ${serviceSesssionId}    ${queueId}    ${timeout}
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/tenants/${agent.tenantId}/queues/unused/waitings/${serviceSessionId}/assign/queues/${queueId}
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/assign/agents/{agentUserId}
-    [Arguments]    ${agent}    ${serviceSesssionId}    ${agentUserId}    ${data}    ${timeout}
+    [Arguments]    ${agent}    ${serviceSessionId}    ${agentUserId}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/tenants/${agent.tenantId}/queues/unused/waitings/${serviceSessionId}/assign/agents/${agentUserId}
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSessionId}
-    [Arguments]    ${agent}    ${serviceSesssionId}    ${timeout}
+    [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/Tenant/me/Agents/me/UserWaitQueues/${serviceSessionId}
     Run Keyword And Return    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}

@@ -139,7 +139,7 @@ Close Waiting Session
     [Arguments]    ${sessionServiceId}    ${agent}=${AdminUser}
     [Documentation]    关闭待接入的会话
     #清理待接入会话
-    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
+    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}

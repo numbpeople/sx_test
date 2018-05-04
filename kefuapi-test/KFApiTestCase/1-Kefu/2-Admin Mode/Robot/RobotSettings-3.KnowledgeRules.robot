@@ -74,7 +74,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #删除知识规则
     Delete Robot Rule With RuleId    ${AdminUser}    ${data}    ${ruleResult.ruleId}
 
-获取知识规则(/v3/Tenants/{tenantId}/robots/rules/item)
+获取知识规则(/v3/Tenants/{tenantId}/robots/rules/search)
     [Documentation]    获取知识规则
     #创建知识规则
     ${ruleResult}    Create Robot Rule    ${AdminUser}

@@ -75,4 +75,28 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    '${j['status']}'    'OK'    返回的接口字段status不正确：${j}
     Should Be Equal    '${j['entity']['answer']}'    '${answerEntity.answer}'    返回的接口字段answer不正确：${j}
     Should Be Equal    '${j['entity']['type']}'    '${answerEntity.type}'    返回的接口字段type不正确：${j}
-    
+
+获取自定义菜单(/v3/Tenants/{tenantId}/robots/menus/search)
+    [Documentation]    1、创建自定义父级菜单    2、获取自定义菜单
+    #创建父级菜单
+    ${parentResult}    Create Robot Parent Menu    ${AdminUser}
+    #创建请求数据
+    ${filter}    copy dictionary    ${RobotFilter}
+    #获取自定义菜单
+    ${j}    Get Robot Menus    ${AdminUser}    ${filter}
+    Should Be Equal    ${j['status']}    OK    接口返回的status不正确,正确值是:OK,返回结果:${j}
+    Should Be Equal    ${j['entity'][0]['menu']['name']}    ${parentResult.name}    接口返回的name不正确,正确值是:${parentResult.name}返回结果:${j}
+    Should Be Equal    ${j['entity'][0]['menu']['id']}    ${parentResult.parentId}    接口返回的id不正确,正确值是:${parentResult.parentId},返回结果:${j}
+    Should Be Equal    ${${j['entity'][0]['menu']['robotId']}}    ${parentResult.robotId}    接口返回的robotId不正确,正确值是:${parentResult.robotId},返回结果:${j}
+
+下载自定义菜单模板(/v1/Tenants/{tenantId}/robot/menu/template/export)
+    [Documentation]    下载自定义菜单模板
+    #下载自定义菜单模板
+    ${resp}=    Download Robot Menu Template    ${AdminUser}
+    Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败
+
+导出自定义菜单(/v1/Tenants/{tenantId}/robot/menu/template/export)
+    [Documentation]    导出自定义菜单
+    #导出自定义菜单
+    ${resp}=    Export Robot Menu    ${AdminUser}
+    Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败

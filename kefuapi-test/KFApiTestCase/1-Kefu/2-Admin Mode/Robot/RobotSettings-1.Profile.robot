@@ -26,7 +26,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
 
 获取机器人信息(/v1/Tenants/{tenantId}/robot/profile/personalInfo)
     [Documentation]    获取机器人信息
-    ${j}    Get Robot PersonalInfo    ${AdminUser}
+    ${j}    Set Robot PersonalInfo    get    ${AdminUser}
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人信息不正确：${j}
 
 获取多机器人信息(/v1/Tenants/{tenantId}/robot/profile/personalInfos)

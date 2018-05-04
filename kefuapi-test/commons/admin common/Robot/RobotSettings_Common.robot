@@ -53,13 +53,12 @@ Get Recommendation Info
     [Documentation]    获取机器人推荐信息
     ${resp}=    /v1/Tenants/{tenantId}/robots/recommendationSwitch    ${agent}    ${switchType}    ${switchId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    Return From Keyword    ${resp}
 
-Get Robot PersonalInfo
-    [Arguments]    ${agent}    ${language}=zh-CN
-    [Documentation]    获取机器人信息
-    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/personalInfo    ${agent}    ${language}    ${timeout}
+Set Robot PersonalInfo
+    [Arguments]    ${method}    ${agent}    ${language}=zh-CN    ${data}=
+    [Documentation]    获取/修改机器人信息
+    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/personalInfo    ${method}    ${agent}    ${language}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -80,11 +79,12 @@ Get MutilRobot PersonalInfos Settings
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
-Update Robot Settings
-    [Arguments]    ${agent}    ${data}
-    [Documentation]    修改机器人设置
-    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/setting    ${agent}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+Set Robot Setting
+    [Arguments]    ${method}    ${agent}    ${data}
+    [Documentation]    创建/修改机器人设置
+    ${resp}=    /v1/Tenants/{tenantId}/robot/profile/setting    ${method}    ${agent}    ${data}    ${timeout}
+    run keyword if    '${method}'=='put'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -93,8 +93,7 @@ Get Robot Greeting
     [Documentation]    获取机器人欢迎语
     ${resp}=    /v1/Tenants/{tenantId}/robots/greetings    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    Return From Keyword    ${resp}
 
 Set Robot AutoReply
     [Arguments]    ${method}    ${agent}    ${filter}    ${data}=    ${replyId}=
@@ -146,7 +145,7 @@ Get Robot Scenarios
 
 Get Robot Category Tree
     [Arguments]    ${agent}
-    [Documentation]    获取机器人菜单树
+    [Documentation]    获取机器人分类树
     ${resp}=    /v3/Tenants/{tenantId}/robots/categorys/trees    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
@@ -180,21 +179,21 @@ Creat Robot Category
 
 Delete Robot Category With CategoryId
     [Arguments]    ${agent}    ${data}    ${categoryId}
-    [Documentation]    根据知识菜单id删除菜单
-    #删除知识规则
+    [Documentation]    根据知识分类id删除分类
+    #删除分类
     ${j}    Set Robot Category    delete    ${AdminUser}    ${data}    ${categoryId}
     Should Be Equal    ${j['status']}    OK    接口返回的status不正确,正确值是:OK,返回结果:${j} 
     Should Be True    ${j['entity']}    接口返回的entity不正确,正确值是:true,返回结果:${j} 
 
-Delete Robot Category With SpecifiedKey
-    [Documentation]    删除包含模板的菜单
-    #设置菜单名称包含指定关键字
+Delete Robot Categorys With SpecifiedKey
+    [Documentation]    删除包含模板的分类
+    #设置分类名称包含指定关键字
     ${preUsername}=    convert to string    ${AdminUser.tenantId}
     #创建数据字典
     &{adminEntity}    create dictionary    userId=${AdminUser.userId}    name=${AdminUser.nicename}
     #设置删除分类的请求数据
     ${data}    set variable    {"admin":{"userId":"${adminEntity.userId}","name":"${adminEntity.name}"},"entity":"CHECK"}
-    #根据指定key搜索机器人菜单
+    #根据指定key搜索机器人分类
     ${j}    Get Robot Category Tree    ${AdminUser}
     :FOR    ${i}    IN    @{j['entity']}
     \    ${username}=    convert to string    ${i['category']['name']}
@@ -241,10 +240,16 @@ Get Robot Rules With SpecifiedKey
     \    set to dictionary    ${rulesList}    ${i['questionsArray'][0]}=${i['id']}
     Return From Keyword    ${rulesList}
 
-Delete Robot Rules And Category With SpecifiedKey
-    [Documentation]    删除指定关键字问句知识规则
-    #删除机器人的菜单
-    Delete Robot Category With SpecifiedKey
+Delete Robot Datas With SpecifiedKey
+    [Documentation]    删除机器人分类、知识规则、自定义菜单
+    #删除机器人的分类
+    Delete Robot Categorys With SpecifiedKey
+    #删除机器人的知识规则
+    Delete Robot Rules With SpecifiedKey
+    #删除机器人的自定义菜单
+    Delete Robot Menus With SpecifiedKey
+
+Delete Robot Rules With SpecifiedKey
     #设置规则问句包含指定关键字
     ${preUsername}=    convert to string    ${AdminUser.tenantId}
     #获取所有包含模板的知识规则列表
@@ -379,4 +384,105 @@ Add Menu Answer
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
-    
+
+Get Robot Menus
+    [Arguments]    ${agent}    ${filter}
+    [Documentation]    获取自定义菜单
+    ${resp}=    /v3/Tenants/{tenantId}/robots/menus/search    ${agent}    ${filter}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Download Robot Menu Template
+    [Arguments]    ${agent}
+    [Documentation]    下载自定义菜单模板
+    ${resp}=    /v1/Tenants/{tenantId}/robot/menu/template/export    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Return From Keyword    ${resp}
+
+Export Robot Menu
+    [Arguments]    ${agent}
+    [Documentation]    导出自定义菜单
+    ${resp}=    /v3/Tenants/{tenantId}/robots/menus/items/export    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Return From Keyword    ${resp}
+
+Delete Robot Menus With SpecifiedKey
+    [Documentation]    删除包含模板的自定义菜单
+    #设置菜单名称包含指定关键字
+    ${preUsername}=    convert to string    ${AdminUser.tenantId}
+    #根据指定key搜索机器人自定义菜单
+    ${j}    Search Robot Menus With SpecifiedKey    ${AdminUser}    ${preUsername}
+    :FOR    ${i}    IN    @{j['entity']}
+    \    ${username}=    convert to string    ${i['menu']['name']}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
+    \    ${userIdValue}    set variable    ${i['menu']['id']}
+    \    Run Keyword If    '${status}' == 'True'    Delete Robot Menu With ItemId   ${AdminUser}   ${userIdValue}
+
+Search Robot Menus With SpecifiedKey
+    [Arguments]    ${agent}    ${specifiedKey}
+    [Documentation]    根据指定关键字搜索自定义菜单
+    #创建请求数据
+    ${filter}    copy dictionary    ${RobotFilter}
+    ${j1}    Get Robot Menus    ${agent}    ${filter}
+    #获取自定义菜单总数
+    ${totalElements}    set variable    ${j1['totalElements']}
+    #获取自定义菜单
+    run keyword if    ${totalElements} == 0    set suite variable    ${totalElements}	10
+    set to dictionary    ${filter}    q=${specifiedKey}    per_page=${totalElements}
+    ${j}    Get Robot Menus    ${agent}    ${filter}
+    Should Be Equal    ${j['status']}    OK    接口返回的status不正确,正确值是:OK,返回结果:${j}
+    Return From Keyword    ${j}
+
+Delete Robot Menu With ItemId
+    [Arguments]    ${agent}    ${ItemId}
+    [Documentation]    根据知识菜单id删除自定义菜单
+    #创建数据字典
+    &{adminEntity}    create dictionary    userId=${agent.userId}    name=${agent.nicename}
+    #设置请求体
+    ${data}    set variable    {"admin":{"userId":"${adminEntity.userId}","name":"${adminEntity.name}"}}
+    #删除机器人自定义菜单
+    ${j}    Set Robot Menu    delete    ${agent}    ${data}    ${ItemId}
+    Should Be Equal    '${j['status']}'    'OK'    返回的接口字段status不正确：${j}
+
+Get Mutil Robot Count
+    [Arguments]    ${agent}
+    [Documentation]    检查租户下多机器人账号个数
+    #使用局部变量进行筛选
+    ${filter}    copy dictionary    ${RobotFilter}
+    #获取多机器人资料设置
+    # ${j}    Get MutilRobot PersonalInfos Settings    ${agent}    ${filter}
+    # ${settingLength}    get length    ${j['content']}
+    #获取多机器人资料信息
+    ${robotInfo}    Get MutilRobot PersonalInfos    ${agent}    ${filter}
+    ${InfoLength}    get length    ${robotInfo['content']}
+    Return From Keyword    ${InfoLength}
+
+Create Robot Account
+    [Documentation]    创建机器人账号、初始化机器人信息
+    #创建机器人账号
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    ${nickname}    set variable    ${AdminUser.tenantId}-新创建的机器人账号哦！
+    ${username}    set variable    robot-${randoNumber}@${AdminUser.tenantId}.com
+    #创建机器人账号
+    ${data}    set variable    {"name":"${nickname}","username":"${username}","password":"${username}","digitalMenu":false,"active":0,"rule":0,"type":0}
+    #创建机器人设置
+    ${robotSetting}    Set Robot Setting    post    ${AdminUser}    ${data}
+    Should Be True    ${robotSetting['active']}    返回的机器人active值不正确：${robotSetting}
+    Should Be True    "${robotSetting['tenantId']}" == "${AdminUser.tenantId}"   返回的机器人tenantId值不正确：${robotSetting}
+    #初始化机器人资料信息
+    Update Robot Profile
+
+Update Robot Profile
+    [Documentation]    初始化机器人信息
+    #初始化机器人资料信息
+    &{robotInfo}    Set Robot PersonalInfo    get    ${AdminUser}
+    Should Be Equal    '${robotInfo['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人信息不正确：${robotInfo}
+    #判断默认机器人是否被训练完成
+    return from keyword if    ${robotInfo['createStep']} == 0    租户下的默认机器人已被训练完毕
+    #将createStep的值设置为0
+    set to dictionary    ${robotInfo}    createStep=0
+    ${data}    dumps    ${robotInfo}
+    #初始化机器人资料信息
+    ${j}    Set Robot PersonalInfo    post    ${AdminUser}    zh-CN    ${data}
+    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人信息不正确：${j}

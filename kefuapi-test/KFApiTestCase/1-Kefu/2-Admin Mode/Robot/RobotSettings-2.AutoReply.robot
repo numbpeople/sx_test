@@ -14,7 +14,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
 获取机器人欢迎语(/v1/Tenants/{tenantId}/robots/greetings)
     [Documentation]    获取机器人欢迎语
     ${j}=    Get Robot Greeting    ${AdminUser}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的tenantId值不正确：${j}
+    # Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的tenantId值不正确：${j}
 
 获取机器人默认回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
     [Documentation]    获取机器人默认回复
@@ -157,7 +157,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be True    ${length} > 0    接口返回值中content的数据不正确 ,${j}
     Should Be True    ${j['totalElements']} > 0    接口返回值中totalElements不正确 ,${j}
 
-修改机器人设置(/v1/Tenants/{tenantId}/robot/profile/settings)
+修改机器人设置(/v1/Tenants/{tenantId}/robot/profile/setting)
     [Documentation]    1、获取机器人的资料信息    2、获取机器人设置    3、修改第一个机器人的设置
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
@@ -177,7 +177,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #创建修改请求数据
     ${data}    set variable    ${robotEntity}
     #修改机器人设置
-    ${j}    Update Robot Settings    ${AdminUser}    ${data}
+    ${j}    Set Robot Setting    put    ${AdminUser}    ${data}
     #移除新增的name和rulesCount字段，并验证结果
     Remove From Dictionary    ${robotDic}    name    rulesCount
     Dictionaries Should Be Equal    ${j}    ${robotDic}    字典的结果不相同,实际返回值:${j}, 预期值:${robotDic}

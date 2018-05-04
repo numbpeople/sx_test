@@ -81,10 +81,13 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/setting
-    [Arguments]    ${agent}    ${data}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/setting
-    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/settings
     [Arguments]    ${agent}    ${filter}    ${timeout}
@@ -133,11 +136,14 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/personalInfo
-    [Arguments]    ${agent}    ${language}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${language}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/profile/personalInfo
     ${params}    set variable    language=${language}&_=1524820513174
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/profile/personalInfos
     [Arguments]    ${agent}    ${filter}    ${timeout}
@@ -277,3 +283,17 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/menus/item/${itemId}/menu-answer
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/Tenants/{tenantId}/robot/menu/template/export
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/menu/template/export
+    ${params}    set variable    locale=zh_CN
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v3/Tenants/{tenantId}/robots/menus/items/export
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/menus/items/export
+    ${params}    set variable    locale=zh_CN
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

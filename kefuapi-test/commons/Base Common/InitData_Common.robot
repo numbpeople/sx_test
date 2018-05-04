@@ -220,8 +220,16 @@ Channel Data Init
     set to dictionary    ${RestEntity}    queueId=${AgentQueue1.queueId}    queueName=${AgentQueue1.queueName}
     set global variable    ${RestEntity}    ${RestEntity}
 
+Robot Account Init
+    [Documentation]    判断租户下是否有机器人账号，如果有则不创建，如果没有则创建机器人账号
+    #判断该租户下是否有机器人账号，有则跳过，无则创建并训练机器人完成任务(多机器人暂未考虑，只考虑使用默认机器人)
+    ${robotInfoLength}    Get Mutil Robot Count    ${AdminUser}
+    run keyword if    ${robotInfoLength} == 0    Create Robot Account    #租户下没有机器人账号，创建机器人账号并设置信息
+    run keyword if    ${robotInfoLength} >= 1    Update Robot Profile    #租户下有机器人账号，为机器人训练完成
+    #创建机器人账号完毕
+
 Clear Data
     Delete Channels    #删除关联
     Delete Queues    #删除技能组
     Delete Agentusers    #删除坐席
-    Delete Robot Rules And Category With SpecifiedKey    #删除机器人菜单和知识规则
+    Delete Robot Datas With SpecifiedKey    #删除机器人分类、知识规则、自定义菜单

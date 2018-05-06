@@ -248,6 +248,8 @@ Delete Robot Datas With SpecifiedKey
     Delete Robot Rules With SpecifiedKey
     #删除机器人的自定义菜单
     Delete Robot Menus With SpecifiedKey
+    #删除机器人的自动回复
+    Delete Robot AutoReplys With SpecifiedKey
 
 Delete Robot Rules With SpecifiedKey
     #设置规则问句包含指定关键字
@@ -445,6 +447,40 @@ Delete Robot Menu With ItemId
     ${j}    Set Robot Menu    delete    ${agent}    ${data}    ${ItemId}
     Should Be Equal    '${j['status']}'    'OK'    返回的接口字段status不正确：${j}
 
+Delete Robot AutoReplys With SpecifiedKey
+    [Documentation]    根据包含关键字删除自动回复数据
+    ...    参数${type}：0、1、2, 分别代表默认回复、重复回复、超时回复
+    :FOR    ${i}    IN RANGE    3
+    \    Delete Robot AutoReply With SpecifiedKey    ${i}
+
+Delete Robot AutoReply With SpecifiedKey
+    [Arguments]    ${type}
+    [Documentation]    根据包含关键字删除自动回复数据
+    ...    参数${type}：0、1、2, 分别代表默认回复、重复回复、超时回复
+    #设置自动回复包含指定关键字
+    ${preUsername}=    convert to string    ${AdminUser.tenantId}
+    #使用局部变量进行筛选
+    ${filter}    copy dictionary    ${RobotFilter}
+    #获取机器人自动回复
+    set to dictionary    ${filter}    type=${type}    per_page=100
+    ${j}    Set Robot AutoReply    get    ${AdminUser}    ${filter}
+    #循环删除数据
+    :FOR    ${i}    IN    @{j['content']}
+    \    ${username}=    convert to string    ${i['content']}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
+    \    ${userIdValue}    set variable    ${i['replyId']}
+    \    Run Keyword If    '${status}' == 'True'    Delete Robot AutoReply With ReplyId   ${AdminUser}   ${type}    ${userIdValue}
+
+Delete Robot AutoReply With ReplyId
+    [Arguments]    ${agent}    ${type}    ${replyId}
+    [Documentation]    根据id删除自动回复数据
+    #使用局部变量进行筛选
+    ${filter}    copy dictionary    ${RobotFilter}
+    set to dictionary    ${filter}    type=${type}
+    #删除默认回复
+    ${j}    Set Robot AutoReply    delete    ${agent}    ${filter}    ${EMPTY}    ${replyId}
+    Should Be Equal    ${j}    ${1}    删除默认回复接口返回不为1：${j}
+    
 Get Mutil Robot Count
     [Arguments]    ${agent}
     [Documentation]    检查租户下多机器人账号个数
@@ -486,3 +522,70 @@ Update Robot Profile
     #初始化机器人资料信息
     ${j}    Set Robot PersonalInfo    post    ${AdminUser}    zh-CN    ${data}
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人信息不正确：${j}
+
+Get RobotGuide Categorys
+    [Arguments]    ${agent}    ${filter}
+    [Documentation]    获取机器人引导业务场景
+    ${resp}=    /v1/Tenants/{tenantId}/robots/robotGuide/categorys    ${agent}    ${filter}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Get RobotGuide ApplyTemplates
+    [Arguments]    ${agent}    ${type}
+    [Documentation]    获取机器人引导业务场景下各功能数据
+    ...    参数：${type}值为0、1、2、3
+    ${resp}=    /v1/Tenants/{tenantId}/robots/robotGuide/applyTemplates/{type}    ${agent}    ${type}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Get RobotGuide Prompt
+    [Arguments]    ${agent}    ${filter}    ${type}
+    [Documentation]    获取机器人引导自动回复模板数据
+    ...    参数：${type}值为0、1、2、3
+    ${resp}=    /v1/Tenants/{tenantId}/robots/robotGuide/prompt/{type}    ${agent}    ${filter}    ${type}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+RobotGuide Categorys Should Be Equal
+    [Arguments]    ${categoryResult}
+    [Documentation]    断言引导业务场景数据 ,包括字段: kbCategoryId、kbCategoryName、kbCategoryDesc
+    ${categoryTenantId}    set variable    8
+    @{kbCategoryNameList}    create list    其他    金融    教育    电商
+    @{kbCategoryDescList}    create list    若以上场景均不适用，请选择此项    支持金融行业典型场景    支持教育行业典型场景    支持电商行业典型场景
+    Reverse List    ${categoryResult}
+    log list    ${categoryResult}
+    :FOR    ${i}    IN RANGE    4
+    \    ${num}    evaluate    ${i} + 1
+    \    should be true    ${${categoryResult[${i}]['tenantId']}} == ${categoryTenantId}    #判断tenantId值
+    \    should be true    ${${categoryResult[${i}]['id']}} == ${num}    #判断id值是否在1-4范围
+    \    should be true    ${${categoryResult[${i}]['kbCategoryId']}} == ${i}    #判断kbCategoryId值是否在0-3范围
+    \    should be true    "${categoryResult[${i}]['kbCategoryName']}" == "${kbCategoryNameList[${i}]}"    #判断kbCategoryName值
+    \    should be true    "${categoryResult[${i}]['kbCategoryDesc']}" == "${kbCategoryDescList[${i}]}"    #判断kbCategoryDesc值
+
+RobotGuide ApplyTemplates Should Be Equal
+    [Arguments]    ${type}    ${applyTemplatesResult}
+    [Documentation]    断言引导业务场景数据
+    #判断type为0时，接口中prompt正确性
+    run keyword if    "${type}" == "0"    Should Contain    ${applyTemplatesResult[0]['prompt']}    您好，机器人XX很高兴为您服务，您可以输入以下关键词进行咨询：【XX，XX，XX，XX】，或用简洁的语言描述您的问题。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "0"    Should Contain    ${applyTemplatesResult[1]['prompt']}    对不起，很抱歉机器人XX没能解决您的问题，您可以输入以下关键词进行咨询：【“XX，XX，XX，XX”】，或点击转人工按钮由人工客服解答您的问题，人工客服上班时间：【XX:XX--XX:XX】。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "0"    Should Contain    ${applyTemplatesResult[2]['prompt']}    您好！您的问题已经连续多次发送了！请重新提问。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "0"    Should Contain    ${applyTemplatesResult[3]['prompt']}    您已经很久没有发送消息了，本次会话即将关闭，如您还需要咨询请发送消息即可。    接口返回值中不包含该文案，${applyTemplatesResult}
+    #判断type为1时，接口中prompt正确性
+    run keyword if    "${type}" == "1"    Should Contain    ${applyTemplatesResult[0]['prompt']}    亲爱的顾客，机器人很高兴为您服务，您可以输入以下关键词进行咨询：【“保单查询，理赔，续保，退保”】，或用简洁的语言描述您的问题。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "1"    Should Contain    ${applyTemplatesResult[1]['prompt']}    对不起，很抱歉机器人没能解决您的问题，您可以输入以下关键词进行咨询：【“保单查询，理赔，续保，退保”】，或点击转人工按钮由人工客服解答您的问题，人工客服上班时间：【9:00~20:00】。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "1"    Should Contain    ${applyTemplatesResult[2]['prompt']}    您好！您的问题已经连续多次发送了！请重新提问    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "1"    Should Contain    ${applyTemplatesResult[3]['prompt']}    您已经很久没有发送消息了，本次会话即将关闭，如您还需要咨询请发送消息即可。    接口返回值中不包含该文案，${applyTemplatesResult}
+    #判断type为2时，接口中prompt正确性
+    run keyword if    "${type}" == "2"    Should Contain    ${applyTemplatesResult[0]['prompt']}    亲爱的顾客，机器人很高兴为您服务，您可以输入以下关键词进行咨询：【“师资力量，入学测试，上课路线，调课，支付方式”】，或用简洁的语言描述您的问题。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "2"    Should Contain    ${applyTemplatesResult[1]['prompt']}    对不起，很抱歉机器人没能解决您的问题，您可以输入以下关键词进行咨询：【“师资力量，入学测试，上课路线，调课，支付方式”】，或点击转人工按钮由人工客服解答您的问题，人工客服上班时间：【9:00~20:00】。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "2"    Should Contain    ${applyTemplatesResult[2]['prompt']}    您好！您的问题已经连续多次发送了！请重新提问    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "2"    Should Contain    ${applyTemplatesResult[3]['prompt']}    您已经很久没有发送消息了，本次会话即将关闭，如您还需要咨询请发送消息即可。    接口返回值中不包含该文案，${applyTemplatesResult}
+    #判断type为3时，接口中prompt正确性
+    run keyword if    "${type}" == "3"    Should Contain    ${applyTemplatesResult[0]['prompt']}    亲爱的顾客，机器人很高兴为您服务，您可以输入以下关键词进行咨询：【“物流，邮费，退款，退换货，代金券”】，或用简洁的语言描述您的问题。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "3"    Should Contain    ${applyTemplatesResult[1]['prompt']}    对不起，很抱歉机器人没能解决您的问题，您可以输入以下关键词进行咨询：【“物流，邮费，退款，退换货，代金券”】，或点击转人工按钮由人工客服解答您的问题，人工客服上班时间：【9:00~20:00】。    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "3"    Should Contain    ${applyTemplatesResult[2]['prompt']}    您好！您的问题已经连续多次发送了！请重新提问    接口返回值中不包含该文案，${applyTemplatesResult}
+    run keyword if    "${type}" == "3"    Should Contain    ${applyTemplatesResult[3]['prompt']}    您已经很久没有发送消息了，本次会话即将关闭，如您还需要咨询请发送消息即可。    接口返回值中不包含该文案，${applyTemplatesResult}
+      

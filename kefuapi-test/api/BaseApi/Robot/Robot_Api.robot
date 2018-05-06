@@ -297,3 +297,24 @@
     ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/menus/items/export
     ${params}    set variable    locale=zh_CN
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenants/{tenantId}/robots/robotGuide/categorys
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=zh-CN
+    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/robotGuide/categorys
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&_=1525414790300
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenants/{tenantId}/robots/robotGuide/applyTemplates/{type}
+    [Arguments]    ${agent}    ${type}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=zh-CN
+    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/robotGuide/applyTemplates/${type}
+    ${params}    set variable    _=1525414790301
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/Tenants/{tenantId}/robots/robotGuide/prompt/{type}
+    [Arguments]    ${agent}    ${filter}    ${type}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=zh-CN
+    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robots/robotGuide/prompt/${type}
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&_=1525414790302
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

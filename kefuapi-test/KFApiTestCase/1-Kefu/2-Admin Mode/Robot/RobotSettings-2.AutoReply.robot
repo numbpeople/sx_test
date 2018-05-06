@@ -95,7 +95,6 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    type=${type}    #设置type=0，参数为默认回复数据
-    ${uuid}    Uuid 4
     #删除默认回复
     ${j}    Set Robot AutoReply    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${replyId}
     Should Be Equal    ${j}    ${1}    删除默认回复接口返回不为1：${j}
@@ -109,7 +108,6 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    type=${type}    #设置type=1，参数为重复回复数据
-    ${uuid}    Uuid 4
     #删除重复回复
     ${j}    Set Robot AutoReply    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${replyId}
     Should Be Equal    ${j}    ${1}    删除重复回复接口返回不为1：${j}
@@ -123,7 +121,6 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    type=${type}    #设置type=2，参数为超时回复数据
-    ${uuid}    Uuid 4
     #删除超时回复
     ${j}    Set Robot AutoReply    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${replyId}
     Should Be Equal    ${j}    ${1}    删除重复回复接口返回不为1：${j}

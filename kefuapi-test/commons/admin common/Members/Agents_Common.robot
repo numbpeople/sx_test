@@ -31,9 +31,9 @@ Delete Agent
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text}
 
 Delete AgentUser
-    [Arguments]    ${userId}
+    [Arguments]    ${userId}    ${agent}=${AdminUser}
     [Documentation]    删除客服，参数为客服userId
-    ${resp}=    /v6/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
+    ${resp}=    /v6/Admin/Agents/{userId}    ${agent}    ${userId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
@@ -51,7 +51,7 @@ Delete Agentusers
     \    ${username}=    convert to string    ${userNameList[${i}]}
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
     \    ${userIdValue}=    Get From Dictionary    ${agentlist}    ${userNameList[${i}]}
-    \    Run Keyword If    '${status}' == 'True'    Delete Agent   ${userIdValue}
+    \    Run Keyword If    '${status}' == 'True'    Delete Agent    ${userIdValue}
 
 Set Agents
     [Arguments]    ${method}    ${agent}    ${agentFilter}    ${data}
@@ -62,7 +62,7 @@ Set Agents
     run keyword if    '${method}'=='get'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
-    
+
 Create Agent
     [Arguments]    ${agent}    ${agentFilter}    ${data}
     [Documentation]    创建一个坐席
@@ -73,9 +73,8 @@ Create Agent
 Create Temp Agent
     [Arguments]    ${agent}    ${permissionid}    #permissionid : 1为管理员；2为坐席；以后为自定义角色
     ${t}    UUID 4
-    &{AgentUser}=    create dictionary    username=${t}    password=test2015    maxServiceSessionCount=10    tenantId=${agent.tenantId}
-    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"trueName","mobilePhone":"13800138000","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","permission":"${permissionid}","roles":"agent"}
+    &{AgentUser}=    create dictionary    username=${t}@t.cn    password=test2015    maxServiceSessionCount=10    tenantId=${agent.tenantId}
+    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"trueName","mobilePhone":"13800138000","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","permission":"${permissionid}","roles":"agent"}
     ${resp}=    /v1/Admin/Agents    post    ${agent}    ${empty}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
-    ${agent}
-    return from keyword    {"tenantId":5833,"userId":"092b9776-438e-4d54-ae21-c536a1affdcd","userType":"Agent","userScope":"Tenant","nicename":"fs","password":"","username":"0216l9@test.com","roles":"admin,agent","createDateTime":"2018-03-23 17:49:47","lastUpdateDateTime":"2018-03-23 17:49:47","status":"Enable","state":"Offline","maxServiceSessionCount":10,"trueName":"","mobilePhone":"","agentType":"Message","language":"zh_CN","timeZone":"UTC+8","bizId":"5833","scope":"Tenant","onLineState":"Offline","currentOnLineState":"Offline"}
+    [Return]    ${AgentUser}

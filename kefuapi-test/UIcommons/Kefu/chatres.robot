@@ -13,6 +13,31 @@ ${maxcallinlistr}    '{"elements":[{"name":"li","xPath":"/html/body/ul[1]/li[%d]
 @{actviedattributes}    ''    ' activated'
 
 *** Keywords ***
+chat smoketest case 
+    [Arguments]    ${agent}
+    set test variable    ${maxnum}    1
+    #设置状态为在线，接待数为1
+    ${j}    Set Agent Status    ${agent}    ${kefustatus[0]}
+    ${j}    Set Agent MaxServiceUserNumber    ${agent}    ${maxnum}
+    #跳转到进行中会话页面并检查页面元素
+    switch browser    ${agent.session}
+    goto and checkchatebasejson    ${agent}
+    #格式化昵称状态字符串并检查基本元素
+    #默认状态ul属性为hide，状态li无属性
+    @{p}    create List    '${agent.nicename}'    ${elementstatelist[4]}    ${elementstatelist[0]}    ${elementstatelist[0]}    ${elementstatelist[0]}
+    ...    ${elementstatelist[0]}
+    ${jbase}    Format String To Json    format avatarloginstatstr    @{p}
+    Check Base Elements    ${agent.language}    ${jbase['elements']}
+    #点击弹出状态选择列表，格式化状态列表字符串并检查基本元素
+    click element    xpath=${jbase['elements'][0]['xPath']}
+    #点击 后状态ul无属性，在线状态li为selected
+    @{p}    create List    '${agent.nicename}'    ${elementstatelist[0]}    ${elementstatelist[2]}    ${elementstatelist[0]}    ${elementstatelist[0]}
+    ...    ${elementstatelist[0]}
+    Format String And Check Elements    ${agent}    format avatarloginstatstr    @{p}
+    #格式化最大接待人数字符串并检查基本元素
+    @{p}    create List    ${elementstatelist[0]}    ${maxnum}
+    Format String And Check Elements    ${agent}    format maxcallinselectorstr    @{p}
+
 format chatlistlistr
     [Arguments]    ${liindex}    ${origintype}    ${visitorname}    ${noanswer}    ${selected}
     [Documentation]    ${i}为li的序号，如li1，li2

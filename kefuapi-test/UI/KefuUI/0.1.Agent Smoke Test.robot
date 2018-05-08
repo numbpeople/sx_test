@@ -32,67 +32,79 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     [Documentation]    1.检查进行中会话基本元素
     ...    2.检查昵称状态基本元素
     ...    3.检查最大接待人数基本元素1
-    set test variable    ${maxnum}    1
-    #设置状态为在线，接待数为1
-    ${j}    Set Agent Status    ${uiadmin}    ${kefustatus[0]}
-    ${j}    Set Agent MaxServiceUserNumber    ${uiadmin}    ${maxnum}
-    #跳转到进行中会话页面并检查页面元素
-    goto and checkchatebasejson    ${uiadmin}
-    #格式化昵称状态字符串并检查基本元素
-    #默认状态ul属性为hide，状态li无属性
-    @{p}    create List    '${uiadmin.nicename}'    ${elementstatelist[4]}    ${elementstatelist[0]}    ${elementstatelist[0]}    ${elementstatelist[0]}
-    ...    ${elementstatelist[0]}
-    ${jbase}    Format String To Json    format avatarloginstatstr    @{p}
-    Check Base Elements    ${uiadmin.language}    ${jbase['elements']}
-    #点击弹出状态选择列表，格式化状态列表字符串并检查基本元素
-    click element    xpath=${jbase['elements'][0]['xPath']}
-    #点击 后状态ul无属性，在线状态li为selected
-    @{p}    create List    '${uiadmin.nicename}'    ${elementstatelist[0]}    ${elementstatelist[2]}    ${elementstatelist[0]}    ${elementstatelist[0]}
-    ...    ${elementstatelist[0]}
-    Format String And Check Elements    ${uiadmin}    format avatarloginstatstr    @{p}
-    #格式化最大接待人数字符串并检查基本元素
-    @{p}    create List    ${elementstatelist[0]}    ${maxnum}
-    Format String And Check Elements    ${uiadmin}    format maxcallinselectorstr    @{p}
+    [Template]    chat smoketest case
+    ${uiadmin}
+    ${uiagent1}
 
 查看待接入列表
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${waitbasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${waitbasejson}
+    ${uiagent1}    ${waitbasejson}
 
 查看我的知识库
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${knowledgebasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${knowledgebasejson}
+    ${uiagent1}    ${knowledgebasejson}
 
 查看我的留言列表
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${notesbasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${notesbasejson}
+    ${uiagent1}    ${notesbasejson}
 
 查看我的工单
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${myticketsbasejson}
+    [Template]    smoketest case
+    #查看工单列表
+    ${uiadmin}    ${myticketlistbasejson}
+    ${uiagent1}    ${myticketlistbasejson}
+    #查看工单导出
+    ${uiadmin}    ${myticketdownloadbasejson}
+    ${uiagent1}    ${myticketdownloadbasejson}
 
 查看我的历史会话
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${historybasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${historybasejson}
+    ${uiagent1}    ${historybasejson}
 
 查看我的质量检查
-    [Template]    Check Base Module
+    [Template]    smoketest case
     #查看质检记录
-    ${kefuurl}    ${uiadmin}    ${qualityrecordbasejson}
+    ${uiadmin}    ${qualityrecordbasejson}
+    ${uiagent1}    ${qualityrecordbasejson}
     #查看申述记录
-    ${kefuurl}    ${uiadmin}    ${appealrecordbasejson}
+    ${uiadmin}    ${appealrecordbasejson}
+    ${uiagent1}    ${appealrecordbasejson}
 
 查看我的搜索
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${sessionsearchbasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${sessionsearchbasejson}
+    ${uiagent1}    ${sessionsearchbasejson}
 
 查看我的客户中心
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${visitorsbasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${visitorsbasejson}
+    ${uiagent1}    ${visitorsbasejson}
 
 查看我的导出管理
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${exportsbasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${exportsbasejson}
+    ${uiagent1}    ${exportsbasejson}
 
 查看客服信息
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${agentinfobasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${agentinfobasejson}
+    ${uiagent1}    ${agentinfobasejson}
 
 查看个人常用语
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${myphrasebasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${myphrasebasejson}
+    ${uiagent1}    ${myphrasebasejson}
 
 查看消息中心
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${notifybasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${notifybasejson}
+    ${uiagent1}    ${notifybasejson}
 
 查看我的统计数据
-    Check Base Module    ${kefuurl}    ${uiadmin}    ${mystatisticbasejson}
+    [Template]    smoketest case
+    ${uiadmin}    ${mystatisticbasejson}
+    ${uiagent1}    ${mystatisticbasejson}

@@ -1,6 +1,6 @@
 *** Settings ***
-Suite Setup       Kefu UI Init    ${AdminUser}
-Suite Teardown    Close Browser
+Suite Setup       KefuUI Setup    ${AdminUser}
+Suite Teardown    KefuUI Teardown
 Force Tags        ui
 Library           json
 Library           requests

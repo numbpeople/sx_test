@@ -1,7 +1,7 @@
 *** Keywords ***
 /tenants/{tenantId}/serviceSessionHistoryFiles
     [Arguments]    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}=
-    ${header}=    Create Dictionary    Content-Type=application/json
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=en-US
     ${uri}=    set variable    /tenants/${agent.tenantId}/serviceSessionHistoryFiles
     ${params}=    set variable    beginDate=${range.beginDate}&endDate=${range.endDate}&techChannelId=${filter.techChannelId}&techChannelType=${filter.techChannelType}&customerName=${filter.customerName}&sortOrder=${filter.sortOrder}&state=${filter.state}&originType=${filter.originType}&transfered=${filter.transfered}&fromAgentCallback=${filter.fromAgentCallback}&summaryIds=${filter.summaryIds}&queueId=${filter.queueId}&isAgent=${filter.isAgent}&withMessage=${filter.withMessage}
     Run Keyword If    '${method}'=='get'    set suite variable    ${params}    agentUserId=${userId}&page=0&size=15&_=1511953848655

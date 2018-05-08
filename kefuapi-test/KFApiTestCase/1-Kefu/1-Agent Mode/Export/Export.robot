@@ -5,6 +5,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
+Library           ExcelLibrary
+Library           ../../../../lib/ReadFile.py    
 Resource          ../../../../AgentRes.robot
 Resource          ../../../../commons/agent common/Conversations/Conversations_Common.robot
 Resource          ../../../../commons/agent common/Export/Export_Common.robot
@@ -42,7 +44,9 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
     ${i}    Get My Export And Diff Counts    ${AdminUser}    ${filter}    ${range}    ${preCount}
-    run keyword if    "${i}" == "{}"    Fail    导出历史会话数据后，数据一直不是Finished
+    log    ${i}
+    ${status}    Run_keyword_and_return_status    Should Be Equal    ${i}    {}
+    run keyword if    ${status}    Fail    导出历史会话数据后，数据一直不是Finished
     run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
@@ -78,7 +82,8 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
     ${i}    Get My Export And Diff Counts    ${AdminUser}    ${filter}    ${range}    ${preCount}
-    run keyword if    "${i}" == "{}"    Fail    导出历史会话数据后，数据一直不是Finished
+    ${status}    Run_keyword_and_return_status    Should Be Equal    ${i}    {}
+    run keyword if    ${status}    Fail    导出历史会话数据后，数据一直不是Finished
     run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
@@ -91,3 +96,35 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     should be equal    ${j['content'][0]['agentUserId']}    ${AdminUser.userId}    返回结果中userid不正确，${i}
     should be equal    ${j['content'][0]['fileId']}    ${i['id']}    返回结果中fileId不正确，${i}
     Should Match Regexp    ${j['content'][0]['ip']}    (([01]{0,1}\\d{0,1}\\d|2[0-4]\\d|25[0-5])\\.){3}([01]\\d{0,1}\\d{0,1}\\d|2[0-4]\\d|25[0-5])    不匹配ip的正则表达式，${j}
+
+下载历史会话导出管理的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
+    [Documentation]    下载历史会话导出管理的数据
+    #定义为局部变量使用
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #创建一个历史会话并导出历史会话数据
+    ${session}    Create Terminal And Export HistoryFiles    ${AdminUser}
+    #对比前的导出管理总数
+    ${j}    Get My Export    get    ${AdminUser}    ${filter}    ${range}
+    #下载导出管理的数据
+    ${result}    Download Export File    ${AdminUser}    ${session.id}
+    #保存文件
+    ${path}    Find Specified Folder Path    testdata
+    ${filename}    set variable    ${session.fileName}
+    ${sheetname}    set variable    historyFile
+    ${csvPath}    set variable    ${path}/${filename}.csv
+    ${xlsPath}    set variable    ${path}/${filename}.xls
+    #保存文件到本地目录
+    save file    ${csvPath}    ${result}
+    #将csv文件转化成xls格式文件
+    csv_to_xls_pd    ${csvPath}    ${sheetname}    ${xlsPath}
+    #模板数据
+    @{sheetName}    create list    Conversation ID	CustomerID  Nickname  Message count   Agent  Full name  Created at  Connected at  Last replied at   Closed at   Transferred   Conversation types  Conversation tag  Channel account   Channel   Message detail  Conversation remarks
+    @{sheetValue}    create list    ${session.sessionServiceId}    ${session.userName}    ${session.userName}    ${session.createDatetime}    ${session.startDateTime}    ${session.stopDateTime}
+    #读取xls表格数据
+    @{firstRowsList}    Get Rows List    ${xlsPath}    0
+    @{secondRrowsList}    Get Rows List    ${xlsPath}    1
+    log list    ${firstRowsList}
+    log list    ${secondRrowsList}
+    Should Be HistoryFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList} 
+    

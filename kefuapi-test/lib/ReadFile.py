@@ -1,7 +1,9 @@
+# -*- coding=utf-8 -*-
 import csv
 import xlrd
-import os
+import os,stat
 import sys
+import pandas as pd
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -27,3 +29,34 @@ class ReadFile(object):
         cf = self.xls_to_csv(filename, wsheet)
         xls_data = self.read_csv_file(cf)
         return xls_data
+    
+    def csv_to_xls_pd(self,filename, wsheet,savefilename):
+        """
+        将csv文件转化成xls格式文件
+
+        param:
+        filename:文件地址，例如：C:/Users/leo/Desktop/accountInfo.csv
+        wsheet：位于哪个工作表，例如：account
+        savefilename：格式转化后保存的路径：C:/Users/leo/Desktop/accountInfo.xls
+
+        """
+        print 'transfer format start'
+        csv = pd.read_csv(filename, encoding='GB2312')
+        print 'read_csv end'
+        csv.to_excel(savefilename, sheet_name=wsheet)
+        print 'transfer format end'
+
+    def save_file(self,filename,result):
+        """
+        保存文件到本地目录
+
+        param:
+        filename:文件地址，例如：C:/Users/leo/Desktop/accountInfo.csv
+        result：请求后的文本值
+
+        """
+        print "save file start"
+        with open(filename, "wb") as code:
+           code.write(result)
+        code.close()
+        print "save file end"

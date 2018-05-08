@@ -307,7 +307,7 @@ Create Terminal Conversation
     ${j}    Get History    ${AdminUser}    ${filter}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${j}
     #将需要的信息返回
-    set to dictionary    ${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    techChannelId=${a['techChannelId']}
+    set to dictionary    ${GuestEntity}    createDatetime=${j['items'][0]['createDatetime']}    startDateTime=${j['items'][0]['startDateTime']}    stopDateTime=${j['items'][0]['stopDateTime']}    originType=${j['items'][0]['originType']}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    techChannelId=${a['techChannelId']}
     ...    msg=${MsgEntity}
     Return From Keyword    ${GuestEntity}
 

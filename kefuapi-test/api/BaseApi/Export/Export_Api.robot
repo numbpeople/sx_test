@@ -9,3 +9,9 @@
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
+
+/tenants/{tenantId}/serviceSessionHistoryFiles/{serviceSessionHistoryFileId}/file
+    [Arguments]    ${agent}    ${serviceSessionHistoryFileId}    ${timeout}
+    ${header}=    Create Dictionary    Accept-Language=en-US
+    ${uri}=    set variable    /tenants/${agent.tenantId}/serviceSessionHistoryFiles/${serviceSessionHistoryFileId}/file
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    timeout=${timeout}

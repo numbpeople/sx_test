@@ -27,3 +27,9 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/quality/tenants/${agent.tenantId}/appeal-amounts
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/quality/tenants/{tenantId}/appeals/{id}
+    [Arguments]    ${agent}    ${timeout}    ${id}    ${data}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/quality/tenants/${agent.tenantId}/appeals/${id}
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}

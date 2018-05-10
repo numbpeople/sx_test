@@ -20,3 +20,11 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/Admin/Agents/${userId}
     Run Keyword And Return    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/Admin/Agents/file
+    [Arguments]    ${agent}    ${filter}    ${language}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=${language}
+    ${uri}=    set variable    /v1/Admin/Agents/file
+    ${data}    set variable    {"statuses":"${filter.statuses}","keyValue":"${filter.keyValue}","orderBy":"${filter.orderBy}","orderMethod":"${filter.orderMethod}"}
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    

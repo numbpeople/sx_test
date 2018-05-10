@@ -14,11 +14,10 @@ ${diffCreatetimeValue}    10
 
 *** Keywords ***
 Get My Export
-    [Arguments]    ${method}    ${agent}    ${filter}    ${range}
+    [Arguments]    ${method}    ${agent}    ${filter}    ${range}    ${userId}=    ${language}=en-US
     [Documentation]    查询我的导出管理数据
     #查询我的管理导出数据
-    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}
-    ...    ${agent.userId}
+    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}    ${language}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -68,7 +67,7 @@ Get My Export And Diff Counts
     \    #获取导出数据并对比总数
     \    ${j}    Diff Export Count    ${agent}    ${filter}    ${range}    ${preCount}
     \    ${status}    Run_keyword_and_return_status    Should Be Equal    ${j}    {}
-    \    run keyword if    ${status}    Fail    导出历史会话数据后，对比没有增加
+    \    run keyword if    ${status}    Fail    导出数据后，对比没有增加
     \    #获取结果第一数据
     \    ${value}    set variable    ${j['content'][0]}
     \    #判断如果status不为Finished则循环
@@ -129,7 +128,7 @@ Create Terminal And Export HistoryFiles
     ${j}    Get My Export    get    ${agent}    ${filter}    ${range}
     ${preCount}    set variable    ${j['totalElements']}
     #导出历史会话数据
-    Export My History    post    ${agent}    ${filter}    ${range}
+    Export My History    post    ${agent}    ${filter}    ${range}    ${EMPTY}    #zh-CN
     #获取当前的时间
     @{localTime}    get time    year month day hour min sec
     ${i}    Get My Export And Diff Counts    ${agent}    ${filter}    ${range}    ${preCount}
@@ -141,6 +140,28 @@ Create Terminal And Export HistoryFiles
     #将导出管理中该数据的id放到字典中
     set to dictionary    ${session}     mediaId=${i['mediaId']}    fileName=${i['fileName']}    id=${i['id']}
     Return From Keyword    ${session}
+
+Run keyword And Export Specify Data
+    [Arguments]    ${agent}    ${functionName}    @{paramList}
+    [Documentation]    1、导出指定关键字模块的数据    2、判断导出管理中是否包含导出数据    3、将导出的数据返回
+    #定义为局部变量使用
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #对比前的导出管理总数
+    ${j}    Get My Export    get    ${agent}    ${filter}    ${range}
+    ${preCount}    set variable    ${j['totalElements']}
+    #导出指定关键字模块的数据
+    ${specifyResult}    run keyword    ${functionName}    @{paramList}
+    #获取当前的时间
+    ${i}    Get My Export And Diff Counts    ${agent}    ${filter}    ${range}    ${preCount}
+    ${status}    Run_keyword_and_return_status    Should Be Equal    ${i}    {}
+    run keyword if    ${status}    Fail    导出历史会话数据后，数据一直不是Finished
+    run keyword if    '${i['fileSize']}' == '0.0'    Fail    导出历史会话的文件大小为0.0，${i}
+    should be equal    ${i['tenantId']}    ${agent.tenantId}    返回结果中租户id不正确，${i}
+    should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
+    #将导出管理中该数据的id放到字典中
+    set to dictionary    ${specifyResult}     mediaId=${i['mediaId']}    fileName=${i['fileName']}    id=${i['id']}
+    Return From Keyword    ${specifyResult}
 
 Find Specified Folder Path
     [Arguments]    ${folderName}
@@ -166,21 +187,24 @@ Get Rows List
     :FOR    ${i}    IN   @{rowValues}
     \    #判断类型是否为空
     \    ${if_empty}    Run_keyword_and_return_status    Should Be Equal    ${i[1]}    ${Empty}
-    \    ${if_point}    Run_keyword_and_return_status    Should Contain    '${i[1]}'    .
+    \    ${if_float}    is_float    ${i[1]}    #判断是否为float-浮点型
     \    Continue For Loop If    ${if_empty}
     \    ##判断类型是否为float,将转化成int放置到数组中
-    \    ${convertInt}    Run_keyword_if    ${if_point}    Convert To Integer    ${${i[1]}}
-    \    Run_keyword_if    ${if_point}    Append To List    ${sheetValueList}    ${convertInt}
-    \    Continue For Loop If    ${if_point}
+    \    ${convertInt}    Run_keyword_if    ${if_float}    Convert To Integer    ${i[1]}
+    \    Run_keyword_if    ${if_float}    Append To List    ${sheetValueList}    ${convertInt}
+    \    Continue For Loop If    ${if_float}
     \    #替换消息中\n字符串为空
     \    ${rowValue}    Replace String    ${i[1]}    \n    ${EMPTY}
     \    #将值最左面的空格去除
     \    ${rowValue}    evaluate    "${rowValue}".lstrip()
+    \    #将编码后的字符进行解码
+    # \    ${rowValue}    format_code    ${rowValue}
+    \    ${rowValue}    evaluate	'${rowValue}'.decode('utf-8')
     \    Append To List    ${sheetValueList}    ${rowValue}
     log list    ${sheetValueList}
     return from keyword    ${sheetValueList}
 
-Should Be HistoryFiles Excel Equal
+Should Be ExportFiles Excel Equal
     [Arguments]    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}  
     [Documentation]    对比表格中的每行数据
     #断言模板数据是否在实际接口值中

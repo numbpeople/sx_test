@@ -78,3 +78,44 @@ Create Temp Agent
     ${resp}=    /v1/Admin/Agents    post    ${agent}    ${empty}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     [Return]    ${AgentUser}
+
+Create Specify Agent
+    [Arguments]    ${agent}
+    [Documentation]    创建管理员账号包含租户id的客服
+    #设置局部变量
+    ${uuid}    Uuid 4
+    ${name}    set variable    ${agent.tenantId}${uuid}
+    &{agentAccount}=    create dictionary    username=${name}@qq.com    password=lijipeng123    maxServiceSessionCount=10    nicename=${name}    permission=1
+    ...    roles=admin,agent
+    ${data}=    set variable    {"nicename":"${agentAccount.nicename}","username":"${agentAccount.username}","password":"${agentAccount.password}","confirmPassword":"${agentAccount.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${agentAccount.maxServiceSessionCount}","permission":${agentAccount.permission},"roles":"${agentAccount.roles}"}
+    ${agentFilter}    copy dictionary    ${AgentFilterEntity}
+    #新增坐席
+    ${j}    Set Agents    post    ${agent}    ${agentFilter}    ${data}
+    should be equal    ${j['username']}    ${agentAccount.username}    接口客服列表返回值中的username字段不正确，${j}
+    should be equal    ${j['nicename']}    ${agentAccount.nicename}    接口客服列表返回值中的nicename字段不正确，${j}
+    should be equal    ${j['tenantId']}    ${agent.tenantId}    接口客服列表返回值中的tenantId字段不正确，${j}
+    should be equal    ${j['state']}    Offline    接口客服列表返回值中的state字段不正确，${j}
+    should be equal    ${j['status']}    Enable    接口客服列表返回值中的Enable字段不正确，${j}
+    should be equal    ${j['maxServiceSessionCount']}    ${${agentAccount.maxServiceSessionCount}}    接口客服列表返回值中的maxServiceSessionCount字段不正确，${j}
+    should be equal    ${j['roles']}    ${agent.roles}    接口客服列表返回值中的roles字段不正确，${j}
+    set to dictionary    ${agentAccount}    agentUserId=${j['userId']}    state=${j['state']}    status=${j['status']}
+    return from keyword    ${agentAccount}
+
+Download Agent Data
+    [Arguments]    ${agent}    ${filter}    ${language}=zh-CN
+    [Documentation]    导出客服信息
+    ...    ${language}:值为en-US或zh-CN
+    ${resp}=    /v1/Admin/Agents/file    ${agent}    ${filter}    ${language}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+    return from keyword    ${resp}
+
+Create Agent And Download Data
+    [Arguments]    ${agent}    ${language}=zh-CN
+    [Documentation]    1、创建坐席    2、导出客服信息
+    #设置局部变量
+    ${agentFilter}    copy dictionary    ${AgentFilterEntity}
+    ${agentInfo}    Create Specify Agent    ${agent}
+    #设置导出该创建的客服数据
+    set to dictionary    ${agentFilter}    keyValue=${agentInfo.username}
+    Download Agent Data    ${agent}    ${agentFilter}    ${language}
+    return from keyword    ${agentInfo}

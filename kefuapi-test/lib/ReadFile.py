@@ -60,3 +60,21 @@ class ReadFile(object):
            code.write(result)
         code.close()
         print "save file end"
+
+    def format_code(self,s):
+        """
+        保存文件到本地目录
+
+        param:
+        s:编码后的字符，例如：\xe4\xbc\x9a\xe8\xaf\x9dID
+
+        """
+        print "format_code start"
+        s.decode('utf-8')
+        str=(s.decode('utf-8'))
+        print "format_code end"
+        return  str
+
+if __name__ == '__main__':
+        a = ReadFile()
+        print a.format_code('\xe4\xbc\x9a\xe8\xaf\x9d')

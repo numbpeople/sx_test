@@ -64,3 +64,13 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     #删除坐席
     ${j1}    Delete AgentUser    ${j['userId']}
     Should Be Equal    ${j1['status']}    OK    接口返回中status不等于OK: {j1}
+
+导出坐席数据(/v1/Admin/Agents/file)
+    [Documentation]    1、创建坐席账号    2、导出该坐席数据
+    #设置局部变量
+    ${agentFilter}    copy dictionary    ${AgentFilterEntity}
+    ${agentInfo}    Create Specify Agent    ${AdminUser}
+    #设置导出该创建的客服数据
+    set to dictionary    ${agentFilter}    keyValue=${agentInfo.username}
+    Download Agent Data    ${AdminUser}    ${agentFilter}    zh-CN
+    

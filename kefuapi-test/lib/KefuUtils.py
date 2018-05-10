@@ -59,12 +59,20 @@ def Get_Last_Month():
     lst_last = datetime.date(datetime.date.today().year,datetime.date.today().month,1)-datetime.timedelta(1)
     return str(lst_fist),str(lst_last)
 
-
+def is_float(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 if __name__ == '__main__':
-    vdate_str = '2017-12-14'
-    print Get_Week(vdate_str)
-    print Get_Last_Month()
-    print JsonLoads2Obj('{"listData":[1,2,3],"strData":"test python obj 2 json","i":{"tt":"111"}}').i.tt
-
-    
+    # vdate_str = '2017-12-14'
+    # print Get_Week(vdate_str)
+    # print Get_Last_Month()
+    # print JsonLoads2Obj('{"listData":[1,2,3],"strData":"test python obj 2 json","i":{"tt":"111"}}').i.tt
+    a = 'leoli@easemob.com'
+    b = '1313.13'
+    c = "客服昵称"
+    d = 0.0
+    print is_float(d)

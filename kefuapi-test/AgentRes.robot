@@ -20,7 +20,7 @@ ${groupType}      System
 @{visitorUserId}    6c701921-59b5-4776-b6e1-749ec8703307
 &{visitorUser}    userId=29a68433-f95e-48bd-97e4-1ae53f68a462    nicename=webim-visitor-2CRVGCTG6HWGEJ7E9PGF    username=webim-visitor-2CRVGCTG6HWGEJ7E9PGF
 @{WeiboTechChannelType}    weibo    wechat
-&{AgentFilterEntity}    page=0    size=8    keyValue=    orderBy=    orderMethod=    statuses=Enable%2CSubmit
+&{AgentFilterEntity}    page=0    size=8    keyValue=    orderBy=    orderMethod=    statuses=Enable,Submit
 &{FilterEntity}    page=1    per_page=15    originType=${EMPTY}    state=Terminal,Abort    isAgent=${True}    techChannelId=    visitorName=
 ...               summaryIds=    sortOrder=desc    techChannelType=    categoryId=-1    subCategoryId=-1    userTagIds=    enquirySummary=
 ...               total_pages=1    total_entries=1    firstResponseTime=0    sessionTime=0    avgResponseTime=0    visitorMark=    sessionTag=

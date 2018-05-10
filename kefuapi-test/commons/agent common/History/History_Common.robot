@@ -29,18 +29,18 @@ Get History
     Return From Keyword    ${j}
 
 Export My History
-    [Arguments]    ${method}    ${agent}    ${filter}    ${range}
+    [Arguments]    ${method}    ${agent}    ${filter}    ${range}    ${userId}=    ${language}=en-US
     [Documentation]    导出自己的历史会话数据
     ...
     ...    Arguments：
     ...
-    ...    ${method} | ${agent} | ${filter} | ${date}
+    ...    ${method} | ${agent} | ${filter} | ${date} | ${language}:值为en-US或zh-CN
     ...
     ...    Return：
     ...
     ...    请求结果：${j}
     #导出自己的历史会话数据
-    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}
+    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}    ${language}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}:${resp.text}
 
 Agent CallingBack Conversation

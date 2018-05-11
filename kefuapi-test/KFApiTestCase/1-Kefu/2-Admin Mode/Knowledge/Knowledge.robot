@@ -109,8 +109,9 @@ Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.ro
     #获取草稿知识
     ${j}    Set Knowledge Entry    get    ${AdminUser}    ${filter}
     should be equal    ${j['status']}    OK    返回值status不是OK：${j}
-    #因为刚添加知识在数据第一个，所以获取最新一条知识进行判断
-    should be equal    ${j['entities'][0]['entryId']}    ${entryResult.entryId}    返回值entryId不是${entryResult.entryId},实际entryId是：${j['entities'][0]['entryId']}：${j}
+    #判断结果中是否包含刚刚添加的操作知识
+    ${i}    Entry Should Contain EntryId    ${j['entities']}    ${entryResult.entryId}    
+    run keyword if    "${i}" == "{}"    获取草稿知识数据中,并不包含刚刚添加的数据entryId:${entryResult.entryId} , ${j}
 
 修改知识标题与内容(/v1/tenants/{tenantId}/knowledge/entries)
     [Documentation]    1、创建知识并发布    2、修改刚创建的知识

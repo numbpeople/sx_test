@@ -46,6 +46,19 @@ class ReadFile(object):
         csv.to_excel(savefilename, sheet_name=wsheet)
         print 'transfer format end'
 
+    def xlsx_to_xls(self,filename,savefilename):
+        """
+        将xlsx文件转化为xls文件
+
+        param:
+        filename:文件地址，例如：C:/Users/leo/Desktop/accountInfo.xlsx
+        wsheet：位于哪个工作表，例如：account
+        savefilename：格式转化后保存的路径：C:/Users/leo/Desktop/accountInfo.xls
+
+        """
+        x = pd.read_excel(filename)
+        x.to_excel(savefilename, index=False)
+    
     def save_file(self,filename,result):
         """
         保存文件到本地目录

@@ -133,3 +133,10 @@ Export knowledge Entry
     ${resp}=    /v1/tenants/{tenantId}/knowledge/export    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Return From Keyword    ${resp} 
+
+Entry Should Contain EntryId
+    [Arguments]    ${result}    ${entryId}
+    [Documentation]    判断结果中是否包含指定的entryId值,包含返回结果,否则返回{}
+    :FOR    ${i}    IN    @{result}
+    \    return from keyword if    ${i['entryId']} == ${entryId}    ${i}
+    return from keyword    {}

@@ -16,12 +16,11 @@
     Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/tenants/{tenantId}/commonphrases/exportFile
-    [Arguments]    ${agent}    ${orgEntity}    ${FilterEntity}    ${DateRange}    ${timeout}
+    [Arguments]    ${agent}    ${timeout}    ${language}
     [Documentation]    导出公共常用语
-    ${header}=    Create Dictionary    Content-Type=application/json
+    ${header}=    Create Dictionary    Accept-Language=${language}
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/commonphrases/exportFile
-    ${params}=    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&channelId=${FilterEntity.channelId}&sessionTag=${FilterEntity.sessionTag}&sessionType=${FilterEntity.sessionType}&agentUserId=${agent.userId}&objectType=${FilterEntity.objectType}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx
     [Arguments]    ${agent}    ${timeout}

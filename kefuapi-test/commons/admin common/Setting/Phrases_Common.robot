@@ -43,6 +43,13 @@ Commonphrases ExportFile
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code} ,${resp.content}
     Return From Keyword    ${resp}
 
+Export Commonphrases Template
+    [Arguments]    ${agent}    ${language}=zh-CN
+    [Documentation]    导出常用语下载模板
+    ${resp}=    /download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx    ${AdminUser}    ${timeout}    ${language}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    Return From Keyword    ${resp}
+
 Create Commonphrases
     [Arguments]    ${agent}
     [Documentation]    创建分类和添加常用语数据

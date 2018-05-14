@@ -33,3 +33,18 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/quality/tenants/${agent.tenantId}/appeals/${id}
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/quality/tenants/{tenantId}/appeals/{id}/operations
+    [Arguments]    ${agent}    ${timeout}    ${id}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/quality/tenants/${agent.tenantId}/appeals/${id}/operations
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/quality/tenants/{tenantId}/appeals/{id}/comments
+    [Arguments]    ${agent}    ${timeout}    ${method}    ${id}    ${data}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/quality/tenants/${agent.tenantId}/appeals/${id}/comments
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+

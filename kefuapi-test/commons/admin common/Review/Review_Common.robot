@@ -142,3 +142,19 @@ Change Appeal Status
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     return from keyword    ${j}
+
+Get Appeal Operations
+    [Arguments]    ${id}
+    [Documentation]    获取申诉的状态变更记录
+    ${resp}=    /v1/quality/tenants/{tenantId}/appeals/{id}/operations    ${AdminUser}    ${timeout}    ${id}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    return from keyword    ${j}
+
+Set Appeal Comment
+    [Arguments]    ${method}    ${id}    ${data}=
+    [Documentation]    新增/获取 申诉评论
+    ${resp}=    /v1/quality/tenants/{tenantId}/appeals/{id}/comments    ${AdminUser}    ${timeout}    ${method}    ${id}    ${data}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    return from keyword    ${j}

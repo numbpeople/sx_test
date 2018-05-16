@@ -4,6 +4,7 @@ import hmac
 import base64
 import datetime
 import json
+import os
 
 class JSON2Object:
    def __init__(self, d):
@@ -66,13 +67,52 @@ def is_float(s):
     except ValueError:
         return False
 
+def del_files(path):
+    print 'start del files in path:' + path
+    ls = os.listdir(path)
+    for i in ls:
+        c_path = os.path.join(path, i)
+#         c_path = r'%s' % c_path
+#         c_path = c_path.encode('unicode-escape').decode('string_escape')  
+        c_path = c_path.decode('utf-8').decode('utf-8') 
+        c_path = c_path.replace('\\', '/')
+        print c_path
+        if os.path.isdir(c_path):
+            del_file(c_path)
+            print 'del_file' + c_path
+            c_path.close()
+        else:
+            os.remove(c_path)
+            print 'remove' + c_path
+#             c_path.close()
+    print 'finish del files in path:' + path
+
+def mkdir(path):
+    # 判断路径是否存在
+    # 存在     True
+    # 不存在   False
+    isExists=os.path.exists(path)
+ 
+    # 判断结果
+    if not isExists:
+        # 如果不存在则创建目录
+        # 创建目录操作函数
+        os.makedirs(path) 
+        print path+' 创建成功'
+        return True
+    else:
+        # 如果目录存在则不创建，并提示目录已存在
+        print path+' 目录已存在'
+        return False
+
 if __name__ == '__main__':
     # vdate_str = '2017-12-14'
     # print Get_Week(vdate_str)
     # print Get_Last_Month()
     # print JsonLoads2Obj('{"listData":[1,2,3],"strData":"test python obj 2 json","i":{"tt":"111"}}').i.tt
-    a = 'leoli@easemob.com'
-    b = '1313.13'
-    c = "客服昵称"
-    d = 0.0
-    print is_float(d)
+#     a = 'leoli@easemob.com'
+#     b = '1313.13'
+#     c = "客服昵称"
+#     d = 0.0
+#     print is_float(d)
+    mkdir('C:/Users/leo/git/kefu-auto-test/kefuapi-test/tempdata')

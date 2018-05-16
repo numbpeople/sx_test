@@ -75,3 +75,24 @@ Export ServiceSessionSummary Template
     ${resp}=    /download/tplfiles/%E4%BC%9A%E8%AF%9D%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx    ${agent}    ${timeout}    ${language}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     return from keyword    ${resp}
+
+Delete ServiceSessionSummaries With SpecifiedKey
+    [Documentation]    删除包含模板的会话标签
+    #设置会话标签名称包含指定关键字
+    ${preUsername}=    convert to string    ${AdminUser.tenantId}
+    #创建参数字典,根据指定key搜索会话标签
+    &{conversationTagEntity}    create dictionary    systemOnly=false    buildCount=true
+    #获取会话标签数据
+    ${j}    Get Conversation Tags    get    ${AdminUser}    0    ${conversationTagEntity}
+    :FOR    ${i}    IN    @{j}
+    \    ${username}=    convert to string    ${i['name']}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${username}    ${preUsername}
+    \    ${userIdValue}    set variable    ${i['id']}
+    \    Run Keyword If    '${status}' == 'True'    Delete ServiceSessionSummaries With ServiceSessionSummaryId   ${AdminUser}    ${userIdValue}
+
+Delete ServiceSessionSummaries With ServiceSessionSummaryId
+    [Arguments]    ${agent}    ${ServiceSessionSummaryId}
+    [Documentation]    根据id删除会话标签
+    #删除会话标签
+    ${j}    Set ServiceSessionSummary    delete    ${agent}    ${ServiceSessionSummaryId}
+    Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}

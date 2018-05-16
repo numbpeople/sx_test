@@ -156,7 +156,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     ${resp}=    Get Robot Rules Template    ${AdminUser}
     Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败
 
-导出知识规则(/v3/Tenants/{tenantId}/robots/rule/template)
+导出知识规则(/v3/Tenants/{tenantId}/robots/rule/export)
     [Documentation]    导出知识规则
     #导出知识规则
     ${resp}=    Export Robot Rules    ${AdminUser}

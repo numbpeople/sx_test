@@ -285,17 +285,17 @@
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robot/menu/template/export
-    [Arguments]    ${agent}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
+    [Arguments]    ${agent}    ${timeout}    ${language}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=${language}
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/menu/template/export
-    ${params}    set variable    locale=zh_CN
+    ${params}    set variable    locale=${language}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v3/Tenants/{tenantId}/robots/menus/items/export
-    [Arguments]    ${agent}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
+    [Arguments]    ${agent}    ${timeout}    ${language}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=${language}
     ${uri}=    set variable    /v3/Tenants/${agent.tenantId}/robots/menus/items/export
-    ${params}    set variable    locale=zh_CN
+    ${params}    set variable    locale=${language}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/Tenants/{tenantId}/robots/robotGuide/categorys

@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Library           ../../../lib/KefuUtils.py    
 Resource          ../../../api/BaseApi/History/HistoryApi.robot
 Resource          ../../../api/BaseApi/Export/Export_Api.robot
 Resource          ../Conversations/Conversations_Common.robot
@@ -166,7 +167,7 @@ Run keyword And Export Specify Data
 Find Specified Folder Path
     [Arguments]    ${folderName}
     [Documentation]    找到项目一级的文件夹的路径值
-    #找到Testdata文件夹的路径值
+    #找到指定文件夹的路径值
     ${path}    set variable    ${CURDIR}
     ${path}    evaluate    os.path.abspath(os.path.dirname('${path}')+os.path.sep+"..")    os
     ${path}    set variable    ${path}${/}${folderName}
@@ -174,7 +175,18 @@ Find Specified Folder Path
     # evaluate    os.chmod('${path}',stat.S_IXGRP)	os,stat    #给文件夹赋权限
     # evaluate    os.chmod('${path}',stat.S_IWOTH)	os,stat    #给文件夹赋权限
     # evaluate    os.chmod('${path}',stat.S_IRWXO)	os,stat    #给文件夹赋权限
+    #创建该文件夹,判断当前是否存在，不存在则创建
+    mkdir    ${path}
     return from keyword    ${path}
+
+Del Export Files
+    [Documentation]    #删除导出缓存在目录下的文件
+    #删除导出缓存在目录下的文件
+    ${folderName}    set variable    tempdata
+    ${path}    Find Specified Folder Path    ${folderName}
+    #删除文件夹
+    evaluate    os.chmod('${path}', stat.S_IWRITE)    os,stat
+    evaluate    shutil.rmtree('${path}')    shutil
 
 Get Rows List
     [Arguments]    ${xlsPath}    ${rowNum}
@@ -202,6 +214,8 @@ Get Rows List
     \    ${rowValue}    evaluate	'${rowValue}'.decode('utf-8')
     \    Append To List    ${sheetValueList}    ${rowValue}
     log list    ${sheetValueList}
+    #释放打开使用的资源文件
+    Close File
     return from keyword    ${sheetValueList}
 
 Should Be ExportFiles Excel Equal

@@ -14,6 +14,7 @@
 *.html
 *.xml
 *.iml
+*.log
 
 # export Files #
 *.csv

@@ -5,7 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Library           ExcelLibrary
+Library           ../../../../lib/ExcelLibraryExtra/ExcelLibraryExtra.py
 Library           ../../../../lib/ReadFile.py    
 Library           ../../../../lib/KefuUtils.py    
 Resource          ../../../../AgentRes.robot

@@ -396,16 +396,16 @@ Get Robot Menus
     Return From Keyword    ${j}
 
 Download Robot Menu Template
-    [Arguments]    ${agent}
+    [Arguments]    ${agent}    ${language}=zh-CN
     [Documentation]    下载自定义菜单模板
-    ${resp}=    /v1/Tenants/{tenantId}/robot/menu/template/export    ${agent}    ${timeout}
+    ${resp}=    /v1/Tenants/{tenantId}/robot/menu/template/export    ${agent}    ${timeout}    ${language}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Return From Keyword    ${resp}
 
 Export Robot Menu
-    [Arguments]    ${agent}
+    [Arguments]    ${agent}    ${language}=zh-CN
     [Documentation]    导出自定义菜单
-    ${resp}=    /v3/Tenants/{tenantId}/robots/menus/items/export    ${agent}    ${timeout}
+    ${resp}=    /v3/Tenants/{tenantId}/robots/menus/items/export    ${agent}    ${timeout}    ${language}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     Return From Keyword    ${resp}
 

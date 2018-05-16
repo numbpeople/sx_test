@@ -49,13 +49,13 @@
     ...    timeout=${timeout}
 
 /download/tplfiles/{fileName}.xlsx
-    [Arguments]    ${agent}    ${fileName}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
+    [Arguments]    ${agent}    ${fileName}    ${timeout}    ${language}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=${language}
     ${uri}=    set variable    /download/tplfiles/${fileName}.xlsx
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/tenants/{tenantId}/knowledge/export
-    [Arguments]    ${agent}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
+    [Arguments]    ${agent}    ${timeout}    ${language}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=${language}
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/knowledge/export
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}

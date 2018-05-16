@@ -119,19 +119,19 @@ List Should Correct
 	    \    should be true    "${i['sendType']}" == "${sendTypeValue}"    返回值中${i['originType']}渠道与所定义的值不相等。实际值：${i['sendType']}，预期值：${sendTypeValue}
 
 Get knowledge Template
-    [Arguments]    ${agent}    ${fileName}
+    [Arguments]    ${agent}    ${fileName}    ${language}=zh-CN
     [Documentation]    获取知识库的模板
     #获取知识库的模板
-    ${resp}=    /download/tplfiles/{fileName}.xlsx    ${agent}    ${fileName}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${resp}=    /download/tplfiles/{fileName}.xlsx    ${agent}    ${fileName}    ${timeout}    ${language}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     Return From Keyword    ${resp}
 
 Export knowledge Entry
-    [Arguments]    ${agent}
+    [Arguments]    ${agent}    ${language}=zh-CN
     [Documentation]    导出取知识库的所有知识
     #导出取知识库的所有知识
-    ${resp}=    /v1/tenants/{tenantId}/knowledge/export    ${agent}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${resp}=    /v1/tenants/{tenantId}/knowledge/export    ${agent}    ${timeout}    ${language}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     Return From Keyword    ${resp} 
 
 Entry Should Contain EntryId

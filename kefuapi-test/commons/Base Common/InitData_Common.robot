@@ -25,6 +25,9 @@ Resource          ../../api/MicroService/Webapp/OutDateApi.robot
 Resource          ../../api/HomePage/Login/Login_Api.robot
 Resource          ../admin common/Channels/App_Common.robot
 Resource          ../admin common/Robot/RobotSettings_Common.robot
+Resource          ../agent common/Export/Export_Common.robot
+Resource          ../admin common/Setting/ConversationTags_Common.robot
+Resource          ../admin common/Setting/CustomerTags_Common.robot
 
 *** Keywords ***
 Login Init
@@ -233,3 +236,6 @@ Clear Data
     Delete Queues    #删除技能组
     Delete Agentusers    #删除坐席
     Delete Robot Datas With SpecifiedKey    #删除机器人分类、知识规则、自定义菜单
+    Delete ServiceSessionSummaries With SpecifiedKey    #删除会话标签测试数据
+    Delete UserTag With SpecifiedKey    #删除客户标签测试数据
+    Del Export Files    #删除导出缓存在目录下的文件

@@ -24,10 +24,10 @@ Resource          ../../commons/admin common/Members/Agents_Common.robot
 @{elementstatelist}    ''    ' noAnswer'    ' selected'    ' activated'    ' hide'
 
 *** Keywords ***
-smoketest case 
+smoketest case
     [Arguments]    ${agent}    ${json}    ${mode}=Agent
-    switch browser    ${agent.session}    
-    Check Base Module    ${kefuurl}    ${agent}    ${json}    ${mode} 
+    switch browser    ${agent.session}
+    Check Base Module    ${kefuurl}    ${agent}    ${json}    ${mode}
 
 UI Agent Init
     [Arguments]    ${agent}
@@ -42,7 +42,7 @@ UI Agent Init
     #设置tenantId
     Execute Javascript    localStorage.setItem('tenantId','${uiagent.tenantId}')
     #获取权限list
-    ${resourcelist}=    Get ResourceList  ${uiagent}
+    ${resourcelist}=    Get ResourceList    ${uiagent}
     #添加所有权限name到resourcelist
     ${uiagent.resourcelist}    copy list    ${resourcelist}
     [Return]    ${uiagent}
@@ -266,7 +266,7 @@ KefuUI Setup
     #登录管理员
     ${agent}    UI Agent Init    ${admin}
     #灰度对所有坐席生效，仅需获取一次
-    ${graylist}=    Get GrayList  ${agent}
+    ${graylist}=    Get GrayList    ${agent}
     #添加灰度list
     ${agent.graylist}    copy list    ${graylist}
     set global variable    ${uiadmin}    ${agent}
@@ -285,7 +285,6 @@ KefuUI Setup
     Get ScheduleId    ${uiadmin}
     #允许坐席设置接待人数
     Set Option    ${Admin}    allowAgentChangeMaxSessions    true
-
 
 KefuUI Teardown
     Close All Browsers

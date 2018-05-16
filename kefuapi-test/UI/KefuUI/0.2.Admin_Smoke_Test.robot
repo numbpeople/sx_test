@@ -31,6 +31,7 @@ Resource          ../../UIcommons/Kefu/monitorres.robot
 Resource          ../../UIcommons/Kefu/statisticres.robot
 Resource          ../../UIcommons/Kefu/vocres.robot
 Resource          ../../UIcommons/Kefu/notifyres.robot
+Resource          ../../UIcommons/Kefu/ticketsres.robot
 
 *** Test Cases ***
 查看首页
@@ -128,6 +129,41 @@ Resource          ../../UIcommons/Kefu/notifyres.robot
 查看留言
     [Template]    smoketest case
     ${uiadmin}    ${notesbasejson}    Admin
+
+查看工单
+    [Template]    smoketest case
+    #查看工单帮助主题自定义
+    ${uiadmin}    ${tickethelptopicbasejson}    Admin
+    #查看工单优先级自定义
+    ${uiadmin}    ${ticketprioritiesbasejson}    Admin
+    #查看工单标签自定义
+    ${uiadmin}    ${tickettagbasejson}    Admin
+    #查看工单事件推送配置
+    ${uiadmin}    ${ticketeventbasejson}    Admin
+    #查看邮箱设置
+    ${uiadmin}    ${ticketemailbasejson}    Admin
+    #查看工单状态自定义
+    ${uiadmin}    ${ticketstatusbasejson}    Admin
+    #查看SLA计划
+    ${uiadmin}    ${ticketslabasejson}    Admin
+    #查看工单统计
+    ${uiadmin}    ${ticketstatisticbasejson}    Admin
+    #查看渠道邮箱自定义
+    ${uiadmin}    ${ticketchannelemailbasejson}    Admin
+    #查看渠道分配规则设置
+    ${uiadmin}    ${ticketchannelbasejson}    Admin
+    #查看自定义表单
+    ${uiadmin}    ${ticketformsbasejson}    Admin
+    #查看JIRA对接
+    ${uiadmin}    ${ticketbasicconfigbasejson}    Admin
+    #查看满意度评价邀请设置
+    ${uiadmin}    ${ticketsatisfactionbasejson}    Admin
+    #查看触发器
+    ${uiadmin}    ${tickettriggerbasejson}    Admin
+    #查看内容、回复模板设置
+    ${uiadmin}    ${ticketcannedreplybasejson}    Admin
+    #查看工单质检
+    ${uiadmin}    ${ticketqualitybasejson}    Admin
 
 查看客户中心
     [Template]    smoketest case

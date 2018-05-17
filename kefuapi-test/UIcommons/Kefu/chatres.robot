@@ -13,7 +13,7 @@ ${maxcallinlistr}    '{"elements":[{"name":"li","xPath":"/html/body/ul[1]/li[%d]
 @{actviedattributes}    ''    ' activated'
 
 *** Keywords ***
-chat smoketest case 
+chat smoketest case
     [Arguments]    ${agent}
     set test variable    ${maxnum}    1
     #设置状态为在线，接待数为1
@@ -107,13 +107,23 @@ Session Not In Visitors
     should not contain    ${j}    ${visitorname}    接口返回结果不为空
 
 Clear Agent All Sessions
-    [Arguments]    ${agent}    ${filter}    ${range}
-    #检查结果
+    [Arguments]    ${admin}    ${agent}    ${filter}    ${range}
+    #检查结果，关闭坐席进行中会话
     Stop All Processing Conversations    ${agent}
-    Stop Specified Sessions In Waitings    ${agent}    ${filter}    ${range}
+    #检查待接入，管理员关闭符合条件得待接入会话（普通坐席无法关闭带接入）
+    Stop Specified Sessions In Waitings    ${admin}    ${filter}    ${range}
+
+Clear Agent All Sessions And Delete Second Queue
+    [Arguments]    ${admin}    ${agent}    ${filter}    ${range}    ${queueId}
+    #检查结果，关闭坐席进行中会话
+    Stop All Processing Conversations    ${agent}
+    #检查待接入，管理员关闭符合条件得待接入会话（普通坐席无法关闭带接入）
+    Stop Specified Sessions In Waitings    ${admin}    ${filter}    ${range}
+    Delete Agentqueue    ${queueId}    ${admin}
 
 AutoSchedule Case
     [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}    ${scheduleOnDutyOnlyEnable}    ${WorkState}    ${EnableSchedule}
+    ...    ${msgtype}='queue'
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
@@ -128,10 +138,12 @@ AutoSchedule Case
     #设置上下班
     Set Worktime Ext    ${WorkState}    ${Admin}    ${timeScheduleId}
     #跳转到进行中会话页面并确认页面加载完毕
+    switch browser    ${agent.session}
     goto and checkchatebasejson    ${agent}
     #步骤7：发送消息，并指定到新技能组
     ${guest}    Generate Uuidguest    app
-    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${suitequeue.queueName}
+    Run Keyword If    ${msgtype}=='queue'    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${suitequeue.queueName}
+    ...    ELSE IF    ${msgtype}=='agent'    Send Uuidmsg By Specified Agent    ${restentity}    ${guest}    ${agent.username}
     #设置筛选条件：
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -139,12 +151,13 @@ AutoSchedule Case
     #检查会话进入进行中：格式化会话列表json并检查ui
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     Run Keyword If    ${EnableSchedule}    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3
+    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    ${ScheduleTimeout}
     ...    ${guest.userName}
-    [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
+    [Teardown]    Clear Agent All Sessions    ${Admin}    ${agent}    ${filter}    ${range}
 
 KeepaliveSchedule By Change MaxServiceUserNumber Case
     [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}    ${scheduleOnDutyOnlyEnable}    ${WorkState}    ${EnableSchedule}
+    ...    ${msgtype}='queue'
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
@@ -161,10 +174,12 @@ KeepaliveSchedule By Change MaxServiceUserNumber Case
     #设置上下班
     Set Worktime Ext    ${WorkState}    ${Admin}    ${timeScheduleId}
     #跳转到进行中会话页面并确认页面加载完毕
+    switch browser    ${agent.session}
     goto and checkchatebasejson    ${agent}
     #步骤7：发送消息，并指定到新技能组
     ${guest}    Generate Uuidguest    app
-    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${suitequeue.queueName}
+    Run Keyword If    ${msgtype}=='queue'    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${suitequeue.queueName}
+    ...    ELSE IF    ${msgtype}=='agent'    Send Uuidmsg By Specified Agent    ${restentity}    ${guest}    ${agent.username}
     #设置筛选条件并搜索待接入：
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -174,13 +189,13 @@ KeepaliveSchedule By Change MaxServiceUserNumber Case
     Set MaxServiceUserNumber By UI    1
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     Run Keyword If    ${EnableSchedule}    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3
+    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    ${ScheduleTimeout}
     ...    ${guest.userName}
-    [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
+    [Teardown]    Clear Agent All Sessions    ${Admin}    ${agent}    ${filter}    ${range}
 
 KeepaliveSchedule By Change Status Case
     [Arguments]    ${Admin}    ${agent}    ${status}    ${serviceSessionPreScheduleEnable}    ${scheduleOnDutyOnlyEnable}    ${WorkState}
-    ...    ${EnableSchedule}
+    ...    ${EnableSchedule}    ${msgtype}='queue'
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
@@ -196,10 +211,12 @@ KeepaliveSchedule By Change Status Case
     #设置上下班
     Set Worktime Ext    ${WorkState}    ${Admin}    ${timeScheduleId}
     #跳转到进行中会话页面并确认页面加载完毕
+    switch browser    ${agent.session}
     goto and checkchatebasejson    ${agent}
     #步骤7：发送消息，并指定到新技能组
     ${guest}    Generate Uuidguest    app
-    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${suitequeue.queueName}
+    Run Keyword If    ${msgtype}=='queue'    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${suitequeue.queueName}
+    ...    ELSE IF    ${msgtype}=='agent'    Send Uuidmsg By Specified Agent    ${restentity}    ${guest}    ${agent.username}
     #设置筛选条件并搜索待接入：
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -210,19 +227,19 @@ KeepaliveSchedule By Change Status Case
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     #检查是否进行中有会话，或者会话停留在进行中
     Run Keyword If    ${EnableSchedule}    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3
+    ...    ELSE    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    ${ScheduleTimeout}
     ...    ${guest.userName}
-    [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
+    [Teardown]    Clear Agent All Sessions    ${Admin}    ${agent}    ${filter}    ${range}
 
 Specify Agent AutoSchedule Case
-    [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}    ${MaxServiceUserNumber}
+    [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}    ${MaxServiceUserNumber}    ${status}
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
     ...    ${serviceSessionPreScheduleEnable}:是否开启预调度，只能为小写的false或true，不能加引号
     ...    ${MaxServiceUserNumber}:接待数，0关闭调度，1开启调度
-    #设置接待数
-    Set Agent MaxServiceUserNumber    ${agent}    ${MaxServiceUserNumber}
+    #设置接待数和状态
+    Set Agent StatusAndMaxServiceUserNumber    ${agent}    ${status}    ${MaxServiceUserNumber}
     #关闭预调度排队
     Set Option    ${Admin}    serviceSessionJudgeOverloadEnable    false
     #是否开启预调度
@@ -230,6 +247,7 @@ Specify Agent AutoSchedule Case
     #设置为全天调度开关打开是仅上班调度
     Set Option    ${Admin}    scheduleOnDutyOnlyEnable    false
     #跳转到进行中会话页面并确认页面加载完毕
+    switch browser    ${agent.session}
     goto and checkchatebasejson    ${agent}
     #步骤7：发送消息，并指定坐席
     ${guest}    Generate Uuidguest    app
@@ -241,36 +259,35 @@ Specify Agent AutoSchedule Case
     #检查会话进入进行中：格式化会话列表json并检查ui
     @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
     Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
+    [Teardown]    Clear Agent All Sessions    ${Admin}    ${agent}    ${filter}    ${range}
 
-Specify Agent KeepaliveSchedule Case
+Should Not Schedule Other Queue Session
     [Arguments]    ${Admin}    ${agent}    ${serviceSessionPreScheduleEnable}
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
     ...    ${serviceSessionPreScheduleEnable}:是否开启预调度，只能为小写的false或true，不能加引号
-    ...    ${MaxServiceUserNumber}:接待数，0关闭调度，1开启调度
-    #设置接待数
-    Set Agent MaxServiceUserNumber    ${agent}    0
+    #设置状态在线，接待数1
+    Set Agent StatusAndMaxServiceUserNumber    ${agent}    ${kefustatus[0]}    1
     #关闭预调度排队
-    Set Option    ${Admin}    serviceSessionJudgeOverloadEnable    true
+    Set Option    ${Admin}    serviceSessionJudgeOverloadEnable    false
     #是否开启预调度
     Set Option    ${Admin}    serviceSessionPreScheduleEnable    ${serviceSessionPreScheduleEnable}
     #设置为全天调度开关打开是仅上班调度
     Set Option    ${Admin}    scheduleOnDutyOnlyEnable    false
+    #创建新技能组
+    ${q2}    Create Random Agentqueue    ${uiadmin}
     #跳转到进行中会话页面并确认页面加载完毕
-    goto and checkchatebasejson    ${agent}
-    #步骤7：发送消息，并指定坐席
+    switch browser    ${agent.session}
+    goto and checkchatebasejson    ${uiadmin}
+    #步骤8：发送消息，并指定到新技能组
     ${guest}    Generate Uuidguest    app
-    Send Uuidmsg By Specified Agent    ${restentity}    ${guest}    ${agent.username}
-    #设置筛选条件并搜索待接入，确认会话指定时间内未被调度：
+    Send Uuidmsg By Specified Queue    ${restentity}    ${guest}    ${q2.queueName}
+    #检查结果
+    #设置筛选条件：
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
     set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
-    Session In Waitings And Not In Visitors By Specified Time    ${agent}    ${filter}    ${range}    3    ${guest.userName}
-    #设置接待人数为1，可接待状态
-    Set MaxServiceUserNumber By UI    1
-    #检查会话进入进行中：格式化会话列表json并检查ui
-    @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
-    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
-    [Teardown]    Clear Agent All Sessions    ${agent}    ${filter}    ${range}
+    sleep   ${ScheduleTimeout}
+    Session Not In Visitors    ${agent}    ${guest.userName}
+    [Teardown]    Clear Agent All Sessions And Delete Second Queue    ${uiadmin}    ${uiadmin}    ${filter}    ${range}    ${q2.queueId}

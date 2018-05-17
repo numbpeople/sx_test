@@ -213,12 +213,17 @@ Set Agent StatusAndMaxServiceUserNumber
     Set Agent MaxServiceUserNumber    ${agent}    ${maxServiceSessionCount}
 
 Kefu Chat Suite Setup
-    [Arguments]    ${admin}    ${agent}
-    [Documentation]    1.创建关联
+    [Arguments]    ${admin}    ${agent}    ${serviceSessionJudgeOverloadEnable}=false
+    [Documentation]    1.设置option
     ...    2.关闭所有溢出规则
     ...    3.获取账号语言信息
     ...    4.获取灰度列表
-    Create Channel    ${admin}
+    #设置预调度排队
+    Set Option    ${admin}    serviceSessionJudgeOverloadEnable    ${serviceSessionJudgeOverloadEnable}
+    #允许坐席设置接待人数
+    Set Option    ${admin}    allowAgentChangeMaxSessions    true
+    #坐席修改状态不需要审批
+    Set Option    ${admin}    agentStatusApprovalEnable    false
     Disable All Waiting Rules    ${admin}
     Iinit Queue In Setup    ${admin}    ${agent}
     Set RoutingPriorityList    入口    渠道    关联    ${admin}
@@ -229,7 +234,6 @@ Kefu Chat Suite Teardown
     ...    2.关闭所有溢出规则
     ...    3.获取账号语言信息
     ...    4.获取灰度列表
-    Delete Channels    ${admin}
     Del Queue In Teardown    ${admin}
 
 Format String And Check Elements
@@ -283,9 +287,14 @@ KefuUI Setup
     Set Selenium Timeout    ${SeleniumTimeout}
     #获取时间计划scheduleId
     Get ScheduleId    ${uiadmin}
+    #创建关联
+    Create Channel    ${uiadmin}
     #允许坐席设置接待人数
-    Set Option    ${Admin}    allowAgentChangeMaxSessions    true
+    Set Option    ${admin}    allowAgentChangeMaxSessions    true
+    #坐席修改状态不需要审批
+    Set Option    ${admin}    agentStatusApprovalEnable    false
 
 KefuUI Teardown
     Close All Browsers
+    Delete Channels    ${uiadmin}
     Delete AgentUser    ${uiagent1.userId}    ${uiadmin}

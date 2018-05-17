@@ -1,8 +1,8 @@
 *** Variables ***
-${kefuurl}        http://kefu.easemob.com
+${kefuurl}        http://sandbox.kefu.easemob.com
 ${orgurl}         http://vpc10.kefu.easemob.com:8000
-&{AdminUser}      username=    password=    status=Online    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
-...               cookies=    session=    userId=    nicename=    browser=chrome    language=en-US    graylist=
+&{AdminUser}      username=0508l@t.com    password=test2015    status=Online    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
+...               cookies=    session=    userId=    nicename=    browser=chrome    language=zh-CN    graylist=
 ...               resourcelist=
 &{OrgAdminUser}    username=admin@org.com    password=ORGadmin    orgId=1034    cookies=    session=    userId=    nicename=
 ...               browser=phantomjs
@@ -63,3 +63,4 @@ ${SeleniumTimeout}    20
 &{ConDateRange}    beginDateTime=    endDateTime=    # 测试统计数据时用来筛选会话
 &{ExistChannelEntity}    orgName=    appName=    restDomain=    serviceEaseMobIMNumber=    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址
 @{originType}     app    webim    weibo    weixin    phone    rest    slack
+${ScheduleTimeout}    5

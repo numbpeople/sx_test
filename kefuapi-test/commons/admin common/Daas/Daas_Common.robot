@@ -51,20 +51,23 @@ One Service Valid Conversation
     ${createTime2}    evaluate    ${createTime1}/1000-1
     ${daasCreateTime}    set variable    ${createTime2}000
     ${curTimeAgent}    get time    epoch
+    ${userId}    set variable    ${j[0]['user']['userId']}
+    ${serviceSessionId}    set variable    ${j[0]['serviceSessionId']}
+    ${chatGroupId}    set variable    ${j[0]['chatGroupId']}
     ${AgentMsgEntity}    create dictionary    msg=${curTimeAgent}:agent test msg!    type=txt
-    Agent Send Message    ${agent}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}    ${AgentMsgEntity}
+    Agent Send Message    ${agent}    ${userId}    ${serviceSessionId}    ${AgentMsgEntity}
     sleep    50ms
-    Send InviteEnquiry    ${agent}    ${j[0]['serviceSessionId']}
+    Send InviteEnquiry    ${agent}    ${serviceSessionId}
     sleep    50ms
     #关闭进行中会话
-    Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${j[0]['serviceSessionId']}
+    Stop Processing Conversation    ${agent}    ${userId}    ${serviceSessionId}
     #访客发送评价
     set to dictionary    ${msgEntity}    msg=5
     Send Message    ${rest}    ${guestEntity}    ${msgEntity}
     #保存会话接起的时间范围
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
     set global variable    ${ConDateRange}    ${ConDateRange}
-    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}
     return from keyword    ${conInfo}
 
 Get Today Begin Time
@@ -124,12 +127,14 @@ One Service Unvalid Conversation
     ${daasCreateTime}    set variable    ${createTime2}000
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
     set global variable    ${ConDateRange}    ${ConDateRange}
+    ${userId}    set variable    ${j[0]['user']['userId']}
+    ${serviceSessionId}    set variable    ${j[0]['serviceSessionId']}
+    ${chatGroupId}    set variable    ${j[0]['chatGroupId']}
     #关闭进行中会话
-    ${sessionId}    set variable    ${j[0]['serviceSessionId']}
-    Stop Processing Conversation    ${agent}    ${j[0]['user']['userId']}    ${sessionId}
+    Stop Processing Conversation    ${agent}    ${userId}    ${serviceSessionId}
     #获取租户的质检评分项id并进行质检评分
     ${qualityResults}    Get Qualityitems
-    ${sessionInfo}    create dictionary    serviceSessionId=${sessionId}    stepNum=1
+    ${sessionInfo}    create dictionary    serviceSessionId=${serviceSessionId}    stepNum=1
     ${data}    set variable    {"agentId":"${AdminUser.userId}", "attachments": [], "comment":"", "qualityResults": ${qualityResults}}
     ${data}    Replace String    ${data}    '    ${EMPTY}
     ${method}    set variable    post
@@ -143,10 +148,10 @@ One Service Unvalid Conversation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    质检记录不正确:${resp.content}
-    Should Be Equal    ${j["entities"][0]["serviceSessionId"]}    ${sessionId}    会话不正确:${j["entities"][0]["serviceSessionId"]}
+    Should Be Equal    ${j["entities"][0]["serviceSessionId"]}    ${serviceSessionId}    会话不正确:${j["entities"][0]["serviceSessionId"]}
     ${totalScore}    set variable    ${j["entities"][0]["qualityReview"]["totalScore"]}
     #保存会话接起的时间范围
-    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    qmActorId=${AdminUser.userId}
     return from keyword    ${conInfo}
 
 Get Current Session Count

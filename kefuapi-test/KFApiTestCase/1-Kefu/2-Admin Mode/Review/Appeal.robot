@@ -24,10 +24,8 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     should be equal    ${j["entity"]["status"]}    Wait    质检提起申诉不正确:${j["entity"]["status"]}
     ${appealNumber}    set variable    ${j["entity"]["appealNumber"]}
     ${id}    set variable    ${j["entity"]["id"]}
-    #    set to dictionary    ${filter}    creatorId=${j["entity"]["creatorId"]}
     #根据申诉单号搜索申诉列表检查是否有记录
     set to dictionary    ${filter}    page=0    appealNumber=${appealNumber}
-    #    ${params}=    set variable    page=${filter.page}&size=${filter.per_page}&timeBegin=${range.beginDate}&timeEnd=${range.endDate}&creatorId=${filter.creatorId}&appealNumber=${filter.appealNumber}
     ${params}=    set variable    page=${filter.page}&size=${filter.per_page}&appealNumber=${filter.appealNumber}
     ${j}=    Search Appeal    ${AdminUser}    ${range}    ${filter}    ${params}
     should be equal    ${j["status"]}    OK    质检申诉状态不正确:${j}
@@ -177,3 +175,4 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     should be equal    ${j["entities"][0]["appealId"]}    ${id}    申诉评论appealId不正确:${j}
     should be equal    ${j["entities"][0]["content"]}    ${comment}    申诉评论content不正确:${j}
     should be equal    ${j["entities"][0]["id"]}    ${commentId}    申诉评论commentId不正确:${j}
+

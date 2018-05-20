@@ -121,6 +121,7 @@ Close Waiting Conversation
     #清理待接入会话
     ${resp}=    /v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort    ${agent}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Close Waiting Conversation、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -130,6 +131,7 @@ Close Processing Conversation
     #关闭进行中会话
     ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${agent}    ${userId}    ${sessionServiceId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Close Processing Conversation、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.content}
     Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
 

@@ -102,6 +102,8 @@ Set Robot AutoReply
     ${resp}=    /v1/Tenants/{tenantId}/robot/profile/predefinedReplys    ${method}    ${agent}    ${filter}    ${data}    ${replyId}    ${timeout}
     run keyword if    '${method}'=='get' or '${method}'=='delete'   Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='post' and ${resp.status_code}!=201    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot AutoReply、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    run keyword if    ('${method}'=='get' or '${method}'=='delete') and ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot AutoReply、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -156,6 +158,7 @@ Set Robot Category
     [Documentation]    添加/删除/修改分类
     ${resp}=    /v3/Tenants/{tenantId}/robots/categorys/item    ${method}    ${agent}    ${data}    ${categoryId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Category、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -215,6 +218,8 @@ Set Robot Rule
     ${resp}=    /v3/Tenants/{tenantId}/robots/rules/item    ${method}    ${agent}    ${data}    ${ruleId}    ${timeout}
     run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='delete'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='post' and ${resp.status_code}!=201    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Rule、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    run keyword if    '${method}'=='delete' and ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Rule、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -272,10 +277,11 @@ Create Robot Rule
     [Arguments]    ${agent}
     [Documentation]    创建知识规则，并返回知识规则数据
     ${uuid}    UUID 4
+    ${randoNumber}    Generate Random String    10    [NUMBERS]
     #创建数据字典
     &{adminEntity}    create dictionary    userId=${agent.userId}    name=${agent.userId}
     #创建问题的文本
-    ${question}    set variable    question-${agent.tenantId}-${uuid}
+    ${question}    set variable    question-${agent.tenantId}-${randoNumber}
     #启用状态
     ${status}    set variable    ENABLE
     #发送策略ID
@@ -337,6 +343,8 @@ Set Robot Menu
     ${resp}=    /v3/Tenants/{tenantId}/robots/menus/item    ${method}    ${agent}    ${data}    ${itemId}    ${timeout}
     run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='delete'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='post' and ${resp.status_code}!=201    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Menu、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    run keyword if    '${method}'=='delete' and ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Menu、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 

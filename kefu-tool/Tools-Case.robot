@@ -29,6 +29,7 @@ Resource          ../kefuapi-test/commons/Base Common/SecondGateway_Common.robot
 Resource          ../kefuapi-test/api/BaseApi/Channels/RestApi.robot
 Resource          ../kefuapi-test/commons/CollectionData/Base_Collection.robot
 Resource          ../kefuapi-test/commons/agent common/Conversations/Colleague_Common.robot
+Library           WebSocketClient
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource
@@ -1159,3 +1160,53 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     #关闭所有开启的规则
     Reverse All Rules Status    ${AdminUser}    'false'
+
+客服websocket
+    #登录
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #设置坐席状态
+    ${j}    Set Agent Status    ${AdminUser}    Online
+    Should Be Equal    ${j['status']}    OK    设置状态失败：${j}
+    #获取initdata接口
+    ${resp}=    /home/initdata    ${AdminUser}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${sessionId}    set variable    ${j['sessionId']}
+    ${resource}    set variable    ${j['resource']}
+    #连接websocket
+    ${randoNumber}    Generate Random String    3    [NUMBERS]
+    ${randomString}    Generate Random String    8    [LOWER]
+    ${my_websocket}=    WebSocketClient.Connect    ws://sandbox.kefu.easemob.com/push/${randoNumber}/${randomString}/websocket
+    WebSocketClient.Send    ${my_websocket}    ["{\"token\":\"${sessionId}\"}"]
+    ${result}=    WebSocketClient.Recv    ${my_websocket}
+    WebSocketClient.Send    ${my_websocket}    ["{\"path\":\"${resource}\"}"]
+    ${result}=    WebSocketClient.Recv    ${my_websocket}
+    ${websocketStatus}    Getstatus    ${my_websocket}
+    ${Getheaders}    Getheaders    ${my_websocket}
+    #心跳
+    WebSocketClient.Send    ${my_websocket}    ["{\"keepalive\":\"${resource}\"}"]
+    ${heart}=    WebSocketClient.Recv    ${my_websocket}
+    #心跳
+    WebSocketClient.Send    ${my_websocket}    ["{\"keepalive\":\"${resource}\"}"]
+    ${heart}=    WebSocketClient.Recv    ${my_websocket}
+    #轮询发送心跳
+    : FOR    ${i}    IN RANGE    5
+    \    ${websocketStatus}    Getstatus    ${my_websocket}
+    \    ${Getheaders}    Getheaders    ${my_websocket}
+    \    log    ["{\"keepalive\":\"${resource}\"}"]
+    \    WebSocketClient.Send    ${my_websocket}    ["{\"keepalive\":\"${resource}\"}"]
+    \    ${heart}=    WebSocketClient.Recv    ${my_websocket}
+    \    sleep    1
+    #
+    Comment    WebSocketClient.Close    ${my_websocket}
+
+Echo
+    ${my_websocket}=    WebSocketClient.Connect    ws://echo.websocket.org
+    WebSocketClient.Send    ${my_websocket}    Hello
+    ${result}=    WebSocketClient.Recv    ${my_websocket}
+    Should Be Equal    Hello    ${result}
+    WebSocketClient.Close    ${my_websocket}

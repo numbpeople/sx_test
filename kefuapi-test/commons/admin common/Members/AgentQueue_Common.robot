@@ -68,6 +68,7 @@ Delete Agentqueue
     #删除新增技能组
     ${resp}=    /v1/AgentQueue/{queueId}    ${agent}    ${queueId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+    run keyword if    ${resp.status_code}!=204    log    测试用例集名称:${SUITE NAME}、调用方法:Delete Agentqueue、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
 
 Delete Queues
     #设置技能组名称模板

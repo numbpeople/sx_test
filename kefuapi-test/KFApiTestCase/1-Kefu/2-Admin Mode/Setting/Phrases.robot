@@ -185,7 +185,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     should be equal    ${j['status']}    OK    获取status值不正确：${j}
 
 获取常用语模板(/download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx)
-    ${resp}=    /download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx    ${AdminUser}    ${timeout}
+    ${resp}=    Export Commonphrases Template    ${AdminUser}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     #log    ${resp.headers.Content-Length}
     log    ${resp.headers}
@@ -193,7 +193,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    获取知识库模板失败
 
 导出常用语(/v1/tenants/{tenantId}/commonphrases/exportFile)
-    ${resp}=    Commonphrases ExportFile    ${AdminUser}    ${timeout}
+    ${resp}=    Commonphrases ExportFile    ${AdminUser}
     log    ${resp.headers}
     log    ${resp.headers['Content-Type']}
     Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    导出常用语失败

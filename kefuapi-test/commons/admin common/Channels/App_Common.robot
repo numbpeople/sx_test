@@ -83,6 +83,7 @@ Delete Channel
     #删除新增关联
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${agent}    ${channelId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text} 
+    run keyword if    ${resp.status_code}!=204    log    测试用例集名称:${SUITE NAME}、调用方法:Delete Channel、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
 
 Delete Channels
     [Arguments]    ${agent}=${AdminUser}

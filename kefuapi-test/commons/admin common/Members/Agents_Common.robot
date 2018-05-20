@@ -29,6 +29,7 @@ Delete Agent
     [Documentation]    删除客服，参数为客服userId
     ${resp}=    /v1/Admin/Agents/{userId}    ${AdminUser}    ${userId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=204    log    测试用例集名称:${SUITE NAME}、调用方法:Delete Agent、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
 
 Delete AgentUser
     [Arguments]    ${userId}    ${agent}=${AdminUser}

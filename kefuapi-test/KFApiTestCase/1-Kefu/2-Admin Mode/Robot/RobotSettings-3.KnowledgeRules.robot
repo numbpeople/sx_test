@@ -35,10 +35,11 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
 添加知识规则(/v3/Tenants/{tenantId}/robots/rules/item)
     [Documentation]    添加知识规则
     ${uuid}    UUID 4
+    ${randoNumber}    Generate Random String    10    [NUMBERS]
     #创建数据字典
     &{adminEntity}    create dictionary    userId=${AdminUser.userId}    name=${AdminUser.userId}
     #创建问题的文本
-    ${question}    set variable    question-${AdminUser.tenantId}-${uuid}
+    ${question}    set variable    question-${AdminUser.tenantId}-${randoNumber}
     #启用状态
     ${status}    set variable    ENABLE
     #发送策略ID
@@ -98,6 +99,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #获取content结果字段
     ${content}    set variable    ${j['content']}
     ${content}    Replace String    ${content}    &quot;    ${EMPTY}
+    ${content}    Replace String    ${content}    "    ${EMPTY}
     ${content}    Replace String    ${content}    [    ${EMPTY}
     ${content}    Replace String    ${content}    ]    ${EMPTY}
     @{content}     Split String    ${content}    ,

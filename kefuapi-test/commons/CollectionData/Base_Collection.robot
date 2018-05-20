@@ -23,7 +23,7 @@ Setup Init Data
 
 Teardown Data
     [Documentation]    清除创建了的坐席、技能组、关联等信息
-    Clear Data    #清除创建的多余数据
+    Run Keyword And Ignore Error    Clear Data    #清除创建的多余数据
 
 Test Init Data
     ${sub}    set variable    测试用例集：【${SUITE NAME}】下测试用例：【${TEST NAME}】状态为${TEST STATUS}

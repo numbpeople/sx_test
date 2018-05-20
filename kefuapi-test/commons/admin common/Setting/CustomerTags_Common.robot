@@ -17,6 +17,9 @@ Set UserTags
     run keyword if    '${method}'=='put' or '${method}'=='delete'    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='get'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ('${method}'=='put' or '${method}'=='delete') and ${resp.status_code}!=204    log    测试用例集名称:${SUITE NAME}、调用方法:Set UserTags、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    run keyword if    '${method}'=='post' and ${resp.status_code}!=201    log    测试用例集名称:${SUITE NAME}、调用方法:Set UserTags、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    run keyword if    '${method}'=='get' and ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set UserTags、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     return from keyword if    '${method}'=='put' or '${method}'=='delete'    ${resp.text}
     ${j}    to json    ${resp.text}
     return from keyword    ${j}

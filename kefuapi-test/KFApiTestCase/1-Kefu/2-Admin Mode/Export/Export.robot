@@ -17,6 +17,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.robot
 Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.robot
 Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.robot
+Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
 
 *** Test Cases ***
 下载历史会话导出管理的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
@@ -466,12 +467,45 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #判断导出数据总行数和导出与预期数据相等
     run keyword if    ${rowCount} != 7    Fail    因为机器人自定义菜单下载模板数据一共7行,所以导出的excel文件总行数应等于7,需要检查文件,路径:${xlsPath}
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
+    # 导出下载留言的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
+    # 导出下载告警记录的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
+    # 导出下载客户中心的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
 
-# 导出下载留言的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-
-# 导出下载告警记录的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-
-# 导出下载客户中心的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-
-# 导出下载质量检查的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-
+导出下载质量检查的数据(/v1/tenants/{tenantId}/servicesessions/qualityreview/file)
+    [Documentation]    1、创建一个已结束的会话并导出基础质检数据。 2、下载质检在导出管理中的数据
+    #创建局部变量
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #创建一个已结束会话并导出质检记录
+    @{paramList}    create list    ${AdminUser}
+    ${sessionInfo}    Run keyword And Export Specify Data    ${AdminUser}    Create Terminal And Export QualityReviewFiles    @{paramList}
+    #下载导出管理的数据
+    ${result}    Download Export File    ${AdminUser}    ${sessionInfo.id}
+    #保存文件
+    ${path}    Find Specified Folder Path    tempdata
+    ${filename}    set variable    质检记录导出
+    ${sheetname}    set variable    qualityReview
+    ${csvPath}    set variable    ${path}/${filename}.csv
+    ${xlsPath}    set variable    ${path}/${filename}.xls
+    #保存文件到本地目录
+    save file    ${csvPath}    ${result}
+    #将csv文件转化成xls格式文件
+    csv_to_xls_pd    ${csvPath}    ${sheetname}    ${xlsPath}
+    #模板数据
+    log dictionary    ${sessionInfo}
+    @{sheetName}    create list    客户ID    昵称    参与客服    坐席账号    真实姓名
+    ...    会话创建时间    首次响应时长    平均响应时长    会话时长    会话标签    会话备注
+    ...    访客消息数    客服消息数    满意度评价分数    满意度评价详情    质检总分    质检备注
+    ...    质检员    关联名称    来源
+    @{sheetValue}    create list    ${sessionInfo.userName}    ${sessionInfo.userName}    ${${sessionInfo.vmsgCount}}    ${${sessionInfo.amsgCount}}    #${${sessionInfo.qualityMark}}
+    ...    [${sessionInfo.originType}]
+    #读取xls表格数据
+    @{firstRowsList}    Get Rows List    ${xlsPath}    0
+    @{secondRowsList}    Get Rows List    ${xlsPath}    1
+    log list    ${firstRowsList}
+    #获取文件总行数
+    ${sheetNames}    Get Sheet Names
+    ${rowCount}    Get Row Count    ${sheetNames[0]}
+    #判断导出数据总行数和导出与预期数据相等
+    run keyword if    ${rowCount} != 2    Fail    因为只导出一个服务的数据,所以导出的excel文件总行数应为2,需要检查文件,路径:${xlsPath}
+    Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRowsList}

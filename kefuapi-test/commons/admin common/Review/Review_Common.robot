@@ -158,3 +158,9 @@ Set Appeal Comment
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     return from keyword    ${j}
+
+Export My QualityReview
+    [Arguments]    ${method}    ${agent}    ${filter}    ${range}    ${userId}=    ${language}=en-US
+    [Documentation]    导出质检数据
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/qualityreview/file    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}    ${language}
+    should be equal as integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}

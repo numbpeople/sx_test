@@ -5,10 +5,12 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Library           ../../../lib/KefuUtils.py    
+Library           ../../../lib/KefuUtils.py
 Resource          ../../../api/BaseApi/History/HistoryApi.robot
 Resource          ../../../api/BaseApi/Export/Export_Api.robot
 Resource          ../Conversations/Conversations_Common.robot
+Resource          ../../admin common/Review/Review_Common.robot
+Resource          ../../admin common/Daas/Daas_Common.robot
 
 *** Variables ***
 ${diffCreatetimeValue}    10
@@ -18,7 +20,8 @@ Get My Export
     [Arguments]    ${method}    ${agent}    ${filter}    ${range}    ${userId}=    ${language}=en-US
     [Documentation]    查询我的导出管理数据
     #查询我的管理导出数据
-    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}    ${language}
+    ${resp}=    /tenants/{tenantId}/serviceSessionHistoryFiles    ${method}    ${agent}    ${timeout}    ${filter}    ${range}
+    ...    ${userId}    ${language}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -80,7 +83,7 @@ Diff Export Count
     [Arguments]    ${agent}    ${filter}    ${range}    ${preCount}
     [Documentation]    获取导出管理数据并对比总数
     #获取当前的导出管理数据
-    :FOR    ${i}    IN RANGE    ${retryTimes}
+    : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${j}    Get My Export    get    ${agent}    ${filter}    ${range}
     \    ${exportCount}    set variable    ${j['totalElements']}
     \    #判断导出管理总数是否有增加
@@ -139,12 +142,12 @@ Create Terminal And Export HistoryFiles
     should be equal    ${i['tenantId']}    ${agent.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
     #将导出管理中该数据的id放到字典中
-    set to dictionary    ${session}     mediaId=${i['mediaId']}    fileName=${i['fileName']}    id=${i['id']}
+    set to dictionary    ${session}    mediaId=${i['mediaId']}    fileName=${i['fileName']}    id=${i['id']}
     Return From Keyword    ${session}
 
 Run keyword And Export Specify Data
     [Arguments]    ${agent}    ${functionName}    @{paramList}
-    [Documentation]    1、导出指定关键字模块的数据    2、判断导出管理中是否包含导出数据    3、将导出的数据返回
+    [Documentation]    1、导出指定关键字模块的数据 2、判断导出管理中是否包含导出数据 3、将导出的数据返回
     #定义为局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -161,7 +164,7 @@ Run keyword And Export Specify Data
     should be equal    ${i['tenantId']}    ${agent.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
     #将导出管理中该数据的id放到字典中
-    set to dictionary    ${specifyResult}     mediaId=${i['mediaId']}    fileName=${i['fileName']}    id=${i['id']}
+    set to dictionary    ${specifyResult}    mediaId=${i['mediaId']}    fileName=${i['fileName']}    id=${i['id']}
     Return From Keyword    ${specifyResult}
 
 Find Specified Folder Path
@@ -172,15 +175,14 @@ Find Specified Folder Path
     ${path}    evaluate    os.path.abspath(os.path.dirname('${path}')+os.path.sep+"..")    os
     ${path}    set variable    ${path}${/}${folderName}
     ${path}=    Replace String    ${path}    \\    /
-    # evaluate    os.chmod('${path}',stat.S_IXGRP)	os,stat    #给文件夹赋权限
-    # evaluate    os.chmod('${path}',stat.S_IWOTH)	os,stat    #给文件夹赋权限
-    # evaluate    os.chmod('${path}',stat.S_IRWXO)	os,stat    #给文件夹赋权限
+    # evaluate    os.chmod('${path}',stat.S_IXGRP)    os,stat    #给文件夹赋权限
+    # evaluate    os.chmod('${path}',stat.S_IWOTH)    os,stat    #给文件夹赋权限
+    # evaluate    os.chmod('${path}',stat.S_IRWXO)    os,stat    #给文件夹赋权限
     #创建该文件夹,判断当前是否存在，不存在则创建
     mkdir    ${path}
     return from keyword    ${path}
 
 Del Export Files
-    [Documentation]    #删除导出缓存在目录下的文件
     #删除导出缓存在目录下的文件
     ${folderName}    set variable    tempdata
     ${path}    Find Specified Folder Path    ${folderName}
@@ -196,7 +198,7 @@ Get Rows List
     ${rowValues}    Get Row Values    ${sheetNames[0]}    ${rowNum}
     ${length}    get length    ${rowValues}
     @{sheetValueList}    create list
-    :FOR    ${i}    IN   @{rowValues}
+    : FOR    ${i}    IN    @{rowValues}
     \    #判断类型是否为空
     \    ${if_empty}    Run_keyword_and_return_status    Should Be Equal    ${i[1]}    ${Empty}
     \    ${if_float}    is_float    ${i[1]}    #判断是否为float-浮点型
@@ -210,8 +212,8 @@ Get Rows List
     \    #将值最左面的空格去除
     \    ${rowValue}    evaluate    "${rowValue}".lstrip()
     \    #将编码后的字符进行解码
-    # \    ${rowValue}    format_code    ${rowValue}
-    \    ${rowValue}    evaluate	'${rowValue}'.decode('utf-8')
+    \    # \    ${rowValue}    format_code    ${rowValue}
+    \    ${rowValue}    evaluate    '${rowValue}'.decode('utf-8')
     \    Append To List    ${sheetValueList}    ${rowValue}
     log list    ${sheetValueList}
     #释放打开使用的资源文件
@@ -219,12 +221,34 @@ Get Rows List
     return from keyword    ${sheetValueList}
 
 Should Be ExportFiles Excel Equal
-    [Arguments]    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}  
+    [Arguments]    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
     [Documentation]    对比表格中的每行数据
     #断言模板数据是否在实际接口值中
-    :FOR    ${i}    IN    @{sheetName}
+    : FOR    ${i}    IN    @{sheetName}
     \    log    ${i}
     \    List Should Contain Value    ${firstRowsList}    ${i}    数据${i}不在firstRowsList模板列表内
     #断言模板数据是否在实际接口值中
-    :FOR    ${i}    IN    @{sheetValue}
+    : FOR    ${i}    IN    @{sheetValue}
     \    List Should Contain Value    ${secondRrowsList}    ${i}    数据${i}不在模板列表内
+
+Create Terminal And Export QualityReviewFiles
+    [Arguments]    ${agent}
+    [Documentation]    创建一个已结束会话并导出质检数据
+    #定义为局部变量使用
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #设置筛选开始时间为当天
+    ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
+    ${yn}=    Convert To Integer    ${yyyy}
+    ${mn}=    Convert To Integer    ${mm}
+    ${dn}=    Convert To Integer    ${day}
+    ${mr}=    Monthrange    ${yn}    ${mn}
+    set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
+    set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
+    #创建已结束的会话
+    ${session}    One Service Unvalid Conversation    ${AdminUser}    ${restentity}
+    #添加groupId为筛选参数，作为导出条件
+    set to dictionary    ${filter}    groupId=${session.queueId}
+    #导出质检数据
+    Export My QualityReview    post    ${agent}    ${filter}    ${range}    ${EMPTY}    zh-CN
+    return from keyword    ${session}

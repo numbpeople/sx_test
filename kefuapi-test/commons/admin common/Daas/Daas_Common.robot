@@ -151,7 +151,7 @@ One Service Unvalid Conversation
     Should Be Equal    ${j["entities"][0]["serviceSessionId"]}    ${serviceSessionId}    会话不正确:${j["entities"][0]["serviceSessionId"]}
     ${totalScore}    set variable    ${j["entities"][0]["qualityReview"]["totalScore"]}
     #保存会话接起的时间范围
-    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    qmActorId=${AdminUser.userId}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    qmActorId=${AdminUser.userId}    vmsgCount=1    amsgCount=0    qualityMark=${totalScore}
     return from keyword    ${conInfo}
 
 Get Current Session Count

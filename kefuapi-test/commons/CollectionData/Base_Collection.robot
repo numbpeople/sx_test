@@ -20,6 +20,7 @@ Setup Init Data
     Comment    Channel Data Init    #获取关联的数据，包括：关联的appKey、clientId、clientSecret、im号等信息外，加入绑定的queueId和queueName
     Create Channel    #快速创建一个关联，以便于全局使用
     Robot Account Init    #判断租户下是否有机器人账号，如果有则不创建，如果没有则创建机器人账号
+    Ticket Data Init    #获取租户id下的projectId和留言状态等值
 
 Teardown Data
     [Documentation]    清除创建了的坐席、技能组、关联等信息

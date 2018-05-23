@@ -172,14 +172,7 @@ Find Specified Folder Path
     [Documentation]    找到项目一级的文件夹的路径值
     #找到指定文件夹的路径值
     ${path}    set variable    ${CURDIR}
-    ${path}    evaluate    os.path.abspath(os.path.dirname('${path}')+os.path.sep+"..")    os
-    ${path}    set variable    ${path}${/}${folderName}
-    ${path}=    Replace String    ${path}    \\    /
-    # evaluate    os.chmod('${path}',stat.S_IXGRP)    os,stat    #给文件夹赋权限
-    # evaluate    os.chmod('${path}',stat.S_IWOTH)    os,stat    #给文件夹赋权限
-    # evaluate    os.chmod('${path}',stat.S_IRWXO)    os,stat    #给文件夹赋权限
-    #创建该文件夹,判断当前是否存在，不存在则创建
-    mkdir    ${path}
+    ${path}    find folder path    ${path}     ${folderName}
     return from keyword    ${path}
 
 Del Export Files
@@ -187,8 +180,7 @@ Del Export Files
     ${folderName}    set variable    tempdata
     ${path}    Find Specified Folder Path    ${folderName}
     #删除文件夹
-    evaluate    os.chmod('${path}', stat.S_IWRITE)    os,stat
-    evaluate    shutil.rmtree('${path}')    shutil
+    del files    ${path}
 
 Get Rows List
     [Arguments]    ${xlsPath}    ${rowNum}

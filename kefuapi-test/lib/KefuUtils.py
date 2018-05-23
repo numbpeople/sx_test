@@ -5,6 +5,9 @@ import base64
 import datetime
 import json
 import os
+import platform
+import stat
+import shutil
 
 class JSON2Object:
    def __init__(self, d):
@@ -104,6 +107,34 @@ def mkdir(path):
         # 如果目录存在则不创建，并提示目录已存在
         print path+' 目录已存在'
         return False
+
+def find_folder_path(path,folderName):
+    sysstr = platform.system()
+    print sysstr
+#     if(sysstr =="Windows"):
+#         print '使用了Windows系统执行测试用例'
+#         path=os.path.abspath(os.path.dirname(path)+os.path.sep+".."+os.path.sep+"..")
+#     else:
+#         path=os.path.abspath(os.path.dirname(path)+os.path.sep+".."+os.path.sep+"..")
+    #找到指定文件夹的路径值
+    path=os.path.abspath(os.path.dirname(path)+os.path.sep+".."+os.path.sep+"..")
+    path=path+'\\'+folderName
+    path=path.replace("\\", "/")  
+    #创建该文件夹,判断当前是否存在，不存在则创建
+    mkdir(path)
+    return path
+
+def del_files(path):
+    #删除文件
+    #path=find_folder_path(folderName)
+    #给文件夹赋权限
+    sysstr = platform.system()
+    print sysstr
+    if(sysstr =="Windows"):
+        print ("使用Windows自动化测试,把目录赋权限")
+        os.chmod(path, stat.S_IWRITE)
+    #删除文件夹
+    shutil.rmtree(path)
 
 if __name__ == '__main__':
     # vdate_str = '2017-12-14'

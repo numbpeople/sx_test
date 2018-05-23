@@ -127,8 +127,8 @@ org管理员登录(/v2/orgs/{orgId}/token)
     ${j}    to json    ${resp.content}
     Should Be True    ${j['totalElements']}>=1    获取租户列表不正确：${resp.content}
     Should Be True    '${j['entities'][0]['tenantId']}'=='${OrgUser1.tenantId}'    获取租户列表不正确：${resp.content}
-    set to dictionary    ${AdminUser}    username=${OrgUser1.username}    password=${OrgUser1.password}
-    set global variable    ${AdminUser}    ${AdminUser}
+    # set to dictionary    ${AdminUser}    username=${OrgUser1.username}    password=${OrgUser1.password}
+    # set global variable    ${AdminUser}    ${AdminUser}
 
 获取设置基本信息(/v2/orgs/{orgId})
     set test variable    ${tadmin}    ${OrgAdminUser}

@@ -162,6 +162,13 @@
     ${params}=    set variable    tenantId=${agent.tenantId}&userId=${agent.userId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
+/v1/webimplugin/visitors
+    [Arguments]    ${agent}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/webimplugin/visitors
+    ${params}=    set variable    tenantId=${agent.tenantId}
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    data=${data}    timeout=${timeout}
+
 /v1/webimplugin/agentnicename/options
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

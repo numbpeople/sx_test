@@ -95,7 +95,7 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
 
 获取网页插件的所有关联(/v1/webimplugin/targetChannels)
     #获取网页插件配置返回值
-    ${j}    Get Channels
+    ${j}    Get Webimplugin Channels
     #断言返回状态值和json结构与值是否一致
     ${status}    Run Keyword And Return Status    Should Contain    ${j}    channelId
     Run Keyword If    "${j}" == "[]"    Fail    租户下没有创建关联 ，请创建关联，返回结果为：-- > ${j}
@@ -105,7 +105,7 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
     #获取时间计划并设置默认时间计划为全局变量使用
     Get ScheduleId
     #获取关联
-    ${channelId}    Get Channels
+    ${channelId}    Get Webimplugin Channels
     #获取网页插件配置返回值
     ${paramData}    create dictionary    channelType=easemob    originType=webim    channelId=${channelId[0]['channelId']}    tenantId=${AdminUser.tenantId}    queueName=
     ...    agentUsername=    timeScheduleId=${timeScheduleId}
@@ -123,7 +123,7 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
 
 获取网页渠道机器人欢迎语(/v1/webimplugin/tenants/robots/welcome)
     #获取关联
-    ${channelId}    Get Channels
+    ${channelId}    Get Webimplugin Channels
     #获取网页插件机器人欢迎语
     ${paramData}    create dictionary    channelType=easemob    originType=webim    channelId=${channelId[0]['channelId']}    tenantId=${AdminUser.tenantId}    queueName=
     ...    agentUsername=

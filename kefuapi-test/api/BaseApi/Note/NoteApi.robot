@@ -28,57 +28,37 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /tenants/{tenantId}/projects/{projectId}/tickets/count
-    [Arguments]    ${agent}    ${timeout}    ${str}
-    [Documentation]    Description:
-    ...
-    ...    获取租户，坐席留言的未读数据
-    ...
-    ...    Request URL: /tenants/{tenantId}/projects/{projectId}/tickets/count
-    ...
-    ...    Request Method:GET
+    [Arguments]    ${agent}    ${projectId}    ${statusId}    ${userId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/count
-    ${params}=    set variable    statusIds=${str}&agentUserId=${agent.userId}&_=1487581383150
+    ${params}=    set variable    statusIds=${statusId}&agentUserId=${userId}&_=1487581383150
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}
-    [Arguments]    ${agent}    ${timeout}
-    [Documentation]    Description:
-    ...
-    ...    获取租户某留言的全部信息
-    ...
-    ...    Request URL: /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}
-    ...
-    ...    Request Method:GET
+    [Arguments]    ${agent}    ${filter}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/${ticketEntity.ticketId}?_=1487653208290
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${filter.projectId}/tickets/${filter.ticketId}?_=1487653208290
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /tenants/{tenantId}/projects/{projectId}/tickets
-    [Arguments]    ${agent}    ${timeout}    ${data}
-    [Documentation]    Description:
-    ...
-    ...    发送留言
-    ...
-    ...    Request URL: /tenants/{tenantId}/projects/{projectId}/tickets
-    ...
-    ...    Request Method:POST
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets
-    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    [Arguments]    ${method}    ${agent}    ${filter}    ${data}    ${visitor}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json    Authorization=${filter.Authorization}
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${filter.projectId}/tickets
+    ${params}=    set variable    tenantId=${filter.tenantId}&userId=${filter.userId}&userRoles=${filter.userRoles}&page=${filter.page}&size=${filter.size}&ticketId=${filter.ticketId}&sort=${filter.sort}&statusId=${filter.statusId}&visitorName=${filter.visitorName}&assigned=${filter.assigned}&agentIds=${filter.agentIds}&_=1526882000450
+    run keyword if    '${method}'=='post' and '${filter.Authorization}'!='${EMPTY}'    set suite variable    ${params}    tenantId=${visitor.tenantId}&easemob-target-username=${visitor.imServiceNumber}&easemob-appkey=${visitor.appkey}&easemob-username=${visitor.username}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    data=${data}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}/comments
-    [Arguments]    ${method}    ${agent}    ${timeout}    ${data}
-    [Documentation]    Description:
-    ...
-    ...    发起评论
-    ...
-    ...    Request URL: /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}/comments
-    ...
-    ...    Request Method: GET / POST
+    [Arguments]    ${method}    ${agent}    ${filter}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/${ticketEntity.ticketId}/comments
-    ${params}=    set variable    size=10000&page=0&_=1488265090009
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${filter.projectId}/tickets/${filter.ticketId}/comments
+    ${params}=    set variable    size=${filter.size}&page=${filter.page}&_=1488265090009
     Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
@@ -99,30 +79,23 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /v1/tenants/{tenantId}/projects/{projectId}/tickets/file
-    [Arguments]    ${agent}    ${timeout}
-    [Documentation]    Description:
-    ...
-    ...    下载留言文件
-    ...
-    ...    Request URL:/v1/tenants/{tenantId}/projects/{projectId}/tickets/file
-    ...
-    ...    Request Method:POST
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/projects/${projectId}/tickets/file
-    ${params}=    set variable    sort=updatedAt,desc&tenantId=${agent.tenantId}&userId=${agent.userId}&userRoles=${agent.roles}&ticketId=&assigned=0&assignee=${agent.userId}
+    [Arguments]    ${agent}    ${filter}    ${language}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json    Accept-Language=${language}
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/projects/${filter.projectId}/tickets/file
+    ${params}=    set variable    tenantId=${filter.tenantId}&userId=${filter.userId}&userRoles=${filter.userRoles}&ticketId=${filter.ticketId}&visitorName=${filter.visitorName}&statusId=${filter.statusId}&sort=${filter.sort}
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}/assign/{assigneeId}
-    [Arguments]    ${agent}    ${timeout}
-    [Documentation]    Description:
-    ...
-    ...    分配留言给其他坐席
-    ...
-    ...    Request URL: /tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}/assign/{assigneeId}
-    ...
-    ...    Request Method:POST
+    [Arguments]    ${agent}    ${filter}    ${assigneeId}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${projectId}/tickets/${ticketEntity.ticketId}/assign/${agent.userId}
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${filter.projectId}/tickets/${filter.ticketId}/assign/${assigneeId}
+    ${params}=    set variable    userId=${agent.userId}&tenantId=${agent.tenantId}&userRoles=${agent.roles}
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/tenants/{tenantId}/projects/{projectId}/tickets/{ticketId}/take
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/projects/${filter.projectId}/tickets/${filter.ticketId}/take
     ${params}=    set variable    userId=${agent.userId}&tenantId=${agent.tenantId}&userRoles=${agent.roles}
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 

@@ -1,7 +1,7 @@
 *** Variables ***
 ${kefuurl}        http://sandbox.kefu.easemob.com
 ${orgurl}         http://vpc10.kefu.easemob.com:8000
-&{AdminUser}      username=0508l@t.com    password=test2015    status=Online    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
+&{AdminUser}      username=    password=    status=Online    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome    language=zh-CN    graylist=
 ...               resourcelist=
 &{OrgAdminUser}    username=admin@org.com    password=ORGadmin    orgId=1034    cookies=    session=    userId=    nicename=
@@ -57,8 +57,8 @@ ${retryTimes}     10
 ${SeleniumTimeout}    20
 &{OrgUser1}       username=    password=    name=    phone=    tenantId=
 &{OrgAdmin1}      username=    password=    nicename=    phone=    model=
-&{NotesEntity}    ProjectId=    OpenNum=    PendingNum=    SolvedNum=    AllNum=    UnassignedNum=    CustomNum=
-...               NotesId=
+&{NotesEntity}    projectId=    tenantId=    userId=    userRoles=admin    page=0    size=20    ticketId=    sort=createdAt,desc
+...               statusId=    visitorName=    assigned=    agentIds=    Authorization=
 &{msgGateway}     im=    secondGateway=    rest=    # 设置发送消息的方式，如果im设置为1，则使用im，以此类推如果secondGateway设置1或任意值，则使用第二通道发送消息
 &{ConDateRange}    beginDateTime=    endDateTime=    # 测试统计数据时用来筛选会话
 &{ExistChannelEntity}    orgName=    appName=    restDomain=    serviceEaseMobIMNumber=    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址

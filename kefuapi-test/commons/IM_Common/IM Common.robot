@@ -58,3 +58,13 @@ GetChannel
     ${uri}=    set variable    /${str}/users/${users}/tenantApi/imchanel?imNumber=${target}
     ${data}    Get request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
     Return From Keyword    ${data}
+
+Get IM Login Token
+    [Arguments]    ${rest}    ${visitorEntity}
+    [Documentation]    获取IM号的登录token
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${data}=    set variable    {"grant_type":"password","username":"${visitorEntity.username}","password":"${visitorEntity.password}"}
+    ${resp}    /{orgName}/{appName}/token    ${rest}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

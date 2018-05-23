@@ -89,7 +89,7 @@ Delete Config
     should be equal    ${j['status']}    OK    结果中不包含"OK", ${j}
     should be true    ${j['entity']} == 1    结果中获取entity不为1, ${j}
 
-Get Channels
+Get Webimplugin Channels
     [Documentation]    获取租户下所有的关联信息（网页访客端使用的接口）
     #获取网页插件的所有关联
     ${resp}=    WebimApi./v1/webimplugin/targetChannels    ${AdminUser}    ${timeout}
@@ -150,3 +150,29 @@ Get Webim Stickers Files
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
+
+Create Visitor
+    [Arguments]    ${agent}    ${data}
+    [Documentation]    创建访客
+    #创建访客
+    ${resp}=    /v1/webimplugin/visitors    ${agent}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Create New Visitor
+    [Arguments]    ${agent}
+    [Documentation]    创建新访客
+    ...    返回值: username、password、orgName、appName、imServiceNumber
+    #获取所用的关联信息
+    ${orgName}    set variable    ${restentity.orgName}
+    ${appName}    set variable    ${restentity.appName}
+    ${imServiceNumber}    set variable    ${restentity.serviceEaseMobIMNumber}
+    ${tenantId}    set variable    ${agent.tenantId}
+    &{visitorDic}    create dictionary    orgName=${orgName}    appName=${appName}    imServiceNumber=${imServiceNumber}    tenantId=${tenantId}
+    #创建请求体数据
+    ${data}    set variable    {"orgName":"${orgName}","appName":"${appName}","imServiceNumber":"${imServiceNumber}","tenantId":"${tenantId}"}
+    #创建在该关联下的访客数据
+    ${j}    Create Visitor    ${agent}    ${data}
+    set to dictionary    ${visitorDic}    username=${j['userId']}    password=${j['userPassword']}    appkey=${orgName}%23${appName}
+    Return From Keyword    ${visitorDic}

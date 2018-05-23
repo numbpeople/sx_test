@@ -28,6 +28,7 @@ Resource          ../admin common/Robot/RobotSettings_Common.robot
 Resource          ../agent common/Export/Export_Common.robot
 Resource          ../admin common/Setting/ConversationTags_Common.robot
 Resource          ../admin common/Setting/CustomerTags_Common.robot
+Resource          ../admin common/Note/Note_Common.robot
 
 *** Keywords ***
 Login Init
@@ -230,6 +231,10 @@ Robot Account Init
     run keyword if    ${robotInfoLength} == 0    Create Robot Account    #租户下没有机器人账号，创建机器人账号并设置信息
     run keyword if    ${robotInfoLength} >= 1    Update Robot Profile    #租户下有机器人账号，为机器人训练完成
     #创建机器人账号完毕
+
+Ticket Data Init
+    [Documentation]    获取租户id下的projectId和留言状态等值
+    Get ProjectId    ${AdminUser}    #获取projectId,并设置projectId为全局变量
 
 Clear Data
     Delete Channels    #删除关联

@@ -67,13 +67,6 @@
     ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/rule/items/template
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
-/v1/Tenants/{tenantId}/robot/media/items
-    [Arguments]    ${agent}    ${filter}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/Tenants/${agent.tenantId}/robot/media/items
-    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
-
 /v1/Tenants/me/robot/profile/setting
     [Arguments]    ${agent}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json

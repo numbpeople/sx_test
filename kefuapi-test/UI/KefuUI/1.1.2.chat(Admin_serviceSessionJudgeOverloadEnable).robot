@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup       Kefu Chat Suite Setup    ${uiadmin}    ${uiadmin}    true    # 步骤：创建关联；禁用所有溢出规则；坐席登录，设置该接待数为0，清空该坐席进行中会话，创建一个新技能组（下面用queuea简称）并将该坐席绑定到该技能组；设置路由规则优先入口指定
 Suite Teardown    Kefu Chat Suite Teardown    ${uiadmin}    #步骤：删除关联；删除技能组
-Force Tags        ui
+Force Tags        ui    serviceSessionJudgeOverloadEnable    adminschedule    adminuser
 Library           json
 Library           requests
 Library           Collections
@@ -67,34 +67,26 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ${uiadmin}    ${uiadmin}    ${kefustatus[1]}    false    false    off    ${true}
     ...    'agent'
     ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    true    true    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    true    true    off    ${false}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    true    false    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    true    false    off    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    false    true    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    false    true    off    ${false}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    false    false    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    false    false    off    ${true}
-    ...    'agent'
+    ...    'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    true
+    ...    # true    off    # ${false}    'agent'    #    ${uiadmin}
+    ...    # ${uiadmin}    ${kefustatus[2]}    true    false    on    # ${true}
+    ...    # 'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    true
+    ...    # false    off    # ${true}    'agent'    #    ${uiadmin}
+    ...    # ${uiadmin}    ${kefustatus[2]}    false    true    on    # ${true}
+    ...    # 'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    false
+    ...    # true    off    # ${false}    'agent'    #    ${uiadmin}
+    ...    # ${uiadmin}    ${kefustatus[2]}    false    false    on    # ${true}
+    ...    # 'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[2]}    false
+    ...    # false    off    # ${true}    'agent'
     ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    true    true    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    true    true    off    ${false}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    true    false    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    true    false    off    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    false    true    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    false    true    off    ${false}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    false    false    on    ${true}
-    ...    'agent'
-    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    false    false    off    ${true}
-    ...    'agent'
+    ...    'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    true
+    ...    # true    off    # ${false}    'agent'    #    ${uiadmin}
+    ...    # ${uiadmin}    ${kefustatus[3]}    true    false    on    # ${true}
+    ...    # 'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    true
+    ...    # false    off    # ${true}    'agent'    #    ${uiadmin}
+    ...    # ${uiadmin}    ${kefustatus[3]}    false    true    on    # ${true}
+    ...    # 'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    false
+    ...    # true    off    # ${false}    'agent'    #    ${uiadmin}
+    ...    # ${uiadmin}    ${kefustatus[3]}    false    false    on    # ${true}
+    ...    # 'agent'    #    ${uiadmin}    ${uiadmin}    ${kefustatus[3]}    false
+    ...    # false    off    # ${true}    'agent'

@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        adminuser
 Library           json
 Library           requests
 Library           Collections
@@ -39,72 +40,57 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
 查看待接入列表
     [Template]    smoketest case
     ${uiadmin}    ${waitbasejson}
-    ${uiagent1}    ${waitbasejson}
 
 查看我的知识库
     [Template]    smoketest case
     ${uiadmin}    ${knowledgebasejson}
-    ${uiagent1}    ${knowledgebasejson}
 
 查看我的留言列表
     [Template]    smoketest case
     ${uiadmin}    ${notesbasejson}
-    ${uiagent1}    ${notesbasejson}
 
 查看我的工单
     [Template]    smoketest case
     #查看工单列表
     ${uiadmin}    ${myticketlistbasejson}
-    ${uiagent1}    ${myticketlistbasejson}
     #查看工单导出
     ${uiadmin}    ${myticketdownloadbasejson}
-    ${uiagent1}    ${myticketdownloadbasejson}
 
 查看我的历史会话
     [Template]    smoketest case
     ${uiadmin}    ${historybasejson}
-    ${uiagent1}    ${historybasejson}
 
 查看我的质量检查
     [Template]    smoketest case
     #查看质检记录
     ${uiadmin}    ${qualityrecordbasejson}
-    ${uiagent1}    ${qualityrecordbasejson}
     #查看申述记录
     ${uiadmin}    ${appealrecordbasejson}
-    ${uiagent1}    ${appealrecordbasejson}
 
 查看我的搜索
     [Template]    smoketest case
     ${uiadmin}    ${sessionsearchbasejson}
-    ${uiagent1}    ${sessionsearchbasejson}
 
 查看我的客户中心
     [Template]    smoketest case
     ${uiadmin}    ${visitorsbasejson}
-    ${uiagent1}    ${visitorsbasejson}
 
 查看我的导出管理
     [Template]    smoketest case
     ${uiadmin}    ${exportsbasejson}
-    ${uiagent1}    ${exportsbasejson}
 
 查看客服信息
     [Template]    smoketest case
     ${uiadmin}    ${agentinfobasejson}
-    ${uiagent1}    ${agentinfobasejson}
 
 查看个人常用语
     [Template]    smoketest case
     ${uiadmin}    ${myphrasebasejson}
-    ${uiagent1}    ${myphrasebasejson}
 
 查看消息中心
     [Template]    smoketest case
     ${uiadmin}    ${notifybasejson}
-    ${uiagent1}    ${notifybasejson}
 
 查看我的统计数据
     [Template]    smoketest case
     ${uiadmin}    ${mystatisticbasejson}
-    ${uiagent1}    ${mystatisticbasejson}

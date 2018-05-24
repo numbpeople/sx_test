@@ -1,7 +1,7 @@
 *** Settings ***
 Suite Setup       Kefu Chat Suite Setup    ${uiadmin}    ${uiagent1}    # 步骤：创建关联；禁用所有溢出规则；坐席登录，设置该接待数为0，清空该坐席进行中会话，创建一个新技能组（下面用queuea简称）并将该坐席绑定到该技能组；设置路由规则优先入口指定
 Suite Teardown    Kefu Chat Suite Teardown    ${uiadmin}    #步骤：删除关联；删除技能组
-Force Tags        ui
+Force Tags        ui    agentschedule    agentuser
 Library           json
 Library           requests
 Library           Collections
@@ -59,21 +59,27 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ${uiadmin}    ${uiagent1}    ${kefustatus[1]}    false    false    on    ${true}
     ${uiadmin}    ${uiagent1}    ${kefustatus[1]}    false    false    off    ${true}
     ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    true    true    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    true    true    off    ${false}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    true    false    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    true    false    off    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    false    true    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    false    true    off    ${false}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    false    false    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    false    false    off    ${true}
+    ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    true    true
+    ...    # off    # ${false}    #    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}
+    ...    # true    false    on    # ${true}    #    ${uiadmin}
+    ...    # ${uiagent1}    ${kefustatus[2]}    true    false    off    # ${true}
+    ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    false    true
+    ...    # on    # ${true}    #    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}
+    ...    # false    true    off    # ${false}    #    ${uiadmin}
+    ...    # ${uiagent1}    ${kefustatus[2]}    false    false    on    # ${true}
+    ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[2]}    false    false
+    ...    # off    # ${true}
     ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    true    true    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    true    true    off    ${false}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    true    false    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    true    false    off    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    true    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    true    off    ${false}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    false    on    ${true}
-    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    false    off    ${true}
+    ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    true    true
+    ...    # off    # ${false}    #    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}
+    ...    # true    false    on    # ${true}    #    ${uiadmin}
+    ...    # ${uiagent1}    ${kefustatus[3]}    true    false    off    # ${true}
+    ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    true
+    ...    # on    # ${true}    #    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}
+    ...    # false    true    off    # ${false}    #    ${uiadmin}
+    ...    # ${uiagent1}    ${kefustatus[3]}    false    false    on    # ${true}
+    ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    false
+    ...    # off    # ${true}
 
 调度4：管理员不能调度非本组的会话
     [Documentation]    步骤：
@@ -88,7 +94,7 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     [Template]    Should Not Schedule Other Queue Session
     ${uiadmin}    ${uiagent1}    true
     ${uiadmin}    ${uiagent1}    false
-    
+
 调度5：指定坐席能直接接起
     [Documentation]    步骤：
     ...    serviceSessionJudgeOverloadEnable为false，坐席预调度开启和关闭，接待人数为0或1（可接待），设置各状态，均可直接接入指定坐席的会话
@@ -101,9 +107,11 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ${uiadmin}    ${uiagent1}    true    1    ${kefustatus[0]}
     ${uiadmin}    ${uiagent1}    false    0    ${kefustatus[0]}
     ${uiadmin}    ${uiagent1}    false    1    ${kefustatus[0]}
+    ${uiadmin}    ${uiagent1}    true    0    ${kefustatus[1]}
+    ${uiadmin}    ${uiagent1}    false    0    ${kefustatus[1]}
     ${uiadmin}    ${uiagent1}    true    1    ${kefustatus[1]}
     ${uiadmin}    ${uiagent1}    false    1    ${kefustatus[1]}
     ${uiadmin}    ${uiagent1}    true    1    ${kefustatus[2]}
-    ${uiadmin}    ${uiagent1}    false    1    ${kefustatus[2]}
+    #    ${uiadmin}    ${uiagent1}    false    1    ${kefustatus[2]}
     ${uiadmin}    ${uiagent1}    true    1    ${kefustatus[3]}
-    ${uiadmin}    ${uiagent1}    false    1    ${kefustatus[3]}
+    #    ${uiadmin}    ${uiagent1}    false    1    ${kefustatus[3]}

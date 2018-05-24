@@ -10,6 +10,7 @@ Resource          ../BaseKeyword.robot
 Library           DateTime
 Resource          ../Setting/ReviewSettings_Common.robot
 Resource          ../Review/Review_Common.robot
+Resource          ../Review/Review_Common.robot
 
 *** Keywords ***
 One Service Valid Conversation
@@ -67,7 +68,8 @@ One Service Valid Conversation
     #保存会话接起的时间范围
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
     set global variable    ${ConDateRange}    ${ConDateRange}
-    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}
+    ...    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}
     return from keyword    ${conInfo}
 
 Get Today Begin Time
@@ -142,16 +144,23 @@ One Service Unvalid Conversation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    质检评分不正确:${resp.content}
-    #筛选质检记录获取最新一条数据,检查质检评分,此处sleep因为质检数据从统计而来
-    sleep    2000ms
-    ${resp}=    /v1/tenants/{tenantId}/servicesessions/qualityreviews    ${AdminUser}    ${filter}    ${DateRange}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    should be equal    ${j["status"]}    OK    质检记录不正确:${resp.content}
+    #根据queueId筛选当天质检数据,检查质检评分
+    ${range}    copy dictionary    ${DateRange}
+    ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
+    ${dn}=    Convert To Integer    ${day}
+    set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
+    set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
+    set to dictionary    ${filter}    groupId=${queueentityAA.queueId}
+    ${j}=    Search Reviews    ${AdminUser}    ${filter}    ${range}
+    run keyword if    ${j} == {}    Fail    根据技能组id(queueId)筛选当天质检数据，没有找到数据
+    should be equal    ${j['status']}    OK    接口返回值status不正确, ${j}
+    should be true    '${j['totalElements']}' == '1'    接口返回数据不唯一, ${j}
     Should Be Equal    ${j["entities"][0]["serviceSessionId"]}    ${serviceSessionId}    会话不正确:${j["entities"][0]["serviceSessionId"]}
     ${totalScore}    set variable    ${j["entities"][0]["qualityReview"]["totalScore"]}
     #保存会话接起的时间范围
-    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    qmActorId=${AdminUser.userId}    vmsgCount=1    amsgCount=0    qualityMark=${totalScore}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}    userId=${userId}    userName=${guestEntity.userName}
+    ...    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    qmActorId=${AdminUser.userId}    vmsgCount=1
+    ...    amsgCount=0    qualityMark=${totalScore}
     return from keyword    ${conInfo}
 
 Get Current Session Count
@@ -186,7 +195,7 @@ Unvalid Conversation Setup
     set global variable    ${totalScore}    ${totalScore}
     set global variable    ${queueentity}    ${queueentity}
     set global variable    ${daasCreateTime}    ${daasCreateTime}
-    sleep    2000ms
+    sleep    ${daasDelay}
 
 Valid Conversation Setup
     [Documentation]    获取首页当前数据，并创建一个单服务有效会话
@@ -230,4 +239,4 @@ Valid Conversation Setup
     set global variable    ${daasCreateTime}    ${daasCreateTime}
     ${conCreateTime}    create dictionary    beginDateTime=${daasCreateTime}    endDateTime=${ConDateRange.endDateTime}
     set global variable    ${conCreateTime}    ${conCreateTime}
-    sleep    2000ms
+    sleep    ${daasDelay}

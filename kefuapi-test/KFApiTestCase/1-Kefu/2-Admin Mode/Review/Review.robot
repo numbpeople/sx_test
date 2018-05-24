@@ -106,8 +106,8 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     ${dn}=    Convert To Integer    ${day}
     set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
     set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
-    set to dictionary    ${filter}    originType=${session.originType}
-    #根据渠道筛选当天质检数据，验证筛选结果的第一条数据是期望值
+    set to dictionary    ${filter}    originType=${session.originType}    groupId=${session.queueId}
+    #根据渠道和groupId筛选当天质检数据，预期结果是唯一数据
     ${j}=    Search Reviews    ${AdminUser}    ${filter}    ${range}
     should be equal    ${j['status']}    OK    接口返回值status不正确: ${j}
     should be true    '${j['totalElements']}' >= '1'    接口返回数据不正确: ${j}
@@ -135,8 +135,8 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     ${dn}=    Convert To Integer    ${day}
     set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
     set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
-    set to dictionary    ${filter}    channelId=${session.techChannelId}
-    #根据关联筛选当天质检数据，验证筛选结果的第一条数据是期望值
+    set to dictionary    ${filter}    channelId=${session.techChannelId}    groupId=${session.queueId}
+    #根据关联和groupId筛选当天质检数据，预期结果是唯一数据
     ${j}=    Search Reviews    ${AdminUser}    ${filter}    ${range}
     should be equal    ${j['status']}    OK    接口返回值status不正确: ${j}
     should be true    '${j['totalElements']}' >= '1'    接口返回数据不正确: ${j}

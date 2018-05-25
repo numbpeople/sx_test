@@ -4,18 +4,30 @@
 
 ## 环境搭建:
 
-1. 客服自动化使用robotframework测试自动化框架进行验收测试。[官网地址](http://robotframework.org/)
+1. 客服自动化使用robotframework测试自动化框架进行验收测试： [官网地址](http://robotframework.org/)
 2. 使用GIT下载项目： https://github.com/easemob/kefu-auto-test
-3. 安装依赖:
+3. 项目依赖
 
-	* python
-	* setuptools
-	* pip
-	* Robot Framework
-	* wxPython
-	* robotframework-ride
-	* robotframework-requests
-	* robotframework-selenium2library
+```
+* python
+* setuptools
+* pip
+* Robot Framework
+* wxPython
+* robotframework-ride
+* robotframework-requests
+* robotframework-selenium2library
+* robotframework-excellibrary
+* pandas
+  ...
+```
+4.在线安装依赖包
+
+```
+$ cd kefu-auto-test/kefuapi-test/
+$ pip install -r requirements.txt
+```
+
 
 
 ## 项目结构
@@ -23,8 +35,6 @@
 自动化项目示意图：
 
 ![image](https://sandbox.kefu.easemob.com/v1/Tenant/11699/MediaFiles/8d06ec46-b4ff-489e-89b9-b42edfe96baeaW1hZ2UucG5n)
-
-
 
 ```
 KFApiTestCase: 接口测试用例层，包含多个suite层级，每个suite层级包含多个测试用例
@@ -51,14 +61,19 @@ AgentRes.robot: 定义客服登录地址、账号/密码、筛选字典、接口
 
 ## 项目运行
 
-* Ride工具:
-  界面点击运行按钮即可
+* Ride工具: 界面点击运行按钮即可, 如下图:
+
+![image](https://sandbox.kefu.easemob.com/v1/Tenant/11699/MediaFiles/cc4161e7-d48c-4e9a-b20d-d20c3dce0ab3aW1hZ2UucG5n)
+
 
 * 命令行:
-  pybot.bat --include baselogin --exclude tool --exclude org --exclude ui C:\Users\leo\git\kefu-auto-test\kefuapi-test
 
-更多pybot参数介绍 
+```
+$ cd kefu-auto-test/kefuapi-test/
+$ pybot.bat --include baselogin --exclude tool --exclude org --exclude ui C:\Users\leo\git\kefu-auto-test\kefuapi-test
+```
+
+
+更多pybot参数介绍:
 [pybot参数介绍](https://blog.csdn.net/huashao0602/article/details/72846217)
-
-
 

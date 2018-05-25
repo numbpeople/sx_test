@@ -96,7 +96,7 @@ Create Time Value
     ${begintimeDate}    ${endtimeDate}    Get Time Range    ${param}
     #获取时间范围
     ${beginDate}    convert date    ${begintimeDate.yyyy}${begintimeDate.mm}${begintimeDate.day} 0:0:0    epoch
-    ${endDate}    convert date    ${endtimeDate.yyyy}${endtimeDate.mm}${endtimeDate.day} 23:59:0    epoch
+    ${endDate}    convert date    ${endtimeDate.yyyy}${endtimeDate.mm}${endtimeDate.day} 23:59:59    epoch
     @{list}    create list    ${beginDate}    ${endDate}
     #将时间做处理，返回类似：1512921600000,1513007940000
     ${num}    set variable    ${EMPTY}
@@ -156,3 +156,4 @@ Clear Filters
     \    ${status}=    Run Keyword And Return Status    Should Contain    ${displayName}    ${preDisplayName}
     \    Run Keyword If    '${status}' == 'True'    Set Filters    delete    ${AdminUser}    ${EMPTY}
     \    ...    ${i['filterId']}
+    

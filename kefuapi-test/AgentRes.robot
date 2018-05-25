@@ -29,7 +29,7 @@ ${groupType}      System
 ...               agentIds=    customerName=    transfered=    fromAgentCallback=    queueId=    withMessage=    sortField=stopDateTime
 ...               message=    hasQM=    groupId=    rangeValue=    qmActorId=    amsgCount=    vmsgCount=
 ...               agentUserId=    vip=    serviceSessionId=    type=    entryStates=Published    creatorId=    appealNumber=
-...               # hasQM参数的值选择为：V_ALL、V_YES、V_NO; vip参数为待接入筛选使用，值默认为空，可为：true/false
+...               agent_query=false    size=8    skill_group_export=false    # hasQM参数的值选择为：V_ALL、V_YES、V_NO; vip参数为待接入筛选使用，值默认为空，可为：true/false
 &{orgEntity}      organName=${empty}    organId=${empty}
 &{RobotFilter}    page=1    per_page=10    q=    type=0    pageIndex=1    pageSize=10    start=
 ...               end=    keyword=    source=
@@ -65,3 +65,5 @@ ${SeleniumTimeout}    20
 @{originType}     app    webim    weibo    weixin    phone    rest    slack
 ${ScheduleTimeout}    5
 ${daasDelay}      3
+&{customerFieldName}    createDateTime=    lastSessionCreateDateTime=    nickname=    username=    customerTags=    truename=    email=   phone=
+&{customerOperation}    createDateTime=RANGE    lastSessionCreateDateTime=RANGE    nickname=CONTAIN    username=CONTAIN    customerTags=CONTAIN_ANY    truename=CONTAIN    email=CONTAIN   phone=CONTAIN

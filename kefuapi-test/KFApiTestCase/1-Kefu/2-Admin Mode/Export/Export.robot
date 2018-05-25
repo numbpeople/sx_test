@@ -19,6 +19,7 @@ Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.ro
 Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.robot
 Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
 Resource          ../../../../commons/admin common/Note/Note_Common.robot
+Resource          ../../../../commons/admin common/Customers/Customers_common.robot
 
 *** Test Cases ***
 下载历史会话导出管理的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
@@ -544,5 +545,41 @@ Resource          ../../../../commons/admin common/Note/Note_Common.robot
     run keyword if    ${rowCount} != 2    Fail    因为只导出一个留言的数据,所以导出的excel文件总行数应为2,需要检查文件,路径:${xlsPath}
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
     
+导出下载客户中心的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
+    [Documentation]    1、创建新访客新会话 2、导出客户中心该访客数据
+    #创建访客数据
+    @{paramList}    create list    ${AdminUser}
+    ${customerInfo}    Run keyword And Export Specify Data    ${AdminUser}    Create Customer And Export Data    @{paramList}
+    #下载导出管理的数据
+    ${result}    Download Export File    ${AdminUser}    ${customerInfo.id}    #获取导出管理中文件的id值,并下载其文件
+    #保存文件
+    ${path}    Find Specified Folder Path    tempdata
+    ${filename}    set variable    客户信息导出
+    ${sheetname}    set variable    customerFile
+    ${csvPath}    set variable    ${path}/${filename}.csv
+    ${xlsPath}    set variable    ${path}/${filename}.xls
+    #保存文件到本地目录
+    save file    ${csvPath}    ${result}
+    #将csv文件转化成xls格式文件
+    csv_to_xls_pd    ${csvPath}    ${sheetname}    ${xlsPath}
+    #模板数据
+    log dictionary    ${customerInfo}
+    ${createDateTime}    evaluate    '${customerInfo.createDateTime}'[0:-3]    #去除时间戳最后三位
+    ${createDateTime}    Get Time    ${EMPTY}    ${createDateTime}    #由1527238033格式转为2018-05-25 16:47:13格式
+    @{sheetName}    create list    创建时间    更新时间    客户最新会话时间    
+    ...    ID    昵称    名字    手机    qq    邮箱    
+    ...    公司    描述    qq    城市    客户标签
+    @{sheetValue}    create list    ${customerInfo.userName}    ${createDateTime}
+    #读取xls表格数据
+    @{firstRowsList}    Get Rows List    ${xlsPath}    0
+    @{secondRrowsList}    Get Rows List    ${xlsPath}    1
+    log list    ${firstRowsList}
+    log list    ${secondRrowsList}
+    #获取文件总行数
+    ${sheetNames}    Get Sheet Names
+    ${rowCount}    Get Row Count    ${sheetNames[0]}
+    #判断导出数据总行数和导出与预期数据相等
+    run keyword if    ${rowCount} != 2    Fail    因为只导出一个客户中心的数据,所以导出的excel文件总行数应为2,需要检查文件,路径:${xlsPath}
+    Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
+
 # 导出下载告警记录的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-# 导出下载客户中心的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)

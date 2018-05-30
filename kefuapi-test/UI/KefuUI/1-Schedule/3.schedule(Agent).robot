@@ -8,19 +8,19 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../AgentRes.robot
+Resource          ../../../AgentRes.robot
 Library           uuid
 Library           urllib
 Library           Selenium2Library
-Resource          ../../api/HomePage/Login/Login_Api.robot
-Resource          ../../UIcommons/Kefu/chatres.robot
-Resource          ../../commons/Base Common/Base_Common.robot
-Resource          ../../commons/admin common/Channels/App_Common.robot
-Resource          ../../commons/admin common/Members/AgentQueue_Common.robot
-Resource          ../../UIcommons/Kefu/agentmoderes.robot
+Resource          ../../../api/HomePage/Login/Login_Api.robot
+Resource          ../../../UIcommons/Kefu/chatres.robot
+Resource          ../../../commons/Base Common/Base_Common.robot
+Resource          ../../../commons/admin common/Channels/App_Common.robot
+Resource          ../../../commons/admin common/Members/AgentQueue_Common.robot
+Resource          ../../../UIcommons/Kefu/agentmoderes.robot
 
 *** Test Cases ***
-调度1：管理员能自动调度
+调度1：普通坐席能自动调度
     [Documentation]    组合预调度开关、上班时间调度开关和上下班时间控制来测试
     [Setup]    Set Agent StatusAndMaxServiceUserNumber    ${uiagent1}    ${kefustatus[0]}    1
     [Template]    AutoSchedule Case
@@ -33,7 +33,7 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ${uiadmin}    ${uiagent1}    false    false    on    ${true}
     ${uiadmin}    ${uiagent1}    false    false    off    ${true}
 
-调度2：管理员能心跳调度（修改接待数）
+调度2：普通坐席能心跳调度（修改接待数）
     [Documentation]    组合预调度开关、上班时间调度开关和上下班时间控制来测试
     [Setup]    Set Agent Status    ${uiagent1}    ${kefustatus[0]}
     [Template]    KeepaliveSchedule By Change MaxServiceUserNumber Case
@@ -46,7 +46,7 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ${uiadmin}    ${uiagent1}    false    false    on    ${true}
     ${uiadmin}    ${uiagent1}    false    false    off    ${true}
 
-调度3：管理员能心跳调度（修改状态）
+调度3：普通坐席能心跳调度（修改状态）
     [Documentation]    组合预调度开关、上班时间调度开关和上下班时间控制来测试
     [Setup]    Set Agent StatusAndMaxServiceUserNumber    ${uiagent1}    ${kefustatus[0]}    1
     [Template]    KeepaliveSchedule By Change Status Case
@@ -81,7 +81,7 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ...    #    ${uiadmin}    ${uiagent1}    ${kefustatus[3]}    false    false
     ...    # off    # ${true}
 
-调度4：管理员不能调度非本组的会话
+调度4：普通坐席不能调度非本组的会话
     [Documentation]    步骤：
     ...    1.设置坐席接待数为1，状态为在线
     ...    2.创建一个新技能组（下面用queueb简称）

@@ -7,6 +7,7 @@ Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/Members/Agent_Api.robot
 Library           uuid
+Resource          ../../../api/BaseApi/Settings/PermissionApi.robot
 
 *** Keywords ***
 Get Agents
@@ -75,9 +76,14 @@ Create Temp Agent
     [Arguments]    ${agent}    ${permissionid}    #permissionid : 1为管理员；2为坐席；以后为自定义角色
     ${t}    UUID 4
     &{AgentUser}=    create dictionary    username=${t}@t.cn    password=test2015    maxServiceSessionCount=10    tenantId=${agent.tenantId}
-    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"trueName","mobilePhone":"13800138000","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","permission":"${permissionid}","roles":"agent"}
+    ${roles}    set variable if    ${permissionid} == 1    admin,agent    agent
+    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"trueName","mobilePhone":"13800138000","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","permission":"${permissionid}","roles":"${roles}"}
     ${resp}=    /v1/Admin/Agents    post    ${agent}    ${empty}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.text}
+    ${data}    set variable    {"role_ids":[${permissionid}]}
+    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/roles    ${agent}    ${data}    ${j['userId']}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     [Return]    ${AgentUser}
 
 Create Specify Agent
@@ -112,7 +118,7 @@ Download Agent Data
 
 Create Agent And Download Data
     [Arguments]    ${agent}    ${language}=zh-CN
-    [Documentation]    1、创建坐席    2、导出客服信息
+    [Documentation]    1、创建坐席 2、导出客服信息
     #设置局部变量
     ${agentFilter}    copy dictionary    ${AgentFilterEntity}
     ${agentInfo}    Create Specify Agent    ${agent}

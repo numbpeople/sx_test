@@ -6,27 +6,27 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../AgentRes.robot
+Resource          ../../../AgentRes.robot
 Library           uuid
 Library           urllib
 Library           Selenium2Library
-Resource          ../../UIcommons/Utils/baseUtils.robot
-Resource          ../../UIcommons/Kefu/chatres.robot
-Resource          ../../UIcommons/Kefu/waitres.robot
-Resource          ../../UIcommons/Kefu/historyres.robot
-Resource          ../../UIcommons/Kefu/visitorsres.robot
-Resource          ../../UIcommons/Kefu/agentstatres.robot
-Resource          ../../UIcommons/Kefu/sessionsearchres.robot
-Resource          ../../UIcommons/Kefu/exportsres.robot
-Resource          ../../UIcommons/Kefu/knowledgeres.robot
-Resource          ../../UIcommons/Kefu/myticketsres.robot
-Resource          ../../UIcommons/Kefu/qualityres.robot
-Resource          ../../UIcommons/Kefu/notesres.robot
-Resource          ../../UIcommons/Kefu/agentinfores.robot
-Resource          ../../UIcommons/Kefu/myphraseres.robot
-Resource          ../../UIcommons/Kefu/notifyres.robot
-Resource          ../../UIcommons/Kefu/mystatistic.robot
-Resource          ../../UIcommons/Kefu/agentmoderes.robot
+Resource          ../../../UIcommons/Utils/baseUtils.robot
+Resource          ../../../UIcommons/Kefu/chatres.robot
+Resource          ../../../UIcommons/Kefu/waitres.robot
+Resource          ../../../UIcommons/Kefu/historyres.robot
+Resource          ../../../UIcommons/Kefu/visitorsres.robot
+Resource          ../../../UIcommons/Kefu/agentstatres.robot
+Resource          ../../../UIcommons/Kefu/sessionsearchres.robot
+Resource          ../../../UIcommons/Kefu/exportsres.robot
+Resource          ../../../UIcommons/Kefu/knowledgeres.robot
+Resource          ../../../UIcommons/Kefu/myticketsres.robot
+Resource          ../../../UIcommons/Kefu/qualityres.robot
+Resource          ../../../UIcommons/Kefu/notesres.robot
+Resource          ../../../UIcommons/Kefu/agentinfores.robot
+Resource          ../../../UIcommons/Kefu/myphraseres.robot
+Resource          ../../../UIcommons/Kefu/notifyres.robot
+Resource          ../../../UIcommons/Kefu/mystatistic.robot
+Resource          ../../../UIcommons/Kefu/agentmoderes.robot
 
 *** Test Cases ***
 查看会话列表
@@ -35,7 +35,6 @@ Resource          ../../UIcommons/Kefu/agentmoderes.robot
     ...    3.检查最大接待人数基本元素1
     [Template]    chat smoketest case
     ${uiadmin}
-    ${uiagent1}
 
 查看待接入列表
     [Template]    smoketest case

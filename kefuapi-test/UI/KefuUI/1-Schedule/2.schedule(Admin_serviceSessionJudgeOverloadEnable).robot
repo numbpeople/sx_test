@@ -8,16 +8,16 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
-Resource          ../../AgentRes.robot
+Resource          ../../../AgentRes.robot
 Library           uuid
 Library           urllib
 Library           Selenium2Library
-Resource          ../../api/HomePage/Login/Login_Api.robot
-Resource          ../../UIcommons/Kefu/chatres.robot
-Resource          ../../commons/Base Common/Base_Common.robot
-Resource          ../../commons/admin common/Channels/App_Common.robot
-Resource          ../../commons/admin common/Members/AgentQueue_Common.robot
-Resource          ../../UIcommons/Kefu/agentmoderes.robot
+Resource          ../../../api/HomePage/Login/Login_Api.robot
+Resource          ../../../UIcommons/Kefu/chatres.robot
+Resource          ../../../commons/Base Common/Base_Common.robot
+Resource          ../../../commons/admin common/Channels/App_Common.robot
+Resource          ../../../commons/admin common/Members/AgentQueue_Common.robot
+Resource          ../../../UIcommons/Kefu/agentmoderes.robot
 
 *** Test Cases ***
 调度1：管理员能自动调度

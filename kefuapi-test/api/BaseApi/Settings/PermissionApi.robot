@@ -39,3 +39,11 @@
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
     ...    timeout=${timeout}
+
+/v1/permission/tenants/{tenantId}/users/{userId}/roles
+    [Arguments]    ${agent}    ${data}    ${userId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json;
+    ${uri}=    set variable    /v1/permission/tenants/${agent.tenantId}/users/${userId}/roles
+    ${params}=    set variable    _=1509526060679
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    data=${data}
+    ...    timeout=${timeout}

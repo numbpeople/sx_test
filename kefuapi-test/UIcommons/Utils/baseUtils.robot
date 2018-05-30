@@ -9,7 +9,7 @@ Resource          ../../AgentRes.robot
 Resource          ../../api/MicroService/Webapp/TeamApi.robot
 Resource          ../../api/MicroService/Webapp/InitApi.robot
 Resource          ../../api/MicroService/WebGray/WebGrayApi.robot
-Resource          ../../api/MicroService/Permission/PermissionApi.robot
+Resource          ../../api/BaseApi/Settings/PermissionApi.robot
 Resource          ../../UIcommons/Utils/baseUtils.robot
 Library           uuid
 Library           urllib

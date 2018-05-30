@@ -199,3 +199,12 @@ Get Channel With ChannelId
     :FOR    ${i}    IN    @{j}
     \    Return From Keyword if    "${i['id']}" == "${channelId}"    ${i}
     Return From Keyword    {}
+
+Auto CreateImAssosciation
+    [Arguments]    ${agent}    ${data}
+    [Documentation]    快速创建关联
+    #快速创建关联
+    ${resp}=    /v1/autoCreateImAssosciation    ${agent}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

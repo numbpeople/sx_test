@@ -95,7 +95,7 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
 
 获取网页插件的所有关联(/v1/webimplugin/targetChannels)
     #获取网页插件配置返回值
-    ${j}    Get Webimplugin Channels
+    ${j}    Get Webimplugin Channels    ${AdminUser}
     #断言返回状态值和json结构与值是否一致
     ${status}    Run Keyword And Return Status    Should Contain    ${j}    channelId
     Run Keyword If    "${j}" == "[]"    Fail    租户下没有创建关联 ，请创建关联，返回结果为：-- > ${j}
@@ -105,16 +105,16 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
     #获取时间计划并设置默认时间计划为全局变量使用
     Get ScheduleId
     #获取关联
-    ${channelId}    Get Webimplugin Channels
+    ${channelId}    Get Webimplugin Channels    ${AdminUser}
     #获取网页插件配置返回值
     ${paramData}    create dictionary    channelType=easemob    originType=webim    channelId=${channelId[0]['channelId']}    tenantId=${AdminUser.tenantId}    queueName=
     ...    agentUsername=    timeScheduleId=${timeScheduleId}
-    ${j}    Show Message    ${paramData}
+    ${j}    Show Message    ${AdminUser}    ${paramData}
     Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
 
 获取网页渠道系统欢迎语(/v1/webimplugin/welcome)
     #获取网页插件系统欢迎语
-    ${j}    Show Company Greeting
+    ${j}    Show Company Greeting    ${AdminUser}
     #断言返回状态值和json结构与值是否一致
     ${status}    Run Keyword And Return Status    Should Be Empty    ${j}
     Run Keyword if    ${status}    Pass Execution    该租户没有设置系统欢迎语
@@ -123,21 +123,21 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
 
 获取网页渠道机器人欢迎语(/v1/webimplugin/tenants/robots/welcome)
     #获取关联
-    ${channelId}    Get Webimplugin Channels
+    ${channelId}    Get Webimplugin Channels    ${AdminUser}
     #获取网页插件机器人欢迎语
     ${paramData}    create dictionary    channelType=easemob    originType=webim    channelId=${channelId[0]['channelId']}    tenantId=${AdminUser.tenantId}    queueName=
     ...    agentUsername=
-    ${j}    Show Robot Greeting    ${paramData}
+    ${j}    Show Robot Greeting    ${AdminUser}    ${paramData}
     Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
 
 获取网页插件技能组绑定欢迎语(/v1/webimplugin/tenants/{tenantId}/skillgroup-menu)
     #获取技能组绑定欢迎语列表
-    ${j}    Get Skillgroup-menu
+    ${j}    Get Skillgroup-menu    ${AdminUser}
     Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
 
 获取自定义表情包(/v1/webimplugin/emoj/tenants/{tenantId}/packages)
     #获取表情包
-    ${j}    Get Webim Stickers
+    ${j}    Get Webim Stickers    ${AdminUser}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     ${length} =    get length    ${j['entities']}
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中未包含tenantId字段: ${j}
@@ -153,7 +153,7 @@ Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
     ${j1}    Upload Stickers    ${AdminUser}    ${fileEntity}
     should be equal    ${j1['status']}    OK    返回值中status不等于OK: ${j1}
     #获取表情文件
-    ${j}    Get Webim Stickers Files
+    ${j}    Get Webim Stickers Files    ${AdminUser}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     ${length} =    get length    ${j['entities']}
     Run Keyword if    ${length} == 0    Fail    租户下的表情包文件不存在，需要检查下，${j}

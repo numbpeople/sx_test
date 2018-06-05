@@ -67,3 +67,5 @@ ${ScheduleTimeout}    5
 ${daasDelay}      3
 &{customerFieldName}    createDateTime=    lastSessionCreateDateTime=    nickname=    username=    customerTags=    truename=    email=   phone=
 &{customerOperation}    createDateTime=RANGE    lastSessionCreateDateTime=RANGE    nickname=CONTAIN    username=CONTAIN    customerTags=CONTAIN_ANY    truename=CONTAIN    email=CONTAIN   phone=CONTAIN
+&{evaluationdegreesName}    score1=非常不满意    score2=不满意    score3=一般    score4=满意   score5=非常满意
+&{evaluationdegreesNameScore}    score1=1    score2=2    score3=3    score4=4   score5=5

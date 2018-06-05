@@ -18,6 +18,9 @@ Setting Setup
     Get ScheduleId
 
 Setting Teardown
+    Run Keyword And Ignore Error    Setting Teatdown Data
+
+Setting Teatdown Data
     [Documentation]    该关键字是清理的工作，目前操作为：清除权限管理->自定义角色
     Clear Roles    #删除自定义角色
     Clear Phrases    #删除公共常用语

@@ -15,6 +15,7 @@ Set ReviewSettings
     #操作质检评分设置
     ${resp}=    /v1/tenants/{tenantId}/qualityreviews/qualityitems    ${method}    ${agent}    ${timeout}    ${data}    ${id}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}, ${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    调用方法:Set ReviewSettings、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 

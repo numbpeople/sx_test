@@ -20,8 +20,8 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["max_fr"]}>=2    客服工作质量-首响时长最大值有误:${j["entities"][0]["max_fr"]}
     should be true    ${j["entities"][0]["avg_qm"]}==0    客服工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
     should be true    ${j["entities"][0]["avg_vm"]}==1    客服工作质量-满意度有误:${j["entities"][0]["avg_vm"]}
-    should be equal    ${j["entities"][0]["pct_qm"]}    0%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
-    should be equal    ${j["entities"][0]["pct_vm"]}    100%    客服工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    0.00%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be equal    ${j["entities"][0]["pct_vm"]}    100.00%    客服工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
     should be true    ${j["entities"][0]["cnt_ea"]}==1    客服工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==0    客服工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
     should be true    ${j["entities"][0]["cnt_uaa"]}==0    客服工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}
@@ -43,8 +43,8 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["max_fr"]}>=2    技能组工作质量-首响时长最大值有误:${j["entities"][0]["max_fr"]}
     should be true    ${j["entities"][0]["avg_qm"]}==0    技能组工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
     should be true    ${j["entities"][0]["avg_vm"]}==1    技能组工作质量-满意度有误:${j["entities"][0]["avg_vm"]}
-    should be equal    ${j["entities"][0]["pct_qm"]}    0%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
-    should be equal    ${j["entities"][0]["pct_vm"]}    100%    技能组工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    0.00%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be equal    ${j["entities"][0]["pct_vm"]}    100.00%    技能组工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
     should be true    ${j["entities"][0]["cnt_ea"]}==1    技能组工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==0    技能组工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
     should be true    ${j["entities"][0]["cnt_uaa"]}==0    技能组工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}

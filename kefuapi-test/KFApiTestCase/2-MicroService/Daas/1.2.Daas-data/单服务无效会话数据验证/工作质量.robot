@@ -23,7 +23,7 @@ Resource          ../../../../../api/BaseApi/Review/QualityReviews_Api.robot
     should be true    ${j["totalElements"]}==1    客服工作质量不正确:${resp.content}
     should be equal    ${j["entities"][0]["key"]}    ${AdminUser.userId}    客服工作质量-客服有误:${j["entities"][0]["key"]}
     should be equal    ${j["entities"][0]["avg_qm"]}    ${totalScore}    客服工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
-    should be equal    ${j["entities"][0]["pct_qm"]}    100%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    100.00%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
     should be true    ${j["entities"][0]["cnt_ea"]}==0    客服工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==1    客服工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
     should be true    ${j["entities"][0]["cnt_uaa"]}==1    客服工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}
@@ -40,7 +40,7 @@ Resource          ../../../../../api/BaseApi/Review/QualityReviews_Api.robot
     ${key}    evaluate    int(${j["entities"][0]["key"]})
     should be equal    ${key}    ${FilterEntity.queueId}    技能组工作量-技能组有误:${j["entities"][0]["key"]}
     should be equal    ${j["entities"][0]["avg_qm"]}    ${totalScore}    技能组工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
-    should be equal    ${j["entities"][0]["pct_qm"]}    100%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    100.00%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
     should be true    ${j["entities"][0]["cnt_ea"]}==0    技能组工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==1    技能组工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
     should be true    ${j["entities"][0]["cnt_uaa"]}==1    技能组工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}

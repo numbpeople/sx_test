@@ -59,3 +59,26 @@
     ${uri}=    set variable    /download/tplfiles/%E5%AE%A2%E6%88%B7%E4%B8%AD%E5%BF%83%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
     
+/v1/crm/tenants/{tenantId}/customers/{customerId}
+    [Arguments]    ${agent}    ${timeout}    ${customerId}    ${data}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/customers/${customerId}
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/crm/tenants/{tenantId}/visitors/{visitorId}/customer_detailinfo
+    [Arguments]    ${agent}    ${timeout}    ${visitorId}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/visitors/${visitorId}/customer_detailinfo
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/crm/tenants/{tenantId}/columndefinitions
+    [Arguments]    ${agent}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/columndefinitions
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId}
+    [Arguments]    ${agent}    ${timeout}    ${visitorId}    ${userTagId}    ${data}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/VisitorUsers/${visitorId}/VisitorUserTags/${userTagId}
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}

@@ -8,6 +8,7 @@ Library           calendar
 Resource          ../../../api/BaseApi/Customers/Customers_Api.robot
 Resource          ../../agent common/Customers/Customers_Common.robot
 Resource          ../../Base Common/Base_Common.robot
+Resource          ../../agent common/Queue/Queue_Common.robot
 
 *** Keywords ***
 Search Crm Customers
@@ -81,14 +82,14 @@ Customers Request Data
     @{conditionsList}    create list
     &{conditionsDic}    create dictionary
     #如果字段值为空，则去除该key
-    :FOR    ${i}    IN RANGE    ${keyLength}
+    : FOR    ${i}    IN RANGE    ${keyLength}
     \    ${field_name}    set variable    ${keyList[${i}]}
     \    run keyword if    "${customerFieldName.${field_name}}" == ""    Remove From Dictionary    ${customerFieldName}    ${field_name}
     log dictionary    ${customerFieldName}
     @{keyList}    Get Dictionary Keys    ${customerFieldName}
     ${entityLength}    get length    ${keyList}
     #构造请求体
-    :FOR    ${i}    IN RANGE    ${entityLength}
+    : FOR    ${i}    IN RANGE    ${entityLength}
     \    ${field_name}    set variable    ${keyList[${i}]}
     \    ${field_value}    Get From Dictionary    ${customerFieldName}    ${field_name}
     \    ${operation}    Get From Dictionary    ${customerOperation}    ${field_name}
@@ -130,14 +131,14 @@ Export Customers Request Data
     @{conditionsList}    create list
     &{conditionsDic}    create dictionary
     #如果字段值为空，则去除该key
-    :FOR    ${i}    IN RANGE    ${keyLength}
+    : FOR    ${i}    IN RANGE    ${keyLength}
     \    ${field_name}    set variable    ${keyList[${i}]}
     \    run keyword if    "${customerFieldName.${field_name}}" == ""    Remove From Dictionary    ${customerFieldName}    ${field_name}
     log dictionary    ${customerFieldName}
     @{keyList}    Get Dictionary Keys    ${customerFieldName}
     ${entityLength}    get length    ${keyList}
     #构造请求体
-    :FOR    ${i}    IN RANGE    ${entityLength}
+    : FOR    ${i}    IN RANGE    ${entityLength}
     \    ${field_name}    set variable    ${keyList[${i}]}
     \    ${field_value}    Get From Dictionary    ${customerFieldName}    ${field_name}
     \    ${operation}    Get From Dictionary    ${customerOperation}    ${field_name}
@@ -151,7 +152,7 @@ Export Customers Request Data
 
 Create Customer And Export Data
     [Arguments]    ${agent}    ${language}=zh-CN
-    [Documentation]    1、创建新访客和新会话    2、导出该客户数据
+    [Documentation]    1、创建新访客和新会话 2、导出该客户数据
     #创建待接入会话
     ${session}    Create Wait Conversation    app
     #创建时间返回值，类似：1512921600000,1513007940000
@@ -174,7 +175,7 @@ Create Customer And Export Data
     Should Be True    ${j['entities'][0]['nickname']} == ${session.userName}    访客中心返回值中nickname字段值:${j['entities'][0]['nickname']},不是${session.userName}：${j}
     #获取客户中心数据
     ${resp}    Export Customers    ${agent}    ${crmFieldName}    ${filter}    ${language}
-    set to dictionary    ${session}    visitorId=${j['entities'][0]['bind_visitors'][0]}    customerId=${j['entities'][0]['customer_id']}    createDateTime=${j['entities'][0]['created_at']}    updateDateTime=${j['entities'][0]['updated_at']}    lastUpdateDateTime=${j['entities'][0]['last_session_create_at']}  
+    set to dictionary    ${session}    visitorId=${j['entities'][0]['bind_visitors'][0]}    customerId=${j['entities'][0]['customer_id']}    createDateTime=${j['entities'][0]['created_at']}    updateDateTime=${j['entities'][0]['updated_at']}    lastUpdateDateTime=${j['entities'][0]['last_session_create_at']}
     Return From Keyword    ${session}
 
 Download Customer Template
@@ -184,4 +185,61 @@ Download Customer Template
     ${resp}=    /download/tplfiles/%E5%AE%A2%E6%88%B7%E4%B8%AD%E5%BF%83%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx    ${agent}    ${language}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
     Return From Keyword    ${resp}
-    
+
+Create Customer Setup
+    [Documentation]    1、创建新访客和新会话 2、获取该访客的客户中心数据
+    #创建待接入会话
+    ${session}    Create Wait Conversation    app
+    #创建时间返回值，类似：1512921600000,1513007940000
+    ${param}    set variable    1    #筛选时间是哪个维度, 为：今天、昨天、本周、本月、上月
+    ${timeValue}    Create Time Value    ${param}
+    #创造查询请求体
+    ${crmFieldName}    copy dictionary    ${customerFieldName}
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${crmFieldName}    createDateTime=${timeValue}    username=${session.userName}
+    set to dictionary    ${filter}    page=0    size=10
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${crmFieldName}    ${filter}
+    ${expectConstruction}    set variable    ['totalElements']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    1    #该参数为获取接口某字段的预期值
+    #获取客户中心数据
+    ${j}    Repeat Keyword Times    Search Customers    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    客户中心查询了10秒中,未找到刚创建的客户数据
+    Should Be True    ${j['totalElements']} == 1    访客中心人数不唯一：${j}
+    Should Be True    ${j['entities'][0]['username'][0]} == ${session.userName}    访客中心返回值中username字段值:${j['entities'][0]['username'][0]},不是${session.userName}：${j}
+    Should Be True    ${j['entities'][0]['nickname']} == ${session.userName}    访客中心返回值中nickname字段值:${j['entities'][0]['nickname']},不是${session.userName}：${j}
+    ${customerDetail}    set variable    ${j['entities'][0]}
+    set global variable    ${customerDetail}    ${customerDetail}
+
+Update Customer Detail
+    [Arguments]    ${agent}    ${customerId}    ${data}
+    [Documentation]    更新访客基本资料
+    ${resp}=    /v1/crm/tenants/{tenantId}/customers/{customerId}    ${agent}    ${timeout}    ${customerId}    ${data}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Get Customer DetailInfo
+    [Arguments]    ${agent}    ${visitorId}
+    [Documentation]    获取某个访客的基本资料
+    ${resp}=    /v1/crm/tenants/{tenantId}/visitors/{visitorId}/customer_detailinfo    ${agent}    ${timeout}    ${visitorId}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Get Customer Columndefinitions
+    [Arguments]    ${agent}
+    [Documentation]    获取访客基础资料的所有字段
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${agent}    ${timeout}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Update CustomerTag
+    [Arguments]    ${agent}    ${visitorId}    ${userTagId}    ${data}
+    [Documentation]    更新某个访客的客户标签
+    ${resp}=    /v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId}    ${agent}    ${timeout}    ${visitorId}    ${userTagId}    ${data}
+    should be equal as integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}

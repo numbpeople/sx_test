@@ -243,3 +243,22 @@ Update CustomerTag
     [Documentation]    更新某个访客的客户标签
     ${resp}=    /v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId}    ${agent}    ${timeout}    ${visitorId}    ${userTagId}    ${data}
     should be equal as integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+
+Add Blacklist
+    [Arguments]    ${agent}    ${data}    ${params}=
+    [Documentation]    将访客加入黑名单
+    ${method}    set variable    post
+    ${resp}=    /v1/tenants/{tenantId}/blacklists    ${method}    ${agent}    ${timeout}    ${data}    ${params}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+
+Get blacklists
+    [Arguments]    ${agent}    ${params}    ${data}=
+    [Documentation]    按筛选条件获取租户的黑名单列表
+    ${method}    set variable    get
+    ${resp}=    /v1/tenants/{tenantId}/blacklists    ${method}    ${agent}    ${timeout}    ${data}    ${params}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}

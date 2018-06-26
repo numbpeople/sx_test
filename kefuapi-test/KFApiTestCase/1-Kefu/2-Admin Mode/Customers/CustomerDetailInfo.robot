@@ -41,3 +41,26 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     sleep    1000ms
     ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitorId}
     should be true    '${j['entity']['customerTags']}' == '[${userTagId}]'    接口返回customerTags不正确:${j['entity']}
+
+加入黑名单(/v1/tenants/{tenantId}/blacklists)
+    [Documentation]    将访客加入黑名单
+    #创建局部变量
+    ${visitorId}    set variable    ${customerDetail["bind_visitors"][0]}
+    #获取nickname
+    ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitorId}
+    ${length}    get length    ${j['entity']['columnValues']}
+    : FOR    ${n}    IN RANGE    ${length}
+    \    ${nickname}    run keyword if    '${j['entity']['columnValues'][${n}]['columnName']}' == 'nickname'    set variable    ${j['entity']['columnValues'][${n}]['values'][0]}
+    \    run keyword if    '${j['entity']['columnValues'][${n}]['columnName']}' == 'nickname'    exit for loop
+    #创建请求体
+    ${data}    set variable    {"tenantId":${AdminUser.tenantId},"visitorUserId":"${visitorId}","visitorUserNickname":"${nickname}","actor":"${AdminUser.userId}","actorNickname":"${AdminUser.nicename}","reason":"blacklist reason","status":"Created"}
+    #加入黑名单
+    Add Blacklist    ${AdminUser}    ${data}
+    #按访客昵称筛选黑名单列表,验证返回结果与期望值是否一致
+    ${params}    set variable    visitorName=${nickname}
+    ${j}    Get blacklists    ${AdminUser}    ${params}
+    should be true    ${j['totalElements']} == 1    接口返回totalElements不正确:${j}
+    should be equal    ${j['entities'][0]['visitorUserId']}     ${visitorId}    接口返回visitorUserId不正确:${j['entities'][0]['visitorUserId']}
+    should be equal    ${j['entities'][0]['actorNickname']}     ${AdminUser.nicename}    接口返回actorNickname不正确:${j['entities'][0]['actorNickname']}
+    should be equal    ${j['entities'][0]['visitorUserNickname']}     ${nickname}    接口返回visitorUserNickname不正确:${j['entities'][0]['visitorUserNickname']}
+    should be true    '${j['entities'][0]['reason']}' == 'blacklist reason'    接口返回reason不正确:${j['entities'][0]['reason']}

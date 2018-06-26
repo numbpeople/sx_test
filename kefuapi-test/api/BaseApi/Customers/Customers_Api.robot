@@ -82,3 +82,10 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Tenant/VisitorUsers/${visitorId}/VisitorUserTags/${userTagId}
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/blacklists
+    [Arguments]    ${method}   ${agent}    ${timeout}    ${data}    ${params}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/blacklists
+    run keyword and return if   '${method}' == 'post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    run keyword and return if   '${method}' == 'get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

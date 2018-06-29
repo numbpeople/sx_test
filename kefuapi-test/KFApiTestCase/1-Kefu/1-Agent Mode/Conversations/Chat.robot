@@ -258,8 +258,8 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${j}    Get Attribute    ${AdminUser}    ${GuestEntity.sessionServiceId}
     Should Be Equal    ${j['status']}    OK    获取attribute失败：${j}
     #查看track是否调用成功
-    ${j}    Get Track    ${AdminUser}    ${GuestEntity.sessionServiceId}
-    Should Not Be Empty    ${j['status']}    获取track失败：${j}
+    # ${j}    Get Track    ${AdminUser}    ${GuestEntity.sessionServiceId}
+    # Should Not Be Empty    ${j['status']}    获取track失败：${j}
     #查询访客会话信息是否正确
     ${j}    Get Single Visitor    ${AdminUser}    ${GuestEntity.userId}
     Should Be Equal    ${j['chatGroupId']}    ${GuestEntity.chatGroupId}    chatGroupId不正确：${j}

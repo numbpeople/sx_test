@@ -17,6 +17,7 @@ Business hours
     #获取时间计划
     ${resp}=    /v1/tenants/{tenantId}/timeplans/schedules    ${AdminUser}    ${timeout}    ${method}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Business hours、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 

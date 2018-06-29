@@ -29,7 +29,8 @@ Get Conversation TagId
     #递归取数据中叶子节点的值
     : FOR    ${i}    IN    @{ServiceSessionSummaryList}
     \    set suite variable    ${id}    ${i[0]['id']}
-    \    Exit For Loop If    ${i[0]['children']} is None
+    \    ${status}    Run Keyword And Return Status    Should Not Be Equal    "${i[0]['children']}"    "None"
+    \    Exit For Loop If    not ${status}
     \    Get Conversation TagId    ${i[0]['children']}
     return from keyword    ${id}
 

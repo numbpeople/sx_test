@@ -14,8 +14,9 @@ Get Stickers
     [Documentation]    获取自定义表情
     #获取自定义表情
     ${resp}=    /v1/emoj/tenants/{tenantId}/packages    ${AdminUser}    ${timeout}    get    ${EMPTY}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get Stickers、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Upload Stickers
@@ -25,8 +26,8 @@ Upload Stickers
     ${file_data}    evaluate    ('${files.filename}', open('${files.filepath}','rb'),'${files.contentType}',{'Expires': '0'})
     &{file}    Create Dictionary    file=${file_data}
     ${resp}=    /v1/emoj/tenants/{tenantId}/packages    ${AdminUser}    ${timeout}    post    ${file}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.content}
-    ${j}    to json    ${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Delete Stickers
@@ -34,8 +35,9 @@ Delete Stickers
     [Documentation]    删除自定义表情
     #删除自定义表情
     ${resp}=    /v1/emoj/tenants/{tenantId}/packages/{packageId}    ${AdminUser}    ${timeout}    ${packageId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.content}
-    ${j}    to json    ${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Delete Stickers、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Sort Stickers
@@ -43,8 +45,8 @@ Sort Stickers
     [Documentation]    排序自定义表情
     #排序自定义表情
     ${resp}=    /v1/emoj/tenants/{tenantId}/packages/sort    ${AdminUser}    ${timeout}    ${list}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Get Stickers Numbers
@@ -70,8 +72,8 @@ Get Stickers Files
     [Documentation]    获取自定义表情文件
     #获取自定义表情文件
     ${resp}=    /v1/emoj/tenants/{tenantId}/packages/{packageId}/files    ${AdminUser}    ${timeout}    ${packageId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Open Sticker File

@@ -1,10 +1,6 @@
 *** Settings ***
-Suite Setup       Run Keywords    Create Template
-...               AND    Clear Stickers
-...               AND    log    设置全局config ,【Webim】case 执行开始
-Suite Teardown    Run Keywords    Delete Template
-...               AND    Clear Stickers
-...               AND    log    删除新增加的config ,【Webim】case 执行结束
+Suite Setup       Webim Setup
+Suite Teardown    Webim Teardown
 Force Tags        webim
 Library           json
 Library           requests
@@ -19,6 +15,7 @@ Resource          ../../../../JsonDiff/WebimChannels/WebimChannelsJsonDiff.robot
 Resource          ../../../../commons/admin common/Setting/Stickers_Common.robot
 Resource          ../../../../commons/admin common/Setting/Business-Hours_Common.robot
 Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
+Resource          ../../../../commons/CollectionData/Admin Mode/Webim_Collection.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)

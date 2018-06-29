@@ -15,6 +15,7 @@ Set Roles
     #获取权限列表
     ${resp}=    /v1/permission/tenants/{tenantId}/roles    ${AdminUser}    ${timeout}    ${method}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.content}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Roles、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}
 

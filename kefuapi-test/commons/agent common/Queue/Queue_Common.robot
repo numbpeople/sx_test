@@ -60,8 +60,9 @@ Create Wait Conversation
     #设置渠道信息
     ${originType}    set variable    ${origintype}
     ${curTime}    get time    epoch
+    ${randoNumber}    Generate Random String    7    [NUMBERS]
     #创建技能组
-    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}-${randoNumber}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}","visitor":${visitor}}}
     ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}

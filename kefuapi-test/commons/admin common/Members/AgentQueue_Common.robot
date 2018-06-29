@@ -24,9 +24,9 @@ Add Agentqueue
     #添加技能组
     ${data}=    set variable    {"queueName":"${queueName}"}
     ${resp}=    /v1/AgentQueue    post    ${AdminUser}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.text}
     set to dictionary    ${agentqueue}    queueId=${j['queueId']}
     Return From Keyword    ${agentqueue}
 

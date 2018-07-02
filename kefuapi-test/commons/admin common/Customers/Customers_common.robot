@@ -230,13 +230,34 @@ Get Customer DetailInfo
     return from keyword    ${j}
 
 Get Customer Columndefinitions
-    [Arguments]    ${agent}
+    [Arguments]    ${agent}    ${data}=
     [Documentation]    获取访客基础资料的所有字段
-    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${agent}    ${timeout}
+    ${method}    set variable    get
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}
     should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
     return from keyword    ${j}
+
+Add Customer Columndefinition
+    [Arguments]    ${agent}    ${data}
+    [Documentation]    新增一个自定义字段
+    ${method}    set variable    post
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Delete Customer Columndefinition
+    [Arguments]    ${agent}    ${columnName}
+    [Documentation]    删除一个自定义字段
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions/{columnName}    ${agent}    ${columnName}    ${timeout}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
 
 Update CustomerTag
     [Arguments]    ${agent}    ${visitorId}    ${userTagId}    ${data}

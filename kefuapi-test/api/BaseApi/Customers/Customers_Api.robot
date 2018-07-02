@@ -72,10 +72,17 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/crm/tenants/{tenantId}/columndefinitions
-    [Arguments]    ${agent}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${timeout}    ${data}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/columndefinitions
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    run keyword and return if   '${method}' == 'get'    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    run keyword and return if   '${method}' == 'post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/crm/tenants/{tenantId}/columndefinitions/{columnName}
+    [Arguments]    ${agent}    ${columnName}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/columndefinitions/${columnName}
+    Run Keyword And Return    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId}
     [Arguments]    ${agent}    ${timeout}    ${visitorId}    ${userTagId}    ${data}

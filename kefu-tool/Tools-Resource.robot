@@ -91,10 +91,13 @@ Close Valid New Session
     [Arguments]    ${agent}    ${rest}    ${originType}    ${maxcount}=200
     : FOR    ${i}    IN RANGE    ${maxcount}
     \    ${curTime}    get time    epoch
-    \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-${curTime}    originType=${originType}
+    \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-1    originType=${originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${guestentity.originType}"}}
-    \    Send Message    ${rest}    ${guestentity}    ${msgentity}
-    \    sleep    200ms
+    \    Comment    Repeat Keyword    5    Send Message    ${rest}    ${guestentity}
+    \    ...    ${msgentity}
+    \    Repeat Keyword    5    Send SecondGateway Msg    ${AdminUser}    ${restentity}    ${GuestEntity}
+    \    ...    ${MsgEntity}
+    \    sleep    10ms
     sleep    1s
     #接入200个访客
     set to dictionary    ${FilterEntity}    per_page=200
@@ -110,7 +113,8 @@ Close Valid New Session
     : FOR    ${i}    IN    @{j}
     \    ${curTime}    get time    epoch
     \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
-    \    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
+    \    Repeat Keyword    5    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    ...    ${AgentMsgEntity}
     \    sleep    50ms
     sleep    1
     #关闭进行中会话

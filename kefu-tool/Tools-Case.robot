@@ -30,6 +30,7 @@ Resource          ../kefuapi-test/api/BaseApi/Channels/RestApi.robot
 Resource          ../kefuapi-test/commons/CollectionData/Base_Collection.robot
 Resource          ../kefuapi-test/commons/agent common/Conversations/Colleague_Common.robot
 Library           WebSocketClient
+Library           Dialogs
 
 *** Variables ***
 ${datadir}        ${CURDIR}${/}${/}resource
@@ -120,7 +121,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber= kefuchannelimid_586788    orgName=1151170513178510    appName=kefuchannelapp27869
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
-    : FOR    ${i}    IN RANGE    754
+    : FOR    ${i}    IN RANGE    1000
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-ltvisitor-${i}    originType=${originTypeentity.originType}
     \    ${t}    evaluate    ${i}%10+1
@@ -229,7 +230,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建访客
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
-    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=sms    key=IM    dutyType=Allday
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     #将规则排序设置为渠道优先
@@ -242,7 +243,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
-    : FOR    ${i}    IN RANGE    100
+    : FOR    ${i}    IN RANGE    1
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
@@ -536,8 +537,8 @@ ${datadir}        ${CURDIR}${/}${/}resource
     Repeat Keyword    242    Close Valid New Session    ${AdminUser}    ${restentity}    webim
 
 批量创建坐席和技能组，并添加坐席到技能组
-    set test variable    ${AgentCount}    100
-    set test variable    ${PerAgent}    10
+    set test variable    ${AgentCount}    1
+    set test variable    ${PerAgent}    1
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
@@ -545,10 +546,10 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     set global variable    @{agentslist}    ${empty}
     remove from list    ${agentslist}    0
-    ${q}    set variable    11
-    : FOR    ${i}    IN RANGE    ${AgentCount}    200
+    ${q}    set variable    1000000
+    : FOR    ${i}    IN RANGE    ${AgentCount}
     \    #添加坐席
-    \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}-${i}    password=test2015    maxServiceSessionCount=20    tenantId=${AdminUser.tenantId}
+    \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}-1-${i}    password=test2015    maxServiceSessionCount=20    tenantId=${AdminUser.tenantId}
     \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
     \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}
     \    ...    ${timeout}
@@ -952,7 +953,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ${j}    Send SecondGateway Msg    ${AdminUser}    ${restentity}    ${GuestEntity}    ${MsgEntity}
     should be equal    ${j['status']}    OK
 
-批量创建待接入（rest渠道）
+批量创建待接入（新rest渠道）
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
@@ -960,7 +961,8 @@ ${datadir}        ${CURDIR}${/}${/}resource
     ...    session=testsession    nicename=${j['agentUser']['nicename']}
     #添加rest channel
     ${restid}    uuid 4
-    ${data}    create dictionary    name=rest-${restid}    callbackUrl=http://v6x4p2.natappfree.cc
+    ${callbackurl}    Get Value From User    请输入回调地址    http://v6x4p2.natappfree.cc
+    ${data}    create dictionary    name=rest-${restid}    callbackUrl=${callbackurl}
     ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    添加rest channel返回不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -1210,3 +1212,53 @@ Echo
     ${result}=    WebSocketClient.Recv    ${my_websocket}
     Should Be Equal    Hello    ${result}
     WebSocketClient.Close    ${my_websocket}
+
+批量创建待接入（已有rest渠道）
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    #添加rest channel
+    ${restid}    uuid 4
+    ${callbackurl}    Get Value From User    请输入回调地址    http://v6x4p2.natappfree.cc
+    ${data}    create dictionary    name=rest-${restid}    callbackUrl=${callbackurl}
+    ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    添加rest channel返回不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    ${temp}    to json    ${PostRestChannelJson}
+    set to dictionary    ${temp['entity']}    name=${data.name}    callbackUrl=${data.callbackUrl}    tenantId=${AdminUser.tenantId}
+    log    ${j}
+    log    ${temp}
+    Comment    ${r}=    PostRestChannelJsonDiff    ${temp}    ${j}
+    Comment    Should Be True    ${r['ValidJson']}    添加rest channel返回数据不正确：${r}
+    set global variable    ${PostRestChannelJson}    ${j}
+    #查询rest channel中是否有新添加的channel
+    ${resp}=    /v1/tenants/{tenantId}/channels    get    ${AdminUser}    ${empty}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    查询rest channel返回不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Should Be True    '${j['status']}'=='OK'
+    set test variable    ${diffs1}    ${PostRestChannelJson['entity']['name']}${PostRestChannelJson['entity']['callbackUrl']}${PostRestChannelJson['entity']['channelId']}${PostRestChannelJson['entity']['postMessageUrl']}
+    : FOR    ${i}    IN    @{j['entities']}
+    \    set test variable    ${diffs2}    ${i['name']}${i['callbackUrl']}${i['channelId']}${i['postMessageUrl']}
+    \    Run Keyword If    '${diffs1}' == '${diffs2}'    Exit For Loop
+    Should Be True    '${diffs1}' == '${diffs2}'    未查询到添加的rest channel信息:${j}
+    set test variable    ${d}    ${RestChannelEntity}
+    Comment    set to dictionary    ${d}    channelId=${i['channelId']}    callbackUrl=${i['callbackUrl']}    clientId=${i['clientId']}    clientSecret=${i['clientSecret']}
+    ...    postMessageUrl=${i['postMessageUrl']}
+    set to dictionary    ${d}    channelId=${i['channelId']}    callbackUrl=${i['callbackUrl']}    clientId=bf34806c-3e03-4a3d-9112-f26bd60bdad8    clientSecret=10b78044f73effedc9bee56f6f67b318    postMessageUrl=${i['postMessageUrl']}
+    set global variable    ${RestChannelEntity}    ${d}
+    : FOR    ${i}    IN RANGE    1
+    \    #初始化参数：消息、渠道信息、客户信息
+    \    ${curTime}    get time    epoch
+    \    #创建技能组
+    \    ${msgid}    uuid 4
+    \    set to dictionary    ${RestMsgEntity}    msg=转人工    msg_id=${msgid}    origin_type=rest    timestamp=${curTime}
+    \    ...    user_nickname=restguest-${curTime}-${i}    From=restfrom-${curTime}-${i}    queue_id=25076
+    \    log    ${RestMsgEntity}
+    \    set test variable    ${RestMsgJson}    {"bodies":[{"msg":"${RestMsgEntity.msg}","type":"${RestMsgEntity.type}"}],"ext":{"queue_id":"${RestMsgEntity.queue_id}","queue_name":"${RestMsgEntity.queue_name}","agent_username":"${RestMsgEntity.agent_username}","visitor":{"tags":${RestMsgEntity.tags},"callback_user":"${RestMsgEntity.callback_user}","user_nickname":"${RestMsgEntity.user_nickname}","true_name":"${RestMsgEntity.true_name}","sex":"${RestMsgEntity.sex}","qq":"${RestMsgEntity.qq}","email":"${RestMsgEntity.email}","phone":"${RestMsgEntity.phone}","company_name":"${RestMsgEntity.company_name}","description":"${RestMsgEntity.description}"}},"msg_id":"${RestMsgEntity.msg_id}","origin_type":"${RestMsgEntity.origin_type}","from":"${RestMsgEntity.From}","timestamp":"${RestMsgEntity.timestamp}"}
+    \    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    \    ${resp}=    /api/tenants/{tenantId}/rest/channels/{channelId}/messages    ${AdminUser}    ${RestChannelEntity}    ${RestMsgJson}    ${timeout}
+    \    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
+    \    ${j}    to json    ${resp.text}
+    \    log    ${j}

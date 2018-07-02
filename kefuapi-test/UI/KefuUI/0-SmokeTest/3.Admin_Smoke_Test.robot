@@ -90,14 +90,10 @@ Resource          ../../../UIcommons/Kefu/ticketsres.robot
     ${uiadmin}    ${settingsemojibasejson}    Admin
     #查看会话标签
     ${uiadmin}    ${settingssummarybasejson}    Admin
-    #查看客户标签
-    ${uiadmin}    ${settingstagbasejson}    Admin
     #查看自定义信息接口
     ${uiadmin}    ${settingsiframebasejson}    Admin
     #查看会话分配规则
     ${uiadmin}    ${settingsroutesbasejson}    Admin
-    #查看客户中心设置
-    ${uiadmin}    ${settingsvisitorsbasejson}    Admin
     #查看满意度评价邀请设置
     ${uiadmin}    ${settingsevaluatebasejson}    Admin
     #查看质检评分设置
@@ -168,7 +164,14 @@ Resource          ../../../UIcommons/Kefu/ticketsres.robot
 
 查看客户中心
     [Template]    smoketest case
+    #查看客户信息
     ${uiadmin}    ${visitorsbasejson}    Admin
+    #查看客户标签
+    ${uiadmin}    ${settingstagbasejson}    Admin
+    #查看客户中心设置
+    ${uiadmin}    ${settingsvisitorsbasejson}    Admin
+    #查看客户中心日志
+    ${uiadmin}    ${visitorslogjson}    Admin
 
 查看自动消息
     [Template]    smoketest case

@@ -19,6 +19,7 @@ Resource          ../../commons/admin common/BaseKeyword.robot
 Resource          ../../commons/Base Common/Base_Common.robot
 Library           uuid
 Resource          ../../commons/admin common/Members/Agents_Common.robot
+Resource          ../../api/MicroService/Webapp/LogoutApi.robot
 
 *** Variables ***
 @{elementstatelist}    ''    ' noAnswer'    ' selected'    ' activated'    ' hide'
@@ -274,6 +275,7 @@ KefuUI Setup
     #添加灰度list
     ${agent.graylist}    copy list    ${graylist}
     set global variable    ${uiadmin}    ${agent}
+    ${agentlist}    create list    ${uiadmin}
     #创建普通坐席1
     ${agent1}    copy dictionary    ${admin}
     ${a}    Create Temp Agent    ${uiadmin}    2
@@ -283,6 +285,7 @@ KefuUI Setup
     #添加灰度list
     ${agent.graylist}    copy list    ${graylist}
     set global variable    ${uiagent1}    ${agent}
+    append to list    ${agentlist}    ${uiagent1}
     #设置selenium超时
     Set Selenium Timeout    ${SeleniumTimeout}
     #获取时间计划scheduleId
@@ -293,8 +296,15 @@ KefuUI Setup
     Set Option    ${admin}    allowAgentChangeMaxSessions    true
     #坐席修改状态不需要审批
     Set Option    ${admin}    agentStatusApprovalEnable    false
+    set global variable    ${agentlist}    ${agentlist}
 
 KefuUI Teardown
     Close All Browsers
     Delete Channels    ${uiadmin}
     Delete AgentUser    ${uiagent1.userId}    ${uiadmin}
+    /logout    ${uiadmin}    ${timeout}
+
+Kefu Agent Logout
+    [Arguments]    ${agentlist}
+    :FOR    ${i}    IN    @{agentlist}
+    \    /logout    ${i}    ${timeout}

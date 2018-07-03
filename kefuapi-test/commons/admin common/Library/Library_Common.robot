@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Library           ../../../lib/KefuUtils.py
 Resource          ../../../api/BaseApi/Library/Library_Api.robot
 
 *** Keywords ***
@@ -32,9 +33,10 @@ Open Image
 Find Image Path
     [Documentation]    找到resource文件夹下的图片文件: image.gif
     #找到resource文件夹下的图片文件: image.gif
-    ${picpath}    set variable    ${CURDIR}
-    ${picpath}    evaluate    os.path.abspath(os.path.dirname('${picpath}')+os.path.sep+"..")    os
-    ${picpath}    set variable    ${picpath}${/}${/}resource${/}${/}image.gif
+    ${folderName}    set variable    resource
+    ${folderPath}    set variable    ${CURDIR}
+    ${folderPath}    find folder path    ${folderPath}     ${folderName}
+    ${picpath}    set variable    ${folderPath}${/}${/}image.gif
     return from keyword    ${picpath}
 
 Upload Library Image

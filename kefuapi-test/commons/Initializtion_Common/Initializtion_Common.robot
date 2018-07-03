@@ -29,6 +29,7 @@ Get OrganInfo
     #获取租户id所在的organ信息
     ${resp}=    /v2/infos    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get OrganInfo、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
 
@@ -62,6 +63,7 @@ Get Agent Info
     #获取客服登录后账号、接待人数、个人信息等
     ${resp}=    /v1/Tenants/me/Agents/me    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get Agent Info、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
 

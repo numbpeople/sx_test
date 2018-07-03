@@ -60,6 +60,7 @@ Set Robot PersonalInfo
     [Documentation]    获取/修改机器人信息
     ${resp}=    /v1/Tenants/{tenantId}/robot/profile/personalInfo    ${method}    ${agent}    ${language}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot PersonalInfo、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -76,6 +77,7 @@ Get MutilRobot PersonalInfos Settings
     [Documentation]    获取多机器人设置
     ${resp}=    /v1/Tenants/{tenantId}/robot/profile/settings    ${agent}    ${filter}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get MutilRobot PersonalInfos Settings、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -85,6 +87,8 @@ Set Robot Setting
     ${resp}=    /v1/Tenants/{tenantId}/robot/profile/setting    ${method}    ${agent}    ${data}    ${timeout}
     run keyword if    '${method}'=='put'    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    '${method}'=='post'    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    '${method}'=='put' and ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Rule、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
+    run keyword if    '${method}'=='post' and ${resp.status_code}!=201    log    测试用例集名称:${SUITE NAME}、调用方法:Set Robot Rule、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -150,6 +154,7 @@ Get Robot Category Tree
     [Documentation]    获取机器人分类树
     ${resp}=    /v3/Tenants/{tenantId}/robots/categorys/trees    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get Robot Category Tree、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
     
@@ -209,6 +214,7 @@ Get Robot Rules
     [Documentation]    获取知识规则
     ${resp}=    /v3/Tenants/{tenantId}/robots/rules/search    ${agent}    ${filter}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get Robot Rules、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
@@ -400,6 +406,7 @@ Get Robot Menus
     [Documentation]    获取自定义菜单
     ${resp}=    /v3/Tenants/{tenantId}/robots/menus/search    ${agent}    ${filter}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get Robot Menus、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 

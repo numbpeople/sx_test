@@ -5,6 +5,7 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           calendar
+Library          ../../../lib/KefuUtils.py
 Resource          ../../../AgentRes.robot
 Resource          ../../../api/BaseApi/Settings/CustomStickersApi.robot
 
@@ -79,7 +80,8 @@ Get Stickers Files
 Open Sticker File
     [Documentation]    打开resource文件夹下的stickers.zip压缩包
     #打开表情包
-    ${picpath}    set variable    ${CURDIR}
-    ${picpath}    evaluate    os.path.abspath(os.path.dirname('${picpath}')+os.path.sep+"..")    os
-    ${picpath}    set variable    ${picpath}${/}${/}resource${/}${/}stickers.zip
+    ${folderName}    set variable    resource
+    ${folderPath}    set variable    ${CURDIR}
+    ${folderPath}    find folder path    ${folderPath}     ${folderName}
+    ${picpath}    set variable    ${folderPath}${/}${/}stickers.zip
     return from keyword    ${picpath}

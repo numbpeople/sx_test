@@ -15,7 +15,7 @@ Get Conversation Tags
     #获取会话标签
     ${resp}=    /v1/Tenants/{tenantId}/ServiceSessionSummaries/{summaryId}/tree    ${method}    ${agent}    ${summaryId}    ${conversationTagEntity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Should Not Be Empty    ${resp.content}    返回值为空
+    run keyword if    ${resp.status_code}!=200    log    测试用例集名称:${SUITE NAME}、调用方法:Get Conversation Tags、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
     ${j}    to json    ${resp.content}
     return from keyword    ${j}
 

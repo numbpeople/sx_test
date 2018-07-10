@@ -97,3 +97,10 @@
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/blacklists
     run keyword and return if   '${method}' == 'post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
     run keyword and return if   '${method}' == 'get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/operationLog
+    [Arguments]    ${agent}    ${FilterEntity}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/operationLog
+    ${params}=    set variable    page=${FilterEntity.page}&size=${FilterEntity.per_page}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

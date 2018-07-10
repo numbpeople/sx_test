@@ -6,10 +6,15 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
 *** Test Cases ***
 更新访客资料(/v1/crm/tenants/{tenantId}/customers/{customerId})
     [Documentation]    更新访客名字
+    #获取setup时创建的访客信息
     ${customerId}    set variable    ${customerDetail["customer_id"]}
     ${visitorId}    set variable    ${customerDetail["bind_visitors"][0]}
-    ${truename}    set variable    ${customerDetail["nickname"]}
-    #创建请求体
+    ${nickName}    set variable    ${customerDetail["nickname"]}
+    set suite variable    ${customer_Id}    ${customerId}
+    set suite variable    ${visitor_Id}    ${visitorId}
+    set suite variable    ${nick_Name}    ${nickName}
+    #创建请求体,将访客的truename设置为${nickName}
+    ${truename}    set variable    ${nickName}
     ${data}    set variable    {"visitorId":"${visitorId}","properties":{"truename":["${truename}"]}}
     #更新访客名字
     ${j}    Update Customer Detail    ${AdminUser}    ${customerId}    ${data}
@@ -28,39 +33,48 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     #创建局部变量筛选条件
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    per_page=100
-    ${visitorId}    set variable    ${customerDetail["bind_visitors"][0]}
     #获取改租户下的所有访客标签
     ${j}    Set UserTags    get    ${AdminUser}    ${filter}
     Should Be True    ${j['total_entries']}>=0    获取的访客标签数不正确：${j}
     ${tagName}    set variable    ${j['items'][0]['tagName']}
     ${userTagId}    set variable    ${j['items'][0]['userTagId']}
     #为访客打一个标签
-    ${data}    set variable    {"userTagId":${userTagId},"tagName":"${tagName}","visitorUserId":"${visitorId}","checked":true}
-    Update CustomerTag    ${AdminUser}    ${visitorId}    ${userTagId}    ${data}
+    ${data}    set variable    {"userTagId":${userTagId},"tagName":"${tagName}","visitorUserId":"${visitor_Id}","checked":true}
+    Update CustomerTag    ${AdminUser}    ${visitor_Id}    ${userTagId}    ${data}
     #验证访客基本资料的标签值与期望值是否一致
     sleep    1000ms
-    ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitorId}
+    ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitor_Id}
     should be true    '${j['entity']['customerTags']}' == '[${userTagId}]'    接口返回customerTags不正确:${j['entity']}
 
 加入黑名单(/v1/tenants/{tenantId}/blacklists)
-    [Documentation]    将访客加入黑名单
-    #创建局部变量
-    ${visitorId}    set variable    ${customerDetail["bind_visitors"][0]}
+    [Documentation]    将访客加入黑名单,并验证黑名单列表
     #获取nickname
-    ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitorId}
+    ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitor_Id}
     ${length}    get length    ${j['entity']['columnValues']}
     : FOR    ${n}    IN RANGE    ${length}
     \    ${nickname}    run keyword if    '${j['entity']['columnValues'][${n}]['columnName']}' == 'nickname'    set variable    ${j['entity']['columnValues'][${n}]['values'][0]}
     \    run keyword if    '${j['entity']['columnValues'][${n}]['columnName']}' == 'nickname'    exit for loop
     #创建请求体
-    ${data}    set variable    {"tenantId":${AdminUser.tenantId},"visitorUserId":"${visitorId}","visitorUserNickname":"${nickname}","actor":"${AdminUser.userId}","actorNickname":"${AdminUser.nicename}","reason":"blacklist reason","status":"Created"}
+    ${data}    set variable    {"tenantId":${AdminUser.tenantId},"visitorUserId":"${visitor_Id}","visitorUserNickname":"${nickname}","actor":"${AdminUser.userId}","actorNickname":"${AdminUser.nicename}","reason":"blacklist reason","status":"Created"}
     #加入黑名单
     Add Blacklist    ${AdminUser}    ${data}
     #按访客昵称筛选黑名单列表,验证返回结果与期望值是否一致
     ${params}    set variable    visitorName=${nickname}
     ${j}    Get blacklists    ${AdminUser}    ${params}
     should be true    ${j['totalElements']} == 1    接口返回totalElements不正确:${j}
-    should be equal    ${j['entities'][0]['visitorUserId']}     ${visitorId}    接口返回visitorUserId不正确:${j['entities'][0]['visitorUserId']}
+    should be equal    ${j['entities'][0]['visitorUserId']}     ${visitor_Id}    接口返回visitorUserId不正确:${j['entities'][0]['visitorUserId']}
     should be equal    ${j['entities'][0]['actorNickname']}     ${AdminUser.nicename}    接口返回actorNickname不正确:${j['entities'][0]['actorNickname']}
     should be equal    ${j['entities'][0]['visitorUserNickname']}     ${nickname}    接口返回visitorUserNickname不正确:${j['entities'][0]['visitorUserNickname']}
     should be true    '${j['entities'][0]['reason']}' == 'blacklist reason'    接口返回reason不正确:${j['entities'][0]['reason']}
+    #获取客户中心操作日志列表
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    page=0
+    ${j}    Get Customer OperationLog    ${AdminUser}    ${filter}
+    #验证接口返回的第一条数据是加入黑名单的操作
+    should be equal    ${j['entities'][0]['customerId']}    ${customer_Id}    接口返回的第一条数据customerId不正确:${j}
+    should be equal    ${j['entities'][0]['operationType']}    blacklist    接口返回的第一条数据operationType不正确:${j['entities'][0]}
+    should be equal    ${j['entities'][0]['operatorId']}    ${AdminUser.userId}    接口返回的第一条数据operatorId不正确:${j['entities'][0]}
+    should be equal    ${j['entities'][0]['operatorNickname']}    ${AdminUser.nicename}    接口返回的第一条数据operatorNickname不正确:${j['entities'][0]}
+    should be equal    ${j['entities'][0]['status']}    add    接口返回的第一条数据status不正确:${j['entities'][0]}
+    should be equal    ${j['entities'][0]['visitorUserId']}    ${visitor_Id}    接口返回的第一条数据visitorUserId不正确:${j}
+    should be equal    ${j['entities'][0]['visitorUserNickname']}    ${nick_Name}    接口返回的第一条数据visitorUserNickname不正确:${j}

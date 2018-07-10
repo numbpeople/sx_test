@@ -342,3 +342,12 @@ Find Customer Group From Filters
     \    continue for loop if    "${n['filterId']}" != "${filterId}"
     \    ${contain}    run keyword and return if    "${n['filterId']}" == "${filterId}"    set variable    True
     return from keyword    ${contain}
+
+Get Customer OperationLog
+    [Documentation]    获取客户中心操作日志
+    [Arguments]    ${agent}    ${FilterEntity}
+    ${resp}=    /v1/tenants/{tenantId}/operationLog    ${agent}    ${FilterEntity}    ${timeout}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}

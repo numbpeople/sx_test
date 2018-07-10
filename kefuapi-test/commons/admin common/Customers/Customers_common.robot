@@ -230,34 +230,44 @@ Get Customer DetailInfo
     return from keyword    ${j}
 
 Get Customer Columndefinitions
-    [Arguments]    ${agent}    ${data}=
+    [Arguments]    ${agent}    ${data}=    ${columnName}=
     [Documentation]    获取访客基础资料的所有字段
     ${method}    set variable    get
-    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}    ${columnName}
     should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
     return from keyword    ${j}
 
 Add Customer Columndefinition
-    [Arguments]    ${agent}    ${data}
+    [Arguments]    ${agent}    ${data}    ${columnName}=
     [Documentation]    新增一个自定义字段
     ${method}    set variable    post
-    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}    ${columnName}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Update Customer Columndefinition
+    [Arguments]    ${agent}    ${data}    ${columnName}
+    [Documentation]    编辑一个自定义字段
+    ${method}    set variable    put
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}    ${columnName}
     should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
     return from keyword    ${j}
 
 Delete Customer Columndefinition
-    [Arguments]    ${agent}    ${columnName}
+    [Arguments]    ${agent}    ${columnName}    ${data}=
     [Documentation]    删除一个自定义字段
-    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions/{columnName}    ${agent}    ${columnName}    ${timeout}
+    ${method}    set variable    delete
+    ${resp}=    /v1/crm/tenants/{tenantId}/columndefinitions    ${method}    ${agent}    ${timeout}    ${data}    ${columnName}
     should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
     return from keyword    ${j}
-
 
 Update CustomerTag
     [Arguments]    ${agent}    ${visitorId}    ${userTagId}    ${data}
@@ -283,3 +293,52 @@ Get blacklists
     ${j}    to json    ${resp.content}
     should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
     return from keyword    ${j}
+
+Get Customer Group
+    [Arguments]    ${agent}    ${data}=    ${filter}=
+    [Documentation]    获取租户下所有客户自定义分组
+    ${method}    set variable    get
+    ${resp}=    /v1/crm/tenants/{tenantId}/filters    ${method}    ${agent}    ${timeout}    ${data}    ${filter}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    return from keyword    ${j}
+
+Add Customer Group
+    [Arguments]    ${agent}    ${data}    ${filter}=
+    [Documentation]    新增一个客户自定义分组
+    ${method}    set variable    post
+    ${resp}=    /v1/crm/tenants/{tenantId}/filters    ${method}    ${agent}    ${timeout}    ${data}    ${filter}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Update Customer Group
+    [Documentation]    编辑一个客户自定义分组
+    [Arguments]    ${agent}    ${data}    ${filter}
+    ${method}    set variable    put
+    ${resp}=    /v1/crm/tenants/{tenantId}/filters    ${method}    ${agent}    ${timeout}    ${data}    ${filter}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Delete Customer Group
+    [Documentation]    删除一个客户自定义分组
+    [Arguments]    ${agent}    ${filter}    ${data}=
+    ${method}    set variable    delete
+    ${resp}=    /v1/crm/tenants/{tenantId}/filters    ${method}    ${agent}    ${timeout}    ${data}    ${filter}
+    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
+    return from keyword    ${j}
+
+Find Customer Group From Filters
+    [Documentation]    租户下当前所有客户自定义分组是否包含某个分组,${contain}为True意为包含
+    [Arguments]    ${j}    ${filterId}
+    ${contain}    set variable    False
+    return from keyword if    "${j['entities']}" == "[]"    ${contain}
+    : FOR    ${n}    IN    @{j['entities']}
+    \    continue for loop if    "${n['filterId']}" != "${filterId}"
+    \    ${contain}    run keyword and return if    "${n['filterId']}" == "${filterId}"    set variable    True
+    return from keyword    ${contain}

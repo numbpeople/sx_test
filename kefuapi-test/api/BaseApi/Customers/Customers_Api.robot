@@ -72,17 +72,18 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/crm/tenants/{tenantId}/columndefinitions
-    [Arguments]    ${method}    ${agent}    ${timeout}    ${data}
+    [Arguments]    ${method}    ${agent}    ${timeout}    ${data}    ${columnName}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/columndefinitions
-    run keyword and return if   '${method}' == 'get'    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
-    run keyword and return if   '${method}' == 'post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
-
-/v1/crm/tenants/{tenantId}/columndefinitions/{columnName}
-    [Arguments]    ${agent}    ${columnName}    ${timeout}
-    ${header}=    Create Dictionary    Content-Type=application/json
-    ${uri}=    set variable    /v1/crm/tenants/${agent.tenantId}/columndefinitions/${columnName}
-    Run Keyword And Return    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    run keyword if    '${method}'=='put' or '${method}'=='delete'    set suite variable    ${uri}    /v1/crm/tenants/${agent.tenantId}/columndefinitions/${columnName}
+    ${params}=    set variable    _=1511151681867
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='delete'    Delete Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId}
     [Arguments]    ${agent}    ${timeout}    ${visitorId}    ${userTagId}    ${data}

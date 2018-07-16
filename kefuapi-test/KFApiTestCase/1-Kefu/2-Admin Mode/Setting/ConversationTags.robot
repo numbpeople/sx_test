@@ -56,9 +56,9 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     #导出会话标签
     ${resp}    Export ServiceSessionSummaries    ${AdminUser}
     Should Contain    ${resp.headers['Content-Disposition']}    attachment;filename=会话标签    导出会话标签失败
-    Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    导出会话标签失败
+    # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    导出会话标签失败
 
 导出会话标签下载模板(/v1/Tenants/{tenantId}/ServiceSessionSummaries/exportfile)
     #导出会话标签下载模板
     ${resp}    Export ServiceSessionSummary Template    ${AdminUser}
-    Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    导出会话标签下载模板失败
+    # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    导出会话标签下载模板失败

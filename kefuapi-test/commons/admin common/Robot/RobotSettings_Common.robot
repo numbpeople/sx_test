@@ -146,6 +146,7 @@ Get Robot Scenarios
     [Documentation]    获取机器人智能场景应答
     ${resp}=    /v1/Tenants/{tenantId}/robots/intent/list    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    Should Not Be Empty    ${resp.text}    获取智能场景应答接口返回值为空。返回值：${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 

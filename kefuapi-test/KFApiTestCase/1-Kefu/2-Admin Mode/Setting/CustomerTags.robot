@@ -77,10 +77,10 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     #导出客户标签
     ${resp}    Export UserTag    ${AdminUser}
     Should Contain    ${resp.headers['Content-Disposition']}    attachment;filename=客户标签    导出客户标签失败
-    Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    导出客户标签失败
+    # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    导出客户标签失败
 
 导出客户标签下载模板(/download/tplfiles/%E5%AE%A2%E6%88%B7%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx)
     [Documentation]    导出客户标签下载模板
     #导出客户标签下载模板
     ${resp}    Export UserTag Template    ${AdminUser}
-    Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    导出客户标签下载模板失败
+    # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    导出客户标签下载模板失败

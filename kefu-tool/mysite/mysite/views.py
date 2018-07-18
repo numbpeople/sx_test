@@ -103,3 +103,6 @@ def visitorCallback(request):
 
 def webimplugin(request):
     return render(request,'send-extend-message.html')
+
+def config(request):
+    return render(request,'config.html')

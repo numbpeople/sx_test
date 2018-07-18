@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^sendMail', views.sendMail),
     url(r'^visitorCallback', views.visitorCallback),
     url(r'^webimplugin', views.webimplugin),
+    url(r'^config', views.config),
 ]

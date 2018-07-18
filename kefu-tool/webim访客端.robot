@@ -43,6 +43,12 @@ webimPlugin
     \    ${msg}    Get Text    ${msgList[${i}]}
     \    log    ${msg}
 
+webimPlugin - configid
+    Go To    ${SERVER}config.html?configId=e48aa80a-3afc-426c-9d11-00e72d4c8302
+    Maximize Browser Window
+    Wait until page contains    正常版
+    Page Should Contain    旧版多租户
+
 *** Keywords ***
 Start Django and open Browser
     Start Django

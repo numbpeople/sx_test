@@ -36,3 +36,20 @@ Set Option
     ...    2.${value}的值只能为小写的true和false
     ${data}    set variable    {"value":${value}}
     ${resp}=    /tenants/{tenantId}/options/{optionName}    ${agent}    put    ${optionname}    ${data}    ${timeout}
+
+Return Result
+    [Arguments]    ${resp}
+    [Documentation]    封装返回值结果
+    ...    【参数】：接口请求 resp 结果
+    ...    【返回值】：请求地址：url、返回状态：status、返回值：text
+    #构造返回字典
+    &{result}    create dictionary
+    ${text}    set variable    ${EMPTY}
+    #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
+    ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
+    set to dictionary    ${result}    url=${resp.url}    status=${resp.status_code}    text=${text}
+    Run Keyword And Return If    not ${status}    ${result}
+    #设置请求返回值
+    ${text}    to json    ${resp.text}
+    set to dictionary    ${result}    url=${resp.url}    status=${resp.status_code}    text=${text}
+    Return From Keyword    ${result}

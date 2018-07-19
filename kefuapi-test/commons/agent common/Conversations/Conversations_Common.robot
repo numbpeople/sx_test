@@ -18,6 +18,7 @@ Resource          ../../../api/MicroService/Enquiry/EnquiryApi.robot
 Resource          ../../../api/BaseApi/Conversations/ConversationApi.robot
 Resource          ../Queue/Queue_Common.robot
 Resource          ../History/History_Common.robot
+Resource          ../../Base Common/Base_Common.robot
 
 *** Keywords ***
 Get Processing Conversation
@@ -55,7 +56,7 @@ Get Processing Session
     #查询进行中会话
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
-    ${j}    to json    ${resp.text}
+    ${j}    Return Result    ${resp}
     Return From Keyword    ${j}
 
 Get Processing Conversations With FieldName
@@ -67,13 +68,16 @@ Get Processing Conversations With FieldName
     ${sessionList}    create list
     #获取进行中会话列表
     ${j}    Get Processing Session    ${agent}
-    ${length}    get length    ${j}
+    ${text}    set variable    ${j.text}
+    ${status}    set variable    ${j.status}
+    ${url}    set variable    ${j.url}
+    ${length}    get length    ${text}
     run keyword if    ${length} > 50    ${sessionList}
     #判断结果是否包含指定字段
-    ${status}    Run Keyword And Return Status    Should Contain    "${j}"    ${fieldName}
+    ${status}    Run Keyword And Return Status    Should Contain    "${text}"    ${fieldName}
     return from keyword if   not ${status}    ${sessionList}
     #将符合预期值的结果加到列表中，并返回列表数据
-    :FOR    ${i}    IN    @{j}
+    :FOR    ${i}    IN    @{text}
     \    log    ${i}
     \    ${resultValue}    set variable    ${i${fieldConstruction}}
     \    run keyword if    "${fieldValue}" == "${resultValue}"    Append To List    ${sessionList}    ${i}
@@ -167,10 +171,13 @@ Stop Processing Conversation
 Stop Processing Conversations
     [Arguments]    ${agent}    ${sessionList}
     [Documentation]    批量结束进行中的会话，超过100不允许执行
-    ...
-    ...    Arguments：
-    ...
-    ...    ${agent} | ${sessionList}
+    ...    
+    ...    【参数值】：
+    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息
+    ...    - ${sessionList}：会话id的列表
+    ...    
+    ...    【返回值】：
+    ...    - 空
     #判断进行中是否超过100会话
     ${length}    get length    ${sessionList}
     Run Keyword If    ${length} > 100    Fail    进行中会话超过100个会话，以防性能问题，不允许执行 , ${sessionList}
@@ -229,12 +236,13 @@ Create Processiong Conversation
     ...
     ...    userId、chatGroupId、sessionServiceId、chatGroupSeqId
     ${originType}    set variable    weixin
-    ${curTime}    get time    epoch
+    # ${curTime}    get time    epoch
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
     #创建技能组
-    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${randoNumber}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
-    ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
-    ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
+    ${MsgEntity}    create dictionary    msg=${randoNumber}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${randoNumber}    originType=${originType}
     #将规则排序设置为渠道优先
     Set RoutingPriorityList    入口    渠道    关联
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
@@ -242,15 +250,22 @@ Create Processiong Conversation
     #根据访客昵称查询待接入列表
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    visitorName=${GuestEntity.userName}
-    Comment    set to dictionary    ${filter}    visitorName=${guestentity.userName}
-    ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${DateRange}
-    ${j}    to json    ${resp.content}
-    Should Be True    ${j['total_entries']} ==1    查询结果为空：${j}
-    Should Be Equal    ${j['items'][0]['userName']}    ${guestentity.userName}    访客名称不正确：${resp.content}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${queueentityA.queueId}    技能组id不正确：${resp.content}
-    Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
+    set to dictionary    ${filter}    page=0    #visitorName=${guestentity.userName}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${filter}    ${DateRange}
+    ${expectConstruction}    set variable    ['totalElements']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    1    #该参数为获取接口某字段的预期值
+    #获取会话对应的待接入会话
+    ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    待接入会话没有找到指定会话
+    # ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${DateRange}
+    # ${j}    to json    ${resp.content}
+    Should Be True    ${j['totalElements']} ==1    查询结果为空：${j}
+    Should Be Equal    ${j['entities'][0]['visitor_name']}    ${guestentity.userName}    访客名称不正确：${j}
+    Should Be Equal    ${j['entities'][0]['skill_group_id']}    ${queueentityA.queueId}    技能组id不正确：${j}
+    Should Not Be True    ${j['entities'][0]['vip']}    非vip用户显示为vip：${j}
     #根据查询结果接入会话
-    Access Conversation    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}
+    Access Conversation    ${AdminUser}    ${j['entities'][0]['session_id']}
     #查询进行中会话是否有该访客
     ${j}    Get Processing Conversation    ${AdminUser}
     : FOR    ${a}    IN    @{j}

@@ -1,0 +1,62 @@
+
+{% extends "base.html" %} {% block content %}    
+
+
+<nav class="navbar navbar-default navbar-fixed-top"  onmouseover="window.scrollTo(0,document.body.scrollHeight);">
+<div>
+<table>
+    <tr>
+    <td><ul><p><button onclick="window.history.back(); " class="btn btn-lg btn-primary">返回上一页</button></p></ul></td>
+</tr>
+</table>
+</div>
+</nav>
+
+
+
+<div class="jumbotron" >
+<table class="table table-hover">
+<tr>
+<td><p>ID</p></td>
+<td><p>测试名称</p></td>
+<td><p>状态</p></td>
+<td><p>测试内容</p></td>
+<td><p>PASS</p></td>
+<td><p>FAIL</p></td>
+<td><p>ERROR</p></td>
+
+
+<td><p>时间</p></td>
+
+</tr>
+
+{% for one in alldata%}             
+  <tr class='clickable-row' data-href="/testcase/?id={{one.testcase.0}}">
+  <td><p>{{one.testcase.0}}</p></td>
+  <td><p>{{one.testcase.1}}</p></td>
+  <td><p><a href="/testcase/?id={{one.testcase.0}}"><font color="{{one.color}}">{{one.status}}</font></a><button id="send_retry_{{one.testcase.0}}" ONCLICK="retrytest({{one.testcase.0}});" align="left" style="display:{{one.showRetry }}" >retry</button></p></td>  
+  <td><p>{{one.testcase.2}}</p></td>
+  <td><p>{{one.testcase.3}}</p></td>
+  <td><p>{{one.testcase.4}}</p></td>
+  <td><p>{{one.testcase.5}}</p></td>  
+
+
+ <td><p>{{one.testcase.6}}</p></td>
+  </tr>
+{% endfor %} 
+    
+<tr>
+  <td><p>&nbsp;</p></td>
+  <td><p>&nbsp;</p></td>
+  <td><p>&nbsp;</p></td>
+
+  <td><p></p></td>
+  <td><p>&nbsp;</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+    
+</table>
+</div>
+
+{% endblock %} 

@@ -155,18 +155,18 @@ Stop Processing Conversation
     [Arguments]    ${agent}    ${visitoruserid}    ${servicesessionid}
     [Documentation]    手动结束进行中的会话
     ...
-    ...    Arguments：
-    ...
-    ...    ${agent} | ${visitoruserid} | ${servicesessionid}
-    ...
-    ...    Return：
-    ...
-    ...    请求结果：${j}
+    ...    【参数值】：
+    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息
+    ...    - ${visitoruserid}：访客id
+    ...    - ${servicesessionid}：会话id
+    ...    
+    ...    【返回值】：
+    ...    - 无
     #关闭会话
     ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${agent}    ${visitoruserid}    ${servicesessionid}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${resp.content}    true    会话关闭失败：${resp.content}
+    Should Be Equal As Integers    ${resp.status_code}    200    【实际结果】：关闭会话时接口状态码不是200：调用接口：${resp.url}，实际状态码是：${resp.status_code}，原因是：${resp.text}。
+    ${j}    Return Result    ${resp}
+    Should Be True    ${j.text}    【实际结果】：关闭会话时接口调用失败：调用接口：${j.url}，判断返回值预期值：True，实际接口返回结果值为：${j.text}。
 
 Stop Processing Conversations
     [Arguments]    ${agent}    ${sessionList}
@@ -177,7 +177,7 @@ Stop Processing Conversations
     ...    - ${sessionList}：会话id的列表
     ...    
     ...    【返回值】：
-    ...    - 空
+    ...    - 无
     #判断进行中是否超过100会话
     ${length}    get length    ${sessionList}
     Run Keyword If    ${length} > 100    Fail    进行中会话超过100个会话，以防性能问题，不允许执行 , ${sessionList}

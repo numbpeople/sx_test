@@ -22,9 +22,9 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     [Tags]
     [Documentation]    
     ...    【操作步骤】：
-    ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话数。
+    ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话接口。
     ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}
-    ...
+    ...    
     ...    【预期结果】：如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
     #Step1、获取进行中会话列表，并获取会话数
     &{j}    Get Processing Session    ${AdminUser}
@@ -33,14 +33,14 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${url}    set variable    ${j.url}
     ${length}    get length    ${text}
     #Step2、判断返回接口返回值${text[0]['user']['tenantId']}
-    Run Keyword If    ${length} > 0    should be equal    '${text[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    ${TEST DOCUMENTATION} \n【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
+    Run Keyword If    ${length} > 0    should be equal    '${text[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
 
 获取空访客列表(/v1/Agents/me/Visitors)
     [Documentation]    
     ...    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话数。
     ...    - Step2、如果进行中会话数大于50个，则标记为失败，不继续执行，否则关闭所有会话。
-    ...    - Step3、查询坐席模式-进行中会话的会话数结果值。
+    ...    - Step3、查询坐席模式-进行中会话的接口返回值。
     ...
     ...    【预期结果】：
     ...    获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
@@ -60,7 +60,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${status1}    set variable    ${j1.status}
     ${url1}    set variable    ${j1.url}
     #【预期结果】：获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
-    should be true    ${text1} == []    ${TEST DOCUMENTATION} \n【实际结果】：在操作步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
+    should be true    ${text1} == []    【实际结果】：在操作步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
 
 获取进行中会话访客列表最后一条消息(/v1/Agents/me/Visitors)
     [Documentation]    1.创建一个进行中会话    2.访客发送一条消息，作为检查最后一条消息    3.获取访客列表检查lastChatMessage下的msg值    4.如果获取到的消息不是预期，尝试重试取多次，再对比结果
@@ -166,7 +166,6 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${sessionInfo}    Create Processiong Conversation
     #获取会话会话备注信息
     ${j}    Set Comment    get    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${EMPTY}
-    run keyword if    '${j}' == '${EMPTY}'    Pass Execution    会话没有会话备注信息
     run keyword if    '${j}' != '${EMPTY}'    Should Be Equal    ${j['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口返回会话id不正确: ${j}
 
 添加会话的会话备注信息(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
@@ -201,7 +200,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${j}    Tansfer Conversation To Queue    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${sessionInfo.queueId}
     should be true    ${j}    获取接口返回结果不是True: ${j}
 
-客服转接会话到其他坐席(/v6/tenants/{tenantId}/servicesessions/${serviceSessionId}/transfer)
+客服转接会话到其他坐席(/v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer)
     [Documentation]    1.创建坐席 2.创建进行中会话 3.转接会话给该坐席 4.当前会话中获取该会话是否属于该坐席
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

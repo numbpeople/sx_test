@@ -14,6 +14,7 @@ from settings import Alarm_Email_Auth,  Alarm_SMS_Auth
 
 import os, sys,inspect
 from os.path import dirname
+import string
 path = dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 sys.path.append(os.path.realpath('%s/..' % path))
 reload(sys)
@@ -30,7 +31,8 @@ PhoneEmailNumber = {
         # u"孙炎": ("18515550772", "sunyan@easemob.com"),
         # u"陈李玮": ("18611702718", "chenlw@easemob.com"),
         # u"李必胜": ("18710150110", "libisheng@easemob.com"),
-        u"李继鹏": ("18612390240", "leoli@easemob.com"),
+#         u"李继鹏": ("18612390240", "leoli@easemob.com"),
+#         u"李继鹏": ("18612390240", "260553619@qq.com"),
 }
 
 
@@ -75,7 +77,8 @@ class Sender(object):
             if k in receivers:
                 self.recv['sms'].append(val[0])
                 self.recv['email'].append(val[1])
-        print self.recv
+#         print self.recv
+#         print 'self.recv: %s' % self.recv
 
     def getTimeStr(self):
         return time.strftime("%H:%M", time.localtime(time.time()))
@@ -116,13 +119,23 @@ class Sender(object):
         - 参数 sub: 邮件主题
         - 参数 msg: 邮件信息
         - 参数 to: 收件人列表
+        - 参数 attachment_data: 附件地址
         - 返回值: True 成功, False 失败
         """
         from email.header import Header
         from email.utils import formataddr
-        self.predefine('admin')
+#         print 'to: %s' % to
 
+        # 判断参数为unicode类型，则转换为list
+        if isinstance(to, unicode):
+            to = to.encode('utf-8')
+#             to = to[0:]
+#             to = to[:-1]
+            to = to.split(",") 
+        
+        # 转化为[<'leoli@easemob.com'>, <'260553619@qq.com'>] 格式
         to_list = ['<%s>' % user for user in to]
+        print 'to_list: %s' % to_list
         cc_list = []
         mail_server = 'smtp.exmail.qq.com'
         mail_user = Alarm_Email_Auth[0]
@@ -136,7 +149,7 @@ class Sender(object):
         data['From'] = formataddr((str(Header('KefuCI', 'utf-8')), from_mail))#
         data['To'] = ";".join(to_list)
         data['Cc'] = ";".join(cc_list)
-
+        
         html = u"""\
             <html>
               <head>
@@ -146,7 +159,7 @@ class Sender(object):
                 </style>
               </head>
               <body>
-                <p>Kefuapi_test failed, Detail:</p>
+                <p>Kefuapi-test result, Detail:</p>
                 <a class="mnav"></a>
                 <p>%s</p>
 
@@ -155,7 +168,34 @@ class Sender(object):
             """
 
         text = htmlText.replace('\n', '<br>')
-        data.attach(MIMEText(html % (text), 'html', "utf-8"))
+#         data.attach(MIMEText(html % (text), 'html', "utf-8"))
+        data.attach(MIMEText(msg, 'html', "utf-8"))
+        # 构造附件1，传送当前目录下的 test.txt 文件
+        
+        # 判断传入参数是路径或者文件。如果是文件则取当前目录下所有html文件作为附件
+        if os.path.isdir(attachment_data):
+            dirs = os.listdir(attachment_data)
+            for i in dirs:               # 循环读取路径下的文件并筛选输出
+                if os.path.splitext(i)[1] == ".html":  # 筛选html文件
+                    print papath + '/' + i              # 输出所有的html文件
+                    path = papath + '/' + i              # 输出所有的html文件
+                    att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
+                    att1["Content-Type"] = 'application/octet-stream'
+                    # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+                    att1["Content-Disposition"] = 'attachment; filename='+i+''
+                    data.attach(att1)
+    
+        if os.path.isfile(attachment_data):
+            parent = os.path.abspath(attachment_data + '../..')
+            dirs = os.listdir(parent)
+            for i in dirs:               # 循环读取路径下的文件并筛选输出
+                if os.path.splitext(i)[1] == ".html":  # 筛选html文件
+                    path = parent + '\\' + i    # 输出所有的html文件
+                    att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
+                    att1["Content-Type"] = 'application/octet-stream'
+                    # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+                    att1["Content-Disposition"] = 'attachment; filename='+i+''
+                    data.attach(att1)
 
         try:
             s = smtplib.SMTP()
@@ -166,7 +206,7 @@ class Sender(object):
             s.login(mail_user, mail_pass)
             s.sendmail(from_mail, to_list, data.as_string())
             s.quit()
-            print('email report has been sented out: "%s", to:%s' % (sub, to))
+            print('email report has been sented out to:%s' % to_list)
 
             return True
         except Exception, e:
@@ -178,4 +218,7 @@ class Sender(object):
 if __name__ == '__main__':
     s = Sender()
     # s.send_sms('test')
-    s.sendReportMail('测试用例集：【Kefuapi-Test.Tool.Tools-Case】- -> 测试用例：【发送邮件】状态为FAIL', '1 != 2', ['leoli@easemob.com'])
+    recieve = u"leoli@easemob.com,260553619@qq.com"
+#     recieve = ['leoli@easemob.com','260553619@qq.com']
+#     recieve = []
+    s.sendReportMail('测试用例集：【Kefuapi-Test.Tool.Tools-Case】- -> 测试用例：【发送邮件】状态为FAIL', '1 != 2', recieve,'C:\Users\leo\git\kefu-auto-test\kefuapi-test\listen.html')

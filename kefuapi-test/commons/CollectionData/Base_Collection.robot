@@ -6,7 +6,7 @@ Library           ../../lib/SendReport/Sender.py
 *** Keywords ***
 Setup Init Data
     [Documentation]    坐席账号初始化登录数据、获取灰度列表、获取租户所属organ信息、创建关联信息等的初始化工作
-    Run Keyword And Ignore Error    Setup Data
+    Setup Data
 
 Teardown Data
     [Documentation]    清除创建了的坐席、技能组、关联等信息

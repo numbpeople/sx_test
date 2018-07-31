@@ -1,14 +1,17 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
-from xlwt.antlr import ifelse
-from __builtin__ import str
 
 __author__ = 'leo'
 
+from xlwt.antlr import ifelse
+from __builtin__ import str
 import os.path
 import tempfile
 import os, sys,inspect
 from os.path import dirname
+import platform
+import stat
+import shutil
 
 path = dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 path = os.path.abspath(path + './SendReport')
@@ -25,16 +28,18 @@ class MyListener(object):
 
     def __init__(self,receive=[],outpath='emailreport.html'):
         # 打开并创建文件，写入html数据
-        self.before_start_table(outpath)
-
         self.ROBOT_LIBRARY_LISTENER = self
+        self.outpath = outpath
         self.pass_count = 0
         self.fail_count = 0
         self.skip_count = 0
         self.error_count = 0
         self.total_count = 0
-        self.outpath = outpath
         self.receive = receive
+        
+        # 创建报告、填写报告路径
+        self.before_start_table(self.outpath,'emailreport.html')
+        
         # 拼接AgentRes文件路径
         self.agentRes = parentpath + '\AgentRes.robot'
         self.papath=self.agentRes.replace("\\", "/")
@@ -73,7 +78,12 @@ class MyListener(object):
         totalcount = float(self.total_count)
         passcount = float(self.pass_count)
         # 通过率
-        percent = "%.2f%%" % (passcount / totalcount*100)
+        percent = "0.0"
+        print passcount
+        if str(passcount) == "0.0":
+            percent = "0.00%"
+        else:
+            percent = "%.2f%%" % (passcount / totalcount*100)
         self.write_table(self.total_count,self.pass_count,self.fail_count,percent)
         self.outfile.close()
         
@@ -83,13 +93,28 @@ class MyListener(object):
         htmlcont=htmlf.read()
         s.sendReportMail('客服项目自动化测试结果', htmlcont, self.receive,self.outpath)
 
-    def before_start_table(self,outpath):
+    def before_start_table(self,outpath,reportname):
         # 拼接emailreport报告路径
+        print 'outpath: %s' % outpath
         if os.path.isdir(outpath):
-            outpath = outpath + '\emailreport.html'
+            outpath = outpath + '\\' + reportname
             outpath=outpath.replace("\\", "/")
+            print 'isdir: %s'  %outpath
+        else:
+            outpath = os.path.abspath(outpath)
+            outpath=outpath.replace("\\", "/")
+            print 'else: %s'  %outpath
+         
+        # 定义将输出报告
+        self.outpath = outpath
+        # 给文件夹赋权限
+#         self.chmod_file(self.outpath)
+
+        # 预先删除目录下所有的html格式的文件
+        self.del_report_file(outpath)
         
-        self.outfile = open(outpath, 'w')
+        # 创建报告
+        self.outfile = open(self.outpath, 'w')
         self.outfile.write('<div style="width:100%;float:left">\n')
         self.outfile.write('<table cellspacing="0" cellpadding="4" border="1" align="left">\n')
 
@@ -248,21 +273,14 @@ class MyListener(object):
                 adminuserDic[key] = value
         return adminuserDic
 
-    # 将秒数间隔转换为计时器"时:分:秒"字符串
-    def itv2time(self,iItv):
-        if type(iItv)==type(1):
-#             iItv = iItv/1000
-            h=iItv/3600
-            sUp_h=iItv-3600*h
-            m=sUp_h/60
-            sUp_m=sUp_h-60*m
-            s=sUp_m
-            return ":".join(map(str,(h,m,s)))
-        else:
-            return "[InModuleError]:itv2time(iItv) invalid argument type"
-    
-    # 将秒数间隔转换秒+毫秒
     def msformat(self,iItv):
+        """
+        将秒数间隔转换秒+毫秒
+    
+        return:
+        返回例如：0秒091毫秒
+        """
+        # 将秒数间隔转换秒+毫秒
         if type(iItv)==type(1):
             iItv = float(iItv)
             s = iItv/1000 #
@@ -276,14 +294,52 @@ class MyListener(object):
         else:
             return "[InModuleError]:itv2time(iItv) invalid argument type"
 
+    def chmod_file(self,outpath):
+        """
+        将文件赋予可操作权限
+        """
+        #给文件夹赋权限
+        sysstr = platform.system()
+        if(sysstr =="Windows"):
+            os.chmod(outpath, stat.S_IWRITE)
+
+    def del_report_file(self,output):
+        """
+        当前目录下所有html文件
+        """
+        if os.path.isdir(output):
+            dirs = os.listdir(output)
+            for i in dirs:               # 循环读取路径下的文件并筛选输出
+                if os.path.splitext(i)[1] == ".html":  # 筛选html文件
+                    print papath + '/' + i              # 输出所有的html文件
+                    path = papath + '/' + i              # 输出所有的html文件
+                    #删除文件夹
+                    self.chmod_file(path)
+                    os.remove(path)    #删除文件
+                    print 'del_report_file,isdir:%s' % path
+    
+        if os.path.isfile(output):
+            parent = os.path.abspath(output + '../..')
+            dirs = os.listdir(parent)
+            for i in dirs:               # 循环读取路径下的文件并筛选输出
+                if os.path.splitext(i)[1] == ".html":  # 筛选html文件
+                    path = parent + '\\' + i    # 输出所有的html文件
+                    path=path.replace("\\", "/")
+                    #删除文件夹
+                    self.chmod_file(path)
+                    os.remove(path)    #删除文件
+                    print 'del_report_file,isfile:%s' % path
+
+
 if __name__ == "__main__":
 #     a = float(18)
 #     b = float(14)
 #     c = b / a
 #     d = "%.2f%%" % (b / a*100)
 #     print d
-        papath = 'C:/Users/leo/git/kefu-auto-test/kefuapi-test/emailreport.html'
-        s = MyListener('C:/Users/leo/git/kefu-auto-test/kefuapi-test/emailreport    .html')
+        papath = 'C:/Users/leo/git/kefu-auto-test/kefuapi-test'
+        s = MyListener([],'C:/Users/leo/git/kefu-auto-test/kefuapi-test')
+        s.close()
 #         # 获取登录地址
 #         kefuurl = s.get_agentRes(papath, 2)
 #         print kefuurl
@@ -292,6 +348,7 @@ if __name__ == "__main__":
 #         agent = s.get_agentRes(papath, 4)
 #         print agent
 #         print agent['username']
-        print s.msformat(1996)
+#         print s.msformat(1996)
+        s.del_report_file(papath)
         
     

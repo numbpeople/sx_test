@@ -68,10 +68,26 @@ AgentRes.robot: 定义客服登录地址、账号/密码、筛选字典、接口
 
 * 命令行:
 
+按照tag标记名称执行
 ```
 $ cd kefu-auto-test/kefuapi-test/
 $ pybot.bat --include baselogin --exclude tool --exclude org --exclude ui C:\Users\leo\git\kefu-auto-test\kefuapi-test
+
 ```
+
+
+支持用例完毕后发送邮件和报告到邮箱
+
+```
+MyListener.py 脚本支持两个参数
+    1、receive：接收邮件的邮箱地址，多个邮箱使用逗号隔开
+    2、outpath：报告名称或目录地址
+```
+```
+$ pybot.bat --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py;leoli@easemob.com,zhukai@easemob.com;emailreport.html --include baselogin --exclude tool --exclude ui --exclude org  C:\Users\leo\git\kefu-auto-test\kefuapi-test
+
+```
+
 
 
 更多pybot参数介绍:

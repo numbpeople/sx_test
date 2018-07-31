@@ -63,7 +63,15 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be true    ${text1} == []    【实际结果】：在操作步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
 
 获取进行中会话访客列表最后一条消息(/v1/Agents/me/Visitors)
-    [Documentation]    1.创建一个进行中会话    2.访客发送一条消息，作为检查最后一条消息    3.获取访客列表检查lastChatMessage下的msg值    4.如果获取到的消息不是预期，尝试重试取多次，再对比结果
+    [Documentation]    
+    ...    【操作步骤】：
+    ...    - Step1、访客发起会话，坐席接入到进行中会话。
+    ...    - Step2、访客发送一条消息，例如：789e3f68-0a75-4880-a069-2f01550b1714，该消息作为检查最后一条消息的预期值。
+    ...    - Step3、获取接口/v1/Agents/me/Visitors，访客列表检查lastChatMessage下的msg值。
+    ...    - Step4、如果获取到的消息不是预期，尝试重试取多次，再对比结果。
+    ...
+    ...    【预期结果】：
+    ...    从接口（/v1/Agents/me/Visitors）获取到访客发送的最后一条消息的值，应该等于789e3f68-0a75-4880-a069-2f01550b1714。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #访客发送一条消息，作为检查最后一条消息的预期值

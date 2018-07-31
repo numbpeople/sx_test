@@ -46,13 +46,11 @@ Get Processing Session
     [Arguments]    ${agent}
     [Documentation]    获取进行中的所有会话
     ...
-    ...    Arguments：
-    ...
-    ...    ${agent}
-    ...
-    ...    Return：
-    ...
-    ...    请求结果：${j}
+    ...    【参数值】：
+    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息
+    ...    
+    ...    【返回值】：
+    ...    - 接口/v1/Agents/me/Visitors的返回值，${j}
     #查询进行中会话
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
@@ -62,9 +60,14 @@ Get Processing Session
 Get Processing Conversations With FieldName
     [Arguments]    ${agent}    ${fieldName}    ${fieldValue}    ${fieldConstruction}
     [Documentation]    根据会话某些属性来获取进行中会话列表，并返回会话数据
-    ...    ${fieldName}: 搜索的某字段
-    ...    ${fieldValue}: 预期搜索某字段预期值
-    ...    ${fieldConstruction}：搜索的某字段的结构路径
+    ...
+    ...    【参数值】：
+    ...    - ${fieldName}: 搜索的某字段
+    ...    - ${fieldValue}: 预期搜索某字段预期值
+    ...    - ${fieldConstruction}：搜索的某字段的结构路径
+    ...
+    ...    【返回值】：
+    ...    - 返回匹配根据${fieldName}字段结构取值，并且值等于${fieldValue}的结构
     ${sessionList}    create list
     #获取进行中会话列表
     ${j}    Get Processing Session    ${agent}

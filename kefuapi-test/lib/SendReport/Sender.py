@@ -190,7 +190,8 @@ class Sender(object):
             dirs = os.listdir(parent)
             for i in dirs:               # 循环读取路径下的文件并筛选输出
                 if os.path.splitext(i)[1] == ".html":  # 筛选html文件
-                    path = parent + '\\' + i    # 输出所有的html文件
+                    path = parent + '/' + i    # 输出所有的html文件
+                    path=path.replace("\\", "/")
                     att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
                     att1["Content-Type"] = 'application/octet-stream'
                     # 这里的filename可以任意写，写什么名字，邮件中显示什么名字

@@ -24,7 +24,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话接口。
     ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}
-    ...    
+    ...
     ...    【预期结果】：如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
     #Step1、获取进行中会话列表，并获取会话数
     &{j}    Get Processing Session    ${AdminUser}
@@ -33,6 +33,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${url}    set variable    ${j.url}
     ${length}    get length    ${text}
     #Step2、判断返回接口返回值${text[0]['user']['tenantId']}
+    Run Keyword If    ${length} >= 0    should be equal    '${text[0]['user']['tenantId']}'    '11688'    【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
     Run Keyword If    ${length} > 0    should be equal    '${text[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
 
 获取空访客列表(/v1/Agents/me/Visitors)

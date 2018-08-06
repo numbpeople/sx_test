@@ -3,18 +3,16 @@
 
 __author__ = 'leo'
 
-from xlwt.antlr import ifelse
-from __builtin__ import str
+from os.path import dirname
 import os.path
 import tempfile
 import os, sys,inspect
-from os.path import dirname
 import platform
 import stat
 import shutil
 
 path = dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-path = os.path.abspath(path + './SendReport')
+path = os.path.abspath(path + '/SendReport')
 parentpath = os.path.abspath(path + '../../../')
 sys.path.append(os.path.realpath(path))
 reload(sys)

@@ -10,7 +10,6 @@ Resource          ../../../api/BaseApi/Note/NoteApi.robot
 Resource          ../Channels/Webim_Common.robot
 Resource          ../../IM_Common/IM Common.robot
 
-
 *** Keywords ***
 Get Project
     [Arguments]    ${agent}
@@ -59,7 +58,8 @@ Get Tickets Counts
 Set Tickets
     [Arguments]    ${method}    ${agent}    ${filter}    ${data}=    ${visiorDic}=
     [Documentation]    获取/创建留言数据
-    ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets    ${method}    ${agent}    ${filter}    ${data}    ${visiorDic}    ${timeout}
+    ${resp}=    /tenants/{tenantId}/projects/{projectId}/tickets    ${method}    ${agent}    ${filter}    ${data}    ${visiorDic}
+    ...    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     return from keyword    ${j}
@@ -100,7 +100,8 @@ Create Visitor Ticket
     ${filter}    copy dictionary    ${NotesEntity}
     set to dictionary    ${filter}    projectId=${projectId}    tenantId=${AdminUser.tenantId}    userId=${AdminUser.userId}    Authorization=Easemob IM ${IMToken}
     ${secs} =    Get Time    epoch
-    &{ticketEntity}=    create dictionary    subject=my-subject-${secs}    email=leoli@easemob.com    phone=18612390240    url=http://oev49clxj.bkt.clouddn.com/test1.amr    name=my-name-${secs}    type=audio
+    &{ticketEntity}=    create dictionary    subject=my-subject-${secs}    email=leoli@easemob.com    phone=18612390240    url=http://oev49clxj.bkt.clouddn.com/test1.amr    name=my-name-${secs}
+    ...    type=audio
     ${data}=    set variable    {"subject":"${ticketEntity.subject}","status_id": "${statusId}","content":"${ticketEntity.subject}","creator":{"name":"${ticketEntity.name}","avatar":"${ticketEntity.name}","email":"${ticketEntity.email}","phone":"${ticketEntity.phone}","qq":"${ticketEntity.phone}","company":"${ticketEntity.name}","description":"${ticketEntity.name}"},"attachments":[{"name":"${ticketEntity.name}","url":"${ticketEntity.url}","type":"${ticketEntity.type}"}]}
     ${j}    Set Tickets    post    ${AdminUser}    ${filter}    ${data}    ${visiorDic}
     set to dictionary    ${ticketEntity}    ticketId=${j['id']}
@@ -147,7 +148,7 @@ Export Tickets File
 
 Create Ticket And Export Data
     [Arguments]    ${agent}    ${language}=zh-CN
-    [Documentation]    1、创建留言    2、导出留言
+    [Documentation]    1、创建留言 2、导出留言
     #获取已解决状态id
     &{statusDic}    Get StatusIds    ${agent}
     ${statusId}    set variable    ${statusDic.Pending}
@@ -160,4 +161,32 @@ Create Ticket And Export Data
     #导出留言
     Export Tickets File    ${agent}    ${filter}    ${language}
     return from keyword    ${ticketResult}
-    
+
+Get Ticket With Custom Filter
+    [Arguments]    ${agent}    ${visitorName}=    ${ticketId}=    ${isAll}=
+    [Documentation]    根据筛选条件留言信息
+    ...
+    ...    【参数值】：
+    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser}
+    ...    - ${visitorName}：发起人的昵称，例如：my-name-1532930622
+    ...    - ${ticketId}：留言ID，例如：577002
+    ...    - ${isAll}：返回筛选留言结果中第一条数据。默认为空，如果true，则返回全部数据
+    ...
+    ...    【返回值】：
+    ...    - 根据筛选条件后的留言信息，默认返会第一条数据，
+    ...
+    ...    【调用方式】：
+    ...    | 根据昵称获取留言信息，返回匹配的第一条数据 | ${j} | Get Ticket With VisitorName | ${AdminUser} | my-name-1532930622 |
+    ...    | 根据留言ID获取留言信息，返回匹配的第一条数据 | ${j} | Get Ticket With VisitorName | ${AdminUser} | ${EMPTY} | 577072 |
+    ...    | 根据筛选条件获取留言信息，返回匹配的所有数据 | ${j} | Get Ticket With VisitorName |${AdminUser} | my-name-1532930622 | ${EMPTY} | true |
+    #创造接口请求数据
+    ${filter}    copy dictionary    ${NotesEntity}
+    set to dictionary    ${filter}    projectId=${projectId}    tenantId=${AdminUser.tenantId}    userId=${AdminUser.userId}    visitorName=${visitorName}    ticketId=${ticketId}
+    #获取全部留言中刚创建的留言数据
+    ${j}    Set Tickets    get    ${agent}    ${filter}
+    log    ${j}
+    # 判断如果数据总数为0，则返回空列表
+    return from keyword if    ${j['totalElements']} == 0    []
+    # 判断返回全部数据或第一条数据
+    return from keyword if    '${isAll}' != ''    ${j['entities']}
+    return from keyword    ${j['entities'][0]}

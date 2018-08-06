@@ -1,0 +1,9 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker build -t kf-docker .
+
+  - docker run --rm -i -t -e ROBOT_TESTS=kefuapi-test -v $(pwd)/kefuapi-test:/kefuapi-test -ti kf-docker /bin/bash -c "run.sh"

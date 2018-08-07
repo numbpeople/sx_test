@@ -164,29 +164,88 @@ Create Ticket And Export Data
 
 Get Ticket With Custom Filter
     [Arguments]    ${agent}    ${visitorName}=    ${ticketId}=    ${isAll}=
-    [Documentation]    根据筛选条件留言信息
+    [Documentation]    根据筛选条件查询留言信息
     ...
-    ...    【参数值】：
-    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser}
-    ...    - ${visitorName}：发起人的昵称，例如：my-name-1532930622
-    ...    - ${ticketId}：留言ID，例如：577002
-    ...    - ${isAll}：返回筛选留言结果中第一条数据。默认为空，如果true，则返回全部数据
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${visitorName} | 选填 | 发起人的昵称，例如：my-name-1532930622 |
+    ...    | ${ticketId} | 选填 | 留言ID，例如：577002 |
+    ...    | ${isAll} | 选填 | 返回筛选留言结果中第一条数据。默认为空，如果true，则返回全部数据 |
     ...
-    ...    【返回值】：
-    ...    - 根据筛选条件后的留言信息，默认返会第一条数据，
+    ...    【返回值】
+    ...    | 根据筛选条件查询后的留言数据结果，如果${isAll}为空，则返回数据中第一个元素数据，如果${isAll}不为空，则返回整个列表 |
     ...
-    ...    【调用方式】：
+    ...    【调用方式】
     ...    | 根据昵称获取留言信息，返回匹配的第一条数据 | ${j} | Get Ticket With VisitorName | ${AdminUser} | my-name-1532930622 |
-    ...    | 根据留言ID获取留言信息，返回匹配的第一条数据 | ${j} | Get Ticket With VisitorName | ${AdminUser} | ${EMPTY} | 577072 |
-    ...    | 根据筛选条件获取留言信息，返回匹配的所有数据 | ${j} | Get Ticket With VisitorName |${AdminUser} | my-name-1532930622 | ${EMPTY} | true |
+    ...    | 根据留言ID获取留言信息，返回匹配的第一条数据 | ${j} | Get Ticket With VisitorName | ${AdminUser} | \ | 577072 |
+    ...    | 根据筛选条件获取留言信息，返回匹配的所有数据 | ${j} | Get Ticket With VisitorName | ${AdminUser} | my-name-1532930622 | \ | true |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据传入参数来调用查询留言接口的函数=> Set Tickets |
+    ...    | Step 2 | 针对接口返回值，判断数据总数totalElements是否为0，为0则返回[] |
+    ...    | Step 3 | 如果${isAll}为空，则返回数据中第一个元素数据，如果${isAll}不为空，则返回整个列表 |
     #创造接口请求数据
     ${filter}    copy dictionary    ${NotesEntity}
     set to dictionary    ${filter}    projectId=${projectId}    tenantId=${AdminUser.tenantId}    userId=${AdminUser.userId}    visitorName=${visitorName}    ticketId=${ticketId}
     #获取全部留言中刚创建的留言数据
     ${j}    Set Tickets    get    ${agent}    ${filter}
     log    ${j}
-    # 判断如果数据总数为0，则返回空列表
+    #判断如果数据总数为0，则返回空列表
     return from keyword if    ${j['totalElements']} == 0    []
-    # 判断返回全部数据或第一条数据
+    #判断返回全部数据或第一条数据
     return from keyword if    '${isAll}' != ''    ${j['entities']}
     return from keyword    ${j['entities'][0]}
+
+Add Comment For Ticket
+    [Arguments]    ${agent}    ${ticketId}    ${content}
+    [Documentation]    添加留言评论
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${ticketId} | 必填 | 留言ID，例如：2820041 |
+    ...    | ${content} | 必填 | 留言评论的内容，例如：客服添加评论 |
+    ...
+    ...    【返回值】
+    ...    | 添加留言评论请求返回结果，包括评论id |
+    ...
+    ...    【调用方式】
+    ...    | 添加留言评论 | ${j} | Add Comment For Ticket | ${AdminUser} | 2820041 | 客服添加评论 |
+    ...    | 获取评论id | ${commentId} | Set Variable | ${j['id']} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据传入参数来调用添加评论接口的函数=> Set Comments |
+    ...    | Step 2 | 接口请求后，将返回值进行返回 |
+    #创造接口请求数据
+    ${filter}    copy dictionary    ${NotesEntity}
+    set to dictionary    ${filter}    projectId=${projectId}    size=1000    ticketId=${ticketId}
+    &{CommentsEntity}=    create dictionary    username=${TenantsMeAgentsMeJson['username']}    nicename=${TenantsMeAgentsMeJson['nicename']}    phone=    content=${content}
+    ${data}=    set variable    {"content":"${CommentsEntity.content}","creator":{"username":"${CommentsEntity.username}","name":"${CommentsEntity.nicename}","avatar":"","type":"AGENT","phone":"${CommentsEntity.phone}","email":"","qq":"","company":"","description":""},"attachments":[]}
+    #添加留言的评论
+    ${j}    Set Comments    post    ${AdminUser}    ${filter}    ${data}
+    return from keyword    ${j}
+
+Get Ticket Comment
+    [Arguments]    ${agent}    ${ticketId}
+    [Documentation]    获取留言评论
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${ticketId} | 必填 | 留言ID，例如：2820041 |
+    ...
+    ...    【返回值】
+    ...    | 获取留言评论内容 |
+    ...
+    ...    【调用方式】
+    ...    | 添加留言评论 | ${j} | Get Ticket Comment | ${AdminUser} | 2820041 |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据传入参数来调用获取评论接口的函数=> Set Comments |
+    ...    | Step 2 | 接口请求后，将返回值进行返回 |
+    #创造接口请求数据
+    ${filter}    copy dictionary    ${NotesEntity}
+    set to dictionary    ${filter}    projectId=${projectId}    size=1000    ticketId=${ticketId}
+    ${j}    Set Comments    get    ${AdminUser}    ${filter}
+    return from keyword    ${j['entities']}

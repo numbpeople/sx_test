@@ -18,10 +18,15 @@ Get Option Value
 Repeat Keyword Times
     [Arguments]    ${functionName}    ${expectConstruction}    ${expectValue}    @{paramList}
     [Documentation]    重试调用接口多次，判断结果是否包含预期的值，包含则返回结果，否则返回{}
-    ...    - param：${functionName} ，代表接口封装后的关键字
-    ...    - param：${expectConstruction} ，接口返回值中应取的字段结构
-    ...    - param： ${expectValue} ，获取接口某字段的预期值
-    ...    - param：@{paramList}，接口封装后所需要传入的参数值
+    ...
+    ...    【参数值】：
+    ...    - ${functionName} ，代表接口封装后的关键字
+    ...    - ${expectConstruction} ，接口返回值中应取的字段结构
+    ...    - ${expectValue} ，获取接口某字段的预期值
+    ...    - @{paramList}，接口封装后所需要传入的参数值
+    ...
+    ...    【返回值】：
+    ...    - 调用${functionName}接口，返回结果中，匹配${expectConstruction}字段结构，值等于${expectValue}的数据结构
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${j}    run keyword    ${functionName}    @{paramList}
     \    Continue For Loop If    "${j}" == "[]"
@@ -40,8 +45,20 @@ Set Option
 Return Result
     [Arguments]    ${resp}
     [Documentation]    封装返回值结果
-    ...    【参数】：接口请求 resp 结果
-    ...    【返回值】：请求地址：url、返回状态：status、返回值：text
+    ...
+    ...    【参数值】：
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${resp} | 必填 | 接口返回的对象，其中包含请求地址、状态码、返回值，例如：${AdminUser} |
+    ...
+    ...    【返回值】
+    ...    | 进行二次封装，将请求地址、状态码、返回值进行返回：url、status、text |
+    ...
+    ...    【调用方式】
+    ...    | 获取进行中会话 | ${j} | Return Result | ${resp} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 构造返回字典，返回请求地址、状态码、返回值：url、status、text |
+    ...    | Step 2 | 如果请求返回值为空，则返回值为空字符串 |
     #构造返回字典
     &{result}    create dictionary
     ${text}    set variable    ${EMPTY}

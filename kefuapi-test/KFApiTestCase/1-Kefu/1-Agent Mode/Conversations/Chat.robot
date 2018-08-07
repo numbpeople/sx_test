@@ -19,13 +19,13 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 
 *** Test Cases ***
 获取访客列表(/v1/Agents/me/Visitors)
-    [Tags]
-    [Documentation]    
-    ...    【操作步骤】：
+    [Documentation]    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话接口。
     ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}
     ...
-    ...    【预期结果】：如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
+    ...    【预期结果】：
+    ...    如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
+    [Tags]    test1
     #Step1、获取进行中会话列表，并获取会话数
     &{j}    Get Processing Session    ${AdminUser}
     ${text}    set variable    ${j.text}
@@ -33,12 +33,10 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${url}    set variable    ${j.url}
     ${length}    get length    ${text}
     #Step2、判断返回接口返回值${text[0]['user']['tenantId']}
-    Run Keyword If    ${length} >= 0    should be equal    '${text[0]['user']['tenantId']}'    '11688'    【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
     Run Keyword If    ${length} > 0    should be equal    '${text[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
 
 获取空访客列表(/v1/Agents/me/Visitors)
-    [Documentation]    
-    ...    【操作步骤】：
+    [Documentation]    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话数。
     ...    - Step2、如果进行中会话数大于50个，则标记为失败，不继续执行，否则关闭所有会话。
     ...    - Step3、查询坐席模式-进行中会话的接口返回值。
@@ -64,45 +62,50 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be true    ${text1} == []    【实际结果】：在操作步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
 
 获取进行中会话访客列表最后一条消息(/v1/Agents/me/Visitors)
-    [Documentation]    
-    ...    【操作步骤】：
-    ...    - Step1、访客发起会话，坐席接入到进行中会话。
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
     ...    - Step2、访客发送一条消息，例如：789e3f68-0a75-4880-a069-2f01550b1714，该消息作为检查最后一条消息的预期值。
     ...    - Step3、获取接口/v1/Agents/me/Visitors，访客列表检查lastChatMessage下的msg值。
     ...    - Step4、如果获取到的消息不是预期，尝试重试取多次，再对比结果。
     ...
     ...    【预期结果】：
     ...    从接口（/v1/Agents/me/Visitors）获取到访客发送的最后一条消息的值，应该等于789e3f68-0a75-4880-a069-2f01550b1714。
-    #创建会话并手动接入到进行中会话
+    #Step1、创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
-    #访客发送一条消息，作为检查最后一条消息的预期值
+    #Step2、访客发送一条消息，作为检查最后一条消息的预期值
     ${uuid}    Uuid 4
     set to dictionary    ${sessionInfo.msgEntity}    msg=${uuid}
     Send Message    ${restentity}    ${sessionInfo.guestEntity}    ${sessionInfo.msgEntity}
-    #获取进行中会话列表
+    #Step3、获取接口/v1/Agents/me/Visitors，访客列表检查lastChatMessage下的msg值。
     &{searchDic}    create dictionary    fieldName=msg    fieldValue=${uuid}    fieldConstruction=['lastChatMessage']['body']['bodies'][0]['msg']
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
     ${expectConstruction}    set variable    [0]['lastChatMessage']['body']['bodies'][0]['msg']    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    ${uuid}    #该参数为获取接口某字段的预期值
-    #获取会话对应的会话
+    #Step4、如果获取到的消息不是预期，尝试重试取多次，再对比结果。
     ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    接口返回结果中会话不属于转接后的坐席
     should be equal    ${j[0]['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取到的会话id不正确, ${j}
 
 获取进行中会话背景颜色标识(/v1/Agents/me/Visitors)
-    [Documentation]    1.创建一个进行中会话    2.获取访客列表检查backgroundColorFlag、hasUnReadMessage、isNewSession等的初始值    3.如果获取到的消息不是预期，尝试重试取多次，再对比结果
-    #创建会话并手动接入到进行中会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。
+    ...    - Step3、检查backgroundColorFlag、hasUnReadMessage、isNewSession等的初始值。
+    ...
+    ...    【预期结果】：
+    ...    从接口（/v1/Agents/me/Visitors）获取到访客发送的最后一条消息的值，应该等于789e3f68-0a75-4880-a069-2f01550b1714。
+    #Step1、访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
-    #获取进行中会话列表
     &{searchDic}    create dictionary    fieldName=backgroundColorFlag    fieldValue=${sessionInfo.sessionServiceId}    fieldConstruction=['serviceSessionId']
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
     ${expectConstruction}    set variable    [0]['serviceSessionId']    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    ${sessionInfo.sessionServiceId}    #该参数为获取接口某字段的预期值
-    #获取会话对应的会话
+    #Step2、获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。
     ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
-    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话根据会话id搜索不到相应的会话
+    Run Keyword If    ${j} == {}    Fail    坐席进行中接口返回结果中，根据会话id搜索不到相应的会话
+    #Step3、检查backgroundColorFlag、hasUnReadMessage、isNewSession等的初始值。
     should be true    ${j[0]['backgroundColorFlag']}    获取到的backgroundColorFlag不是true, ${j}
     should be true    ${j[0]['hasUnReadMessage']}    获取到的hasUnReadMessage不是true, ${j}
     should be true    not ${j[0]['isNewSession']}    获取到的isNewSession不是false, ${j}
@@ -110,50 +113,93 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be true    '${j[0]['transferedFrom']}' == 'None'    获取到的transferedFrom默认不是None, ${j}
 
 根据会话Id获取official-accounts信息(/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/official-accounts)
-    #创建会话并手动接入到进行中会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、调用接口/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/official-accounts。
+    ...    - Step3、检查返回结果中，字段status为OK，type等于SYSTEM。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，字段status为OK，type等于SYSTEM。
+    #Step1、访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
-    #获取official-accounts信息
+    #Step2、调用接口/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/official-accounts。
     ${j}=    Get Official-accounts    ${AdminUser}    ${sessionInfo.sessionServiceId}
+    #Step3、检查返回结果中，字段status为OK，type等于SYSTEM。
     should be equal    ${j['status']}    OK    返回值中status值不正确：${j}
     should be equal    ${j['entity']['type']}    SYSTEM    返回值中type值不正确：${j}
 
 获取会话的满意度评价状态(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus)
-    #创建会话并手动接入到进行中会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、调用接口/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus，接口请求状态码为200。
+    ...    - Step3、检查返回结果中，字段status为OK，type等于SYSTEM。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，字段status为OK，type等于SYSTEM。
+    #Step1、访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
-    #获取会话满意度评价结果
+    #Step2、调用接口/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus，接口请求状态码为200。
     ${j}    Get EnquiryStatus    ${AdminUser}    ${sessionInfo.userId}
+    #Step3、检查返回结果中，字段status为OK，count等于1。
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
     Should Be Equal    '${j['count']}'    '1'    获取接口返回count不是1: ${j}
 
 获取会话的满意度已评价状态(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、坐席手动发起满意度评价邀请，调用接口：/v6/tenants/{tenantId}/serviceSessions/{serviceSessionId}/inviteEnquiry。
+    ...    - Step3、访客输入数字 1 进行会话评价。
+    ...    - Step4、调用接口获取满意度评价状态：/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus，接口请求状态码为200，并且接口返回值data数据值为over。
+    ...    - Step5、检查返回结果中，字段status为OK，count等于1，data为over。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，字段status为OK，type等于SYSTEM。
+    #创建消息体字典，如${MsgEntity}
     ${MsgEntity}    create dictionary    msg=test msg!    type=txt    ext={}
-    #创建会话并手动接入到进行中会话
+    #Step1、访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
-    #发送满意度评价
+    #Step2、坐席手动发起满意度评价邀请，调用接口：/v6/tenants/{tenantId}/serviceSessions/{serviceSessionId}/inviteEnquiry。
     ${j}    Send InviteEnquiry    ${AdminUser}    ${sessionInfo.sessionServiceId}
     Should Be Equal    ${j['status']}    OK    消息内容不正确：${j}
-    #访客评价会话
+    #设置发送的文本消息为：1
     set to dictionary    ${MsgEntity}    msg=1    # 1代表5星、2代表4星 ......
+    #Step3、访客输入数字 1 进行会话评价。
     Send Message    ${restentity}    ${sessionInfo}    ${MsgEntity}
     #创建Repeat Keyword Times的参数list
     @{paramList}    create list    ${AdminUser}    ${sessionInfo.sessionServiceId}    #该参数为Get EnquiryStatus接口的参数值
     ${expectConstruction}    set variable    ['data'][0]    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    over    #该参数为获取接口某字段的预期值
-    #获取会话满意度评价结果
+    #Step4、调用接口获取满意度评价状态：/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus，接口请求状态码为200，并且接口返回值data数据值为over。
     ${j}    Repeat Keyword Times    Get EnquiryStatus    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    接口返回结果中不包含预期的over值
+    #Step5、检查返回结果中，字段status为OK，count等于1，data为over。
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}
     Should Be Equal    '${j['count']}'    '1'    获取接口返回count不是1: ${j}
     Should Be Equal    ${j['data'][0]}    over    获取接口返回data不是over: ${j}
 
 获取会话的会话标签信息(/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults)
-    #创建会话并手动接入到进行中会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、获取会话标签信息，调用接口：/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults，接口请求状态码为200。
+    ...    - Step3、检查返回值，为[]。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，字段status为OK，type等于SYSTEM。
+    #Step1、访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
-    #获取会话会话标签信息
+    #Step2、获取会话标签信息，调用接口：/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults，接口请求状态码为200
     ${j}    Set ServiceSessionSummaryResults    get    ${AdminUser}    ${sessionInfo.sessionServiceId}
+    #Step3、检查返回值，为[]。
     should be equal    '${j}'    '[]'    获取接口返回结果不正确: ${j}
 
 添加会话的会话标签信息(/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、添加会话标签信息，调用接口：/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults，接口请求状态码为200。
+    ...    - Step3、检查返回值，为空。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，请求结果为空。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #创建参数字典

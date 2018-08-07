@@ -46,11 +46,19 @@ Get Processing Session
     [Arguments]    ${agent}
     [Documentation]    获取进行中的所有会话
     ...
-    ...    【参数值】：
-    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息
-    ...    
-    ...    【返回值】：
-    ...    - 接口/v1/Agents/me/Visitors的返回值，${j}
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...
+    ...    【返回值】
+    ...    | 调用接口/v1/Agents/me/Visitors返回所有进行中会话的数据结果 |
+    ...
+    ...    【调用方式】
+    ...    | 获取进行中会话 | ${j} | Get Processing Session | ${AdminUser} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据调用 /v1/Agents/me/Visitors 查询进行中会话的接口函数 |
+    ...    | Step 2 | 针对接口返回对象 用封装函数Return Result ，返回状态码、请求地址、请求返回值等信息 |
     #查询进行中会话
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
@@ -78,13 +86,13 @@ Get Processing Conversations With FieldName
     run keyword if    ${length} > 50    ${sessionList}
     #判断结果是否包含指定字段
     ${status}    Run Keyword And Return Status    Should Contain    "${text}"    ${fieldName}
-    return from keyword if   not ${status}    ${sessionList}
+    return from keyword if    not ${status}    ${sessionList}
     #将符合预期值的结果加到列表中，并返回列表数据
-    :FOR    ${i}    IN    @{text}
+    : FOR    ${i}    IN    @{text}
     \    log    ${i}
     \    ${resultValue}    set variable    ${i${fieldConstruction}}
     \    run keyword if    "${fieldValue}" == "${resultValue}"    Append To List    ${sessionList}    ${i}
-    return from keyword   ${sessionList}
+    return from keyword    ${sessionList}
 
 Get Attribute
     [Arguments]    ${agent}    ${servicesessionid}
@@ -159,12 +167,20 @@ Stop Processing Conversation
     [Documentation]    手动结束进行中的会话
     ...
     ...    【参数值】：
-    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息
-    ...    - ${visitoruserid}：访客id
-    ...    - ${servicesessionid}：会话id
-    ...    
-    ...    【返回值】：
-    ...    - 无
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${visitoruserid} 选填 | 访客id |
+    ...    | ${servicesessionid} 选填 | 会话id |
+    ...
+    ...    【返回值】
+    ...    | 无 |
+    ...
+    ...    【调用方式】
+    ...    | 获取进行中会话 | Stop Processing Conversation | ${AdminUser} | ${visitorUserId} | ${serviceSessionId} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据传入参数${visitorUserId}和${serviceSessionId}，调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop 关闭进行中会话 |
+    ...    | Step 2 | 判断接口返回状态是否为200，并且返回值是否为true |
     #关闭会话
     ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${agent}    ${visitoruserid}    ${servicesessionid}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    【实际结果】：关闭会话时接口状态码不是200：调用接口：${resp.url}，实际状态码是：${resp.status_code}，原因是：${resp.text}。
@@ -174,13 +190,21 @@ Stop Processing Conversation
 Stop Processing Conversations
     [Arguments]    ${agent}    ${sessionList}
     [Documentation]    批量结束进行中的会话，超过100不允许执行
-    ...    
-    ...    【参数值】：
-    ...    - ${agent}：同一个连接别名、tenantId、userid、roles等坐席信息
-    ...    - ${sessionList}：会话id的列表
-    ...    
-    ...    【返回值】：
-    ...    - 无
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${sessionList} | 选填 | 会话id的列表 |
+    ...
+    ...    【返回值】
+    ...    | 无 |
+    ...
+    ...    【调用方式】
+    ...    | 获取进行中会话 | Stop Processing Conversations | ${AdminUser} | ${sessionList} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据传入参数${sessionList} ，获取有多少元素，如果超过100，则不执行用例，标记为Fail |
+    ...    | Step 2 | 依次全部关闭进行中的会话 |
     #判断进行中是否超过100会话
     ${length}    get length    ${sessionList}
     Run Keyword If    ${length} > 100    Fail    进行中会话超过100个会话，以防性能问题，不允许执行 , ${sessionList}
@@ -233,11 +257,29 @@ Get Official-accounts
     Return From Keyword    ${j}
 
 Create Processiong Conversation
-    [Documentation]    创建会话并手动接入到进行中列表，返回会话的属性以及访客的信息
+    [Documentation]    创建会话并手动接入到进行中会话列表，返回会话的属性以及访客的信息
     ...
-    ...    Return：
+    ...    【参数值】：
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | 无 | 无 | 无 |
     ...
-    ...    userId、chatGroupId、sessionServiceId、chatGroupSeqId
+    ...    【返回值】
+    ...    | 字段描述 | 会话id | 访客昵称 | 访客userid | 访客消息 | 技能组id | ... |
+    ...    | 字段名称 | sessionServiceId | userName | userid | msg | queueId | ... |
+    ...
+    ...    【调用方式】
+    ...    | 创建一个进行中会话 | ${sessionInfo} | Create Processiong Conversation |
+    ...    | 获取会话id | ${serviceSessionId} | Set Variable | ${sessionInfo.sessionServiceId} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 添加一个技能组、创建渠道变量、创建消息体字典数据、创建访客信息字典数据 |
+    ...    | Step 2 | 改变路由规则优先级顺序，使其入口指定优先 |
+    ...    | Step 3 | 访客发起新消息，创建新会话 |
+    ...    | Step 4 | 根据访客昵称搜索待接入数据 |
+    ...    | Step 5 | 手动从待接入接入会话到进行中会话 |
+    ...    | Step 6 | 获取坐席的进行中会话列表数据 |
+    ...    | Step 7 | 返回该会话的所有属性，包括：会话id、访客昵称、访客userid、访客消息、技能组id等 |
+    #Step 1、添加一个技能组、创建渠道变量、创建消息体字典数据、创建访客信息字典数据
     ${originType}    set variable    weixin
     # ${curTime}    get time    epoch
     ${randoNumber}    Generate Random String    5    [NUMBERS]
@@ -246,9 +288,9 @@ Create Processiong Conversation
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
     ${MsgEntity}    create dictionary    msg=${randoNumber}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
     ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${randoNumber}    originType=${originType}
-    #将规则排序设置为渠道优先
+    #Step 2 、 改变路由规则优先级顺序，使其入口指定优先
     Set RoutingPriorityList    入口    渠道    关联
-    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    #Step 3 、 访客发起新消息，创建新会话(访客名称为租户id与随机数的组合)
     Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
     #根据访客昵称查询待接入列表
     ${filter}    copy dictionary    ${FilterEntity}
@@ -258,7 +300,7 @@ Create Processiong Conversation
     @{paramList}    create list    ${AdminUser}    ${filter}    ${DateRange}
     ${expectConstruction}    set variable    ['totalElements']    #该参数为接口返回值的应取的字段结构
     ${expectValue}    set variable    1    #该参数为获取接口某字段的预期值
-    #获取会话对应的待接入会话
+    #Step 4 、 根据访客昵称搜索待接入数据
     ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
     Run Keyword If    ${j} == {}    Fail    待接入会话没有找到指定会话
     # ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${DateRange}
@@ -267,7 +309,7 @@ Create Processiong Conversation
     Should Be Equal    ${j['entities'][0]['visitor_name']}    ${guestentity.userName}    访客名称不正确：${j}
     Should Be Equal    ${j['entities'][0]['skill_group_id']}    ${queueentityA.queueId}    技能组id不正确：${j}
     Should Not Be True    ${j['entities'][0]['vip']}    非vip用户显示为vip：${j}
-    #根据查询结果接入会话
+    #Step 5 、手动从待接入接入会话到进行中会话
     Access Conversation    ${AdminUser}    ${j['entities'][0]['session_id']}
     #查询进行中会话是否有该访客
     ${j}    Get Processing Conversation    ${AdminUser}
@@ -277,7 +319,8 @@ Create Processiong Conversation
     Should Be Equal    ${a['user']['nicename']}    ${GuestEntity.userName}    访客昵称不正确：${a}
     Should Be Equal    ${a['techChannelName']}    ${restentity.channelName}    关联信息不正确：${a}
     Should Be Equal    ${a['techChannelId']}    ${restentity.channelId}    关联id不正确：${a}
-    set to dictionary    ${GuestEntity}    msgEntity=${MsgEntity}    guestEntity=${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}
+    set to dictionary    ${GuestEntity}    msgEntity=${MsgEntity}    guestEntity=${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}
+    ...    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    userName=${GuestEntity.userName}    msg=${MsgEntity.msg}    originType=${GuestEntity.originType}
     Return From Keyword    ${GuestEntity}
 
 Create Terminal Conversation
@@ -325,8 +368,8 @@ Create Terminal Conversation
     ${j}    Get History    ${AdminUser}    ${filter}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${j}
     #将需要的信息返回
-    set to dictionary    ${GuestEntity}    createDatetime=${j['items'][0]['createDatetime']}    startDateTime=${j['items'][0]['startDateTime']}    stopDateTime=${j['items'][0]['stopDateTime']}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    techChannelId=${a['techChannelId']}
-    ...    msg=${MsgEntity}
+    set to dictionary    ${GuestEntity}    createDatetime=${j['items'][0]['createDatetime']}    startDateTime=${j['items'][0]['startDateTime']}    stopDateTime=${j['items'][0]['stopDateTime']}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}
+    ...    sessionServiceId=${a['serviceSessionId']}    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    techChannelId=${a['techChannelId']}    msg=${MsgEntity}
     Return From Keyword    ${GuestEntity}
 
 Get EnquiryStatus
@@ -391,7 +434,7 @@ Tansfer Conversation To Queue
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
-    
+
 Tansfer Conversation To Agent
     [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${transferData}
     [Documentation]    将进行中会话转接到技能组
@@ -406,7 +449,7 @@ Stop All Processing Conversations
     #查询当前坐席进行中会话列表
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     ${j}    to json    ${resp.content}
-    ${l}    Get Length  ${j}
+    ${l}    Get Length    ${j}
     Return From Keyword If    ${l}==0
     #批量关闭进行中会话
     : FOR    ${i}    IN    @{j}

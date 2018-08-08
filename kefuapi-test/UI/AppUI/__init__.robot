@@ -1,7 +1,9 @@
 *** Settings ***
+Documentation     Setup Init Data
+...               Teardown Data
 Suite Setup       Setup Init Data
-Suite Teardown    Teardown Data
-Force Tags        ui
+Suite Teardown    # Teardown Data
+Force Tags        appui
 Library           json
 Library           requests
 Library           Collections

@@ -5,3 +5,4 @@ Documentation     使用环境：
 ...               Android 4.4版本
 ...               appium 1.4.16版本
 ...               屏幕分辨率为：480 * 800
+Resource          ../../../commons/admin common/Note/Note_Common.robot

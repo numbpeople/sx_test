@@ -6,36 +6,20 @@ Library           RequestsLibrary
 Library           Collections
 Library           os
 Library           String
-Library           mode.py
 Resource          env.robot
 Resource          ../../../api/BaseApi/Note/NoteApi.robot
 Resource          ../../../AgentRes.robot
 
 *** Test Cases ***
-startdemo
-    [Documentation]    1、关闭所有demo
-    ...    2、启动客服demo
-    Comment    关闭所有app
-    Close All Applications
-    Comment    启动客服访客端app
-    ${REMOTE_URL}    set variable    http://127.0.0.1:4723/wd/hub
-    ${PLATFORM_NAME}    set variable    Android
-    ${PLATFORM_VERSION}    set variable    4.4.
-    ${DEVICE_NAME}    set variable    127.0.0.1:62001
-    ${appPackage}    set variable    com.easemob.helpdeskdemo
-    ${appActivity}    set variable    com.easemob.helpdeskdemo.ui.MainActivity
-    Open Application    ${REMOTE_URL}    alias=myapp1    platformName=${PLATFORM_NAME}    platformVersion=${PLATFORM_VERSION}    deviceName=${DEVICE_NAME}    appPackage=${appPackage}
-    ...    appActivity=${appActivity}
-    ${width}    Get Window Width
-    ${height}    Get Window Height
-    set global variable    ${width}
-    set global variable    ${height}
-
-affirm_shop
-    [Documentation]    1、进入商城
-    ...    2、查找最上端显示名称
-    ...    3、点击两次技能组按钮
-    ...    4、确认商品列表中有四个商品
+mall_homepage
+    [Documentation]    【操作步骤】：
+    ...    - Step1、进入商城
+    ...    - Step2、查找页面title
+    ...    - Step3、确认存在技能组按钮
+    ...    - Step4、确认商品列表中有四个商品
+    ...
+    ...    【预期结果】：
+    ...    - Step1、可以在商品列表中找到四个商品
     go_shop
     Comment    最上端显示名称
     Element Should Be Enabled    //android.widget.ImageView
@@ -48,7 +32,13 @@ affirm_shop
     Element Should Be Enabled    com.easemob.helpdeskdemo:id/ib_shop_imagefour
 
 commodity_details
-    [Documentation]    点击进入商品详情页面
+    [Documentation]    【操作步骤】：
+    ...    - Step1、点击进入商品详情页面
+    ...    - Step2、获取商品的详情
+    ...
+    ...
+    ...    【预期结果】：
+    ...    - Step1、可以获取到商品的详情页面元素
     Comment    点击商品进入详情页面
     Click Element    com.easemob.helpdeskdemo:id/ib_shop_imagetwo
     Comment    向下滑动屏幕
@@ -58,9 +48,15 @@ commodity_details
     Element Should Be Enabled    com.easemob.helpdeskdemo:id/iv_buy_part2
 
 contact_services
-    [Documentation]    1、联系客服
-    ...    2、点击发送商品连接
-    ...    3、等待客服回复消息
+    [Documentation]    【操作步骤】：
+    ...    - Step1、联系客服
+    ...    - Step2、点击发送商品连接
+    ...    - Step3、等待客服回复消息
+    ...
+    ...    【预期结果】：
+    ...    - Step1、进入客服页面
+    ...    - Step2、可以发送商品连接
+    ...    - Step3、能够收到客服回复的消息
     Comment    点击联系客服
     Click Element    //android.widget.TextView[@text='Connect to Customer Service']
     Comment    点击发送商品
@@ -73,13 +69,19 @@ contact_services
     Go back
 
 skill_groups_button
-    [Documentation]    1、点击技能组按钮
-    ...    2、进入售前技术组发送消息
-    ...    3、进入售后技术组发送消息
+    [Documentation]    【操作步骤】：
+    ...    - Step1、点击技能组按钮
+    ...    - Step2、进入售前技术组发送消息
+    ...    - Step3、进入售后技术组发送消息
+    ...
+    ...    【预期结果】：
+    ...    - Step1、可以点击到技术能组按钮；
+    ...    - Step1、正常进入售前技术能组发送消息；
+    ...    - Step1、正常进入售后技术能组发送消息；
     Comment    点击技能组按钮，会有售前和售后选项
     Click Element    com.easemob.helpdeskdemo:id/textview_customer
     sleeps    1
-    Comment    点击进入售前选项
+    Comment    点击进入售前选项    使用座标点击
     click a point    460    90
     Comment    等待出现清空按钮出现
     Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/right_layout
@@ -94,20 +96,9 @@ skill_groups_button
     Comment    点击进入售后选项
     click a point    460    170
     Comment    等待出现清空按钮出现
-    Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/right_layout
+    Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/right_layout    5    未出现清空按钮
     Input Text    com.easemob.helpdeskdemo:id/et_sendmessage    This is after sales skill groups
     Click Element    com.easemob.helpdeskdemo:id/btn_send
-    Wait Until Element Is Visible    //android.widget.TextView[@text='This is after sales skill groups']
+    Wait Until Element Is Visible    //android.widget.TextView[@text='This is after sales skill groups']    5    找到刚发送的消息
     clean_chat_records
     Go back
-
-t
-    [Documentation]    1、点击技能组按钮
-    ...    2、进入售前技术组发送消息
-    ...    3、进入售后技术组发送消息
-    log    ${RestEntity}
-    log    ${AdminUser}
-    ${resp}=    /tenants/{tenantId}/projects    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    set global variable    ${projectId}    ${j['entities'][0]['id']}

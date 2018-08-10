@@ -12,6 +12,12 @@ Resource          ../../../AgentRes.robot
 *** Variables ***
 &{leave_message}    content=This is a test leave message case    name=ZhangSan    phone=13869696868    email=zhangsan@qq.com    theme=easemobtest
 ${respones_info}    This is a respones infomation
+${packagename}    com.easemob.helpdeskdemo
+${TextView}       android.widget.TextView
+${RelativeLayout}    android.widget.RelativeLayout
+${timeout}        10
+${respones_info2}    This is second respones infomation
+${seat_reply_leavemess}    this seat reply leavemessage responses
 
 *** Keywords ***
 go_setting
@@ -36,8 +42,8 @@ swipe_down
 
 clean_chat_records
     Comment    需要进入客服聊天窗口
-    Click Element    com.easemob.helpdeskdemo:id/right_layout
-    Click Element    com.easemob.helpdeskdemo:id/alert_right_btn
+    Click Element    ${packagename}:id/right_layout
+    Click Element    ${packagename}:id/alert_right_btn
     sleep    0.5
 
 get_projectid
@@ -53,7 +59,7 @@ setting_option
     Wait Until Element Is Visible    ${wait_locator}
     Clear Text    ${input_locator}
     Input text    ${input_locator}    ${input_contant}
-    click element    //android.widget.TextView[@text="Save"]
+    click element    //${TextView}[@text="Save"]
     sleeps    1
     Element Should Be Enabled    ${contant_verify}
 

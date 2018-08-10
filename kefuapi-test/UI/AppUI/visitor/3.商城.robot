@@ -24,12 +24,12 @@ mall_homepage
     Comment    最上端显示名称
     Element Should Be Enabled    //android.widget.ImageView
     Comment    指定技能组按钮
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/textview_customer
+    Element Should Be Enabled    ${packagename}:id/textview_customer
     Comment    商品列表
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/ib_shop_imageone
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/ib_shop_imagetwo
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/ib_shop_imagethree
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/ib_shop_imagefour
+    Element Should Be Enabled    ${packagename}:id/ib_shop_imageone
+    Element Should Be Enabled    ${packagename}:id/ib_shop_imagetwo
+    Element Should Be Enabled    ${packagename}:id/ib_shop_imagethree
+    Element Should Be Enabled    ${packagename}:id/ib_shop_imagefour
 
 commodity_details
     [Documentation]    【操作步骤】：
@@ -40,12 +40,12 @@ commodity_details
     ...    【预期结果】：
     ...    - Step1、可以获取到商品的详情页面元素
     Comment    点击商品进入详情页面
-    Click Element    com.easemob.helpdeskdemo:id/ib_shop_imagetwo
+    Click Element    ${packagename}:id/ib_shop_imagetwo
     Comment    向下滑动屏幕
     swipe_down
     Comment    确认详情
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/iv_buy_part1
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/iv_buy_part2
+    Element Should Be Enabled    ${packagename}:id/iv_buy_part1
+    Element Should Be Enabled    ${packagename}:id/iv_buy_part2
 
 contact_services
     [Documentation]    【操作步骤】：
@@ -58,10 +58,10 @@ contact_services
     ...    - Step2、可以发送商品连接
     ...    - Step3、能够收到客服回复的消息
     Comment    点击联系客服
-    Click Element    //android.widget.TextView[@text='Connect to Customer Service']
+    Click Element    //${TextView}[@text='Connect to Customer Service']
     Comment    点击发送商品
-    Click Element    com.easemob.helpdeskdemo:id/button_send
-    Wait Until Element Is Visible    //android.widget.RelativeLayout[@index=1]    timeout=2
+    Click Element    ${packagename}:id/button_send
+    Wait Until Element Is Visible    //${RelativeLayout}[@index=1]    ${timeout}
     Comment    清空聊天记录
     clean_chat_records
     Comment    返回主界面
@@ -79,26 +79,26 @@ skill_groups_button
     ...    - Step1、正常进入售前技术能组发送消息；
     ...    - Step1、正常进入售后技术能组发送消息；
     Comment    点击技能组按钮，会有售前和售后选项
-    Click Element    com.easemob.helpdeskdemo:id/textview_customer
+    Click Element    ${packagename}:id/textview_customer
     sleeps    1
     Comment    点击进入售前选项    使用座标点击
     click a point    460    90
     Comment    等待出现清空按钮出现
-    Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/right_layout
-    Input Text    com.easemob.helpdeskdemo:id/et_sendmessage    This is previous sales skill groups
-    Click Element    com.easemob.helpdeskdemo:id/btn_send
-    Wait Until Element Is Visible    //android.widget.TextView[@text='This is previous sales skill groups']
+    Wait Until Element Is Visible    ${packagename}:id/right_layout
+    Input Text    ${packagename}:id/et_sendmessage    This is previous sales skill groups
+    Click Element    ${packagename}:id/btn_send
+    Wait Until Element Is Visible    //${TextView}[@text='This is previous sales skill groups']
     clean_chat_records
     Go back
-    Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/textview_customer
-    Click Element    com.easemob.helpdeskdemo:id/textview_customer
+    Wait Until Element Is Visible    ${packagename}:id/textview_customer
+    Click Element    ${packagename}:id/textview_customer
     sleeps    1
     Comment    点击进入售后选项
     click a point    460    170
     Comment    等待出现清空按钮出现
-    Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/right_layout    5    未出现清空按钮
-    Input Text    com.easemob.helpdeskdemo:id/et_sendmessage    This is after sales skill groups
-    Click Element    com.easemob.helpdeskdemo:id/btn_send
-    Wait Until Element Is Visible    //android.widget.TextView[@text='This is after sales skill groups']    5    找到刚发送的消息
+    Wait Until Element Is Visible    ${packagename}:id/right_layout    ${timeout}    未出现清空按钮
+    Input Text    ${packagename}:id/et_sendmessage    This is after sales skill groups
+    Click Element    ${packagename}:id/btn_send
+    Wait Until Element Is Visible    //${TextView}[@text='This is after sales skill groups']    ${timeout}    找到刚发送的消息
     clean_chat_records
     Go back

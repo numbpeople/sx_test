@@ -28,8 +28,8 @@ startdemo
     ${PLATFORM_VERSION}    set variable    4.4.
     Comment    ${DEVICE_NAME}    set variable    517ebeda
     ${DEVICE_NAME}    set variable    127.0.0.1:62001
-    ${appPackage}    set variable    com.easemob.helpdeskdemo
-    ${appActivity}    set variable    com.easemob.helpdeskdemo.ui.MainActivity
+    ${appPackage}    set variable    ${packagename}
+    ${appActivity}    set variable    ${packagename}.ui.MainActivity
     Open Application    ${REMOTE_URL}    alias=myapp1    platformName=${PLATFORM_NAME}    platformVersion=${PLATFORM_VERSION}    deviceName=${DEVICE_NAME}    appPackage=${appPackage}
     ...    appActivity=${appActivity}
     ${width}    Get Window Width
@@ -46,15 +46,16 @@ QR_code
     ...    【预期结果】：
     ...    - Step1、模拟器上出现扫描二维码框
     go_setting
-    ${title}    Get Text    com.easemob.helpdeskdemo:id/btn_image_title
+    Comment    ${title}    Get Text    com.easemob.helpdeskdemo:id/btn_image_title
+    ${title}    Get Text    ${packagename}:id/btn_image_title
     should be equal    ${title}    Setting
-    click element    com.easemob.helpdeskdemo:id/rl_qcode
+    click element    ${packagename}:id/rl_qcode
     Comment    等待【扫描二维码】title
-    ${QR_title}    Get Text    com.easemob.helpdeskdemo:id/tv_title
+    ${QR_title}    Get Text    ${packagename}:id/tv_title
     should be equal    ${QR_title}    扫描二维码
     Comment    确认有扫描框出现
-    Element Should Be Enabled    //android.widget.TextView[@text="识别二维码"]
-    Element Should Be Enabled    com.easemob.helpdeskdemo:id/fl_scan
+    Element Should Be Enabled    //${TextView}[@text="识别二维码"]
+    Element Should Be Enabled    ${packagename}:id/fl_scan
     Go back
 
 get_setup_info
@@ -82,15 +83,15 @@ setup_appkey
     Comment    设置appkey
     go_setting
     Comment    点击appkey进入设置页面
-    click element    com.easemob.helpdeskdemo:id/tv_setting_appkey
-    Wait Until Element Is Visible    com.easemob.helpdeskdemo:id/txtTitle
+    click element    ${packagename}:id/tv_setting_appkey
+    Wait Until Element Is Visible    ${packagename}:id/txtTitle
     Comment    清除文本输入appkey
-    Clear Text    com.easemob.helpdeskdemo:id/edittext
-    Input text    com.easemob.helpdeskdemo:id/edittext    ${appkey}
+    Clear Text    ${packagename}:id/edittext
+    Input text    ${packagename}:id/edittext    ${appkey}
     Comment    保存退出并验证appkey是否输入成功
-    click element    //android.widget.TextView[@text='Save']
+    click element    //${TextView}[@text='Save']
     sleeps    1
-    Element Should Be Enabled    //android.widget.TextView[@text="${appkey}"]
+    Element Should Be Enabled    //${TextView}[@text="${appkey}"]
 
 setup_IMserviceNum
     [Documentation]    【操作步骤】：
@@ -100,7 +101,7 @@ setup_IMserviceNum
     ...    【预期结果】：
     ...    - Step1、成功设置IM服务号
     Comment    设置IM服务号
-    setting_option    ${IMserverNum}    com.easemob.helpdeskdemo:id/tv_setting_account    //android.widget.TextView[@text="Customer Service Account"]    com.easemob.helpdeskdemo:id/edittext    //android.widget.TextView[@text="${IMserverNum}"]
+    setting_option    ${IMserverNum}    ${packagename}:id/tv_setting_account    //${TextView}[@text="Customer Service Account"]    ${packagename}:id/edittext    //${TextView}[@text="${IMserverNum}"]
 
 setup_nickname
     [Documentation]    【操作步骤】：
@@ -110,8 +111,9 @@ setup_nickname
     ...    【预期结果】：
     ...    - Step1、成功设置nickname
     Comment    设置昵称
-    ${nickname}    set variable    user_${tenantld}
-    setting_option    ${nickname}    com.easemob.helpdeskdemo:id/tv_setting_nick    //android.widget.TextView[@text="User Nick"]    com.easemob.helpdeskdemo:id/edittext    //android.widget.TextView[@text="${nickname}"]
+    ${times}    timestamps
+    ${nickname}    set variable    nick_${times}
+    setting_option    ${nickname}    ${packagename}:id/tv_setting_nick    //${TextView}[@text="User Nick"]    ${packagename}:id/edittext    //${TextView}[@text="${nickname}"]
 
 setup_Tenantld
     [Documentation]    【操作步骤】：
@@ -121,7 +123,7 @@ setup_Tenantld
     ...    【预期结果】：
     ...    - Step1、成功设置Tenantld
     Comment    设置租户ID
-    setting_option    ${tenantld}    com.easemob.helpdeskdemo:id/tv_setting_tenant_id    //android.widget.TextView[@text="TenantId"]    com.easemob.helpdeskdemo:id/edittext    //android.widget.TextView[@text="${tenantld}"]
+    setting_option    ${tenantld}    ${packagename}:id/tv_setting_tenant_id    //${TextView}[@text="TenantId"]    ${packagename}:id/edittext    //${TextView}[@text="${tenantld}"]
 
 setup_leaveMessld
     [Documentation]    【操作步骤】：
@@ -131,4 +133,4 @@ setup_leaveMessld
     ...    【预期结果】：
     ...    - Step1、成功设置leaveMessld
     Comment    设置留言ID
-    setting_option    ${project}    com.easemob.helpdeskdemo:id/tv_setting_project_id    //android.widget.TextView[@text="Leave Message ID"]    com.easemob.helpdeskdemo:id/edittext    //android.widget.TextView[@text="${project}"]
+    setting_option    ${project}    ${packagename}:id/tv_setting_project_id    //${TextView}[@text="Leave Message ID"]    ${packagename}:id/edittext    //${TextView}[@text="${project}"]

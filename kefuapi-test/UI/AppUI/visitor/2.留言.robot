@@ -275,3 +275,4 @@ get_seat_responses
     should be equal    ${seat_name}    Admin    【实际结果】：预期Admin，实际${seat_name}
     ${seat_content}    get text    //${TextView}[@text="${seat_reply_leavemess}"]
     should be equal    ${seat_content}    ${seat_reply_leavemess}    【实际结果】：预期${seat_reply_leavemess}，实际${seat_content}
+    go back

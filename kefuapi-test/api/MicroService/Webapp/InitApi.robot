@@ -108,3 +108,10 @@
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/expire_info
     ${params}    set variable    _=1510727292732
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/tenants/{tenantId}/servicesessions/{serviceSessionId}/messages
+    [Arguments]    ${agent}    ${serviceSessionId}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/messages
+    ${params}    set variable    page=${filter.page}&size=${filter.size}
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}

@@ -36,7 +36,7 @@ ${groupType}      System
 &{VisitorFilterEntity}    page=1    size=15    userTagIds=    categoryId=-1    subCategoryId=-1    visitorName=    summaryIds=
 ...               enquirySummary=    beginDateTime=    endDateTime=
 &{DateRange}      beginDate=    endDate=    beginDateTime=    endDateTime=    beginWeekDate=    endWeekDate=    beginWeekDateTime=
-...               endWeekDateTime=    beginMonthDate=    endMonthDate=    beginMonthDateTime=    endMonthDateTime=    stopDateFrom=    stopDateTo=
+...               endWeekDateTime=    beginMonthDate=    endMonthDate=    beginMonthDateTime=    endMonthDateTime=    stopDateFrom=    stopDateTo=    createDateFrom=    createDateTo=
 ${switchType}     0
 &{commonphrasesVariables}    systemOnly=false    buildChildren=true
 &{visitorUser}    userId=29a68433-f95e-48bd-97e4-1ae53f68a462    nicename=webim-visitor-2CRVGCTG6HWGEJ7E9PGF    username=webim-visitor-2CRVGCTG6HWGEJ7E9PGF

@@ -374,11 +374,31 @@ Create Terminal Conversation
 
 Get EnquiryStatus
     [Arguments]    ${agent}    ${serviceSessionId}
-    [Documentation]    查询会话的满意度评价信息
+    [Documentation]    查询会话的满意度评价状态
     #查询会话的满意度评价信息
     ${resp}=    /tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiryStatus    ${agent}    ${serviceSessionId}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Get Servicesession Enquiries
+    [Arguments]    ${agent}    ${serviceSessionId}
+    [Documentation]    查询会话的满意度评价信息
+    #查询会话的满意度评价信息
+    ${resp}=    /tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiries    ${agent}    ${serviceSessionId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Get Servicesession Enquiries Repeatly
+    [Arguments]    ${agent}    ${serviceSessionId}
+    [Documentation]    多次获取查询会话的满意度评价信息
+    #多次获取查询会话的满意度评价信息
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${j}    Get Servicesession Enquiries    ${agent}    ${serviceSessionId}
+    \    ${listlength}    Get Length    ${j['data']}
+    \    Exit For Loop If    ${listlength} > 0
+    \    sleep    ${delay}
     Return From Keyword    ${j}
 
 Set ServiceSessionSummaryResults
@@ -437,8 +457,16 @@ Tansfer Conversation To Queue
 
 Tansfer Conversation To Agent
     [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${transferData}
-    [Documentation]    将进行中会话转接到技能组
+    [Documentation]    将进行中会话转接到其他坐席
     ${resp}=    /v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer    ${agent}    ${serviceSessionId}    ${queueId}    ${transferData}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Admin Tansfer Conversation To Agent
+    [Arguments]    ${agent}    ${serviceSessionId}    ${agentUserId}    ${transferData}
+    [Documentation]    在当前会话列表将会话转接到其他坐席
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/agents/{agentUserId}/transfer    ${agent}    ${serviceSessionId}    ${agentUserId}    ${transferData}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
@@ -455,3 +483,291 @@ Stop All Processing Conversations
     : FOR    ${i}    IN    @{j}
     \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
     \    sleep    50ms
+
+Agent Reply Message To Visitor
+    [Arguments]    ${agent}    ${nickname}    ${type}    ${msg}=
+    [Documentation]    客服回复消息给访客
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${nickname} | 必填 | 访客昵称，例如：634-09049 |
+    ...    | ${type} | 必填 | 消息类型：txt、img、file、audio |
+    ...    | ${msg} | 选填 | 文本消息内容，例如：坐席消息 |
+    ...
+    ...    【返回值】
+    ...    | 接口调用成功返回值：True |
+    ...
+    ...    【调用方式】
+    ...    | 坐席发送文本消息给访客 | ${j} | Agent Reply Message To Visitor | ${AdminUser} | 634-09049 | txt | 坐席消息 |
+    ...    | 坐席发送表情消息给访客 | ${j} | Agent Reply Message To Visitor | ${AdminUser} | 634-09049 | txt | [):] |
+    ...    | 坐席发送图片消息给访客 | ${j} | Agent Reply Message To Visitor | ${AdminUser} | 634-09049 | img |
+    ...    | 坐席发送文件消息给访客 | ${j} | Agent Reply Message To Visitor | ${AdminUser} | 634-09049 | file |
+    ...    | 坐席发送语音消息给访客 | ${j} | Agent Reply Message To Visitor | ${AdminUser} | 634-09049 | audio |
+    ...    | Should Be True | ${j} | 坐席发消息未调用成功，具体错误如：${j} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据访客昵称查找进行中的会话 |
+    ...    | Step 2 | 获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。 |
+    ...    | Step 3 | 坐席回复消息给访客 |
+    ...    | Step 4 | 返回值：True |
+    #Step 1、根据访客昵称查找进行中的会话
+    ${serviceSessionId}    Get Processing Conversation With Nickname    ${agent}    ${nickname}
+    Return From Keyword If    "${serviceSessionId}" == "{}"    {}
+    #获取进行中会话
+    &{searchDic}    create dictionary    fieldName=serviceSessionId    fieldValue=${serviceSessionId}    fieldConstruction=['serviceSessionId']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${agent}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['serviceSessionId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${serviceSessionId}    #该参数为获取接口某字段的预期值
+    #Step2、获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    坐席进行中接口返回结果中，根据会话id搜索不到相应的会话
+    ${visitorUserId}    set variable    ${j[0]['user']['userId']}
+    #Step3、坐席回复消息
+    ${j}    Agent Send Msg    ${agent}    ${visitorUserId}    ${serviceSessionId}    ${type}    ${msg}
+    Return From Keyword    True
+
+Agent Send Msg
+    [Arguments]    ${agent}    ${visitorUserId}    ${serviceSessionId}    ${msgType}    ${msg}
+    [Documentation]    封装坐席发各种格式消息
+    &{msgEntity}    create dictionary    msg=${msg}    type=${msgType}
+    ${image}    run keyword if    '${msgType}' == 'img' or '${msgType}' == 'file'    Upload MediaFile Image    ${agent}
+    ${amr}    run keyword if    '${msgType}' == 'audio'    Upload MediaFile Amr    ${agent}
+    run keyword if    '${msgType}' == 'img'    set to dictionary    ${msgEntity}    msg=    type=${msgType}    filename=${image.filename}
+    ...    imageHeight=68    imageWidth=68    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
+    run keyword if    '${msgType}' == 'file'    set to dictionary    ${msgEntity}    msg=    type=${msgType}    fileLength=${image.contentLength}
+    ...    filename=${image.filename}    imageHeight=120    imageWidth=120    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
+    run keyword if    '${msgType}' == 'audio'    set to dictionary    ${msgEntity}    type=${msgType}    fileLength=${amr.contentLength}    audioLength=2
+    ...    filename=${amr.filename}    mediaId=${amr.uuid}    thumb=${amr.url}    url=${amr.url}
+    log    ${msgEntity}
+    ${j}    Agent Send Message    ${agent}    ${visitorUserId}    ${serviceSessionId}    ${msgEntity}
+    Return From Keyword    ${j}
+
+Upload MediaFile Image
+    [Arguments]    ${agent}
+    [Documentation]    上传一张富媒体
+    #获取图片文件
+    ${picpath}    Find MediaFile Image Path    resource    image.gif
+    &{fileEntity}    create dictionary    filename=image.gif    filepath=${picpath}    contentType=image/gif
+    #上传图片
+    ${j}    Upload MediaFile    ${agent}    ${fileEntity}
+    set to dictionary    ${fileEntity}    url=${j['url']}    uuid=${j['uuid']}    contentLength=${j['contentLength']}
+    return from keyword    ${fileEntity}
+
+Upload MediaFile Amr
+    [Arguments]    ${agent}
+    [Documentation]    上传一张富媒体
+    #获取图片文件
+    ${picpath}    Find MediaFile Image Path    resource    blob.amr
+    &{fileEntity}    create dictionary    filename=blob    filepath=${picpath}    contentType=audio/webm
+    #上传语音
+    ${j}    Upload Amr    ${agent}    ${fileEntity}
+    set to dictionary    ${fileEntity}    url=${j['url']}    uuid=${j['uuid']}    contentLength=${j['contentLength']}
+    return from keyword    ${fileEntity}
+
+Find MediaFile Image Path
+    [Arguments]    ${folderName}    ${fileName}
+    [Documentation]    找到${folderName}文件夹下的图片文件: ${fileName},例如: resource文件夹下image.gif文件
+    #找到resource文件夹下的图片文件: image.gif
+    ${folderName}    set variable    ${folderName}
+    ${folderPath}    set variable    ${CURDIR}
+    ${folderPath}    find folder path    ${folderPath}    ${folderName}
+    ${picpath}    set variable    ${folderPath}${/}${fileName}
+    ${picpath}    replace string    '${picpath}'    \\    /
+    ${picpath}    replace string    ${picpath}    '    ${EMPTY}
+    return from keyword    ${picpath}
+
+Upload MediaFile
+    [Arguments]    ${agent}    ${file}
+    [Documentation]    上传一张富媒体
+    #打开图片文件
+    ${fileData}    Open MediaFile    ${file}
+    #上传图片
+    ${resp}=    /v1/Tenant/me/MediaFiles    ${agent}    ${fileData}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    return from keyword    ${j}
+
+Upload Amr
+    [Arguments]    ${agent}    ${file}
+    [Documentation]    上传一张语音富媒体文件
+    #打开图片文件
+    ${fileData}    Open MediaFile    ${file}
+    #上传图片
+    ${resp}=    /v1/tenants/{tenantId}/mediafiles/amr    ${agent}    ${fileData}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    return from keyword    ${j}
+
+Open MediaFile
+    [Arguments]    ${file}
+    [Documentation]    打开富媒体
+    #打开图片
+    ${file_data}    evaluate    ('${file.filename}', open('${file.filepath}','rb'),'${file.contentType}',{'Expires': '0'})
+    &{fileEntity}    Create Dictionary    file=${file_data}
+    return from keyword    ${fileEntity}
+
+Get Processing Conversation With Nickname
+    [Arguments]    ${agent}    ${nickname}
+    [Documentation]    根据访客昵称查找进行中的会话
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${nickname} | 必填 | 访客昵称，例如：634-09049 |
+    ...
+    ...    【返回值】
+    ...    | 接口调用成功返回值：会话id |
+    ...
+    ...    【调用方式】
+    ...    | 坐席发送文本消息给访客 | ${serviceSessionId} | Get Processing Conversation With Nickname | ${AdminUser} | 634-09049 |
+    ...
+    ...    【函数操作步骤】
+    ...    | 暂无，后续补充 |
+    #查询会话
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    set to dictionary    ${filter}    isAgent=false    state=Processing%2CWait    customerName=${nickname}    sortField=createDatetime
+    #根据访客昵称查找会话
+    ${session}    Get History    ${agent}    ${filter}    ${DateRange}
+    ${length}    get length    ${session['items']}
+    #如果搜索到的数据为空的话，返回{}
+    Return From Keyword If    ${length} == 0    {}
+    #获取会话id、会话状态、坐席id
+    ${serviceSessionId}    set variable    ${session['items'][0]['serviceSessionId']}
+    ${status}    set variable    ${session['items'][0]['state']}
+    ${agentUserId}    set variable    ${session['items'][0]['agentUserId']}
+    #将会话处理到当前操作坐席进行中会话列表
+    Run Keyword If    '${status}' == 'Wait'    Access Conversation    ${agent}    ${serviceSessionId}
+    Run Keyword If    ('${status}' == 'Processing') and ('${agentUserId}' != '${agent.userId}')    Tansfer Processing Conversation To Agent    ${agent}    ${serviceSessionId}    ${agent.userId}
+    Return From Keyword    ${serviceSessionId}
+
+Tansfer Processing Conversation To Agent
+    [Arguments]    ${agent}    ${serviceSessionId}    ${agentUserId}
+    [Documentation]    在当前会话列表，将会话转接给其他坐席
+    #创建转接请求体
+    ${transferData}    set variable    {"queueId":null}
+    #在当前会话列表，将会话转接给其他坐席
+    ${j}    Admin Tansfer Conversation To Agent    ${agent}    ${serviceSessionId}    ${agentUserId}    ${transferData}
+    should be true    '${j['status']}' == 'OK'    获取接口返回status不是OK: ${j}
+
+Should Contain Visitor Message In Processing Conversation
+    [Arguments]    ${agent}    ${nickname}    ${type}    ${msg}=
+    [Documentation]    判断进行中会话中，是否包含指定访客消息
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${nickname} | 必填 | 访客昵称，例如：634-09049 |
+    ...    | ${type} | 必填 | 消息类型：txt、img、file、audio、loc |
+    ...    | ${msg} | 选填 | 文本消息内容，例如：坐席消息 |
+    ...
+    ...    【返回值】
+    ...    | 接口调用成功返回值：True |
+    ...
+    ...    【调用方式】
+    ...    | 访客的进行中会话包含文本消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | txt | 坐席消息 |
+    ...    | 访客的进行中会话包含图片消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | img |
+    ...    | 访客的进行中会话包含文件消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | file |
+    ...    | 访客的进行中会话包含语音消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | audio |
+    ...    | 访客的进行中会话包含位置消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | loc |
+    ...    | Should Be True | ${j} | 进行中会话，并未找到指定的loc类型消息：${j} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据访客昵称查找进行中的会话 |
+    ...    | Step 2 | 获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。 |
+    ...    | Step 3 | 获取该会话的所有消息 |
+    ...    | Step 4 | 将索要查询的指定格式的消息，添加到列表中。 |
+    ...    | Step 5 | 判断不同格式的消息，检查是否在访客消息列表中 |
+    ...    | Step 6 | 返回值：True |
+    #Step 1、根据访客昵称查找进行中的会话
+    ${serviceSessionId}    Get Processing Conversation With Nickname    ${agent}    ${nickname}
+    Return From Keyword If    "${serviceSessionId}" == "{}"    {}
+    #获取进行中会话
+    &{searchDic}    create dictionary    fieldName=serviceSessionId    fieldValue=${serviceSessionId}    fieldConstruction=['serviceSessionId']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${agent}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['serviceSessionId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${serviceSessionId}    #该参数为获取接口某字段的预期值
+    #Step2、获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    坐席进行中接口返回结果中，根据会话id搜索不到相应的会话
+    ${visitorUserId}    set variable    ${j[0]['user']['userId']}
+    #Step 3、获取该会话的所有消息
+    &{filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    page=0    size=50
+    ${j}    Get Servicesession Message    ${AdminUser}    ${serviceSessionId}    ${filter}
+    ${messagesList}    set variable    ${j['entities']}
+    #Step 4、将索要查询的指定格式的消息，添加到列表中。
+    @{visitorMessageList}    Check Visitor Message Is Exsit    ${messagesList}    ${type}
+    ${messageLength}    Get Length    ${visitorMessageList}
+    #Step 5、判断不同格式的消息，是否在访客消息列表中
+    Run Keyword And Return If    '${type}' == 'txt'    Run Keyword And Return Status    List Should Contain Value    ${visitorMessageList}    ${msg}
+    Run Keyword And Return If    '${type}' == 'img' or '${type}' == 'file' or '${type}' == 'audio'    Run Keyword And Return Status    Should Be True    ${messageLength} > 0
+    Run Keyword And Return If    '${type}' == 'loc'    Run Keyword And Return Status    Should Be True    ${messageLength} > 0
+
+Check Visitor Message Is Exsit
+    [Arguments]    ${messagesList}    ${type}
+    [Documentation]    将不同格式的所有访客消息的列表进行返回
+    @{visitorMessageList}    create list
+    : FOR    ${message}    IN    @{messagesList}
+    \    ${userType}    set variable    ${message['fromUser']['userType']}
+    \    ${messageType}    set variable    ${message['body']['bodies'][0]['type']}
+    \    ${visitorMessageList}    Collect Multiple Type Visitor Message    ${userType}    ${messageType}    ${message}    ${visitorMessageList}
+    \    ...    ${type}
+    Return From Keyword    ${visitorMessageList}
+
+Collect Multiple Type Visitor Message
+    [Arguments]    ${userType}    ${messageType}    ${message}    ${visitorMessageList}    ${type}
+    [Documentation]    将不同格式的访客消息，添加到列表中，将列表进行返回
+    run keyword if    ('${messageType}' == '${type}' == 'txt') and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['msg']}
+    run keyword if    (('${messageType}' == '${type}' == 'file') or ('${messageType}' == '${type}' == 'img') or ('${messageType}' == '${type}' == 'audio')) and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['filename']}
+    run keyword if    ('${messageType}' == '${type}' == 'loc') and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['addr']}
+    Return From Keyword    ${visitorMessageList}
+
+Get Servicesession Message
+    [Arguments]    ${agent}    ${serviceSessionId}    ${filter}
+    [Documentation]    获取会话的所有消息内容
+    #查询会话的消息
+    ${resp}=    /tenants/{tenantId}/servicesessions/{serviceSessionId}/messages    ${agent}    ${serviceSessionId}    ${filter}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Should Be Rated
+    [Arguments]    ${agent}    ${nickname}    ${score}    ${detail}=    ${tag}=
+    [Documentation]    判断会话是否已被评价
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${nickname} | 必填 | 访客昵称，例如：634-09049 |
+    ...    | ${score} | 必填 | 满意度评价分数：1、2、3、4、5 |
+    ...    | ${detail} | 选填 | 满意度评价内容，例如：工作态度认真 |
+    ...    | ${tag} | 选填 | 满意度评价标签，例如：非常满意 |
+    ...
+    ...    【返回值】
+    ...    | 接口调用成功返回值：True |
+    ...
+    ...    【调用方式】
+    ...    | 会话被评价：5分 | ${j} | Should Be Rated | ${AdminUser} | 634-09049 | 5 |
+    ...    | 会话被评价：5分，评价内容：工作态度认真 | ${j} | Should Be Rated | ${AdminUser} | 634-09049 | 5 | 工作态度认真 |
+    ...    | 会话被评价：5分，评价内容：工作态度认真，满意度标签：非常满意 | ${j} | Should Be Rated | ${AdminUser} | 634-09049 | 5 | 工作态度认真 | 非常满意 |
+    ...    | Should Be True | ${j} | 访客评分有误，或评价内容有误，或评价标签有误：${j} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据访客昵称查找进行中的会话 |
+    ...    | Step 2 | 调用接口/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiries，获取会话的满意度评价信息，最多尝试重试取10次。 |
+    ...    | Step 3 | 如果数据为空，则返回False |
+    ...    | Step 4 | 返回值：True |
+    #Step 1、根据访客昵称查找进行中的会话
+    ${serviceSessionId}    Get Processing Conversation With Nickname    ${agent}    ${nickname}
+    Return From Keyword If    "${serviceSessionId}" == "{}"    {}
+    #Step 2、调用接口/tenants/{tenantId}/serviceSessions/{serviceSessionId}/enquiries，获取会话的满意度评价信息，最多尝试重试取10次。
+    ${j}    Get Servicesession Enquiries Repeatly    ${agent}    ${serviceSessionId}
+    Return From Keyword If    ${j} == []    False
+    #Step3、检查返回结果与给定是否一致，一致则返回True。
+    ${scoreStatus}    Run Keyword And Return Status    Should Be Equal    ${j['data'][0]['summary']}    ${score}
+    ${detailStatus}    Run Keyword And Return Status    Should Be Equal    ${j['data'][0]['detail']}    ${detail}
+    Run Keyword And Return    Run Keyword And Return Status    Should Be True    "${scoreStatus}" == "${detailStatus}" == "True"

@@ -29,6 +29,9 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/Agents/me/Visitors/${visitorId}/ServiceSessions/${serviceSessionId}/Messages
     ${postdata}    set variable    {"type":"${Msg.type}","msg":"${Msg.msg}"}
+    run keyword if    "${Msg.type}" == "img"    set suite variable    ${postdata}    {"type":"${Msg.type}","msg":"${Msg.msg}","filename":"${Msg.filename}","imageHeight":${Msg.imageHeight},"imageWidth":${Msg.imageWidth},"mediaId":"${Msg.mediaId}","thumb":"${Msg.thumb}","url":"${Msg.url}"}
+    run keyword if    "${Msg.type}" == "file"    set suite variable    ${postdata}    {"type":"${Msg.type}","msg":"${Msg.msg}","fileLength":"${Msg.fileLength}","filename":"${Msg.filename}","imageHeight":${Msg.imageHeight},"imageWidth":${Msg.imageWidth},"mediaId":"${Msg.mediaId}","thumb":"${Msg.thumb}","url":"${Msg.url}"}
+    run keyword if    "${Msg.type}" == "audio"    set suite variable    ${postdata}    {"type":"${Msg.type}","fileLength":"${Msg.fileLength}","audioLength":${Msg.audioLength},"filename":"${Msg.filename}","mediaId":"${Msg.mediaId}","thumb":"${Msg.thumb}","url":"${Msg.url}"}
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${postdata}    timeout=${timeout}
 
 /v1/Tenants/me/Agents/me/UnReadTags/Count
@@ -62,3 +65,23 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v6/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/transfer
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/agents/{agentUserId}/transfer
+    [Arguments]    ${agent}    ${serviceSessionId}    ${agentUserId}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/agents/${agentUserId}/transfer
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/Tenant/me/MediaFiles
+    [Arguments]    ${agent}    ${files}    ${timeout}
+    ${header}=    Create Dictionary    #Content-Type=application/json
+    ${uri}=    set variable    /v1/Tenant/me/MediaFiles
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    files=${files}
+    ...    timeout=${timeout}
+
+/v1/tenants/{tenantId}/mediafiles/amr
+    [Arguments]    ${agent}    ${files}    ${timeout}
+    ${header}=    Create Dictionary    #Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/mediafiles/amr
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    files=${files}
+    ...    timeout=${timeout}

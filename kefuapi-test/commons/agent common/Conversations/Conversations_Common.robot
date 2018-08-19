@@ -264,8 +264,8 @@ Create Processiong Conversation
     ...    | 无 | 无 | 无 |
     ...
     ...    【返回值】
-    ...    | 字段描述 | 会话id | 访客昵称 | 访客userid | 访客消息 | 技能组id | ... |
-    ...    | 字段名称 | sessionServiceId | userName | userid | msg | queueId | ... |
+    ...    | 字段描述 | 会话id | 访客昵称 | 访客userId | 访客消息 | 技能组id | ... |
+    ...    | 字段名称 | sessionServiceId | userName | userId | msg | queueId | ... |
     ...
     ...    【调用方式】
     ...    | 创建一个进行中会话 | ${sessionInfo} | Create Processiong Conversation |
@@ -278,7 +278,7 @@ Create Processiong Conversation
     ...    | Step 4 | 根据访客昵称搜索待接入数据 |
     ...    | Step 5 | 手动从待接入接入会话到进行中会话 |
     ...    | Step 6 | 获取坐席的进行中会话列表数据 |
-    ...    | Step 7 | 返回该会话的所有属性，包括：会话id、访客昵称、访客userid、访客消息、技能组id等 |
+    ...    | Step 7 | 返回该会话的所有属性，包括：会话id、访客昵称、访客userId、访客消息、技能组id等 |
     #Step 1、添加一个技能组、创建渠道变量、创建消息体字典数据、创建访客信息字典数据
     ${originType}    set variable    weixin
     # ${curTime}    get time    epoch
@@ -557,8 +557,8 @@ Upload MediaFile Image
 
 Upload MediaFile Amr
     [Arguments]    ${agent}
-    [Documentation]    上传一张富媒体
-    #获取图片文件
+    [Documentation]    上传一张语音富媒体
+    #获取语音文件
     ${picpath}    Find MediaFile Image Path    resource    blob.amr
     &{fileEntity}    create dictionary    filename=blob    filepath=${picpath}    contentType=audio/webm
     #上传语音

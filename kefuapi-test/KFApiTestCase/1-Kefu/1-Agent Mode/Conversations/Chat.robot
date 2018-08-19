@@ -25,7 +25,6 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...
     ...    【预期结果】：
     ...    如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
-    [Tags]    test1
     #Step1、获取进行中会话列表，并获取会话数
     &{j}    Get Processing Session    ${AdminUser}
     ${text}    set variable    ${j.text}
@@ -565,3 +564,137 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     \    sleep    ${delay}
     Should Be True    ${j['total_entries']} ==1    管理员模式历史会话未查到该会话：${j}
     Should Be True    ${j['items'][0]['enquirySummary']} == 5    管理员模式历史会话下会话满意度评价不正确：${j}
+
+坐席上传图片/文件(/v1/Tenant/me/MediaFiles)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、找到resource文件夹下的图片文件，并返回图片的绝对路径。
+    ...    - Step2、调用/v1/Tenant/me/MediaFiles接口，上传图片文件，返回值为200。
+    ...    - Step3、断言接口返回值中各字段的值。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，字段contentLength值大于0，contentType等于image/gif，fileName等于image.gif。包含字段：url、uuid。
+    #Step1、找到resource文件夹下的图片文件，并返回图片的绝对路径。
+    ${picpath}    Find MediaFile Image Path    resource    image.gif
+    &{fileEntity}    create dictionary    filename=image.gif    filepath=${picpath}    contentType=image/gif
+    #Step2、调用/v1/Tenant/me/MediaFiles接口，上传图片文件。
+    &{j}    Upload MediaFile    ${AdminUser}    ${fileEntity}
+    #Step3、断言接口返回值中各字段的值，是否包含各字段。
+    Should Be True    ${j['contentLength']} > 0    接口返回值中字段contentLength未大于0：${j}
+    Should Be True    '${j['fileName']}' == '${fileEntity.filename}'    接口返回值中字段fileName不等于${fileEntity.filename}：${j}
+    Should Be True    '${j['contentType']}' == '${fileEntity.contentType}'    接口返回值中字段contentType不等于${fileEntity.contentType}：${j}
+    Dictionary Should Contain Key    ${j}    url    接口返回值中未包含url字段，${j}
+    Dictionary Should Contain Key    ${j}    uuid    接口返回值中未包含uuid字段，${j}
+
+坐席上传语音(/v1/tenants/{tenantId}/mediafiles/amr)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、找到resource文件夹下的语音文件，并返回语音的绝对路径。
+    ...    - Step2、调用/v1/tenants/{tenantId}/mediafiles/amr接口，上传语音文件，返回值为200。
+    ...    - Step3、断言接口返回值中各字段的值。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，字段contentLength值大于0，contentType等于audio/webm，fileName等于blob。包含字段：url、uuid。
+    #Step1、找到resource文件夹下的图片文件，并返回图片的绝对路径。
+    ${picpath}    Find MediaFile Image Path    resource    blob.amr
+    &{fileEntity}    create dictionary    filename=blob    filepath=${picpath}    contentType=audio/webm
+    #上传语音
+    ${j}    Upload Amr    ${AdminUser}    ${fileEntity}
+    #Step3、断言接口返回值中各字段的值，是否包含各字段。
+    Should Be True    ${j['contentLength']} > 0    接口返回值中字段contentLength未大于0：${j}
+    Should Be True    '${j['fileName']}' == '${fileEntity.filename}'    接口返回值中字段fileName不等于${fileEntity.filename}：${j}
+    Should Be True    '${j['contentType']}' == '${fileEntity.contentType}'    接口返回值中字段contentType不等于${fileEntity.contentType}：${j}
+    Dictionary Should Contain Key    ${j}    url    接口返回值中未包含url字段，${j}
+    Dictionary Should Contain Key    ${j}    uuid    接口返回值中未包含uuid字段，${j}
+
+坐席发送图片消息(/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、调用接口/v1/Tenant/me/MediaFiles上传图片文件，接口请求状态码为200。
+    ...    - Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
+    ...    - Step4、判断接口各字段的返回值
+    ...    
+    ...    【预期结果】：
+    ...    检查返回结果中，字段sessionServiceId、visitorUserId、type等值等于预期值。
+    #Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ${sessionInfo}    Create Processiong Conversation
+    #会话id
+    ${serviceSessionId}    set variable    ${sessionInfo.sessionServiceId}
+    #访客userid
+    ${userid}    set variable    ${sessionInfo.userId}
+    #创建消息实体类型，消息文本，消息类型。
+    &{msgEntity}    create dictionary    msg=${EMPTY}    type=img
+    #Step2、调用接口/v1/Tenant/me/MediaFiles上传图片文件，接口请求状态码为200。
+    ${image}    Upload MediaFile Image    ${AdminUser}
+    set to dictionary    ${msgEntity}    msg=    type=${msgEntity.type}    filename=${image.filename}
+    ...    imageHeight=68    imageWidth=68    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
+    #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
+    ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
+    #Step4、判断接口各字段的返回值
+    should be equal    ${j['sessionServiceId']}    ${serviceSessionId}    发消息接口返回值中sessionServiceId值不是${serviceSessionId}，${j}
+    should be equal    ${j['body']['visitorUserId']}    ${userid}    发消息接口返回值中userid值不是${userid}，${j}
+    should be equal    ${j['body']['bodies'][0]['type']}    ${msgEntity.type}    发消息接口返回值中type值不是${msgEntity.type}，${j}
+    should be equal    ${j['body']['bodies'][0]['filename']}    ${msgEntity.filename}    发消息接口返回值中filename值不是${msgEntity.filename}，${j}
+    should be equal    ${j['body']['bodies'][0]['mediaId']}    ${msgEntity.mediaId}    发消息接口返回值中mediaId值不是${msgEntity.mediaId}，${j}
+    should be equal    ${j['body']['bodies'][0]['url']}    ${msgEntity.url}    发消息接口返回值中url值不是${msgEntity.url}，${j}
+
+坐席发送文件消息(/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、调用接口/v1/Tenant/me/MediaFiles上传文件文件，接口请求状态码为200。
+    ...    - Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
+    ...    - Step4、判断接口各字段的返回值
+    ...    
+    ...    【预期结果】：
+    ...    检查返回结果中，字段sessionServiceId、visitorUserId、type等值等于预期值。
+    #Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ${sessionInfo}    Create Processiong Conversation
+    #会话id
+    ${serviceSessionId}    set variable    ${sessionInfo.sessionServiceId}
+    #访客userid
+    ${userid}    set variable    ${sessionInfo.userId}
+    #创建消息实体类型，消息文本，消息类型。
+    &{msgEntity}    create dictionary    msg=${EMPTY}    type=file
+    #Step2、调用接口/v1/Tenant/me/MediaFiles上传文件文件，接口请求状态码为200。
+    ${image}    Upload MediaFile Image    ${AdminUser}
+    set to dictionary    ${msgEntity}    msg=    type=${msgEntity.type}    filename=${image.filename}    fileLength=${image.contentLength}
+    ...    imageHeight=68    imageWidth=68    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
+    #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送文件消息，接口请求状态码为200。
+    ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
+    #Step4、判断接口各字段的返回值
+    should be equal    ${j['sessionServiceId']}    ${serviceSessionId}    发消息接口返回值中sessionServiceId值不是${serviceSessionId}，${j}
+    should be equal    ${j['body']['visitorUserId']}    ${userid}    发消息接口返回值中userid值不是${userid}，${j}
+    should be equal    ${j['body']['bodies'][0]['type']}    ${msgEntity.type}    发消息接口返回值中type值不是${msgEntity.type}，${j}
+    should be equal    ${j['body']['bodies'][0]['filename']}    ${msgEntity.filename}    发消息接口返回值中filename值不是${msgEntity.filename}，${j}
+    should be equal    ${j['body']['bodies'][0]['file_length']}    ${msgEntity.fileLength}    发消息接口返回值中fileLength值不是${msgEntity.fileLength}，${j}
+    should be equal    ${j['body']['bodies'][0]['url']}    ${msgEntity.url}    发消息接口返回值中url值不是${msgEntity.url}，${j}
+
+坐席发送语音消息(/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、调用接口/v1/tenants/{tenantId}/mediafiles/amr上传语音文件，接口请求状态码为200。
+    ...    - Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
+    ...    - Step4、判断接口各字段的返回值
+    ...    
+    ...    【预期结果】：
+    ...    检查返回结果中，字段sessionServiceId、visitorUserId、type等值等于预期值。
+    #Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ${sessionInfo}    Create Processiong Conversation
+    #会话id
+    ${serviceSessionId}    set variable    ${sessionInfo.sessionServiceId}
+    #访客userid
+    ${userid}    set variable    ${sessionInfo.userId}
+    #创建消息实体类型
+    &{msgEntity}    create dictionary    msg=${EMPTY}    type=audio
+    #Step2、调用接口/v1/Tenant/me/MediaFiles上传语音文件，接口请求状态码为200。
+    ${amr}    Upload MediaFile Amr    ${AdminUser}
+    set to dictionary    ${msgEntity}    type=${msgEntity.type}    fileLength=${amr.contentLength}    audioLength=2
+    ...    filename=${amr.filename}    mediaId=${amr.uuid}    thumb=${amr.url}    url=${amr.url}
+    #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送语音消息，接口请求状态码为200。
+    ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
+    #Step4、判断接口各字段的返回值
+    should be equal    ${j['sessionServiceId']}    ${serviceSessionId}    发消息接口返回值中sessionServiceId值不是${serviceSessionId}，${j}
+    should be equal    ${j['body']['visitorUserId']}    ${userid}    发消息接口返回值中userid值不是${userid}，${j}
+    should be equal    ${j['body']['bodies'][0]['type']}    ${msgEntity.type}    发消息接口返回值中type值不是${msgEntity.type}，${j}
+    should be equal    ${j['body']['bodies'][0]['filename']}    ${msgEntity.filename}    发消息接口返回值中filename值不是${msgEntity.filename}，${j}
+    should be equal    ${j['body']['bodies'][0]['length']}    ${${msgEntity.audioLength}}    发消息接口返回值中length值不是${msgEntity.audioLength}，${j}
+    should be equal    ${j['body']['bodies'][0]['url']}    ${msgEntity.url}    发消息接口返回值中url值不是${msgEntity.url}，${j}
+

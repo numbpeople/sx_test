@@ -194,11 +194,12 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 添加会话的会话标签信息(/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults)
     [Documentation]    【操作步骤】：
     ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
-    ...    - Step2、添加会话标签信息，调用接口：/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults，接口请求状态码为200。
-    ...    - Step3、检查返回值，为空。
+    ...    - Step2、添加会话标签信息，调用接口：/v1/Tenants/{tenantId}/ServiceSessionSummaries/{summaryId}/tree，接口请求状态码为200，取得租户下的第一个数据的叶标签id。
+    ...    - Step3、调用接口/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults，为会话打会话标签，接口请求状态码为200。
+    ...    - Step4、检查接口返回值，预期空。
     ...
     ...    【预期结果】：
-    ...    检查返回结果中，请求结果为空。
+    ...    调用接口/v1/Tenants/{tenantId}/ServiceSessions/{serviceSessionId}/ServiceSessionSummaryResults，为会话打会话标签，接口请求状态码为200，接口返回值为空。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #创建参数字典
@@ -208,7 +209,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     #获取标签中第一个根节点的叶子标签id值
     ${tagId}    Get Conversation TagId    ${j}
     #判断租户下是否存在会话标签，没有则不执行一下步骤
-    run keyword if    ${tagId} == 0    Pass Execution    该租户下没有会话标签，不执行一下case
+    run keyword if    ${tagId} == 0    Pass Execution    该租户下没有会话标签，不执行case
     #获取添加标签的id
     ${data}    set variable    [${tagId}]
     #获取会话会话标签信息
@@ -216,13 +217,27 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     Should Be True    '${j}' == '${EMPTY}'    获取接口返回结果不正确: ${j}
 
 获取会话的会话备注信息(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、获取会话备注信息，调用接口：/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment，接口请求状态码为200。
+    ...    - Step3、检查返回值。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，如果请求结果不为空，则获取接口返回值中serviceSessionId字段值正确情况。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #获取会话会话备注信息
     ${j}    Set Comment    get    ${AdminUser}    ${sessionInfo.sessionServiceId}    ${EMPTY}
-    run keyword if    '${j}' != '${EMPTY}'    Should Be Equal    ${j['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口返回会话id不正确: ${j}
+    run keyword if    '${j}' != '${EMPTY}'    Should Be Equal    ${j['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口返回会话id、serviceSessionId字段值不正确: ${j}
 
 添加会话的会话备注信息(/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、给会话添加备注信息，调用接口：/tenants/{tenantId}/serviceSessions/{serviceSessionId}/comment，接口请求状态码为200。
+    ...    - Step3、检查返回值中serviceSessionId字段等于创建会话的会话id。
+    ...
+    ...    【预期结果】：
+    ...    检查返回结果中，接口返回值中serviceSessionId字段值等于创建会话的会话id。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #创建字典和请求体
@@ -234,11 +249,24 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     Should Be Equal    ${j['serviceSessionId']}    ${sessionInfo.sessionServiceId}    获取接口返回会话id不正确: ${j}
 
 获取未读消息数(/v1/Tenants/me/Agents/me/UnReadTags/Count)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取消息未读数，调用接口：/v1/Tenants/me/Agents/me/UnReadTags/Count，接口请求状态码为200。
+    ...    - Step2、检查返回值。
+    ...
+    ...    【预期结果】：
+    ...    检查返回值应该为整数，并大于等于0。
     #获取未读消息数
     ${j}    Get UnRead Count    ${AdminUser}
     Should Be True    ${j}>=0    未读消息数不正确,${j}
 
 标记消息为已读(/v1/tenants/{tenantId}/sessions/{serviceSessionId}/messages/read)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step1、标记消息为已读，调用接口：/v1/tenants/{tenantId}/sessions/{serviceSessionId}/messages/read，接口请求状态码为200。
+    ...    - Step2、检查返回值。
+    ...
+    ...    【预期结果】：
+    ...    检查返回值等于True或False。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #标记消息为已读
@@ -248,6 +276,13 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be true    ${state}    获取接口返回结果不正确: ${j}
 
 客服转接会话到其他技能组(/v1/ServiceSession/{serviceSessionId}/AgentQueue/{queueId})
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step1、将会话转接给其他技能组，调用接口：/v1/ServiceSession/{serviceSessionId}/AgentQueue/{queueId}，接口请求状态码为200。
+    ...    - Step2、检查返回值。
+    ...
+    ...    【预期结果】：
+    ...    检查返回值等于True。
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #客服转接会话到其他技能组
@@ -255,7 +290,16 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be true    ${j}    获取接口返回结果不是True: ${j}
 
 客服转接会话到其他坐席(/v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer)
-    [Documentation]    1.创建坐席 2.创建进行中会话 3.转接会话给该坐席 4.当前会话中获取该会话是否属于该坐席
+    [Documentation]    【操作步骤】：
+    ...    - Step1、将租户的转接预调度开关设置为false。
+    ...    - Step2、创建新坐席账号，获取坐席所在的技能组信息。
+    ...    - Step3、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step4、将会话转接给刚创建的坐席，调用接口：/v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer，接口请求状态码为200。
+    ...    - Step5、查找该会话在当前会话所属的坐席情况，调用接口/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step6、检查返回值情况。
+    ...
+    ...    【预期结果】：
+    ...    检查返回值坐席昵称agentUserNiceName字段，应该等于转接后的坐席昵称信息。
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
     #将转接预调度关闭掉
@@ -295,8 +339,23 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${name}    获取接口返回agentUserNiceName不正确: ${j}
 
 从待接入接起会话查看attribute、track、会话信息、历史消息接口并关闭，查看历史会话、访客中心
-    [Documentation]    从待接入接起会话，查看attribute和track信息，查看会话信息和历史消息接口并关闭；
-    ...    管理员和坐席模式下的历史会话中均有该会话；管理员和坐席模式下的访客中心中均有该访客
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新的技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、修改路由规则为入口指定，具体信息为：入口->渠道->关联，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、新访客发起新消息，创建新会话。
+    ...    - Step4、在待接入中搜索该访客昵称的会话，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step5、手动从待接入中将会话接起，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/{waitingId}，接口请求状态码为200。
+    ...    - Step6、查询进行中会话是否包含该会话，调用接口：/v1/Agents/me/Visitors，接口请求状态码为200。
+    ...    - Step7、查询会话的attribute信息，调用接口：/v1/tenants/{tenantId}/servicesessions/{serviceSessions}/attributes，接口请求状态码为200。
+    ...    - Step8、查询访客的信息，调用接口：/v1/Tenant/VisitorUsers/{visitorUserId}，接口请求状态码为200。
+    ...    - Step9、获取所有的文本消息，调用接口：/v1/Tenant/me/ChatGroup/{ChatGroupId}/Messages，接口请求状态码为200。
+    ...    - Step10、关闭该进行中的会话，调用接口：/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop，接口请求状态码为200。
+    ...    - Step11、在客户中心中找到该访客数据，调用接口：/v1/crm/tenants/{tenantId}/customers，接口请求状态码为200。
+    ...    - Step12、在坐席面板和管理员面试的历史会话，找到该会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step13、检查返回值情况。
+    ...
+    ...    【预期结果】：
+    ...    客户中心与历史会话中数据可以搜索出唯一一个数据。
     #初始化参数：消息、渠道信息、客户信息
     set test variable    ${originType}    weixin
     ${curTime}    get time    epoch
@@ -377,39 +436,24 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     set to dictionary    ${filter}    isAgent=true
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话：${j}
-    #以下为统计相关的代码注释掉
-    #以下为统计相关的代码注释掉
-    #查询今日会话数，今日消息数，今日坐席消息数
-    Comment    ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount    ${AdminUser}    ${timeout}
-    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Comment    ${todayNewsession}    Convert To Integer    ${resp.content}
-    Comment    ${resp}=    /v1/Tenant/me/ChatMessage/Statistics/TodayTotalMessageCount    ${AdminUser}    ${timeout}
-    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Comment    ${todayMsgCount}=    Convert To Integer    ${resp.content}
-    Comment    ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentDayServiceSessionCountGroupByAgent    ${AdminUser}    ${timeout}
-    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Comment    ${j}    to json    ${resp.content}
-    Comment    :FOR    ${i}    IN    @{j}
-    Comment    \    Exit For Loop If    '${i['agentNiceName']}'=='${AdminUser.nicename}'
-    Comment    ${todayAgentSession}=    Convert To Integer    ${i['count']}
-    #查询今日会话数，今日消息数，今日客服新进会话数
-    Comment    :FOR    ${i}    IN RANGE    ${retryTimes}
-    Comment    \    ${resp}=    /v1/Tenant/me/ChatMessage/Statistics/TodayTotalMessageCount    ${AdminUser}    ${timeout}
-    Comment    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Comment    \    Exit For Loop If    ${resp.content} >${todayMsgCount}
-    Comment    \    sleep    ${delay}
-    Comment    Should Be True    ${resp.content} >${todayMsgCount}    今日消息不正确：测试前消息数(${resp.content})，测试后消息数(${todayMsgCount})
-    Comment    ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/ToDayNewServiceSessionCount    ${AdminUser}    ${timeout}
-    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Comment    Should Be True    ${resp.content} ==${todayNewsession}+1    今日新进会话数不正确：测试会话数(${resp.content})，测试后会话数(${todayNewsession})
-    Comment    ${resp}=    /v1/Tenant/me/ServiceSession/Statistics/CurrentDayServiceSessionCountGroupByAgent    ${AdminUser}    ${timeout}
-    Comment    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    Comment    ${j}    to json    ${resp.content}
-    Comment    :FOR    ${i}    IN    @{j}
-    Comment    \    Exit For Loop If    '${i['agentNiceName']}'=='${AdminUser.nicename}'
-    Comment    Should Be True    ${i['count']}==${todayAgentSession}+1    今日客服新进会话数不正确：${i['count']}==${todayAgentSession}+1
 
 从待接入接起会话，接收访客消息并回复后关闭
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新的技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、修改路由规则为入口指定，具体信息为：入口->渠道->关联，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、新访客发起新消息，创建新会话。
+    ...    - Step4、在待接入中搜索该访客昵称的会话，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step5、手动从待接入中将会话接起，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/{waitingId}，接口请求状态码为200。
+    ...    - Step6、查询进行中会话是否包含该会话，调用接口：/v1/Agents/me/Visitors，接口请求状态码为200。
+    ...    - Step7、查询会话的attribute信息，调用接口：/v1/tenants/{tenantId}/servicesessions/{serviceSessions}/attributes，接口请求状态码为200。
+    ...    - Step8、查询访客的信息，调用接口：/v1/Tenant/VisitorUsers/{visitorUserId}，接口请求状态码为200。
+    ...    - Step9、获取所有的文本消息，调用接口：/v1/Tenant/me/ChatGroup/{ChatGroupId}/Messages，接口请求状态码为200。
+    ...    - Step10、坐席发送文本消息，调用接口：/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages，接口请求状态码为200。
+    ...    - Step11、关闭该进行中的会话，调用接口：/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop，接口请求状态码为200。
+    ...    - Step12、获取进行中会话数据。
+    ...
+    ...    【预期结果】：
+    ...    关闭会话后，找到进行中会话，预期结果为找不到该会话。
     #初始化参数：消息、渠道信息、客户信息
     set test variable    ${originType}    weixin
     ${curTime}    get time    epoch
@@ -479,6 +523,24 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     Should Be True    ${rs}    会话关闭失败
 
 从待接入接起会话，发送满意度评价，关闭会话后，历史会话中查询满意度评价信息
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新的技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、修改路由规则为入口指定，具体信息为：入口->渠道->关联，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、新访客发起新消息，创建新会话。
+    ...    - Step4、在待接入中搜索该访客昵称的会话，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step5、手动从待接入中将会话接起，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/{waitingId}，接口请求状态码为200。
+    ...    - Step6、查询进行中会话是否包含该会话，调用接口：/v1/Agents/me/Visitors，接口请求状态码为200。
+    ...    - Step7、查询会话的attribute信息，调用接口：/v1/tenants/{tenantId}/servicesessions/{serviceSessions}/attributes，接口请求状态码为200。
+    ...    - Step8、查询访客的信息，调用接口：/v1/Tenant/VisitorUsers/{visitorUserId}，接口请求状态码为200。
+    ...    - Step9、获取所有的文本消息，调用接口：/v1/Tenant/me/ChatGroup/{ChatGroupId}/Messages，接口请求状态码为200。
+    ...    - Step10、坐席发送文本消息，调用接口：/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages，接口请求状态码为200。
+    ...    - Step11、坐席发起邀请满意度评价，调用接口：/v6/tenants/{tenantId}/serviceSessions/{serviceSessionId}/inviteEnquiry，接口请求状态码为200。
+    ...    - Step12、关闭该进行中的会话，调用接口：/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop，接口请求状态码为200。
+    ...    - Step13、访客发送数字进行评价。
+    ...    - Step14、查询历史会话数据中，该会话的满意度评价信息情况，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。。
+    ...
+    ...    【预期结果】：
+    ...    历史会话数据中，该会话的满意度评价信息应该与访客评价相等。
     #初始化参数：消息、渠道信息、客户信息
     set test variable    ${originType}    weixin
     ${curTime}    get time    epoch
@@ -611,7 +673,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    - Step2、调用接口/v1/Tenant/me/MediaFiles上传图片文件，接口请求状态码为200。
     ...    - Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
     ...    - Step4、判断接口各字段的返回值
-    ...    
+    ...
     ...    【预期结果】：
     ...    检查返回结果中，字段sessionServiceId、visitorUserId、type等值等于预期值。
     #Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
@@ -624,8 +686,8 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     &{msgEntity}    create dictionary    msg=${EMPTY}    type=img
     #Step2、调用接口/v1/Tenant/me/MediaFiles上传图片文件，接口请求状态码为200。
     ${image}    Upload MediaFile Image    ${AdminUser}
-    set to dictionary    ${msgEntity}    msg=    type=${msgEntity.type}    filename=${image.filename}
-    ...    imageHeight=68    imageWidth=68    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
+    set to dictionary    ${msgEntity}    msg=    type=${msgEntity.type}    filename=${image.filename}    imageHeight=68    imageWidth=68
+    ...    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
     #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
     ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
     #Step4、判断接口各字段的返回值
@@ -642,7 +704,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    - Step2、调用接口/v1/Tenant/me/MediaFiles上传文件文件，接口请求状态码为200。
     ...    - Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
     ...    - Step4、判断接口各字段的返回值
-    ...    
+    ...
     ...    【预期结果】：
     ...    检查返回结果中，字段sessionServiceId、visitorUserId、type等值等于预期值。
     #Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
@@ -655,8 +717,8 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     &{msgEntity}    create dictionary    msg=${EMPTY}    type=file
     #Step2、调用接口/v1/Tenant/me/MediaFiles上传文件文件，接口请求状态码为200。
     ${image}    Upload MediaFile Image    ${AdminUser}
-    set to dictionary    ${msgEntity}    msg=    type=${msgEntity.type}    filename=${image.filename}    fileLength=${image.contentLength}
-    ...    imageHeight=68    imageWidth=68    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
+    set to dictionary    ${msgEntity}    msg=    type=${msgEntity.type}    filename=${image.filename}    fileLength=${image.contentLength}    imageHeight=68
+    ...    imageWidth=68    mediaId=${image.uuid}    thumb=${image.url}    url=${image.url}
     #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送文件消息，接口请求状态码为200。
     ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
     #Step4、判断接口各字段的返回值
@@ -673,7 +735,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    - Step2、调用接口/v1/tenants/{tenantId}/mediafiles/amr上传语音文件，接口请求状态码为200。
     ...    - Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送图片消息，接口请求状态码为200。
     ...    - Step4、判断接口各字段的返回值
-    ...    
+    ...
     ...    【预期结果】：
     ...    检查返回结果中，字段sessionServiceId、visitorUserId、type等值等于预期值。
     #Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
@@ -686,8 +748,8 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     &{msgEntity}    create dictionary    msg=${EMPTY}    type=audio
     #Step2、调用接口/v1/Tenant/me/MediaFiles上传语音文件，接口请求状态码为200。
     ${amr}    Upload MediaFile Amr    ${AdminUser}
-    set to dictionary    ${msgEntity}    type=${msgEntity.type}    fileLength=${amr.contentLength}    audioLength=2
-    ...    filename=${amr.filename}    mediaId=${amr.uuid}    thumb=${amr.url}    url=${amr.url}
+    set to dictionary    ${msgEntity}    type=${msgEntity.type}    fileLength=${amr.contentLength}    audioLength=2    filename=${amr.filename}    mediaId=${amr.uuid}
+    ...    thumb=${amr.url}    url=${amr.url}
     #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送语音消息，接口请求状态码为200。
     ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
     #Step4、判断接口各字段的返回值
@@ -697,4 +759,3 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     should be equal    ${j['body']['bodies'][0]['filename']}    ${msgEntity.filename}    发消息接口返回值中filename值不是${msgEntity.filename}，${j}
     should be equal    ${j['body']['bodies'][0]['length']}    ${${msgEntity.audioLength}}    发消息接口返回值中length值不是${msgEntity.audioLength}，${j}
     should be equal    ${j['body']['bodies'][0]['url']}    ${msgEntity.url}    发消息接口返回值中url值不是${msgEntity.url}，${j}
-

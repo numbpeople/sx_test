@@ -16,6 +16,7 @@ Resource          ../../../../commons/admin common/Setting/Stickers_Common.robot
 Resource          ../../../../commons/admin common/Setting/Business-Hours_Common.robot
 Resource          ../../../../api/BaseApi/Channels/WebimApi.robot
 Resource          ../../../../commons/CollectionData/Admin Mode/Webim_Collection.robot
+Resource          ../../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 网页插件下班时间是否显示留言(/v1/webimplugin/showMessage)
@@ -133,6 +134,9 @@ Resource          ../../../../commons/CollectionData/Admin Mode/Webim_Collection
     Should Be Equal    ${j['status']}    OK    返回值中status不等于OK: {j}
 
 获取自定义表情包(/v1/webimplugin/emoj/tenants/{tenantId}/packages)
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status    ${AdminUser}
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取表情包
     ${j}    Get Webim Stickers    ${AdminUser}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
@@ -141,6 +145,9 @@ Resource          ../../../../commons/CollectionData/Admin Mode/Webim_Collection
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['type']}    CUSTOM    返回值中type字段不等于CUSTOM: ${j}
 
 获取自定义表情包文件(/v1/emoj/tenants/{tenantId}/packages/{packageId}/files)
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status    ${AdminUser}
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取当前的表情包个数
     ${length}    Get Stickers Numbers    ${AdminUser}
     Run Keyword If    ${length} >= 5    Fail    租户下的表情包超过5个，该用例会执行失败，标识为fail

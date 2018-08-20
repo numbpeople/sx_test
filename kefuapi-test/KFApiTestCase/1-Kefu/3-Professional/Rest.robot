@@ -1,20 +1,23 @@
 *** Settings ***
+Default Tags      rest
 Library           json
 Library           requests
 Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../JsonDiff/Channels/RestChannelsJsonDiff.robot
-Resource          ../../../../commons/admin common/BaseKeyword.robot
-Resource          ../../../../api/BaseApi/Channels/RestApi.robot
-Library           ../../../../lib/KefuUtils.py
-Library           uuid
+Library           ../../../lib/KefuUtils.py
+Resource          ../../../AgentRes.robot
+Resource          ../../../JsonDiff/Channels/RestChannelsJsonDiff.robot
+Resource          ../../../commons/admin common/BaseKeyword.robot
+Resource          ../../../api/BaseApi/Channels/RestApi.robot
+Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 添加、查询、编辑并删除rest channel
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status    ${AdminUser}
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #添加rest channel
     ${data}    create dictionary    name=测试rest    callbackUrl=http://www.test.com
     ${resp}=    /v1/tenants/{tenantId}/channels    post    ${AdminUser}    ${data}    ${timeout}
@@ -79,6 +82,9 @@ Library           uuid
     set test variable    ${RestChannelEntity}    ${d}
 
 用rest渠道发送消息并关闭会话
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status    ${AdminUser}
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
     #添加rest channel

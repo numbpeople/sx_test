@@ -189,3 +189,24 @@
     ${uri}=    set variable    /v1/webimplugin/notice/options
     ${params}=    set variable    tenantId=${agent.tenantId}
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${params}    set variable    _=1534756480661
+    run keyword if    '${method}'=='post'    set suite variable    ${params}    orgName=${rest.orgName}&appName=${rest.appName}&userName=${rest.userName}&orgName=${rest.token}&techChannelInfo=${rest.techChannelInfo}
+    ${uri}    set variable    /v1/webimplugin/servicesessions/${serviceSessionId}/messagePredict
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    data=${data}    timeout=${timeout}
+
+/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${params}    set variable    tenantId=${agent.tenantId}&orgName=${rest.orgName}&appName=${rest.appName}&userName=${rest.userName}&orgName=${rest.token}
+    ${uri}    set variable    /v1/webimplugin/sessions/${serviceSessionId}/agent-input-state
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
+    ...    timeout=${timeout}

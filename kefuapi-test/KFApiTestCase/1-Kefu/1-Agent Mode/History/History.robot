@@ -14,7 +14,13 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
 
 *** Test Cases ***
 获取坐席模式的历史会话数据(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建已结束的会话    2.查询历史会话，并检查返回的所有字段值
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，查询刚刚结束的会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，total_entries字段的值等于1，tenantId字段等于租户id，agentUserId字段等于接待的坐席Id，等等。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -41,7 +47,14 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
 
 坐席模式下回呼历史会话(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建已结束的会话    2.历史会话中回呼刚结束的会话，并检查进行中是否存在
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，回呼刚刚结束的会话，调用接口：/v6/Tenants/me/Agents/me/ServiceSessions/VisitorUsers/{visitorUserId}/CreateServiceSession，接口请求状态码为200。
+    ...    - Step3、在进行中列表中，查询该进行中会话，调用接口：/v1/Agents/me/Visitors，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，会话结果中的nicename应该等于访客昵称。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -64,7 +77,13 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     should be equal    ${j[0]['user']['nicename']}    ${session.userName}    获取到的会话昵称不正确, ${j}
 
 坐席模式历史会话根据会话ID筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建已结束的会话    2.历史会话中根据会话ID筛选会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，根据会话id查询历史会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，total_entries字段的值等于1，tenantId字段等于租户id，agentUserId字段等于接待的坐席Id，等等。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -91,7 +110,13 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
 
 坐席模式历史会话根据渠道类型筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建已结束的会话    2.历史会话中根据渠道类型筛选会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，根据渠道类型查询历史会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，total_entries字段的值等于1，tenantId字段等于租户id，agentUserId字段等于接待的坐席Id，等等。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -118,7 +143,13 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
 
 坐席模式历史会话根据关联ID筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建已结束的会话    2.历史会话中根据关联ID筛选会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，根据关联id查询历史会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，total_entries字段的值等于1，tenantId字段等于租户id，agentUserId字段等于接待的坐席Id，等等。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -149,7 +180,13 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
 
 坐席模式历史会话根据客户昵称筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建已结束的会话    2.历史会话中根据客户昵称筛选会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，根据客户昵称查询历史会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，total_entries字段的值等于1，tenantId字段等于租户id，agentUserId字段等于接待的坐席Id，等等。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -176,7 +213,16 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
 
 坐席模式历史会话根据是否转接参数筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
-    [Documentation]    1.创建进行中的会话    2.将会话转接到其他技能组    3.从待接入中接入待接入会话并手动结束掉    4.历史会话中根据是否转接参数筛选会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step2、坐席在进行中会话列表，将会话转接到其他技能组，调用接口：/v1/ServiceSession/{serviceSessionId}/AgentQueue/{queueId}，接口请求状态码为200。
+    ...    - Step3、从待接入中手动接入会话到进行中，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step4、手动结束进行中的会话，调用接口：/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop，接口请求状态码为200。
+    ...    - Step5、坐席在历史会话中，根据是否转接参数类型查询历史会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，total_entries字段的值等于1，tenantId字段等于租户id，agentUserId字段等于接待的坐席Id，等等。
     #设置局部变量的字典
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

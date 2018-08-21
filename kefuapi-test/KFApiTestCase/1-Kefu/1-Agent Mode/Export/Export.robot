@@ -15,13 +15,15 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
 
 *** Test Cases ***
 导出管理(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    [Documentation]    导出管理数据的测试用例步骤：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、获取导出管理数据总数，作为导出历史会话的判断依据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、坐席在历史会话中，导出刚结束的会话，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step4、调用导出管理接口，获取数据总数应 +1，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
     ...
-    ...    1、初始创建一个结束的会话
-    ...
-    ...    2、获取本地时间，使用Get My Export And Check Status函数，对比返回的创建时间值和本地时间的差值是否在一个范围内，如果在则返回初始结束的那条会话
-    ...
-    ...    3、将返回的导出历史会话数据做断言，比较tenantId、status、fileSize值等
+    ...    【预期结果】：
+    ...    接口返回值中，status字段的值等于OK，tenantId字段等于租户id，fileSize字段应不等于，并大于0.0。
     #定义为局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -52,14 +54,20 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
     should be equal    ${i['tenantId']}    ${AdminUser.tenantId}    返回结果中租户id不正确，${i}
     should be equal    ${i['status']}    Finished    返回结果中status不是Finished，${i}
 
-下载记录(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    [Documentation]    下载记录的测试用例步骤：
+下载记录(/tenants/{tenantId}/serviceSessionHistoryFiles/{serviceSessionHistoryFileId}/downloadDetails)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、获取导出管理数据总数，作为导出历史会话的判断依据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、坐席在历史会话中，导出刚结束的会话，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step4、调用导出管理接口，获取数据总数应 +1，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step5、接口返回值中，status字段的值等于OK，tenantId字段等于租户id，fileSize字段应不等于，并大于0.0。
+    ...    - Step6、创建单个导出数据的下载记录，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles/{serviceSessionHistoryFileId}/downloadDetails，接口请求状态码为200。
+    ...    - Step6、创建单个导出数据的下载记录，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles/{serviceSessionHistoryFileId}/downloadDetails，接口请求状态码为200。
+    ...    - Step7、获取单个导出数据的下载记录，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles/{serviceSessionHistoryFileId}/downloadDetails，接口请求状态码为200。
+    ...    - Step8、判断接口返回值情况。
     ...
-    ...    1、初始创建一个结束的会话
-    ...
-    ...    2、获取本地时间，使用Get My Export And Check Status函数，对比返回的创建时间值和本地时间的差值是否在一个范围内，如果在则返回初始结束的那条会话
-    ...
-    ...    3、将返回的导出历史会话数据做下载记录接口断言，比较tenantId、fieldId、ip值等
+    ...    【预期结果】：
+    ...    接口返回值中，字段ip不等于空、字段tenantId等于租户id、agentUserId等于操作的坐席Id。
     #定义为局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

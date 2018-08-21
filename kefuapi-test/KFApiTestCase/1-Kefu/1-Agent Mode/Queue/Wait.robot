@@ -19,8 +19,19 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
 
 *** Test Cases ***
 关闭待接入列表search出的指定访客
-    [Documentation]    关闭待接入中search出来的访客，历史会话中查询（坐席模式无该会话，管理员模式应该有该会话），访客中心中查询（坐席模式无该访客，管理员模式应该有该访客），质检中查询
-    [Tags]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新的技能组。
+    ...    - Step2、调整路由规则顺序，使入口指定优先，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、新访客发起消息，发起新会话。
+    ...    - Step4、待接入根据访客昵称搜索待接入会话，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step5、手动结束待接入的会话，调用接口：/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort，接口请求状态码为200。
+    ...    - Step6、坐席模式下，根据昵称搜索客户中心数据，调用接口：/v1/crm/tenants/{tenantId}/agents/{agentId}/customers，接口请求状态码为200。
+    ...    - Step7、管理员模式下，根据昵称搜索客户中心数据，调用接口：/v1/crm/tenants/{tenantId}/customers，接口请求状态码为200。
+    ...    - Step8、坐席模式&管理员模式下，根据昵称查询历史会话，调用接口：/v1/Tenant/me/ServiceSessionHistorys ，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    客户中心/历史会话可以搜索到该访客的数据。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
@@ -66,7 +77,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     set test variable    ${retryTimes}    10
 
 获取待接入列表(/v1/Tenant/me/Agents/me/UserWaitQueues)
-    [Tags]    sdk
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取待接入会话数据，并记录总数，作为对比待接入总数变化的基数，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues，接口请求状态码为200。
+    ...    - Step2、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step3、获取待接入会话数据，并记录新的会话总数，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues，接口请求状态码为200。
+    ...    - Step4、判断待接入数总数情况。
+    ...
+    ...    【预期结果】：
+    ...    发起待接入会话之后，获取到最新待接入会话总数应该增加1。
     #获取待接入会话列表数据
     ${json}    Get UserWaitQueues    ${AdminUser}    ${FilterEntity}
     ${baseCount}    evaluate    ${json['total_entries']} + 1
@@ -77,6 +95,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    '${j['total_entries']}' == '${baseCount}'    待接入数不正确： ${j['total_entries']} 不等于 ${baseCount}
 
 获取待接入总数(/v1/Tenant/me/Agents/me/UserWaitQueues/count)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取待接入会话总数，作为对比待接入总数变化的基数，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/count，接口请求状态码为200。
+    ...    - Step2、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step3、获取待接入会话总数，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/count，接口请求状态码为200。
+    ...    - Step4、判断待接入数总数情况。
+    ...
+    ...    【预期结果】：
+    ...    发起待接入会话之后，获取到最新待接入会话总数应该增加1。
     #获取执行用例前的待接入数
     ${baseCount}    Get UserWaitQueues Count    ${AdminUser}
     ${baseCount}    evaluate    ${baseCount} + 1
@@ -87,7 +113,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be equal    ${j}    ${baseCount}    待接入总数不正确：${j}
 
 获取待接入总数new(/v1/tenants/{tenantId}/queues/count)
-    [Tags]    sdk
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取待接入会话总数，作为对比待接入总数变化的基数，调用接口：/v1/tenants/{tenantId}/queues/count，接口请求状态码为200。
+    ...    - Step2、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step3、获取待接入会话总数，调用接口：/v1/tenants/{tenantId}/queues/count，接口请求状态码为200。
+    ...    - Step4、判断待接入数总数情况。
+    ...
+    ...    【预期结果】：
+    ...    发起待接入会话之后，获取到最新待接入会话总数应该增加1。
     #获取执行用例前的待接入数
     ${baseCount}    Get Queue Count    ${AdminUser}
     ${baseCount}    evaluate    ${baseCount} + 1
@@ -98,6 +131,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be equal    ${j}    ${baseCount}    待接入总数不正确：${j}
 
 获取待接入列表new(/v1/tenants/{tenantId}/queues)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取待接入会话总数，作为对比待接入总数变化的基数，调用接口：/v1/tenants/{tenantId}/queues，接口请求状态码为200。
+    ...    - Step2、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step3、获取待接入会话总数，调用接口：/v1/tenants/{tenantId}/queues，接口请求状态码为200。
+    ...    - Step4、判断待接入数总数情况。
+    ...
+    ...    【预期结果】：
+    ...    发起待接入会话之后，获取到最新待接入会话总数应该增加1。
     #获取待接入会话列表数据
     ${json}    Get Queue    ${AdminUser}
     ${baseCount}    evaluate    ${json['total_entries']} + 1
@@ -108,12 +149,25 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    '${j['total_entries']}' == '${baseCount}'    待接入数不正确： ${j['total_entries']} 不等于 ${baseCount}
 
 获取待接入分组信息new(/v1/tenants/{tenantId}/agents/{agentId}/queues)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取坐席所带技能组数据，调用接口：/v1/tenants/{tenantId}/agents/{agentId}/queues，接口请求状态码为200。
+    ...    - Step2、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，tenantId等于租户id、status等于OK。
     #获取坐席所处技能组信息
     ${j}    Get Agent In Queue    ${AdminUser}
     Should Be Equal    '${j['entities'][0]['tenantId']}'    '${AdminUser.tenantId}'    待接入列表不正确：${j}
-    Should Be Equal    '${j['status']}'    'OK'    待接入列表不正确：${j}结束待接入会话(/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort)
+    Should Be Equal    '${j['status']}'    'OK'    待接入列表不正确：${j}
 
 关闭待接入会话(/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、手动关闭待接入会话，调用接口：/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status等于OK。
     #创建待接入会话
     ${session}    Create Wait Conversation    app
     #清理待接入会话
@@ -121,6 +175,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be Equal    '${j['status']}'    'OK'    待接入会话关闭发生异常：${j}
 
 获取待接入列表(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取待接入会话总数，作为对比待接入总数变化的基数，，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step2、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step3、获取待接入会话总数，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step4、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    发起待接入会话之后，获取到最新待接入会话总数应该增加1。
     Log Dictionary    ${FilterEntity}
     #获取待接入会话列表数据
     ${json}    Get Waiting    ${AdminUser}    ${FilterEntity}    ${DateRange}
@@ -133,6 +195,13 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    '${j['totalElements']}' == '${baseCount}'    待接入数不正确： ${j['totalElements']} 不等于 ${baseCount}
 
 根据渠道作为筛选条件，获取待接入会话数据(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、根据渠道作为筛选条件，获取待接入会话数据，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status等于OK、session_id字段值等于发起会话的会话id、origin_type字段值等于会话的渠道类型。
     #使用局部变量来使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -153,6 +222,13 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be Equal    ${j['entities'][-1]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
 
 根据关联作为筛选条件，获取待接入会话数据(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、根据关联作为筛选条件，获取待接入会话数据，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status等于OK、session_id字段值等于发起会话的会话id、origin_type字段值等于会话的渠道类型。
     #使用局部变量来使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -177,6 +253,13 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be Equal    ${j['entities'][-1]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
 
 根据技能组id作为筛选条件，获取待接入会话数据(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、根据技能组id作为筛选条件，获取待接入会话数据，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status等于OK、session_id字段值等于发起会话的会话id、origin_type字段值等于会话的渠道类型。
     #使用局部变量来使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -198,6 +281,13 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    '${j['totalElements']}' == '1'    待接入数不正确，不唯一： ${j['totalElements']}
 
 根据访客昵称作为筛选条件，获取待接入会话数据(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、根据访客昵称作为筛选条件，获取待接入会话数据，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status等于OK、session_id字段值等于发起会话的会话id、origin_type字段值等于会话的渠道类型。
     #使用局部变量来使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -219,6 +309,13 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    '${j['totalElements']}' == '1'    待接入数不正确，不唯一： ${j['totalElements']}
 
 根据VIP标签作为筛选条件，获取待接入会话数据(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话携带VIP标签信息，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、根据VIP标签：是，作为筛选条件，获取待接入会话数据，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status等于OK、session_id字段值等于发起会话的会话id、origin_type字段值等于会话的渠道类型。
     #使用局部变量来使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -242,7 +339,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    ${j['entities'][-1]['vip']}    待接入该会话vip值不是true，不唯一：${j}
     Should Be True    '${j['entities'][-1]['priority']}' == 'vip1'   待接入该会话priority值不是vip1，不唯一：${j}
 
-获取待接入的返回字段信息(/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort)
+获取待接入的返回字段信息(/waitings)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话携带VIP标签信息，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、根据访客昵称筛选，获取待接入会话数据，调用接口：/waitings，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，筛选数据总数为1、status等于OK、skill_group_id值是会话技能组id、session_id字段值等于发起会话的会话id、origin_type字段值等于会话的渠道类型，等等。
     #设置扩展visitor字段
     ${visitor}    set variable    {"tags":["vip1","vip2"]}
     #创建待接入会话
@@ -262,7 +366,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be Equal    ${json['entities'][0]['priority']}    vip1    vip客户等级返回不正确：${json}
 
 关闭待接入会话(/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/abort)
-    [Documentation]    1.创建待接入会话    2.手动结束待接入会话    3.历史会话根据访客昵称搜索该会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话携带VIP标签信息，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、手动结束待接入会话，调用接口：/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/abort，接口请求状态码为200。
+    ...    - Step2、查询历史会话数据，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，结果不应该为空，并且字段serviceSessionId为会话id。
     #使用局部变量来使用
     ${filter}    Copy Dictionary    ${FilterEntity}
     #创建待接入会话
@@ -277,7 +388,14 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    '${r['items'][0]['serviceSessionId']}' == '${session.serviceSessionId}'   管理员模式查到该访客的历史会话会话id不正确：${r}
 
 手动接入待接入会话(/v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId})
-    [Documentation]    1.创建待接入会话    2.手动接入会话    3.查询进行中会话该接入的会话
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、手动接入待接入会话，调用接口：/v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSessionId}，接口请求状态码为200。
+    ...    - Step3、查询进行中会话的数据，调用接口：/v1/Agents/me/Visitors，接口请求状态码为200。
+    ...    - Step4、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，结果不应该为空，并且字段nicename为访客的昵称。
     #使用局部变量来使用
     ${filter}    Copy Dictionary    ${FilterEntity}
     #创建待接入会话
@@ -297,7 +415,13 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     should be true    '${j[0]['user']['nicename']}'=='${session.userName}'    获取到的nicename不是${session.userName}, ${j}
 
 待接入转接会话给其他技能组(/v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId})
-    [Documentation]    1.创建待接入会话    2.待接入转接会话到技能组
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、待接入转接会话到技能组，调用接口：/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/assign/queues/{queueId}，接口请求状态码为200。
+    ...    - Step3、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，结果不应该为空，并且字段status等于OK、entity等于True。
     #使用局部变量来使用
     ${filter}    Copy Dictionary    ${FilterEntity}
     #创建待接入会话
@@ -308,7 +432,16 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be True    ${j['entity']}    转接待接入会话结果entity不为true：${j}
 
 待接入转接会话给其他坐席(/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/agents/{agentUserId})
-    [Documentation]    1.创建待接入会话    2.创建坐席    3.待接入转接会话到坐席
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，会话处于待接入（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话）。
+    ...    - Step2、创建新坐席，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step3、获取坐席所在技能组，调用接口：/v1/tenants/{tenantId}/agents/{agentId}/skillgroups，接口请求状态码为200。
+    ...    - Step4、待接入转接会话到坐席，调用接口：/v6/tenants/{tenantId}/queues/unused/waitings/{serviceSesssionId}/assign/agents/{agentUserId}，接口请求状态码为200。
+    ...    - Step5、管理员当前会话查询该转接坐席的会话，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step6、判断接口返回各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，结果不应该为空，并且字段serviceSessionId等于发起会话的会话id、agentUserNiceName等于转接后坐席id。
     #使用局部变量来使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

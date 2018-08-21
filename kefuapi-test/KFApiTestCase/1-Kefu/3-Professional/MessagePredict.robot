@@ -14,7 +14,7 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
 *** Test Cases ***
 获取消息预知数据(/v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
@@ -29,7 +29,7 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
 
 创建消息预知数据(/v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
@@ -50,7 +50,7 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
 
 创建并获取消息预知数据(/v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #创建消息预知数据
     ${msgPredictResult}    Create MessagePredict Data    ${AdminUser}

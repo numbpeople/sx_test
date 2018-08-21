@@ -5,19 +5,16 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Library           ../../../../lib/KefuUtils.py
 Resource          ../../../../AgentRes.robot
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../JsonDiff/Channels/RestChannelsJsonDiff.robot
-Resource          ../../../../commons/admin common/BaseKeyword.robot
-Resource          ../../../../api/BaseApi/Channels/AppApi.robot
+Resource          ../../../../commons/admin common/Channels/App_Common.robot
 
 *** Test Cases ***
 获取所有app关联(/channels)
-    ${resp}=    /channels    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Run Keyword If    ${j}==[]    log    无app关联
-    ...    ELSE    Should Be Equal    '${j[0]['tenantId']}'    '${AdminUser.tenantId}'    获取app关联失败
-    log    ${j}
-    log    ${resp.content}
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取租户下全渠道的关联数据，调用接口：/channels，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，如果接口不为空，tenantId字段等于租户id。
+    ${j}    Get All OriginType Channels    ${AdminUser}
+    Run Keyword If    "${j}"!="[]"    Should Be Equal    '${j[0]['tenantId']}'    '${AdminUser.tenantId}'    获取app关联失败

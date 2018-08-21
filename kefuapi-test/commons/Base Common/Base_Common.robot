@@ -98,20 +98,19 @@ Get GrayList
     set global variable    ${tenantGrayList}    ${graylist}
 
 Check Tenant Gray Status
-    [Arguments]    ${agent}    ${grayName}=
+    [Arguments]    ${grayName}=
     [Documentation]    检查租户增值功能或灰度功能的状态
     ...
     ...    【参数值】
     ...    | 参数名 | 是否必填 | 参数含义 |
-    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
     ...    | ${grayName} | 选填 | 灰度名称，例如：audioVideo |
     ...
     ...    【返回值】
     ...    | 根据测试用例的tag名或根据增值功能名称，判断功能增值开通状态。开通返回True，未开通返回False |
     ...
     ...    【调用方式】
-    ...    | 获取租户的增值功能状态 | ${status} | Check Tenant Gray Status | ${AdminUser} |
-    ...    | 获取音视频增值功能状态 | ${status} | Check Tenant Gray Status | ${AdminUser} | audioVideo |
+    ...    | 获取租户的增值功能状态 | ${status} | Check Tenant Gray Status |
+    ...    | 获取音视频增值功能状态 | ${status} | Check Tenant Gray Status | audioVideo |
     ...    | 判断是否执行测试用例 | Pass Execution If | not ${status} | 该租户未开通增值功能，不执行 |
     ...
     ...    【增值功能开关】

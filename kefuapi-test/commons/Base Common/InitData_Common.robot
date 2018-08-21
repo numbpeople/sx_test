@@ -70,6 +70,7 @@ Setup Data
     Run Keyword And Ignore Error    Create Channel    #快速创建一个关联，以便于全局使用
     Run Keyword And Ignore Error    Robot Account Init    #判断租户下是否有机器人账号，如果有则不创建，如果没有则创建机器人账号
     Run Keyword And Ignore Error    Ticket Data Init    #获取租户id下的projectId和留言状态等值
+    Run Keyword And Ignore Error    Get GrayList    #查询增值/灰度功能列表
 
 Clear Data
     Delete Channels    #删除关联

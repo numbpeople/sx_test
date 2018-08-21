@@ -13,7 +13,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 *** Test Cases ***
 获取自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取表情包
     ${j}    Get Stickers    ${AdminUser}
@@ -24,7 +24,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 上传自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取当前的表情包个数
     ${length}    Get Stickers Numbers    ${AdminUser}
@@ -40,7 +40,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 删除自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #上传表情包
     ${picpath}    Open Sticker File
@@ -53,7 +53,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 排序自定义表情包(/v1/emoj/tenants/{tenantId}/packages/sort)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #上传表情包
     ${picpath}    Open Sticker File
@@ -78,7 +78,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 获取自定义表情包文件(/v1/emoj/tenants/{tenantId}/packages/{packageId}/files)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取当前的表情包个数
     ${length}    Get Stickers Numbers    ${AdminUser}

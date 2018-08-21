@@ -185,17 +185,18 @@ Create New Visitor
     Return From Keyword    ${visitorDic}
 
 Set MessagePredict
-    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=    ${rest}=    
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=    ${rest}=
     [Documentation]    获取/添加消息预知
     #获取/添加消息预知
-    ${resp}=    /v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}    ${timeout}
+    ${resp}=    /v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}
+    ...    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Create MessagePredict Data
-    [Arguments]    ${agent}   
-    [Documentation]    #创建消息预知数据
+    [Arguments]    ${agent}
+    [Documentation]    创建消息预知数据
     #访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
     ${serviceSessionId}    set variable    ${sessionInfo.sessionServiceId}
@@ -216,17 +217,18 @@ Create MessagePredict Data
     Return From Keyword    ${rest}
 
 Set AgentInputState
-    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=    ${rest}=    
+    [Arguments]    ${method}    ${agent}    ${serviceSessionId}    ${data}=    ${rest}=
     [Documentation]    获取/添加客服输入状态
     #获取/添加客服输入状态
-    ${resp}=    /v1/webimplugin/sessions/{serviceSessionId}/agent-input-state    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}    ${timeout}
+    ${resp}=    /v1/webimplugin/sessions/{serviceSessionId}/agent-input-state    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}
+    ...    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
 
 Create AgentInputState Data
-    [Arguments]    ${agent}   
-    [Documentation]    #创建消息预知数据
+    [Arguments]    ${agent}
+    [Documentation]    创建消息预知数据
     #访客发起会话，坐席接入到进行中会话。
     ${sessionInfo}    Create Processiong Conversation
     ${serviceSessionId}    set variable    ${sessionInfo.sessionServiceId}
@@ -244,3 +246,47 @@ Create AgentInputState Data
     Should Be True    ${j['entity']}    客服输入状态接口返回entity字段数据不是True：${j}
     set to dictionary    ${rest}    visitorUserId=${visitorUserId}    serviceSessionId=${serviceSessionId}    content=${curTime}
     Return From Keyword    ${rest}
+
+Get Welcome
+    [Arguments]    ${agent}
+    [Documentation]    获取企业欢迎语
+    ${resp}=    /v1/webimplugin/welcome    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    Return From Keyword If    "${resp.text}" == ""    ${EMPTY}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Get Theme Option
+    [Arguments]    ${agent}
+    [Documentation]    获取主题信息
+    ${resp}=    /v1/webimplugin/theme/options    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+Get Notice Option
+    [Arguments]    ${agent}
+    [Documentation]    获取信息栏信息
+    ${resp}=    /v1/webimplugin/notice/options    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}
+
+WebimTemplate Result Should Be Equal
+    [Arguments]    ${actualResult}    ${expectWebimTemplateChannelJson}
+    [Documentation]    对传入的实际结果和预期结果，进行递归式比较
+    log    ${actualResult}
+    log    ${expectWebimTemplateChannelJson}
+    #获取返回结果中所有的key
+    @{webimKeys}    Get Dictionary Keys    ${expectWebimTemplateChannelJson}
+    #递归所有的key，取出每个字典和属性的值，进行比较。
+    :FOR    ${i}    IN    @{webimKeys}
+    \    log    ${i}
+    \    #判断实际结果中，应该包含预期的所有的key
+    \    Dictionary Should Contain Key    ${actualResult}    ${i}    调用接口：/v1/webimplugin/settings/template，返回结果中，没有包含字段：${i}，实际值：${actualResult}，预期值：${expectWebimTemplateChannelJson}
+    \    #取出对应字典key的value值
+    \    ${subkey}    set variable    ${expectWebimTemplateChannelJson['${i}']}
+    \    #判断如果值等于空&不包括json格式，则直接判断结果；如果是字典，则递归继续比较字典结构
+    \    run keyword if    "${subkey}" == ""     Should Be Equal    "${actualResult['${i}']}"    "${expectWebimTemplateChannelJson['${i}']}"    调用接口：/v1/webimplugin/settings/template，返回结果中，${i}对应的值不相等，实际值：${actualResult['${i}']}，预期值：${expectWebimTemplateChannelJson['${i}']}
+    \    run keyword if    ("${subkey}" != "") and ("{" not in "${subkey}") and ("}" not in "${subkey}")     Should Be Equal    "${actualResult['${i}']}"    "${expectWebimTemplateChannelJson['${i}']}"    调用接口：/v1/webimplugin/settings/template，返回结果中，${i}对应的值不相等，实际值：${actualResult['${i}']}，预期值：${expectWebimTemplateChannelJson['${i}']}
+    \    run keyword if    "{" in "${subkey}" and "}" in "${subkey}"     WebimTemplate Result Should Be Equal    ${actualResult['${i}']}    ${expectWebimTemplateChannelJson['${i}']}

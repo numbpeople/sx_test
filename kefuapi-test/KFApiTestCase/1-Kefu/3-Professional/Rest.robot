@@ -16,7 +16,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 *** Test Cases ***
 添加、查询、编辑并删除rest channel
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #添加rest channel
     ${data}    create dictionary    name=测试rest    callbackUrl=http://www.test.com
@@ -83,7 +83,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 用rest渠道发送消息并关闭会话
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

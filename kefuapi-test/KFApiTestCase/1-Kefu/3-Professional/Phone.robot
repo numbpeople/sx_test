@@ -13,7 +13,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 *** Test Cases ***
 获取callcenter属性(/v1/tenants/{tenantId}/agents/{agentId}/callcenter-attrs)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取坐席绑定呼叫中心的数据
     ${j}    Get Agent Phone Data    ${AdminUser}
@@ -21,7 +21,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 获取呼叫中心信息(/v1/tenants/{tenantId}/phone-tech-channel)
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    ${AdminUser}
+    ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     ${j}    Get PhoneTechChannel    ${AdminUser}
     Run Keyword If    ${j}==[]    log    无呼叫中心信息

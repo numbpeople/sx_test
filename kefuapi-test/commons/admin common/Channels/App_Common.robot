@@ -209,3 +209,11 @@ Auto CreateImAssosciation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
+Get All OriginType Channels
+    [Arguments]    ${agent}
+    [Documentation]    获取租户下所有渠道的关联数据
+    ${resp}=    /channels    ${agent}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
+    ${j}    to json    ${resp.text}
+    Return From Keyword    ${j}

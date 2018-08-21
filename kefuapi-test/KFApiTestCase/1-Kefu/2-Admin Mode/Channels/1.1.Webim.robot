@@ -206,7 +206,7 @@ Resource          ../../../../commons/Base Common/Base_Common.robot
     ...    【预期结果】：
     ...    接口请求状态码为200，接口返回值中，status等于OK。
     #判断租户的增值功能，灰度开关状态
-    ${status}    Check Tenant Gray Status    voice
+    ${status}    Check Tenant Gray Status    customMagicEmoji
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取表情包
     ${j}    Get Webim Stickers    ${AdminUser}

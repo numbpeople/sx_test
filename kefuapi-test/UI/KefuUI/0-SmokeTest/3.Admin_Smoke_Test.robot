@@ -80,7 +80,7 @@ Resource          ../../../UIcommons/Kefu/ticketsres.robot
     ${uiadmin}    ${settingsenterprisebasejson}    Admin
     #查看系统开关
     ${uiadmin}    ${settingssystembasejson}    Admin
-    #查看时间计划设置
+    #查看时间计划
     ${uiadmin}    ${settingstimeplanbasejson}    Admin
     #查看权限管理
     ${uiadmin}    ${settingspermissionbasejson}    Admin
@@ -110,6 +110,8 @@ Resource          ../../../UIcommons/Kefu/ticketsres.robot
     ${uiadmin}    ${settingsquestionnairebasejson}    Admin
     #查看自定义事件推送
     ${uiadmin}    ${settingscallbackbasejson}    Admin
+    #查看自定义业务规则
+    ${uiadmin}    ${settingstriggerbasejson}    Admin
 
 查看审批管理
     [Template]    smoketest case

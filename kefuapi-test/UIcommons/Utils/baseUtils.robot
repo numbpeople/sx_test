@@ -11,6 +11,7 @@ Resource          ../../api/MicroService/Webapp/InitApi.robot
 Resource          ../../api/MicroService/WebGray/WebGrayApi.robot
 Resource          ../../api/BaseApi/Settings/PermissionApi.robot
 Resource          ../../UIcommons/Utils/baseUtils.robot
+Resource          ../../UIcommons/Kefu/chatres.robot
 Library           uuid
 Library           urllib
 Library           Selenium2Library
@@ -31,7 +32,7 @@ smoketest case
     Check Base Module    ${kefuurl}    ${agent}    ${json}    ${mode}
 
 UI Agent Init
-    [Arguments]    ${agent}
+    [Arguments]    ${agent}    ${uri}
     [Documentation]    1.接口登录
     ...    2.设置浏览器cookie和localStorage
     ...    3.获取账号语言信息
@@ -42,6 +43,7 @@ UI Agent Init
     Execute Javascript    localStorage.setItem('lang','${uiagent.language}')
     #设置tenantId
     Execute Javascript    localStorage.setItem('tenantId','${uiagent.tenantId}')
+    goto    ${kefuurl}${uri}
     #获取权限list
     ${resourcelist}=    Get ResourceList    ${uiagent}
     #添加所有权限name到resourcelist
@@ -268,10 +270,13 @@ Send Uuidmsg By Specified Agent
 
 KefuUI Setup
     [Arguments]    ${admin}
+    #获取初始跳转页面
+    ${j}    to json    ${chatbasejson}
+    ${uri}    set variable    ${j['navigator']['Agent']['uri']}
     #登录管理员
-    ${agent}    UI Agent Init    ${admin}
+    ${agent}    UI Agent Init    ${admin}    ${uri}
     #灰度对所有坐席生效，仅需获取一次
-    ${graylist}=    Get GrayList    ${agent}
+    ${graylist}=    baseUtils.Get GrayList    ${agent}
     #添加灰度list
     ${agent.graylist}    copy list    ${graylist}
     set global variable    ${uiadmin}    ${agent}
@@ -281,7 +286,7 @@ KefuUI Setup
     ${a}    Create Temp Agent    ${uiadmin}    2
     set to dictionary    ${agent1}    username=${a.username}    password=${a.password}
     #登录普通坐席1
-    ${agent}    UI Agent Init    ${agent1}
+    ${agent}    UI Agent Init    ${agent1}    ${uri}
     #添加灰度list
     ${agent.graylist}    copy list    ${graylist}
     set global variable    ${uiagent1}    ${agent}
@@ -306,5 +311,5 @@ KefuUI Teardown
 
 Kefu Agent Logout
     [Arguments]    ${agentlist}
-    :FOR    ${i}    IN    @{agentlist}
+    : FOR    ${i}    IN    @{agentlist}
     \    /logout    ${i}    ${timeout}

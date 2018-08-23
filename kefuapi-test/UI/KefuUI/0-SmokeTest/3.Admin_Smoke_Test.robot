@@ -163,6 +163,8 @@ Resource          ../../../UIcommons/Kefu/ticketsres.robot
     ${uiadmin}    ${ticketcannedreplybasejson}    Admin
     #查看工单质检
     ${uiadmin}    ${ticketqualitybasejson}    Admin
+    #查看工单导出
+    ${uiadmin}    ${ticketdownloadbasejson}    Admin
 
 查看客户中心
     [Template]    smoketest case

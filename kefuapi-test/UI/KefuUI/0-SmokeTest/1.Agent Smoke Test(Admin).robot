@@ -27,6 +27,7 @@ Resource          ../../../UIcommons/Kefu/myphraseres.robot
 Resource          ../../../UIcommons/Kefu/notifyres.robot
 Resource          ../../../UIcommons/Kefu/mystatistic.robot
 Resource          ../../../UIcommons/Kefu/agentmoderes.robot
+Resource          ../../../UIcommons/Kefu/myexploreres.robot
 
 *** Test Cases ***
 查看会话列表
@@ -93,3 +94,7 @@ Resource          ../../../UIcommons/Kefu/agentmoderes.robot
 查看我的统计数据
     [Template]    smoketest case
     ${uiadmin}    ${mystatisticbasejson}
+
+查看探索
+    [Template]    smoketest case
+    ${uiadmin}    ${myexplorebasejson}

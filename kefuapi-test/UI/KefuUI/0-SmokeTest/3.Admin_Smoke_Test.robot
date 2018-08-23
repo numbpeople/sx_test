@@ -33,6 +33,7 @@ Resource          ../../../UIcommons/Kefu/statisticres.robot
 Resource          ../../../UIcommons/Kefu/vocres.robot
 Resource          ../../../UIcommons/Kefu/notifyres.robot
 Resource          ../../../UIcommons/Kefu/ticketsres.robot
+Resource          ../../../UIcommons/Kefu/supportres.robot
 
 *** Test Cases ***
 查看首页
@@ -239,3 +240,7 @@ Resource          ../../../UIcommons/Kefu/ticketsres.robot
 查看消息中心
     [Template]    smoketest case
     ${uiadmin}    ${notifybasejson}    Admin
+
+查看技术支持
+    [Template]    smoketest case
+    ${uiadmin}    ${supportbasejson}    Admin

@@ -166,23 +166,23 @@ Library           uuid
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /daas/internal/visitor/total
-    [Arguments]    ${agent}    ${timeout}    ${DateRange}
+    [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${FilterEntity}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=V_ORIGINTYPE
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
     ${uri}=    set variable    /daas/internal/visitor/total
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /daas/internal/visitor/trend
-    [Arguments]    ${agent}    ${timeout}    ${DateRange}
+    [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${FilterEntity}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=V_ORIGINTYPE
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&queryType=${FilterEntity.queryType}
     ${uri}=    set variable    /daas/internal/visitor/trend
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /daas/internal/visitor/count
     [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${FilterEntity}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&queryType=V_ORIGINTYPE
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&queryType=${FilterEntity.queryType}
     ${uri}=    set variable    /daas/internal/visitor/count
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 

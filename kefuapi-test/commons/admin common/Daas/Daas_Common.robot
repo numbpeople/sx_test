@@ -198,7 +198,7 @@ Unvalid Conversation Setup
     sleep    ${daasDelay}
 
 Valid Conversation Setup
-    [Documentation]    获取首页当前数据，并创建一个单服务有效会话
+    [Documentation]    获取首页当前数据，并创建一个单服务有效会话并进行质检评分
     #创建新会话前记录首页数据,待单服务有效会话创建完成后再验证首页数据的增量,"处理中会话数"与"在线客服数"暂未做验证
     ${beginTime}    Get Today Begin Time
     ${todayBeginTime}    convert to string    ${beginTime}
@@ -239,4 +239,29 @@ Valid Conversation Setup
     set global variable    ${daasCreateTime}    ${daasCreateTime}
     ${conCreateTime}    create dictionary    beginDateTime=${daasCreateTime}    endDateTime=${ConDateRange.endDateTime}
     set global variable    ${conCreateTime}    ${conCreateTime}
+    #进行质检评分
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #设置筛选开始时间为当天
+    ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
+    ${dn}=    Convert To Integer    ${day}
+    set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
+    set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
+    set to dictionary    ${filter}    groupId=${conInfo.queueId}
+    #根据queueId筛选当天质检数据，预期结果是唯一数据
+    ${j}=    Search Reviews    ${AdminUser}    ${filter}    ${range}
+    run keyword if    ${j} == {}    Fail    根据技能组id(queueId)筛选当天质检数据，没有找到数据
+    should be equal    ${j['status']}    OK    接口返回值status不正确, ${j}
+    should be true    '${j['totalElements']}' == '1'    接口返回数据不唯一, ${j}
+    should be equal    ${j['entities'][0]['serviceSessionId']}    ${conInfo.serviceSessionId}    质检接口返回值serviceSessionId不正确, ${j}
+    #获取租户的质检评分项
+    ${qualityResults}    Get Qualityitems
+    #对该服务进行质检评分
+    ${sessionInfo}    create dictionary    serviceSessionId=${conInfo.serviceSessionId}    stepNum=1
+    ${j}=    Quality Review    ${sessionInfo}    ${qualityResults}
+    #检查该服务的质检结果是否与预期一致
+    ${j}=    Get Quality Review    ${sessionInfo}
+    should be equal    ${j["status"]}    OK    质检评分不正确:${j}
+    Should Be Equal    ${j['entity']['reviewerId']}    ${AdminUser.userId}    质检接口返回值的reviewerId不正确：${j}
+    Should Be Equal    ${j['entity']['totalScore']}    ${score}    质检接口返回值的totalScore不正确：${j}
     sleep    ${daasDelay}

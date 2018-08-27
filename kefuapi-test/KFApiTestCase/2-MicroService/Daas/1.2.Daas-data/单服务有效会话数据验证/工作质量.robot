@@ -18,9 +18,9 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["max_ar"]}>=2    客服工作质量-响应时长最大值有误:${j["entities"][0]["max_ar"]}
     should be true    ${j["entities"][0]["avg_fr"]}>=2    客服工作质量-首响时长平均值有误:${j["entities"][0]["avg_fr"]}
     should be true    ${j["entities"][0]["max_fr"]}>=2    客服工作质量-首响时长最大值有误:${j["entities"][0]["max_fr"]}
-    should be true    ${j["entities"][0]["avg_qm"]}==0    客服工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
+    should be equal    ${j["entities"][0]["avg_qm"]}    ${score}    客服工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
     should be true    ${j["entities"][0]["avg_vm"]}==1    客服工作质量-满意度有误:${j["entities"][0]["avg_vm"]}
-    should be equal    ${j["entities"][0]["pct_qm"]}    0.00%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    100.00%    客服工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
     should be equal    ${j["entities"][0]["pct_vm"]}    100.00%    客服工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
     should be true    ${j["entities"][0]["cnt_ea"]}==1    客服工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==0    客服工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
@@ -41,9 +41,9 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["max_ar"]}>=2    技能组工作质量-响应时长最大值有误:${j["entities"][0]["max_ar"]}
     should be true    ${j["entities"][0]["avg_fr"]}>=2    技能组工作质量-首响时长平均值有误:${j["entities"][0]["avg_fr"]}
     should be true    ${j["entities"][0]["max_fr"]}>=2    技能组工作质量-首响时长最大值有误:${j["entities"][0]["max_fr"]}
-    should be true    ${j["entities"][0]["avg_qm"]}==0    技能组工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
+    should be equal    ${j["entities"][0]["avg_qm"]}    ${score}    技能组工作质量-质检评分有误:${j["entities"][0]["avg_qm"]}
     should be true    ${j["entities"][0]["avg_vm"]}==1    技能组工作质量-满意度有误:${j["entities"][0]["avg_vm"]}
-    should be equal    ${j["entities"][0]["pct_qm"]}    0.00%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
+    should be equal    ${j["entities"][0]["pct_qm"]}    100.00%    技能组工作质量-质检参评率有误:${j["entities"][0]["pct_qm"]}
     should be equal    ${j["entities"][0]["pct_vm"]}    100.00%    技能组工作质量-满意度参评率有误:${j["entities"][0]["pct_vm"]}
     should be true    ${j["entities"][0]["cnt_ea"]}==1    技能组工作质量-有效人工会话有误:${j["entities"][0]["cnt_ea"]}
     should be true    ${j["entities"][0]["cnt_ua"]}==0    技能组工作质量-无效人工会话有误:${j["entities"][0]["cnt_ua"]}
@@ -73,6 +73,17 @@ Library           RequestsLibrary
     should be true    ${j["totalElements"]}==2    工作质量-满意度评分分布不正确:${resp.content}
     should be true    ${j["entities"][0]["count"]}==0    工作质量-满意度评分分布图未评数不正确:${j["entities"][0]["count"]}
     should be true    ${j["entities"][1]["count"]}==1    工作质量-满意度评分分布图已评数不正确:${j["entities"][1]["count"]}
+
+质检评分分布
+    #验证工作质量-质检评分分布
+    ${resp}=    /daas/internal/session/dist/qm    ${AdminUser}    ${timeout}    ${ConDateRange}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    工作质量-质检评分分布不正确:${resp.content}
+    should be true    ${j["totalElements"]}==2    工作质量-质检评分分布不正确:${resp.content}
+    should be true    ${j["entities"][0]["count"]}==0    工作质量-质检评分分布图未评数不正确:${j["entities"][0]["count"]}
+    should be true    ${j["entities"][1]["count"]}==1    工作质量-质检评分分布图已评数不正确:${j["entities"][1]["count"]}
+    should be true    ${j["entities"][1]["list"][4]["count"]}==1    工作质量-质检评分分布图已评数的级别不正确:${j["entities"][1]["list"][4]["count"]}
 
 有效人工会话占比
     #验证工作质量-有效人工会话占比

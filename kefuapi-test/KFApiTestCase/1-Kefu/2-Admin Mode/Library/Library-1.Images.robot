@@ -10,7 +10,12 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
 
 *** Test Cases ***
 上传素材库图片(/v1/Tenants/{tenantId}/robot/media/item)
-    [Documentation]    上传素材库图片
+    [Documentation]    【操作步骤】：
+    ...    - Step1、上传素材库图片，调用接口：/v1/Tenants/{tenantId}/robot/media/item，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，tenantId字段的值等于租户id、字段objectType值等于image/gif。
     #获取图片文件
     ${picpath}    Find Image Path
     ${fileEntity}    create dictionary    filename=image.gif    filepath=${picpath}    contentType=image/gif
@@ -21,6 +26,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     Should Be equal    ${j['objectType']}    ${fileEntity.contentType}    返回的contentType值不是${fileEntity.contentType}：${j}
 
 获取素材库图片(/v1/Tenants/{tenantId}/robot/media/items)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、上传一张图片到素材库，调用接口：/v1/Tenants/{tenantId}/robot/media/item，接口请求状态码为200。
+    ...    - Step2、获取素材库图片，调用接口：/v1/Tenants/{tenantId}/robot/media/items，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，检查字段id和objectId值等于上传图片的信息值。
     [Documentation]    获取素材库图片
     #上传一张图片到素材库
     ${imageResult}    Upload Library Image    ${AdminUser}
@@ -31,6 +43,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     Should Be equal    ${j['content'][0]['objectId']}    ${imageResult.objectId}    返回的objectId不是${imageResult.objectId}：${j}
 
 删除素材库图片(/v1/Tenants/{tenantId}/robot/media/item/{itemId})
+    [Documentation]    【操作步骤】：
+    ...    - Step1、上传一张图片到素材库，调用接口：/v1/Tenants/{tenantId}/robot/media/item，接口请求状态码为200。
+    ...    - Step2、删除素材库图片，调用接口：/v1/Tenants/{tenantId}/robot/media/item/{itemId}，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，返回结果等于1。
     [Documentation]    删除素材库图片
     #上传一张图片到素材库
     ${imageResult}    Upload Library Image    ${AdminUser}
@@ -40,7 +59,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     Should Be True    "${j}"=="1"    返回的结果不是1：${j}
 
 按搜索删除素材库图片(/v1/Tenants/{tenantId}/robot/media/item/{itemId})
-    [Documentation]    删除搜索素材库图片
+    [Documentation]    【操作步骤】：
+    ...    - Step1、搜索文件名包含image的所有图片，调用接口：/v1/Tenants/{tenantId}/robot/media/items，接口请求状态码为200。
+    ...    - Step2、根据索搜出来的素材库图片数据，删除图片，调用接口：/v1/Tenants/{tenantId}/robot/media/item/{itemId}，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，返回结果等于1。
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    per_page=100    q=image
     #获取素材库图片

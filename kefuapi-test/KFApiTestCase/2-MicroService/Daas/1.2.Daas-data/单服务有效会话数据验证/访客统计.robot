@@ -4,7 +4,7 @@ Resource          ../../../../../api/MicroService/Daas/DaasApi.robot
 Library           json
 Library           requests
 Library           RequestsLibrary
-Library           ../../../../../../../../../../../Library/Python/2.7/site-packages/robot/libraries/Collections.py
+Library           Collections
 
 *** Test Cases ***
 独立访客数-按渠道

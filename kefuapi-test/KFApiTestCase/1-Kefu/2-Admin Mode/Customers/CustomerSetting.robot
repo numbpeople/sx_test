@@ -3,7 +3,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
 
 *** Test Cases ***
 获取客户基础资料所有字段(/v1/crm/tenants/{tenantId}/columndefinitions)
-    [Documentation]    获取租户下客户基础资料设置中的所有字段
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取客户基础资料所有字段，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，接口请求状态码为200、系统字段systemColumn等于True一共有9个。
     #获取基础资料所有字段信息
     ${j}    Get Customer Columndefinitions    ${AdminUser}
     #记录返回值中"系统字段"的数量,并验证所有"系统字段"开关状态是否为ENABLE
@@ -16,7 +21,16 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     should be true    ${length} == 9    接口返回"系统字段"数量不正确:@{j['entity']}
 
 新增/编辑自定义字段(/v1/crm/tenants/{tenantId}/columndefinitions)
-    [Documentation]    新增"单行文本"格式的自定义字段
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取客户基础资料所有字段，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step2、新增一个"单行文本"格式的自定义字段，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step3、获取新增后基础资料所有字段个数,判断是否比新增前+1,并验证新增字段的其他返回值，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step4、编辑上面新增的自定义字段,将字段开关columnStatus更新为ENABLE，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step5、获取租户下所有基础资料字段,找到该自定义字段,检查编辑是否有效，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，接口请求状态码为200、系统字段columnStatus等于ENABLE。
     #获取基础资料所有字段个数
     ${j}    Get Customer Columndefinitions    ${AdminUser}
     ${lengthBefor}    get length    ${j['entity']}
@@ -55,7 +69,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     \    run keyword if    "${n['columnName']}" == "${column}"    should be true    "${n['columnStatus']}" == "ENABLE"    接口返回的columnStatus不正确,与编辑后的不符:${n}
 
 删除自定义字段(/v1/crm/tenants/{tenantId}/columndefinitions/{columnName})
-    [Documentation]    删除上一个case新增的自定义字段
+    [Documentation]    【操作步骤】：
+    ...    - Step1、删除新增的自定义字段，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions/{columnName}，接口请求状态码为200。
+    ...    - Step2、获取基础资料所有字段个数,判断是否与新增前一致，调用接口：/v1/crm/tenants/{tenantId}/columndefinitions，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，接口请求状态码为200、删除自定义字段后，接口返回总字段数量未改变。
     #删除上一个case新增的自定义字段
     ${j}    Delete Customer Columndefinition    ${AdminUser}    ${column}
     should be equal    ${j['entity']['columnName']}    ${column}    接口返回columnName不正确:${j}
@@ -65,7 +85,16 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     should be equal    ${columnLength}    ${lengthAfter}    接口返回总字段数量不正确:${j}
 
 新增/编辑/删除自定义分组(/v1/crm/tenants/{tenantId}/filters)
-    [Documentation]    新增一个当天的客户自定义分组
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增一个"最近一次会话创建时间"为"今天"的客户自定义分组，调用接口：/v1/crm/tenants/{tenantId}/filters，接口请求状态码为200。
+    ...    - Step2、获取租户下所有客户自定义分组,检查是否有新增的数据，调用接口：/v1/crm/tenants/{tenantId}/filters，接口请求状态码为200。
+    ...    - Step3、编辑自定义分组,将坐席是否可见visible字段更新为false，调用接口：/v1/crm/tenants/{tenantId}/filters，接口请求状态码为200。
+    ...    - Step4、删除上面新增的自定义分组，调用接口：/v1/crm/tenants/{tenantId}/filters，接口请求状态码为200。
+    ...    - Step5、获取租户下所有客户自定义分组,检查是否还包含已删除的数据，调用接口：/v1/crm/tenants/{tenantId}/filters，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，接口请求状态码为200，数据删除后查询不到被删数据。
     #创建时间返回值，类似：1512921600000,1513007940000
     ${param}    set variable    1    #筛选时间是哪个维度, 为：今天、昨天、本周、本月、上月
     ${timeValue}    Create Time Value    ${param}

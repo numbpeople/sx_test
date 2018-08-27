@@ -23,7 +23,14 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
 
 *** Test Cases ***
 下载历史会话导出管理的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    [Documentation]    1、创建一个历史会话并导出历史会话数据。 2、下载历史会话导出管理的数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、历史会话根据访客昵称导出刚结束的历史会话数据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、下载导出管理的数据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #定义为局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -55,7 +62,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载成员管理-客服的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    [Documentation]    1、创建坐席账号数据 2、导出成员管理-客服的数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新坐席，导出客服信息，接口：/v1/Admin/Agents，/v1/Admin/Agents/file。
+    ...    - Step2、下载导出管理的数据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建坐席账号并导出坐席数据
     @{paramList}    create list    ${AdminUser}
     ${agentInfo}    Run keyword And Export Specify Data    ${AdminUser}    Create Agent And Download Data    @{paramList}
@@ -90,8 +103,14 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载常用语的数据(/v1/tenants/{tenantId}/commonphrases/exportFile)
-    [Documentation]    1、创建常用语数据 2、导出常用语的数据 3、比较总行数大于2即可,后续再看如何校验多行情况
-    #创建坐席账号并导出坐席数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建常用语数据，接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、导出常用语数据，调用接口：/v1/tenants/{tenantId}/commonphrases/exportFile，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
+    #创建常用语数据并导出常用语数据
     @{paramList}    create list    ${AdminUser}
     ${commonphrasesInfo}    Create Commonphrases    ${AdminUser}
     #下载导出管理的数据
@@ -123,7 +142,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载常用语模板(/download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx)
-    [Documentation]    1、导出下载常用语模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出下载常用语模板，调用接口：/download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #导出常用语模板
     ${result}    Export Commonphrases Template    ${AdminUser}    #导出常用语模板
     ${commonphrasesContent}    set variable    ${result.content}    #获取常用语下载返回值
@@ -152,7 +176,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载会话标签的数据(/v1/Tenants/{tenantId}/ServiceSessionSummaries/exportfile)
-    [Documentation]    1、创建会话标签 2、导出会话标签的数据 3、比较总行数大于2即可,后续再看如何校验多行情况
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建会话标签数据，接口：/v1/Tenants/{tenantId}/ServiceSessionSummaries/{ServiceSessionSummaryId}/children，接口请求状态码为200。
+    ...    - Step2、导出会话标签数据，调用接口：/v1/Tenants/{tenantId}/ServiceSessionSummaries/exportfile，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建会话标签
     ${summaryInfo}    Create ServiceSessionSummary    ${AdminUser}
     #导出会话标签的数据
@@ -184,7 +214,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载会话标签-下载模板的数据(/download/tplfiles/%E4%BC%9A%E8%AF%9D%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx)
-    [Documentation]    1、导出下载会话标签模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出下载会话标签-下载模板的数据，调用接口：/download/tplfiles/%E4%BC%9A%E8%AF%9D%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #导出会话标签模板
     ${result}    Export ServiceSessionSummary Template    ${AdminUser}    #导出会话标签模板
     ${summaryContent}    set variable    ${result.content}    #获取会话标签载返回值
@@ -213,8 +248,14 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     run keyword if    ${rowCount} != 7    Fail    因为会话标签下载模板数据一共7行,所以导出的excel文件总行数应等于7,需要检查文件,路径:${xlsPath}
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
-导出下载客户标签的数据(/download/tplfiles/%E5%AE%A2%E6%88%B7%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx)
-    [Documentation]    1、创建客户标签 2、导出客户标签的数据 3、比较总行数大于2即可,后续再看如何校验多行情况
+导出下载客户标签的数据(/v1/Admin/UserTags/exportfile)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建客户标签数据，接口：/v1/Admin/UserTags，接口请求状态码为200。
+    ...    - Step2、导出客户标签数据，调用接口：/v1/Admin/UserTags/exportfile，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建客户标签
     ${userTagInfo}    Create UserTag    ${AdminUser}
     #导出客户标签的数据
@@ -245,7 +286,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载客户标签-下载模板的数据(/download/tplfiles/%E5%AE%A2%E6%88%B7%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx)
-    [Documentation]    1、导出下载客户标签模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出下载客户标签-下载模板的数据，调用接口：/download/tplfiles/%E5%AE%A2%E6%88%B7%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #导出客户标签模板
     ${result}    Export UserTag Template    ${AdminUser}    #导出客户标签模板
     ${userTagContent}    set variable    ${result.content}    #获取客户标签载返回值
@@ -279,7 +325,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetValue1}    ${thirdRrowsList}    ${sheetValue2}    ${fourthRrowsList}
 
 导出下载知识库的数据(/v1/tenants/{tenantId}/knowledge/export)
-    [Documentation]    1、创建知识库 2、导出知识库的数据 3、比较总行数大于2即可,后续再看如何校验多行情况
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建知识库，接口：/v1/tenants/{tenantId}/knowledge/entries，接口请求状态码为200。
+    ...    - Step2、导出知识库数据，调用接口：/v1/tenants/{tenantId}/knowledge/export，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     ${filter}    copy dictionary    ${FilterEntity}
     #创建筛选条件
     set to dictionary    ${filter}    page=0    per_page=10    type=0    entryStates=Drafting    #entryStates：代表添加知识类型, 值为：Published、Drafting
@@ -314,7 +366,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载知识库-下载模板的数据(/download/tplfiles/{fileName}.xlsx)
-    [Documentation]    1、导出下载知识库模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出下载知识库-下载模板的数据，调用接口：/download/tplfiles/{fileName}.xlsx，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #设置下载的模板文件名称
     ${fileName}    set variable    %E7%9F%A5%E8%AF%86%E5%BA%93%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF
     #导出下载知识库模板
@@ -347,7 +404,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载机器人-知识规则的数据(/v3/Tenants/{tenantId}/robots/rule/export)
-    [Documentation]    1、创建知识规则 2、导出知识规则的数据 3、比较总行数大于3即可,后续再看如何校验多行情况
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建机器人-知识规则，接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
+    ...    - Step2、导出机器人-知识规则数据，调用接口：/v3/Tenants/{tenantId}/robots/rule/export，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建知识规则
     ${ruleResult}    Create Robot Rule    ${AdminUser}
     #导出知识规则的数据
@@ -379,7 +442,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载机器人-知识规则-下载模板的数据(/v3/Tenants/{tenantId}/robots/rule/template)
-    [Documentation]    1、导出下载机器人-知识规则模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出机器人-知识规则-下载模板的数据，调用接口：/v3/Tenants/{tenantId}/robots/rule/template，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #导出机器人-知识规则模板
     ${result}    Get Robot Rules Template    ${AdminUser}    #导出机器人知识规则模板
     ${userTagContent}    set variable    ${result.content}    #获取机器人知识规则模板下载返回值
@@ -409,7 +477,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载机器人-自定义菜单的数据(/v3/Tenants/{tenantId}/robots/menus/items/export)
-    [Documentation]    1、创建自定义菜单 2、导出自定义菜单的数据 3、比较总行数大于2即可,后续再看如何校验多行情况
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建机器人-自定义菜单，接口：/v3/Tenants/{tenantId}/robots/menus/item，接口请求状态码为200。
+    ...    - Step2、导出机器人-自定义菜单数据，调用接口：/v3/Tenants/{tenantId}/robots/menus/items/export，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建自定义菜单
     ${ruleResult}    Create Robot Parent Menu    ${AdminUser}
     #导出自定义菜单的数据
@@ -441,7 +515,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载机器人-自定义菜单-下载模板的数据(/v1/Tenants/{tenantId}/robot/menu/template/export)
-    [Documentation]    1、导出下载机器人-自定义菜单-下载模板模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出机器人-自定义菜单-下载模板的数据，调用接口：/v1/Tenants/{tenantId}/robot/menu/template/export，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #导出机器人-知识规则模板
     ${result}    Download Robot Menu Template    ${AdminUser}    #导出机器人自定义菜单下载模板
     ${menuContent}    set variable    ${result.content}    #获取机器人自定义菜单下载模板下载返回值
@@ -471,7 +550,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载质量检查的数据(/v1/tenants/{tenantId}/servicesessions/qualityreview/file)
-    [Documentation]    1、创建一个已结束的会话并导出基础质检数据。 2、下载质检在导出管理中的数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束，导出质检数据（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话->导出质检数据）。
+    ...    - Step2、下载导出管理的数据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建局部变量
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -510,7 +595,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRowsList}
 
 导出下载留言的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    [Documentation]    1、创建留言数据 2、导出该创建留言数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新留言，导出留言数据信息，接口：/tenants/{tenantId}/projects/{projectId}/tickets，/v1/tenants/{tenantId}/projects/{projectId}/tickets/file。
+    ...    - Step2、下载导出管理的数据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建留言数据
     @{paramList}    create list    ${AdminUser}
     ${ticketInfo}    Run keyword And Export Specify Data    ${AdminUser}    Create Ticket And Export Data    @{paramList}
@@ -546,7 +637,13 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
     
 导出下载客户中心的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
-    [Documentation]    1、创建新访客新会话 2、导出客户中心该访客数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新客户中心，导出客户中心数据信息，接口：/v1/crm/tenants/{tenantId}/customers/newfile。
+    ...    - Step2、下载导出管理的数据，调用接口：/tenants/{tenantId}/serviceSessionHistoryFiles，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    导出管理数据后，打开Excel文件，判断每个字段与预期给定模板值对应相等。
     #创建访客数据
     @{paramList}    create list    ${AdminUser}
     ${customerInfo}    Run keyword And Export Specify Data    ${AdminUser}    Create Customer And Export Data    @{paramList}

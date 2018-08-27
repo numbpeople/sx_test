@@ -5,7 +5,14 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
 
 *** Test Cases ***
 更新访客资料(/v1/crm/tenants/{tenantId}/customers/{customerId})
-    [Documentation]    更新访客名字
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建新访客和新会话，获取该访客的客户中心数据存在。
+    ...    - Step2、更新访客名称信息，调用接口：/v1/crm/tenants/{tenantId}/customers/{customerId}，接口请求状态码为200。
+    ...    - Step3、获取访客更新后的数据一致，调用接口：/v1/crm/tenants/{tenantId}/customers/{customerId}，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    获取访客数据接口返回值中，columnName字段值等于truename、customerId等于访客的顾客id。
     #获取setup时创建的访客信息
     ${customerId}    set variable    ${customerDetail["customer_id"]}
     ${visitorId}    set variable    ${customerDetail["bind_visitors"][0]}
@@ -29,7 +36,14 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     should be equal    ${value}    ${truename}    接口返回truename不正确:${value}
 
 更新客户标签(/v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId})
-    [Documentation]    更新某个访客的客户标签
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取租户下所有的客户标签数据，调用接口：/v1/Admin/UserTags，接口请求状态码为200。
+    ...    - Step2、为访客打上客户标签，调用接口：/v1/Tenant/VisitorUsers/{visitorId}/VisitorUserTags/{userTagId}，接口请求状态码为200。
+    ...    - Step3、获取访客资料信息，调用接口：/v1/crm/tenants/{tenantId}/visitors/{visitorId}/customer_detailinfo，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    获取访客资料信息接口返回值中，customerTags字段值等于刚标记的客户标签id值。
     #创建局部变量筛选条件
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    per_page=100
@@ -47,7 +61,15 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     should be true    '${j['entity']['customerTags']}' == '[${userTagId}]'    接口返回customerTags不正确:${j['entity']}
 
 加入黑名单(/v1/tenants/{tenantId}/blacklists)
-    [Documentation]    将访客加入黑名单,并验证黑名单列表
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取访客资料信息，调用接口：/v1/crm/tenants/{tenantId}/visitors/{visitorId}/customer_detailinfo，接口请求状态码为200。
+    ...    - Step2、将访客加入黑名单中，调用接口：/v1/tenants/{tenantId}/blacklists，接口请求状态码为200。
+    ...    - Step3、获取黑名单中的数据，包含刚加入的访客黑名单数据，调用接口：/v1/tenants/{tenantId}/blacklists，接口请求状态码为200。
+    ...    - Step4、获取客户中心操作日志列表，调用接口：/v1/tenants/{tenantId}/operationLog，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    获取客户中心操作日志列表接口返回值中，包含加入黑名单的客户id：customerId、操作类型operationType：blacklist、客户昵称等等。
     #获取nickname
     ${j}    Get Customer DetailInfo    ${AdminUser}    ${visitor_Id}
     ${length}    get length    ${j['entity']['columnValues']}

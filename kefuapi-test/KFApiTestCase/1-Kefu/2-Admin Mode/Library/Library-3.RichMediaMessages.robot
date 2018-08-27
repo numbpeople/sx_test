@@ -10,7 +10,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
 
 *** Test Cases ***
 添加素材库图文消息(/v1/Tenants/{tenantId}/robot/news)
-    [Documentation]    添加素材库图片
+    [Documentation]    【操作步骤】：
+    ...    - Step1、上传素材库图片，调用接口：/v1/Tenants/{tenantId}/robot/media/item，接口请求状态码为200。
+    ...    - Step2、添加素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，tenantId字段的值等于租户id、字段thumb_media_id值等于图片的objectId值。
     #上传一张图片到素材库
     ${imageResult}    Upload Library Image    ${AdminUser}
     #构造请求体
@@ -23,7 +29,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     Should Be equal    ${j['articles'][0]['thumb_media_id']}    ${imageResult.objectId}    返回的thumb_media_id不是${imageResult.objectId}：${j}
 
 获取素材库图文消息(/v1/Tenants/{tenantId}/robot/news/search)
-    [Documentation]    1、添加素材库图片    2、获取素材库图文消息
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/media/item，/v1/Tenants/{tenantId}/robot/news，接口请求状态码为200。
+    ...    - Step2、根据图文消息文本名称，搜索素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news/search，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，接口返回200，各字段等于预期。
     #添加素材库图文消息
     ${newsResult}    Create News Message    ${AdminUser}
     ${newsId}    set variable    ${newsResult.newsId}
@@ -35,7 +47,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     Should Be equal    ${j['content'][0]['articles'][0]['newsId']}    ${newsResult.newsId}    返回的newsId:${j['content'][0]['articles'][0]['newsId']},不是${newsResult.newsId}：${j}
 
 删除素材库图文消息(/v1/Tenants/{tenantId}/robot/news/{newsId})
-    [Documentation]    1、添加素材库图片    2、获取素材库图文消息
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/media/item，/v1/Tenants/{tenantId}/robot/news，接口请求状态码为200。
+    ...    - Step2、删除素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news/{newsId}，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，返回值等于1。
     #添加素材库图文消息
     ${newsResult}    Create News Message    ${AdminUser}
     ${newsId}    set variable    ${newsResult.newsId}
@@ -46,6 +64,13 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
 
 按搜索删除素材库图文消息(/v1/Tenants/{tenantId}/robot/news/{newsId})
     [Documentation]    按搜索删除素材库图文消息
+    [Documentation]    【操作步骤】：
+    ...    - Step1、搜索内容包含：[租户id+正文]的内容素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news/search，接口请求状态码为200。
+    ...    - Step2、删除素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news/{newsId}，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，返回值等于1。
     #获取素材库图文消息
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    page=0    per_page=100    keyword=${AdminUser.tenantId}正文    source=0

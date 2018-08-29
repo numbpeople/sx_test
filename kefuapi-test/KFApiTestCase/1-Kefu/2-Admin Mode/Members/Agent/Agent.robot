@@ -10,6 +10,12 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
 
 *** Test Cases ***
 获取所有的坐席列表数据(/v1/Admin/Agents)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取所有坐席列表，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，tenantId字段的值等于租户id、字段totalElements值大于0。
     #设置局部变量
     ${agentFilter}    copy dictionary    ${AgentFilterEntity}
     #获取所有坐席列表
@@ -20,6 +26,13 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     should be equal    ${j['content'][0]['tenantId']}    ${AdminUser.tenantId}    接口客服列表返回值中的tenantId字段不正确，${j}
 
 新增坐席并查询坐席信息(/v1/Admin/Agents)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新创建坐席，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step2、根据账号搜索指定坐席，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，tenantId字段的值等于租户id、字段totalElements值等于1、字段username值等于登录邮箱账号。
     #设置局部变量
     ${uuid}    Uuid 4
     ${name}    set variable    ${AdminUser.tenantId}${uuid}
@@ -44,7 +57,14 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     should be equal    ${j['content'][0]['tenantId']}    ${AdminUser.tenantId}    根据账号查询结果tenantId不正确，${j}
     should be equal    ${j['content'][0]['username']}    ${agent.username}    根据账号查询结果username不正确，${j}
 
-新增坐席并删除坐席(/v1/Admin/Agents)
+新增坐席并删除坐席(/v6/Admin/Agents/{userId})
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新创建坐席，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step2、删除刚创建的坐席，调用接口：/v6/Admin/Agents/{userId}，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，status字段的值等于OK。
     #设置局部变量
     ${uuid}    Uuid 4
     ${name}    set variable    ${AdminUser.tenantId}${uuid}
@@ -66,7 +86,13 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     Should Be Equal    ${j1['status']}    OK    接口返回中status不等于OK: {j1}
 
 导出坐席数据(/v1/Admin/Agents/file)
-    [Documentation]    1、创建坐席账号    2、导出该坐席数据
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新创建坐席，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step2、导出刚创建的坐席，调用接口：/v1/Admin/Agents/file，接口请求状态码为204。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为204。
     #设置局部变量
     ${agentFilter}    copy dictionary    ${AgentFilterEntity}
     ${agentInfo}    Create Specify Agent    ${AdminUser}

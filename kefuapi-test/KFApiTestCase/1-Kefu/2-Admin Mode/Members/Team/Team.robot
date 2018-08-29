@@ -10,7 +10,14 @@ Resource          ../../../../../commons/admin common/Members/AgentQueue_Common.
 Resource          ../../../../../commons/admin common/Members/Agents_Common.robot
 
 *** Test Cases ***
-获取技能组时间计划和问候语开关设置(/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/weekdays)
+获取技能组时间计划和问候语开关设置(/v1/tenants/{tenantId}/skillgroups/{queueId}/time-options)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新创建技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、根据时间计划获取工作日设置，调用接口：/v1/Admin/Agents/file，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id、timeScheduleId字段值等于0。
     #使用第一个时间计划数据
     ${curTime}    Uuid 4
     ${queueName}    set variable    ${AdminUser.tenantId}${curTime}
@@ -21,7 +28,16 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     should be equal    ${j['entity']['tenantId']}    ${AdminUser.tenantId}    接口返回值中tenantId值不是${AdminUser.tenantId}, ${j}
     should be equal    '${j['entity']['timeScheduleId']}'    '0'    接口返回值中timeScheduleId值不是0 , ${j}
 
-将坐席添加到技能组(/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/weekdays)
+将坐席添加到技能组(/v1/AgentQueue/{queueId}/AgentUser)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新创建技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、新创建坐席，调用接口：/v1/Admin/Agents，接口请求状态码为200。
+    ...    - Step3、将新创建坐席添加到技能组中，调用接口：/v1/AgentQueue/{queueId}/AgentUser，接口请求状态码为204。
+    ...    - Step4、查看技能组中的坐席，调用接口：/v2/tenants/{tenantId}/agents，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、username字段值等于登录账号、tenantId字段值等于租户id、totalElements字段值等于1。
     #创建技能组
     ${curTime}    Uuid 4
     ${queueName}    set variable    ${AdminUser.tenantId}${curTime}
@@ -51,6 +67,12 @@ Resource          ../../../../../commons/admin common/Members/Agents_Common.robo
     should be equal    ${j['entities'][0]['username']}    ${agent.username}    根据账号查询结果username不正确，${j}
 
 查询坐席所在技能组(/v1/tenants/{tenantId}/agents/{agentId}/skillgroups)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、查看坐席所在的技能组信息，调用接口：/v1/tenants/{tenantId}/agents/{agentId}/skillgroups，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、总数据大于0。
     ${j}    Get Agent QueueInfo    ${AdminUser}    ${AdminUser.userId}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     ${length} =    get length    ${j['entities']}

@@ -63,7 +63,6 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     Should Be True    "${j}"=="1"    返回的结果不是1：${j}
 
 按搜索删除素材库图文消息(/v1/Tenants/{tenantId}/robot/news/{newsId})
-    [Documentation]    按搜索删除素材库图文消息
     [Documentation]    【操作步骤】：
     ...    - Step1、搜索内容包含：[租户id+正文]的内容素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news/search，接口请求状态码为200。
     ...    - Step2、删除素材库图文消息，调用接口：/v1/Tenants/{tenantId}/robot/news/{newsId}，接口请求状态码为200。

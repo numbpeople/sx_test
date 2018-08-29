@@ -33,7 +33,6 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     ...
     ...    【预期结果】：
     ...    接口返回值中，检查字段id和objectId值等于上传图片的信息值。
-    [Documentation]    获取素材库图片
     #上传一张图片到素材库
     ${imageResult}    Upload Library Image    ${AdminUser}
     ${filter}    copy dictionary    ${RobotFilter}
@@ -50,7 +49,6 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     ...
     ...    【预期结果】：
     ...    接口返回值中，返回结果等于1。
-    [Documentation]    删除素材库图片
     #上传一张图片到素材库
     ${imageResult}    Upload Library Image    ${AdminUser}
     ${filter}    copy dictionary    ${RobotFilter}

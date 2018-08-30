@@ -660,7 +660,7 @@ Should Contain Visitor Message In Processing Conversation
     ...    | 参数名 | 是否必填 | 参数含义 |
     ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
     ...    | ${nickname} | 必填 | 访客昵称，例如：634-09049 |
-    ...    | ${type} | 必填 | 消息类型：txt、img、file、audio、loc |
+    ...    | ${type} | 必填 | 消息类型：txt、img、file、audio、loc、video、order、track |
     ...    | ${msg} | 选填 | 文本消息内容，例如：坐席消息 |
     ...
     ...    【返回值】
@@ -672,6 +672,9 @@ Should Contain Visitor Message In Processing Conversation
     ...    | 访客的进行中会话包含文件消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | file |
     ...    | 访客的进行中会话包含语音消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | audio |
     ...    | 访客的进行中会话包含位置消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | loc |
+    ...    | 访客的进行中会话包含位置消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | video |
+    ...    | 访客的进行中会话包含位置消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | order |
+    ...    | 访客的进行中会话包含位置消息 | ${j} | Should Contain Visitor Message In Processing Conversation | ${AdminUser} | 634-09049 | track |
     ...    | Should Be True | ${j} | 进行中会话，并未找到指定的loc类型消息：${j} |
     ...
     ...    【函数操作步骤】
@@ -704,14 +707,19 @@ Should Contain Visitor Message In Processing Conversation
     ${messageLength}    Get Length    ${visitorMessageList}
     #Step 5、判断不同格式的消息，是否在访客消息列表中
     Run Keyword And Return If    '${type}' == 'txt'    Run Keyword And Return Status    List Should Contain Value    ${visitorMessageList}    ${msg}
-    Run Keyword And Return If    '${type}' == 'img' or '${type}' == 'file' or '${type}' == 'audio'    Run Keyword And Return Status    Should Be True    ${messageLength} > 0
-    Run Keyword And Return If    '${type}' == 'loc'    Run Keyword And Return Status    Should Be True    ${messageLength} > 0
+    Run Keyword And Return If    '${type}' == 'video' or '${type}' == 'img' or '${type}' == 'file' or '${type}' == 'audio'    Run Keyword And Return Status    Should Be True    ${messageLength} > 0
+    Run Keyword And Return If    '${type}' == 'loc' or '${type}' == 'order' or '${type}' == 'track'    Run Keyword And Return Status    Should Be True    ${messageLength} > 0
 
 Check Visitor Message Is Exsit
     [Arguments]    ${messagesList}    ${type}
     [Documentation]    将不同格式的所有访客消息的列表进行返回
     @{visitorMessageList}    create list
     : FOR    ${message}    IN    @{messagesList}
+    \    #判断如果消息中是order或track消息，则加入desc描述信息到列表后，退出循环
+    \    ${hasMsgtypeKeyStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${message['body']['ext']['msgtype']}    ${type}
+    \    run keyword if    ${hasMsgtypeKeyStatus}    Append To List    ${visitorMessageList}    ${message['body']['ext']['msgtype']['${type}']['desc']}
+    \    Exit For Loop If    ${hasMsgtypeKeyStatus}
+    \    #判断如果消息中是txt、img、file、audio、loc类型消息，处理不同格式的访客消息
     \    ${userType}    set variable    ${message['fromUser']['userType']}
     \    ${messageType}    set variable    ${message['body']['bodies'][0]['type']}
     \    ${visitorMessageList}    Collect Multiple Type Visitor Message    ${userType}    ${messageType}    ${message}    ${visitorMessageList}
@@ -722,7 +730,7 @@ Collect Multiple Type Visitor Message
     [Arguments]    ${userType}    ${messageType}    ${message}    ${visitorMessageList}    ${type}
     [Documentation]    将不同格式的访客消息，添加到列表中，将列表进行返回
     run keyword if    ('${messageType}' == '${type}' == 'txt') and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['msg']}
-    run keyword if    (('${messageType}' == '${type}' == 'file') or ('${messageType}' == '${type}' == 'img') or ('${messageType}' == '${type}' == 'audio')) and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['filename']}
+    run keyword if    (('${messageType}' == '${type}' == 'video') or ('${messageType}' == '${type}' == 'file') or ('${messageType}' == '${type}' == 'img') or ('${messageType}' == '${type}' == 'audio')) and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['filename']}
     run keyword if    ('${messageType}' == '${type}' == 'loc') and ("${userType}" == "Visitor")    Append To List    ${visitorMessageList}    ${message['body']['bodies'][0]['addr']}
     Return From Keyword    ${visitorMessageList}
 
@@ -771,3 +779,32 @@ Should Be Rated
     ${scoreStatus}    Run Keyword And Return Status    Should Be Equal    ${j['data'][0]['summary']}    ${score}
     ${detailStatus}    Run Keyword And Return Status    Should Be Equal    ${j['data'][0]['detail']}    ${detail}
     Run Keyword And Return    Run Keyword And Return Status    Should Be True    "${scoreStatus}" == "${detailStatus}" == "True"
+
+Robot Reply Message To Visitor
+    [Arguments]    ${agent}    ${nickname}    ${type}    ${msg}=
+    [Documentation]    判断进行中会话中，是否包含指定访客消息
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${nickname} | 必填 | 访客昵称，例如：634-09049 |
+    ...    | ${type} | 必填 | 消息类型：txt、img、menu、form、news |
+    ...    | ${msg} | 选填 | 文本消息内容，例如：坐席消息 |
+    ...
+    ...    【返回值】
+    ...    | 接口调用成功返回值：True |
+    ...
+    ...    【调用方式】
+    ...    | 访客的进行中会话包含文本消息 | ${j} | Robot Reply Message To Visitor | ${AdminUser} | 634-09049 | txt | app访客端发送文字消息 |
+    ...    | Should Be True | ${j} | 进行中会话，并未找到指定的loc类型消息：${j} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 根据访客昵称查找所属会话是否已经结束，如会话不属于机器人，则手动结束，并模拟访客发消息给机器人 |
+    ...    | Step 2 | 获取接口/v1/Agents/me/Visitors，如果返回的进行中数据，每个会话id均不是发起的会话，尝试重试取10次。 |
+    ...    | Step 3 | 获取该会话的所有消息 |
+    ...    | Step 4 | 将索要查询的指定格式的消息，添加到列表中。 |
+    ...    | Step 5 | 判断不同格式的消息，检查是否在访客消息列表中 |
+    ...    | Step 6 | 返回值：True |
+    #Step 1、根据访客昵称查找所属会话是否已经结束，如会话不属于机器人，则手动结束，并模拟访客发消息给机器人
+    #Step 2、判断访客所需要机器人回复的消息类型，来进行创建知识规则，包括。
+    

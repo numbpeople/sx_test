@@ -14,8 +14,14 @@ Resource          ../../../../commons/admin common/Notification/Notification_Com
 
 *** Test Cases ***
 获取消息中心未读消息数据(/users/{agentUserId}/activities)
-    [Documentation]    获取消息中心未读消息数据
-    [Tags]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取消息中心未读消息总数，调用接口：/users/{agentUserId}/activities，接口请求状态码为200。
+    ...    - Step2、发送并创建一个未读消息，调用接口：/v1/tenants/{tenantId}/activities，接口请求状态码为200。
+    ...    - Step3、再次获取消息中心未读消息总数，调用接口：/users/{agentUserId}/activities，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、第二个获取的未读消息总数比第一次大1、即：字段count_total、count_unread值要比第一次增加1。
     #获取未读消息，并标记
     ${resp}=    /users/{agentUserId}/activities    ${AdminUser}    ${timeout}    unread
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -43,8 +49,14 @@ Resource          ../../../../commons/admin common/Notification/Notification_Com
     Should Be True    ${j['count_unread']}+1 == ${j1['count_unread']}    count_total返回值不正确 , 比较前后值分别为:${j['count_unread']} ,${j1['count_unread']}
 
 获取消息中心未读消息数(/users/{agentUserId}/feed/info)
-    [Documentation]    获取消息中心未读消息数
-    [Tags]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取消息中心未读消息总数，调用接口：/users/{agentUserId}/feed/info，接口请求状态码为200。
+    ...    - Step2、发送并创建一个未读消息，调用接口：/v1/tenants/{tenantId}/activities，接口请求状态码为200。
+    ...    - Step3、再次获取消息中心未读消息总数，调用接口：/users/{agentUserId}/activities，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、第二个获取的未读消息总数比第一次大1、即：字段count_total、count_unread值要比第一次增加1。
     #获取未读消息，并标记
     ${resp}=    /users/{agentUserId}/feed/info    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -72,8 +84,15 @@ Resource          ../../../../commons/admin common/Notification/Notification_Com
     Should Be True    ${j['count_unread']}+1 == ${j1['count_unread']}    count_total返回值不正确 , 比较前后值分别为:${j['count_unread']} ,${j1['count_unread']}
 
 获取消息中心已读消息数据(/users/{agentUserId}/activities)
-    [Documentation]    获取消息中心已读消息数据
-    [Tags]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取消息中心未读消息总数，调用接口：/users/{agentUserId}/activities，接口请求状态码为200。
+    ...    - Step2、获取消息中心已读消息总数，调用接口：/users/{agentUserId}/activities，接口请求状态码为200。
+    ...    - Step3、如果未读总数据大于0，则标记第一条数据为已读，调用接口：/v2/users/{agentUserId}/activities/{activitiesId}，接口请求状态码为202。
+    ...    - Step4、获取消息中心已读消息总数，调用接口：/users/{agentUserId}/activities，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、第二个获取的已读消息总数会增加1。
     #获取未读消息，为了下面的遍历取activiesId
     ${resp}=    /users/{agentUserId}/activities    ${AdminUser}    ${timeout}    unread
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -99,8 +118,14 @@ Resource          ../../../../commons/admin common/Notification/Notification_Com
     Should Be True    ${preReadCounts} == ${afterReadCounts}    count_unread返回值不正确 , 比较前后值分别为:${preReadCounts} ,${currReadCounts}
 
 获取已发消息列表数据(/v1/tenants/{tenantId}/agents/{userId}/activities)
-    [Documentation]    获取消息中心已发消息列表数据
-    [Tags]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取已发消息列表，获取总数，调用接口：/v1/tenants/{tenantId}/agents/{userId}/activities，接口请求状态码为200。
+    ...    - Step2、发送新消息通知给其他坐席，调用接口：/v1/tenants/{tenantId}/agents/{userId}/activities，接口请求状态码为200。
+    ...    - Step3、再次获取已发消息列表，获取总数，调用接口：/v1/tenants/{tenantId}/agents/{userId}/activities，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、第二个获取的已发消息列表总数会增加1。
     #获取已发消息列表
     ${secs} =    Get Time    epoch
     ${notificationEntity}=    create dictionary    agentUserId=${AdminUser.userId}    content=my-content-${secs}    detail=my-detail-${secs}
@@ -123,12 +148,24 @@ Resource          ../../../../commons/admin common/Notification/Notification_Com
     Should Be True    ${j['count_total']} + 1 == ${j1['count_total']}    count_total返回值不正确 , 比较前后值分别为:${j['count_total']} ,${j1['count_total']}
 
 获取默认消息中心数据(/users/{agentId}/activities)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取默认消息中心数据，调用接口：/users/{agentId}/activities，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200，total_entries字段值大于等于0。
     ${resp}=    /users/{agentId}/activities    ${AdminUser}    ${FilterEntity}    ${MsgCenterEntity}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}
     Should Be True    ${j['total_entries']} >= 0    消息中心数据不正确
 
 获取默认消息中心数量(/users/{agentId}/feed/info)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取默认消息中心数量总数，调用接口：/users/{agentId}/feed/info，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200，count_total、count_unread字段值大于等于0。
     ${resp}=    /users/{agentId}/feed/info    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
     ${j}    to json    ${resp.content}

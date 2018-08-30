@@ -12,12 +12,22 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
 
 *** Test Cases ***
 获取机器人欢迎语(/v1/Tenants/{tenantId}/robots/greetings)
-    [Documentation]    获取机器人欢迎语
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人欢迎语，调用接口：/v1/Tenants/{tenantId}/robots/greetings，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     ${j}=    Get Robot Greeting    ${AdminUser}
     # Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的tenantId值不正确：${j}
 
 获取机器人默认回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    获取机器人默认回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人默认回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、first字段值等于True、last字段值等于True。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取机器人默认回复
@@ -27,7 +37,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    '${j['last']}'    'True'    返回的机器人默认回复不正确：${j}
 
 获取机器人重复回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    获取机器人重复回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人重复回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、first字段值等于True、last字段值等于True。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取机器人重复回复
@@ -38,7 +53,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
 
 
 获取机器人超时回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    获取机器人超时回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人超时回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、first字段值等于True、last字段值等于True。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取机器人超时回复
@@ -48,7 +68,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    '${j['last']}'    'True'    返回的机器人超时回复不正确：${j}
 
 添加机器人默认回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    添加机器人默认回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人默认回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为201。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为201、content字段值等于添加的默认回复数据、type字段值等于0。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    type=0    #设置type=0，参数为添加默认回复数据
@@ -61,7 +86,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['type']}    ${${defaultReplyEntity.type}}    返回的机器人默认回复type值不正确：${j}
 
 添加机器人重复回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    添加机器人重复回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人重复回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为201。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为201、content字段值等于添加的重复回复数据、type字段值等于1。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    type=1    #设置type=1，参数为添加重复回复数据
@@ -74,7 +104,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['type']}    ${${defaultReplyEntity.type}}    返回的机器人重复回复type值不正确：${j}
 
 添加机器人超时回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    添加机器人超时回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人超时回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为201。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为201、content字段值等于添加的超时回复数据、type字段值等于1。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    type=2    #设置type=1，参数为添加超时回复数据
@@ -87,7 +122,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['type']}    ${${defaultReplyEntity.type}}    返回的机器人超时回复type值不正确：${j}
 
 删除机器人默认回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    删除机器人默认回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人默认回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为201。
+    ...    - Step2、删除机器人默认回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值等于1。
     #添加默认回复数据
     ${type}    set variable    0
     ${autoReplyResult}    Add Robot AutoReply    ${AdminUser}    ${type}
@@ -100,7 +141,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j}    ${1}    删除默认回复接口返回不为1：${j}
 
 删除机器人重复回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    删除机器人重复回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人重复回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为201。
+    ...    - Step2、删除机器人重复回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值等于1。
     #添加默认重复数据
     ${type}    set variable    1
     ${autoReplyResult}    Add Robot AutoReply    ${AdminUser}    ${type}
@@ -113,7 +160,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j}    ${1}    删除重复回复接口返回不为1：${j}
 
 删除机器人超时回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
-    [Documentation]    删除机器人超时回复
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人超时回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为201。
+    ...    - Step2、删除机器人超时回复，调用接口：/v1/Tenants/{tenantId}/robot/profile/predefinedReplys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值等于1。
     #添加默认超时数据
     ${type}    set variable    2
     ${autoReplyResult}    Add Robot AutoReply    ${AdminUser}    ${type}
@@ -126,13 +179,24 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j}    ${1}    删除重复回复接口返回不为1：${j}
 
 获取机器人转人工设置(/v1/Tenants/{tenantId}/robots/robotUserTransferKf)
-    [Documentation]    获取机器人转人工设置
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人转人工设置，调用接口：/v1/Tenants/{tenantId}/robots/robotUserTransferKf，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、tenantId字段值等于租户id。
     #获取机器人转人工设置
     ${j}    Set RobotUserTransferKf Setting    get    ${AdminUser}
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人转人工设置不正确：${j}
 
 修改机器人转人工设置(/v1/Tenants/{tenantId}/robots/robotUserTransferKf)
-    [Documentation]    修改机器人转人工设置
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人转人工设置，调用接口：/v1/Tenants/{tenantId}/robots/robotUserTransferKf，接口请求状态码为200。
+    ...    - Step2、修改机器人转人工设置，调用接口：/v1/Tenants/{tenantId}/robots/robotUserTransferKf，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值中转人工提示语和限制转人工提示语与请求值相等。
     #获取机器人转人工设置
     &{j}    Set RobotUserTransferKf Setting    get    ${AdminUser}
     Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    返回的机器人转人工设置不正确：${j}
@@ -145,7 +209,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    '${j1['disableTransferReply']}'    '${j.disableTransferReply}'    修改转人工设置后的disableTransferReply值不正确：${j1}
 
 获取多机器人设置(/v1/Tenants/{tenantId}/robot/profile/settings)
-    [Documentation]    获取多机器人设置
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取多机器人设置，调用接口：/v1/Tenants/{tenantId}/robot/profile/settings，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、totalElements字段值大于0。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取多机器人资料信息
@@ -155,7 +224,14 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be True    ${j['totalElements']} > 0    接口返回值中totalElements不正确 ,${j}
 
 修改机器人设置(/v1/Tenants/{tenantId}/robot/profile/setting)
-    [Documentation]    1、获取机器人的资料信息    2、获取机器人设置    3、修改第一个机器人的设置
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人的资料信息，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step2、获取机器人设置，调用接口：/v1/Tenants/{tenantId}/robot/profile/settings，接口请求状态码为200。
+    ...    - Step3、修改第一个机器人的设置，调用接口：/v1/Tenants/{tenantId}/robot/profile/setting，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取多机器人资料信息

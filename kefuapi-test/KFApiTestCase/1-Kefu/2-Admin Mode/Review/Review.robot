@@ -12,7 +12,12 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
 
 *** Test Cases ***
 获取质量检查数据(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -26,7 +31,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     should be equal    ${j['status']}    OK
 
 创建会话并检查质检数据(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、totalElements字段值等于1、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -56,8 +67,16 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '0'    质检接口返回值amsgCount不正确：${j}
 
 创建会话并进行质检评分(/v1/tenants/{tenantId}/servicesessions/{sessionId}/steps/{stepId}/qualityreview)
-    [Tags]
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、获取租户的质检评分项，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step4、对该服务进行质检评分，调用接口：/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/steps/{stepNum}/qualityreview，接口请求状态码为200。
+    ...    - Step5、检查该服务的质检结果是否与预期一致，调用接口：/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/steps/{stepNum}/qualityreview，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -95,7 +114,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be Equal    ${j['entity']['totalScore']}    ${score}    质检接口返回值的totalScore不正确：${j}
 
 管理员模式基础质检按渠道筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据渠道和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -124,7 +149,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '0'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按关联Id筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据关联Id和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -153,7 +184,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '0'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按首响时长筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据首响时长和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -182,7 +219,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按会话时长筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据会话时长和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -211,7 +254,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按平均响应时长筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据平均响应时长和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -240,7 +289,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按访客消息数筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据访客消息数和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -269,7 +324,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按坐席消息数筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据坐席消息数和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -298,7 +359,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按满意度已评价筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据满意度已评价和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -327,7 +394,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按满意度未评价筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据满意度未评价和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -356,7 +429,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '0'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按质检状未评价筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据质检状未评价和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -385,7 +464,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '1'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按质检状已评价筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据质检状已评价和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -414,7 +499,13 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be True    '${j['entities'][0]['amsgCount']}' == '0'    质检接口返回值amsgCount不正确：${j}
 
 管理员模式基础质检按质检员筛选(/v1/tenants/{tenantId}/servicesessions/qualityreviews)
-    [Setup]
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据按质检员和技能组id、筛选当天的质量检查数据，调用接口：/v1/tenants/{tenantId}/servicesessions/qualityreviews，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、agentId字段值等于服务的坐席id、serviceSessionId字段值等于会话id、等等。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

@@ -4,6 +4,7 @@ Resource          ../../../../../api/MicroService/Daas/DaasApi.robot
 Library           json
 Library           requests
 Library           RequestsLibrary
+Library           Collections
 
 *** Test Cases ***
 客服工作量
@@ -33,11 +34,13 @@ Library           RequestsLibrary
 
 技能组工作量
     #验证工作量-技能组工作量接口返回值
-    ${resp}=    /daas/internal/group/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    groupId=${queueentity.queueId}
+    ${resp}=    /daas/internal/group/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
-    should be equal    ${j["status"]}    OK    客服工作量不正确:${resp.content}
-    should be true    ${j["totalElements"]}==1    客服工作量不正确:${resp.content}
+    should be equal    ${j["status"]}    OK    技能组工作量不正确:${resp.content}
+    should be true    ${j["totalElements"]}==1    技能组工作量不正确:${resp.content}
     ${key}    evaluate    int(${j["entities"][0]["key"]})
     should be equal    ${key}    ${queueentity.queueId}    技能组工作量-技能组有误:${j["entities"][0]["key"]}
     should be true    ${j["entities"][0]["avg_mc"]}>=3    技能组工作量-单会话消息数平均值有误:${j["entities"][0]["avg_mc"]}

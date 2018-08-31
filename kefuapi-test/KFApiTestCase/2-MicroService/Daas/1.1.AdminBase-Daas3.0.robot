@@ -167,21 +167,27 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     should be true    ${j["totalElements"]}>=1    客服在线时长明细不正确:${resp.content}
 
 访客统计-独立访客数(/daas/internal/visitor/total)
-    ${resp}=    /daas/internal/visitor/total    ${AdminUser}    ${timeout}    ${DateRange}
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    queryType=V_ORIGINTYPE
+    ${resp}=    /daas/internal/visitor/total    ${AdminUser}    ${timeout}    ${DateRange}    ${filter}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    独立访客数不正确:${resp.content}
     should be true    ${j["totalElements"]}>=1    独立访客数不正确:${resp.content}
 
 访客统计-独立访客数趋势图(/daas/internal/visitor/trend)
-    ${resp}=    /daas/internal/visitor/trend    ${AdminUser}    ${timeout}    ${DateRange}
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    queryType=V_ORIGINTYPE
+    ${resp}=    /daas/internal/visitor/trend    ${AdminUser}    ${timeout}    ${DateRange}    ${filter}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    独立访客数趋势图不正确:${resp.content}
     should be true    ${j["totalElements"]}==7    独立访客数趋势图不正确:${resp.content}
 
 访客统计-独立访客数列表(/daas/internal/visitor/count)
-    ${resp}=    /daas/internal/visitor/count    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    queryType=V_ORIGINTYPE
+    ${resp}=    /daas/internal/visitor/count    ${AdminUser}    ${timeout}    ${DateRange}    ${filter}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    独立访客数列表不正确:${resp.content}

@@ -49,14 +49,14 @@ Library           uuid
 /daas/internal/agent/kpi/wl
     [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${FilterEntity}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&dataAuth=${FilterEntity.dataAuth}&page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&agentId=${agent.userId}
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&dataAuth=${FilterEntity.dataAuth}&page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&agentId=${agent.userId}&sessionType=${FilterEntity.sessionType}
     ${uri}=    set variable    /daas/internal/agent/kpi/wl
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /daas/internal/group/kpi/wl
     [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${FilterEntity}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&dataAuth=${FilterEntity.dataAuth}&page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&groupId=${FilterEntity.queueId}
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&dataAuth=${FilterEntity.dataAuth}&page=${FilterEntity.page}&pageSize=${FilterEntity.per_page}&groupId=${FilterEntity.groupId}
     ${uri}=    set variable    /daas/internal/group/kpi/wl
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 

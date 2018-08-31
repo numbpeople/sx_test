@@ -265,3 +265,51 @@ Valid Conversation Setup
     Should Be Equal    ${j['entity']['reviewerId']}    ${AdminUser.userId}    质检接口返回值的reviewerId不正确：${j}
     Should Be Equal    ${j['entity']['totalScore']}    ${score}    质检接口返回值的totalScore不正确：${j}
     sleep    ${daasDelay}
+
+Agent CallingBack Conversation Setup
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、坐席在历史会话中，回呼刚刚结束的会话，调用接口：/v6/Tenants/me/Agents/me/ServiceSessions/VisitorUsers/{visitorUserId}/CreateServiceSession，接口请求状态码为200。
+    ...    - Step3、在进行中列表中，验证进行中会话，调用接口：/v1/Agents/me/Visitors，接口请求状态码为200。
+    ...    - Step4、关闭进行中会话。
+    ...    - Step5、按会话id筛选坐席模式下的历史会话，验证会话已关闭。
+    ...    - Step6、将会话的时间戳及技能组id等信息保存至全局变量${ConInfo}中，供case使用。
+    #设置局部变量的字典
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #创建已结束的会话
+    ${session}    Create Terminal Conversation
+    #坐席回呼刚刚创建并结束的会话
+    ${callBackSession}    Agent CallingBack Conversation    ${AdminUser}    ${session.userId}
+    Should Be True    "${callBackSession['status']}" == "OK"    回呼会话返回后的status值不对，正常的结果OK：${callBackSession}
+    Should Be True    "${callBackSession['entity']['state']}" == "Processing"    回呼会话返回后的接口state值不对，正常的结果为Processing：${callBackSession}
+    Should Be True    "${callBackSession['entity']['visitorUser']['userId']}" == "${session.userId}"    回呼会话返回后的接口userId值不对，正常的结果为${session.userId}：${callBackSession}
+    #获取进行中会话列表
+    &{searchDic}    create dictionary    fieldName=${session.userId}    fieldValue=${session.userId}    fieldConstruction=['user']['userId']
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${searchDic.fieldName}    ${searchDic.fieldValue}    ${searchDic.fieldConstruction}
+    ${expectConstruction}    set variable    [0]['user']['userId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${session.userId}    #该参数为获取接口某字段的预期值
+    #验证进行中会话是否与期望一致
+    ${j}    Repeat Keyword Times    Get Processing Conversations With FieldName    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    回呼会话后，进行中会话不是预期值
+    should be equal    ${j[0]['user']['nicename']}    ${session.userName}    获取到的访客昵称不正确, ${j}
+    ${serviceSessionId}    set variable    ${j[0]['serviceSessionId']}
+    #关闭进行中会话
+    Stop Processing Conversation    ${AdminUser}    ${session.userId}    ${serviceSessionId}
+    #坐席模式下历史会话按照会话id筛选
+    set to dictionary    ${filter}    isAgent=true    serviceSessionId=${serviceSessionId}
+    ${j}    Get History    ${AdminUser}    ${filter}    ${DateRange}
+    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话未查询到该会话：${j}
+    #将需要的信息保存至全局变量${ConInfo}中
+    ${daasStartTime}    convert date    ${j['items'][0]['createDatetime']}    epoch
+    ${daasEndTime}    evaluate    ${daasStartTime}+1
+    ${daasStartTime}    convert to integer    ${daasStartTime}
+    ${daasEndTime}    convert to integer    ${daasEndTime}
+    ${daasStartTime}    set variable    ${daasStartTime}000
+    ${daasEndTime}    set variable    ${daasEndTime}000
+    set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
+    ${ConInfo}    create dictionary    ConDateRange=${ConDateRange}    queueId=${j['items'][0]['queueId']}    createDatetime=${j['items'][0]['createDatetime']}    startDateTime=${j['items'][0]['startDateTime']}    stopDateTime=${j['items'][0]['stopDateTime']}
+    ...    agentUserId=${j['items'][0]['agentUserId']}    serviceSessionId=${serviceSessionId}
+    set global variable    ${ConInfo}
+    sleep    ${daasDelay}

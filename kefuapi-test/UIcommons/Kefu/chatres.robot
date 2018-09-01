@@ -11,6 +11,10 @@ ${chattest}       {"navigator":{"Admin":{"uri":"/mo/admin/webapp/current","ShowK
 ${maxcallinselectorstr}    '{"elements":[{"name":"div","xPath":"//*[@id=\\'em-chat\\']/header/div[2]/div","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"class","value":{"zh-CN":"ui-cmp-select white small%s","en-US":"ui-cmp-select white small%s"}}],"elements":[{"name":"numselectorspan","xPath":"/span","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"class","value":{"zh-CN":"ui-cmp-selectbar","en-US":"ui-cmp-selectbar"}},{"name":"title","value":{"zh-CN":"%d","en-US":"%d"}},{"name":"selval","value":{"zh-CN":"%d","en-US":"%d"}}],"elements":[{"name":"numselectorspanlabel","xPath":"/label","text":{"zh-CN":"%d","en-US":"%d"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}]}'
 ${maxcallinlistr}    '{"elements":[{"name":"li","xPath":"/html/body/ul[1]/li[%d]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"class","value":{"zh-CN":"ui-itm-select","en-US":"ui-itm-select"}}],"elements":[{"name":"label","xPath":"/label","text":{"zh-CN":"%d","en-US":"%d"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
 @{actviedattributes}    ''    ' activated'
+${searchongoinstr}    '{"elements":[{"name":"searchdiv","xPath":"//*[@id=\\'em-chat\\']/div[1]/div/div[1]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"p","xPath":"/div[2]/p/div/div[1]/div/div/span/input","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"placeholder","value":{"zh-CN":"搜索名字、昵称","en-US":"Search"}}],"elements":[]},{"name":"closespan","xPath":"/div[2]/p/div/div[1]/div/div/span/span[2]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
+${searchongoinglistr}    '{"elements":[{"name":"li","xPath":"/li[%d]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"p","xPath":"/div[2]/p","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
+ents":[{"name":"p","xPath":"/div[2]/p","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"class","value":{"zh-CN":"channel-source-%s","en-US":"channel-source-%s"}}],"elements":[]}]}]}'
+${chatdetailstr}    '{"elements":[{"name":"chatdetail","xPath":"//*[@id=\\'em-chat\\']/div[2]/div[1]/h2","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"guestnamespan1","xPath":"/span[1]","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"channelspan3","xPath":"/span[3]","text":{"zh-CN":"(会话来自: %s)","en-US":"(From: %s)"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
 
 *** Keywords ***
 chat smoketest case
@@ -288,6 +292,52 @@ Should Not Schedule Other Queue Session
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
     set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
-    sleep   ${ScheduleTimeout}
+    sleep    ${ScheduleTimeout}
     Session Not In Visitors    ${agent}    ${guest.userName}
     [Teardown]    Clear Agent All Sessions And Delete Second Queue    ${uiadmin}    ${uiadmin}    ${filter}    ${range}    ${q2.queueId}
+
+Search Visitor In Ongoing Case
+    [Arguments]    ${Admin}    ${agent}    ${guestName}    ${searchSttr}    ${originType}=app
+    [Documentation]    参数说明：
+    ...    ${Admin}:管理员，用来设置各接口
+    ...    ${agent}:测试坐席，可为管理员或坐席
+    ...    ${serviceSessionPreScheduleEnable}:是否开启预调度，只能为小写的false或true，不能加引号
+    ...    ${MaxServiceUserNumber}:接待数，0关闭调度，1开启调度
+    #跳转到进行中会话
+    switch browser    ${agent.session}
+    goto and checkchatebasejson    ${agent}
+    #发送消息，并指定坐席
+    ${guest}=    create dictionary    userName=${guestName}    originType=${originType}
+    Send Uuidmsg By Specified Agent    ${restentity}    ${guest}    ${agent.username}
+    #设置筛选条件：
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
+    #检查会话进入进行中：格式化会话列表json并检查ui
+    @{p}    create list    1    ${guest.originType}    ${guest.userName}    ${elementstatelist[1]}    ${elementstatelist[2]}
+    Format String And Check Elements    ${agent}    format chatlistlistr    @{p}
+    #搜索
+    [Teardown]    Clear Agent All Sessions    ${Admin}    ${agent}    ${filter}    ${range}
+
+Check ChatDetail Case
+    [Arguments]    ${Admin}    ${agent}
+    [Documentation]    参数说明：
+    ...    ${Admin}:管理员，用来设置各接口
+    ...    ${agent}:测试坐席，可为管理员或坐席
+    #跳转到进行中会话
+    switch browser    ${agent.session}
+    goto and checkchatebasejson    ${agent}
+    #发送消息，并指定坐席
+    ${guest}    Generate Uuidguest    app
+    Send Uuidmsg By Specified Agent    ${restentity}    ${guest}    ${agent.username}
+    #设置筛选条件：
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
+    #检查会话进入进行中：格式化会话列表json并检查ui
+    @{p}    create list    '${guest.userName}'    '${guest.userName}'    '${restentity.channelName}'    '${restentity.channelName}'
+    ${t}    evaluate    ','.join(list(map(str,@{p})))
+    ${t}    decode bytes to string    ${t}    utf-8
+    Format String And Check Elements    ${agent}    Format Jsonstr    ${chatdetailstr}    ${t}
+    #搜索
+    [Teardown]    Clear Agent All Sessions    ${Admin}    ${agent}    ${filter}    ${range}

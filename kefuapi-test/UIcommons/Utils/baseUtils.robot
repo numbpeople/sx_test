@@ -313,3 +313,8 @@ Kefu Agent Logout
     [Arguments]    ${agentlist}
     : FOR    ${i}    IN    @{agentlist}
     \    /logout    ${i}    ${timeout}
+
+Format Jsonstr
+    [Arguments]    ${jsonstr}    ${formatstr}
+    ${s}    evaluate    ${jsonstr} % (${formatstr})
+    [Return]    ${s}

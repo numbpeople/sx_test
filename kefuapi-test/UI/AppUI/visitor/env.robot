@@ -15,7 +15,7 @@ ${respones_info}    This is a respones infomation
 ${packagename}    com.easemob.helpdeskdemo
 ${TextView}       android.widget.TextView
 ${RelativeLayout}    android.widget.RelativeLayout
-${timeout}        10
+${timeout}        20
 ${respones_info2}    This is second respones infomation
 ${seat_reply_leavemess}    this seat reply leavemessage responses
 

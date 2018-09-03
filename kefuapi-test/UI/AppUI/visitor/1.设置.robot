@@ -21,7 +21,6 @@ startdemo
     ...    - Step2、模拟器上正常启动客服demo
     Comment    关闭所有app清空包缓存    automationName=Uiautomator2
     Close All Applications
-    Evaluate    os.system("adb shell pm clear com.easemob.helpdeskdemo")    os
     Comment    启动客服访客端app
     ${REMOTE_URL}    set variable    http://127.0.0.1:4723/wd/hub
     ${PLATFORM_NAME}    set variable    Android
@@ -30,6 +29,7 @@ startdemo
     ${DEVICE_NAME}    set variable    127.0.0.1:62001
     ${appPackage}    set variable    ${packagename}
     ${appActivity}    set variable    ${packagename}.ui.MainActivity
+    Evaluate    os.system("adb -s ${DEVICE_NAME} shell pm clear com.easemob.helpdeskdemo")    os
     Open Application    ${REMOTE_URL}    alias=myapp1    platformName=${PLATFORM_NAME}    platformVersion=${PLATFORM_VERSION}    deviceName=${DEVICE_NAME}    appPackage=${appPackage}
     ...    appActivity=${appActivity}
     ${width}    Get Window Width
@@ -113,6 +113,7 @@ setup_nickname
     Comment    设置昵称
     ${times}    timestamps
     ${nickname}    set variable    nick_${times}
+    set global variable    ${nickname}
     setting_option    ${nickname}    ${packagename}:id/tv_setting_nick    //${TextView}[@text="User Nick"]    ${packagename}:id/edittext    //${TextView}[@text="${nickname}"]
 
 setup_Tenantld

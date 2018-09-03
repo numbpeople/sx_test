@@ -39,7 +39,7 @@ Create_space_Leavemess
     Click Element    ${packagename}:id/ib_shop_imageone
     Click Element    //${TextView}[@text='Connect to Customer Service']
     Comment    点击⊕更多，选择Note图标
-    Wait Until Element Is Visible    ${packagename}:id/right_layout    ${timeout}
+    Wait Until Element Is Visible    ${packagename}:id/btn_more    ${timeout}
     Click Element    ${packagename}:id/btn_more
     Click Element    ${packagename}:id/chat_menu_leave_msg
     Wait Until Element Is Visible    //${TextView}[@text="Note"]
@@ -151,7 +151,7 @@ responses_file
     Comment    选择一个附件
     click element    ${packagename}:id/ib_add_file
     click a point    ${width/2}    ${height/2}
-    sleep    1
+    sleep    2
     click a point    ${width*0.7}    ${height*0.4}
     Wait Until Element Is Visible    //${TextView}[@text="Send"]    5
     Comment    发送附件后在评论区可以查到刚发送的附件名称
@@ -193,6 +193,7 @@ responses_text_file
     Comment    同时输入文件和选择一个文件
     Input Text    ${packagename}:id/edittext    ${respones_info2}
     click element    ${packagename}:id/ib_add_file
+    sleep    1
     click a point    ${width/2}    ${height/2}
     sleep    1
     click a point    ${width/4}    ${height/8}

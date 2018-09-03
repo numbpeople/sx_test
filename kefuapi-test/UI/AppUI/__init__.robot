@@ -2,7 +2,7 @@
 Documentation     Setup Init Data
 ...               Teardown Data
 Suite Setup       Setup Init Data
-Suite Teardown    # Teardown Data
+Suite Teardown    Teardown Data    # Teardown Data
 Force Tags        appui
 Library           json
 Library           requests

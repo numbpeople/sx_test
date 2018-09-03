@@ -76,8 +76,8 @@ skill_groups_button
     ...
     ...    【预期结果】：
     ...    - Step1、可以点击到技术能组按钮；
-    ...    - Step1、正常进入售前技术能组发送消息；
-    ...    - Step1、正常进入售后技术能组发送消息；
+    ...    - Step2、正常进入售前技术能组发送消息；
+    ...    - Step3、正常进入售后技术能组发送消息；
     Comment    点击技能组按钮，会有售前和售后选项
     Click Element    ${packagename}:id/textview_customer
     sleeps    1
@@ -88,7 +88,6 @@ skill_groups_button
     Input Text    ${packagename}:id/et_sendmessage    This is previous sales skill groups
     Click Element    ${packagename}:id/btn_send
     Wait Until Element Is Visible    //${TextView}[@text='This is previous sales skill groups']
-    clean_chat_records
     Go back
     Wait Until Element Is Visible    ${packagename}:id/textview_customer
     Click Element    ${packagename}:id/textview_customer
@@ -100,5 +99,4 @@ skill_groups_button
     Input Text    ${packagename}:id/et_sendmessage    This is after sales skill groups
     Click Element    ${packagename}:id/btn_send
     Wait Until Element Is Visible    //${TextView}[@text='This is after sales skill groups']    ${timeout}    找到刚发送的消息
-    clean_chat_records
     Go back

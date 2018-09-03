@@ -51,19 +51,23 @@ Get Processing Session
     ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
     ...
     ...    【返回值】
-    ...    | 调用接口/v1/Agents/me/Visitors返回所有进行中会话的数据结果 |
+    ...    | 请求状态 | 请求地址 | 状态码 | 返回值 | 错误描述 |
+    ...    | status | url | statusCode | text | errorDescribetion |
     ...
     ...    【调用方式】
-    ...    | 获取进行中会话 | ${j} | Get Processing Session | ${AdminUser} |
+    ...    | 获取进行中会话 | &{apiResponse} | Get Processing Session | ${AdminUser} |
+    ...    | Should Be Equal | ${apiResponse.status} | ${ResponseStatus.OK} | ${apiResponse.errorDescribetion} |
     ...
     ...    【函数操作步骤】
     ...    | Step 1 | 根据调用 /v1/Agents/me/Visitors 查询进行中会话的接口函数 |
-    ...    | Step 2 | 针对接口返回对象 用封装函数Return Result ，返回状态码、请求地址、请求返回值等信息 |
+    ...    | Step 2 | 断言接口请求状态码为200 |
+    ...    | Step 3 | 针对接口返回对象，用封装函数Return Result ，请求状态、返回状态码、请求地址、请求返回值、错误描述信息 |
     #查询进行中会话
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
-    ${j}    Return Result    ${resp}
-    Return From Keyword    ${j}
+    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    run keyword if    not ${apiStatus}    set to dictionary     ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Get Processing Conversations With FieldName
     [Arguments]    ${agent}    ${fieldName}    ${fieldValue}    ${fieldConstruction}
@@ -78,10 +82,9 @@ Get Processing Conversations With FieldName
     ...    - 返回匹配根据${fieldName}字段结构取值，并且值等于${fieldValue}的结构
     ${sessionList}    create list
     #获取进行中会话列表
-    ${j}    Get Processing Session    ${agent}
-    ${text}    set variable    ${j.text}
-    ${status}    set variable    ${j.status}
-    ${url}    set variable    ${j.url}
+    &{apiResponse}    Get Processing Session    ${agent}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${text}    set variable    ${apiResponse.text}
     ${length}    get length    ${text}
     run keyword if    ${length} > 50    ${sessionList}
     #判断结果是否包含指定字段

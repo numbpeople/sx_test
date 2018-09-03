@@ -5,8 +5,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../commons/admin common/Setting/Questionnaire_Common.robot
+Resource          ../../../AgentRes.robot
+Resource          ../../../commons/admin common/Setting/Questionnaire_Common.robot
 
 *** Test Cases ***
 获取问卷账号列表(/v1/tenants/{tenantId}/questionnaires/accounts)

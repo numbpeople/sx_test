@@ -5,8 +5,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../api/BaseApi/Settings/WebhookApi.robot
+Resource          ../../../AgentRes.robot
+Resource          ../../../api/BaseApi/Settings/WebhookApi.robot
 
 *** Test Cases ***
 获取回调(/tenants/{tenantId}/webhook)

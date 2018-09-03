@@ -231,7 +231,8 @@ class MyListener(object):
             else:
                 self.outfile.write('<td colspan="2"><span style="font-size:10px">'+doc+'</span></td>\n')
 
-            self.outfile.write('<td colspan="2"><span style="font-size:10px;color:#FF3333">'+message+'</span></td>\n')
+            self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333;width:200px;display:block;word-wrap:break-word;">'+message+'</span></td>\n')
+            self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333"></span></td>\n')
             self.outfile.write('</tr>\n')
             self.outfile.write('</tbody>\n')
     

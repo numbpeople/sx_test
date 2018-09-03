@@ -5,8 +5,8 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../commons/HomePage_Common/SSO_Common.robot
+Resource          ../../../AgentRes.robot
+Resource          ../../../commons/HomePage_Common/SSO_Common.robot
 
 *** Test Cases ***
 获取单点登录配置(/v1/access/config)

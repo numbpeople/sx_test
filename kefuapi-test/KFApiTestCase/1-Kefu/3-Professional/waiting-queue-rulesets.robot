@@ -6,13 +6,13 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Library           uuid
-Resource          ../../../../AgentRes.robot
-Resource          ../../../../api/BaseApi/Settings/RoutingApi.robot
-Resource          ../../../../JsonDiff/KefuJsonDiff.robot
-Resource          ../../../../commons/admin common/Setting/Routing_Common.robot
-Resource          ../../../../commons/admin common/BaseKeyword.robot
-Resource          ../../../../commons/admin common/Robot/Robot_Common.robot
-Resource          ../../../../api/IM/IMApi.robot
+Resource          ../../../AgentRes.robot
+Resource          ../../../api/BaseApi/Settings/RoutingApi.robot
+Resource          ../../../JsonDiff/KefuJsonDiff.robot
+Resource          ../../../commons/admin common/Setting/Routing_Common.robot
+Resource          ../../../commons/admin common/BaseKeyword.robot
+Resource          ../../../commons/admin common/Robot/Robot_Common.robot
+Resource          ../../../api/IM/IMApi.robot
 Library           uuid
 
 *** Test Cases ***

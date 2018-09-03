@@ -233,11 +233,12 @@ Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.ro
     ...
     ...    【预期结果】：
     ...    接口返回值数据中，status值为OK、渠道值为：app、webim、weibo、weixin、sendType为NEWS或TEXT。
+    &{sendTypeEntity}    create dictionary    app=TEXT    webim=TEXT    weibo=TEXT    weixin=NEWS
     ${j}    Set Send-Settings Method    get    ${AdminUser}
     should be equal    ${j['status']}    OK    返回值status不是OK：${j}
     ${length}    get length    ${j['entities']}
     should be true    ${length} == ${4}    返回值不是四组 , ${j}
-    List Should Correct    ${j['entities']}
+    List Should Correct    ${j['entities']}    ${sendTypeEntity}
 
 修改租户下知识发送方式(/v1/tenants/{tenantId}/knowledge/send-settings)
     [Documentation]    【操作步骤】：

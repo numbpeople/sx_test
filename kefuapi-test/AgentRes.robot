@@ -70,3 +70,5 @@ ${daasDelay}      3
 &{evaluationdegreesName}    score1=非常不满意    score2=不满意    score3=一般    score4=满意   score5=非常满意
 &{evaluationdegreesNameScore}    score1=1    score2=2    score3=3    score4=4   score5=5
 ${grayFunctionOption}        False    #判断增值功能测试用例是否执行，True即执行，False为不执行
+&{ApiResponse}    status=    errorDescribetion=    statusCode=    text=    url=
+&{ResponseStatus}    OK=OK    FAIL=FAIL

@@ -21,18 +21,17 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 获取访客列表(/v1/Agents/me/Visitors)
     [Documentation]    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话接口。
-    ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}
+    ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}，接口返回状态码为200。
     ...
     ...    【预期结果】：
     ...    如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
     #Step1、获取进行中会话列表，并获取会话数
-    &{j}    Get Processing Session    ${AdminUser}
-    ${text}    set variable    ${j.text}
-    ${status}    set variable    ${j.status}
-    ${url}    set variable    ${j.url}
-    ${length}    get length    ${text}
+    &{apiResponse}    Get Processing Session    ${AdminUser}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${text}    set variable    ${apiResponse.text}
+    ${length}    get length    ${apiResponse.text}
     #Step2、判断返回接口返回值${text[0]['user']['tenantId']}
-    Run Keyword If    ${length} > 0    should be equal    '${text[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    【实际结果】：在操作步骤2时，调用接口：${url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
+    Run Keyword If    ${length} > 0    should be equal    '${text[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    【实际结果】：在操作步骤2时，调用接口：${apiResponse.url}后，判断['user']['tenantId']预期值：${AdminUser.tenantId},实际值为：${text[0]['user']['tenantId']}，接口返回结果：${text}
 
 获取空访客列表(/v1/Agents/me/Visitors)
     [Documentation]    【操作步骤】：
@@ -43,20 +42,22 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    【预期结果】：
     ...    获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
     #Step1、获取进行中会话列表，并获取会话数
-    &{j}    Get Processing Session    ${AdminUser}
-    ${text}    set variable    ${j.text}
-    ${status}    set variable    ${j.status}
-    ${url}    set variable    ${j.url}
+    &{apiResponse}    Get Processing Session    ${AdminUser}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${text}    set variable    ${apiResponse.text}
+    ${status}    set variable    ${apiResponse.status}
+    ${url}    set variable    ${apiResponse.url}
     ${length}    get length    ${text}
     #Step2、如果进行中会话数大于50个，则标记为失败，不继续执行，否则关闭所有会话。
     Run Keyword If    ${length} > 50    Fail    进行中会话超过50个会话，case不允许执行
     #批量结束进行中会话
     Stop Processing Conversations    ${AdminUser}    ${text}
     #Step3、查询坐席模式-进行中会话的会话数结果值。
-    &{j1}    Get Processing Session    ${AdminUser}
-    ${text1}    set variable    ${j1.text}
-    ${status1}    set variable    ${j1.status}
-    ${url1}    set variable    ${j1.url}
+    &{apiResponse1}    Get Processing Session    ${AdminUser}
+    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
+    ${text1}    set variable    ${apiResponse1.text}
+    ${status1}    set variable    ${apiResponse1.status}
+    ${url1}    set variable    ${apiResponse1.url}
     #【预期结果】：获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
     should be true    ${text1} == []    【实际结果】：在操作步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
 

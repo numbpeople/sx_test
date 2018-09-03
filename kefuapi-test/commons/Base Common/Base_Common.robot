@@ -50,28 +50,28 @@ Return Result
     ...
     ...    【参数值】：
     ...    | 参数名 | 是否必填 | 参数含义 |
-    ...    | ${resp} | 必填 | 接口返回的对象，其中包含请求地址、状态码、返回值，例如：${AdminUser} |
+    ...    | ${resp} | 必填 | 接口返回的对象，其中包含请求地址、状态码、返回值 |
     ...
     ...    【返回值】
-    ...    | 进行二次封装，将请求地址、状态码、返回值进行返回：url、status、text |
+    ...    | 进行二次封装，将请求状态、请求地址、状态码、返回值进行返回：status、url、statusCode、text |
     ...
     ...    【调用方式】
     ...    | 获取进行中会话 | ${j} | Return Result | ${resp} |
     ...
     ...    【函数操作步骤】
-    ...    | Step 1 | 构造返回字典，返回请求地址、状态码、返回值：url、status、text |
+    ...    | Step 1 | 构造返回字典，返回请求状态、请求地址、状态码、返回值：status、url、statusCode、text |
     ...    | Step 2 | 如果请求返回值为空，则返回值为空字符串 |
     #构造返回字典
-    &{result}    create dictionary
+    &{apiResponse}    Copy Dictionary    ${ApiResponse}
     ${text}    set variable    ${EMPTY}
     #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
     ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
-    set to dictionary    ${result}    url=${resp.url}    status=${resp.status_code}    text=${text}
-    Run Keyword And Return If    not ${status}    ${result}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
+    Run Keyword And Return If    not ${status}    ${apiResponse}
     #设置请求返回值
     ${text}    to json    ${resp.text}
-    set to dictionary    ${result}    url=${resp.url}    status=${resp.status_code}    text=${text}
-    Return From Keyword    ${result}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
+    Return From Keyword    ${apiResponse}
 
 Get GrayList
     [Arguments]    ${agent}=${AdminUser}

@@ -351,3 +351,13 @@ Get Customer OperationLog
     ${j}    to json    ${resp.content}
     should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
     return from keyword    ${j}
+
+Get DisplayNames For Columndefinitions
+    [Arguments]    ${agent}
+    [Documentation]    获取所有客户中心字段中，字段开关状态为开的字段名称
+    ${j}    Get Customer Columndefinitions    ${agent}
+    @{displayNamesList}    create list
+    :FOR    ${i}    IN    @{j['entity']}
+    # \    ${displayName}    convert to string    ${i['displayName']}
+    \    run keyword if    "${i['columnStatus']}" == "ENABLE"    Append To List    ${displayNamesList}    ${i['displayName']}
+    Return From Keyword    ${displayNamesList}

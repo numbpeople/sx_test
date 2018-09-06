@@ -29,6 +29,7 @@ Resource          ../../../../api/BaseApi/SessionCurrent/SessionCurrent_Api.robo
     ...
     ...    【预期结果】：
     ...    接口返回值中，会话状态为Wait、Processing的请求状态码为200。
+    @{SessionState}    create list    ${empty}    Wait    Processing
     : FOR    ${i}    IN    @{SessionState}
     \    ${resp}=    /v1/tenants/{tenantId}/processingsessions/count    ${AdminUser}    ${i}    ${timeout}
     \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

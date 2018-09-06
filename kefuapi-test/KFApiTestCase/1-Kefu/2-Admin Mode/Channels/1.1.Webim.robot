@@ -155,10 +155,10 @@ Resource          ../../../../commons/Base Common/Base_Common.robot
     #获取网页插件系统欢迎语
     ${j}    Show Company Greeting    ${AdminUser}
     #断言返回状态值和json结构与值是否一致
-    ${status}    Run Keyword And Return Status    Should Be Empty    ${j}
-    Run Keyword if    ${status}    Pass Execution    该租户没有设置系统欢迎语
-    ${data}    Run Keyword Unless    ${status}    Decode Bytes To String In    ${j}    UTF-8
-    Run Keyword Unless    ${status}    log    该租户系统欢迎语为：${data}
+    # ${status}    Run Keyword And Return Status    Should Be Empty    ${j}
+    # Run Keyword if    ${status}    Pass Execution    该租户没有设置系统欢迎语
+    # ${data}    Run Keyword Unless    ${status}    Decode Bytes To String In    ${j}    UTF-8
+    # Run Keyword Unless    ${status}    log    该租户系统欢迎语为：${data}
 
 获取网页渠道机器人欢迎语(/v1/webimplugin/tenants/robots/welcome)
     [Documentation]    【操作步骤】：

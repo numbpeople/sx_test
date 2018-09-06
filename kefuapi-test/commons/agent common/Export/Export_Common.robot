@@ -218,10 +218,20 @@ Should Be ExportFiles Excel Equal
     #断言模板数据是否在实际接口值中
     : FOR    ${i}    IN    @{sheetName}
     \    log    ${i}
-    \    List Should Contain Value    ${firstRowsList}    ${i}    数据${i}不在firstRowsList模板列表内
+    \    List Should Contain Value    ${firstRowsList}    ${i}    导出的excel表格：不包含字段名称为【${i}】的字段
     #断言模板数据是否在实际接口值中
     : FOR    ${i}    IN    @{sheetValue}
-    \    List Should Contain Value    ${secondRrowsList}    ${i}    数据${i}不在模板列表内
+    \    log    ${i}
+    \    List Should Contain Value    ${secondRrowsList}    ${i}    导出的excel表格：不包含字段名称为【${i}】的字段
+
+Convert List Element To String
+    [Arguments]    ${firstRowsList}
+    [Documentation]    将list中每个元素转化成string类型并返回
+    @{stringList}    create list
+    :FOR    ${i}    IN    @{firstRowsList}
+    \    ${stringValue}    convert to string    ${i}
+    \    append to list    ${stringList}    ${stringValue}
+    return from keyword    ${stringList}
 
 Create Terminal And Export QualityReviewFiles
     [Arguments]    ${agent}

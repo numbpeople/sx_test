@@ -11,16 +11,27 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
 
 *** Test Cases ***
 获取分类以及常用语列表(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取分类以及常用语列表，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id。
     #创建参数字典，坐席模式获取个人常用语
     &{phrasesEntity}    create dictionary    systemOnly=false    buildChildren=true    buildCount=true
     #获取常用语分类
     ${j}    Set Phrases    ${AdminUser}    get    ${orgEntity}    ${phrasesEntity}    ${EMPTY}
     should be equal    ${j['status']}    OK    获取常用语分类数据不正确：${j}
     ${length} =    get length    ${j['entities']}
-    Run Keyword if    ${length} == 0    Fail    租户下的没有个人常用语分类，需要检查下，${j}
-    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId值不正确: ${j}
+    Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId值不正确: ${j}
 
 添加分类(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -33,6 +44,13 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId值不正确: ${j}
 
 添加公共常用语(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、添加公共常用语，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -49,12 +67,19 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ${j}    Set Phrases    ${AdminUser}    post    ${orgEntity}    ${phrasesEntity}    ${data1}
     should be equal    ${j['status']}    OK    获取常用语数据不正确：${j}
     ${length} =    get length    ${j['entity']}
-    Run Keyword if    ${length} == 0    Fail    添加公共常用语没有返回数据，需要检查 \ ${j}
+    Run Keyword if    ${length} == 0    Fail    添加公共常用语没有返回数据，需要检查 ： ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId值不正确: ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['parentId']}    ${phrasesEnt.parentId}    返回值中parentId值不正确: ${j}
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['phrase']}    ${phrasesEnt.phrase}    返回值中phrase字段值不正确: ${j}
 
 添加子分类(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、新增子分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -77,6 +102,14 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['phrase']}    ${phrasesEnt.phrase}    返回值中phrase字段值不正确: ${j}
 
 修改公共常用语(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、新增公共常用语，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step3、修改公共常用语，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -110,6 +143,14 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['phrase']}    ${changepHrasesEnt.phrase}    返回值中phrase字段值不正确: ${j}
 
 修改子分类名称(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、新增公共常用语，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step3、修改公共常用语，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true

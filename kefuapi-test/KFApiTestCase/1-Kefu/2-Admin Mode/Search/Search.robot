@@ -12,6 +12,12 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
 
 *** Test Cases ***
 获取搜索记录(/v1/tenants/{tenantId}/searchrecords)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取搜索记录，调用接口：/v1/tenants/{tenantId}/searchrecords，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、并且各字段值等于预期。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     #获取搜索记录
@@ -24,6 +30,13 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     Should Be Equal    ${j['entities'][0]['agentUserId']}    ${AdminUser.userId}    返回值中agentUserId不正确：${j}
 
 新增并获取搜索记录(/v1/tenants/{tenantId}/searchrecords)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增搜索记录，调用接口：/v1/tenants/{tenantId}/searchrecords，接口请求状态码为200。
+    ...    - Step2、获取搜索记录，调用接口：/v1/tenants/{tenantId}/searchrecords，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、并且各字段值等于预期。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     #请求上报搜索记录
@@ -44,6 +57,13 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     Should Be Equal    ${j['keyword']}    ${keyword}    返回值中keyword不正确：${j}
 
 获取管理员模式下会话记录(/v1/Tenant/me/ServiceSessionHistorys)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据消息信息获取会话搜索记录，调用接口：/v1/Tenant/me/ServiceSessionHistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值中total_entries字段等于1、并且各字段值等于预期。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}
@@ -60,6 +80,13 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     Should Be Equal    ${j['items'][0]['messageDetail']}    ${msg}    坐席模式搜索历史会话记录的messageDetail不正确：${j}
 
 获取管理员模式下消息记录(/v1/tenants/{tenantId}/chatmessagehistorys)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、访客发起新会话，坐席从待接入接入会话到进行中会话列表并手动结束（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话->关闭进行中的会话->查询历史会话是否包含该会话）。
+    ...    - Step2、根据消息信息获取消息搜索记录，调用接口：/v1/tenants/{tenantId}/chatmessagehistorys，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值中total_entries字段等于1、并且各字段值等于预期。
     #设置局部变量使用
     ${filter}    copy dictionary    ${FilterEntity}
     ${range}    copy dictionary    ${DateRange}

@@ -12,7 +12,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
 
 *** Test Cases ***
 获取机器人知识规则(接口较旧，蓝月亮私有版本仍使用，暂存留)(/v1/Tenants/{tenantId}/robot/rules)
-    [Documentation]    获取机器人知识规则
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人知识规则，调用接口：/v1/Tenants/{tenantId}/robot/rules，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、totalElements字段值大于等于0、first字段值等于True。
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取机器人知识规则
@@ -21,19 +26,34 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    '${j['first']}'    'True'    返回的机器人知识规则不正确：${j}
 
 获取机器人知识规则数量(接口较旧，蓝月亮私有版本仍使用，暂存留)(/v1/Tenants/{tenantId}/robot/rule/group/count)
-    [Documentation]    获取机器人知识规则数量
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取机器人知识规则数量，调用接口：/v1/Tenants/{tenantId}/robot/rule/group/count，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值结果大于等于0。
     #获取机器人知识规则数量
     ${j}    Get Robot Rules Count(Old)    ${AdminUser}
     Should Be True    ${j}>=0    返回的机器人知识规则数量不正确：${j}
 
 获取知识规则模板(接口较旧，蓝月亮私有版本仍使用，暂存留)(/v1/Tenants/{tenantId}/robot/rule/items/template)
-    [Documentation]    获取机器人知识规则模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取知识规则模板，调用接口：/v1/Tenants/{tenantId}/robot/rule/items/template，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #获取机器人知识规则模板
     ${resp}=    Get Robot Rules Template(Old)    ${AdminUser}
     # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败
 
 添加知识规则(/v3/Tenants/{tenantId}/robots/rules/item)
-    [Documentation]    添加知识规则
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、entity各字段的值等于预期值。
     ${uuid}    UUID 4
     ${randoNumber}    Generate Random String    10    [NUMBERS]
     #创建数据字典
@@ -67,7 +87,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['entity']['status']}    ${status}    接口返回的status不正确,正确值是:${status},返回结果:${j}
 
 删除知识规则(/v3/Tenants/{tenantId}/robots/rules/item)
-    [Documentation]    删除知识规则
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
+    ...    - Step2、删除知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、entity字段的值等于True。
     #创建知识规则
     ${ruleResult}    Create Robot Rule    ${AdminUser}
     #创建请求数据
@@ -76,7 +102,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Delete Robot Rule With RuleId    ${AdminUser}    ${data}    ${ruleResult.ruleId}
 
 获取知识规则(/v3/Tenants/{tenantId}/robots/rules/search)
-    [Documentation]    获取知识规则
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
+    ...    - Step2、获取知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/search，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值中第一个知识规则为新增数据、status字段值等于OK、entity各字段的值等于预期值。
     #创建知识规则
     ${ruleResult}    Create Robot Rule    ${AdminUser}
     #创建请求数据
@@ -89,7 +121,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['entity'][0]['status']}    ${ruleResult.status}    接口返回的status不正确,正确值是:${ruleResult.status},返回结果:${j}
     
 知识库测试(/v1/Tenants/{tenantId}/robots/kb/ask)
-    [Documentation]    1、创建知识规则 2、知识库测试
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
+    ...    - Step2、针对知识规则进行知识库测试，调用接口：/v1/Tenants/{tenantId}/robots/kb/ask，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、score字段值等于1、返回的答案等于新增知识规则设置的答案。
     #创建知识规则
     ${ruleResult}    Create Robot Rule    ${AdminUser}
     #创建请求数据
@@ -111,7 +149,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${${j['score']}}    ${1}    接口返回的score不正确,正确值是:1,返回结果:${j}
 
 添加机器人分类(/v3/Tenants/{tenantId}/robots/categorys/item)
-    [Documentation]    添加机器人分类
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加机器人分类，调用接口：/v3/Tenants/{tenantId}/robots/categorys/item，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、各字段值等于预期。
     ${randoNumber}    Generate Random String    5    [NUMBERS]
     #创建分类名称
     ${categoryName}    set variable    category-${AdminUser.tenantId}-${randoNumber}
@@ -129,7 +172,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${${j['entity']['robotId']}}    ${categoryEntity.robotId}    接口返回的robotId不正确,正确值是:${categoryEntity.robotId},返回结果:${j}
 
 删除机器人分类(/v3/Tenants/{tenantId}/robots/categorys/item)
-    [Documentation]    1、添加机器人分类    2、删除分类
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建机器人分类，调用接口：/v3/Tenants/{tenantId}/robots/categorys/item，接口请求状态码为200。
+    ...    - Step2、删除机器人分类，调用接口：/v3/Tenants/{tenantId}/robots/categorys/item，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #创建分类并获取分类Id
     ${categoryResult}    Creat Robot Category    ${AdminUser}
     ${categoryId}    set variable    ${categoryResult.categoryId}
@@ -142,7 +191,13 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['status']}    OK    接口返回的status不正确,正确值是:OK,返回结果:${j}
 
 获取机器人分类树(/v3/Tenants/{tenantId}/robots/categorys/trees)
-    [Documentation]    1、添加机器人分类    2、获取分类
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建机器人分类，调用接口：/v3/Tenants/{tenantId}/robots/categorys/item，接口请求状态码为200。
+    ...    - Step2、获取机器人分类，调用接口：/v3/Tenants/{tenantId}/robots/categorys/trees，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、返回各字段值等于预期值。
     #创建分类并获取分类Id
     ${categoryResult}    Creat Robot Category    ${AdminUser}
     ${categoryId}    set variable    ${categoryResult.categoryId}
@@ -153,19 +208,34 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['entity'][-1]['category']['name']}    ${categoryResult.name}    接口返回的name不正确,正确值是:${categoryResult.name},返回结果:${j}
 
 获取知识规则模板(/v3/Tenants/{tenantId}/robots/rule/template)
-    [Documentation]    获取机器人知识规则模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取知识规则模板，调用接口：/v3/Tenants/{tenantId}/robots/rule/template，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #获取机器人知识规则模板
     ${resp}=    Get Robot Rules Template    ${AdminUser}
     # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败
 
 导出知识规则(/v3/Tenants/{tenantId}/robots/rule/export)
-    [Documentation]    导出知识规则
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rule/export，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #导出知识规则
     ${resp}=    Export Robot Rules    ${AdminUser}
     # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    获取知识库模板失败
 
 查看日志管理(/v3/Tenants/{tenantId}/robots/rules/records)
-    [Documentation]    查看日志管理
+    [Documentation]    【操作步骤】：
+    ...    - Step1、查看日志管理，调用接口：/v3/Tenants/{tenantId}/robots/rules/records，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、totalElements字段值大于0。
     #获取本月年月日
     ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
     ${yn}=    Convert To Integer    ${yyyy}

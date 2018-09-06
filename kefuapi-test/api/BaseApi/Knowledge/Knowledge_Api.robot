@@ -29,7 +29,7 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/knowledge/entries
     run keyword if    '${method}'=='put' or '${method}'=='delete'    set suite variable    ${uri}    /v1/tenants/${agent.tenantId}/knowledge/entries/${entryId}
-    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&total_pages=${filter.total_pages}&total_entries=${filter.total_entries}&type=${filter.type}&entryStates=${filter.entryStates}&_=1524644745727
+    ${params}    set variable    page=${filter.page}&per_page=${filter.per_page}&size=${filter.size}&total_pages=${filter.total_pages}&total_entries=${filter.total_entries}&type=${filter.type}&entryStates=${filter.entryStates}&_=1524644745727
     Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}

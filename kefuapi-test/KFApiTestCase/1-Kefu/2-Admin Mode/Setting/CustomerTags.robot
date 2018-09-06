@@ -11,17 +11,13 @@ Resource          ../../../../api/BaseApi/Settings/CustomerTagApi.robot
 Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.robot
 
 *** Test Cases ***
-获取访客标签数据(/v1/Tenant/VisitorUsers/{visitorUserId}/VisitorUserTags/)
-    :FOR    ${visitorid}    IN    @{visitorUserId}
-    \    ${resp}=    /v1/Tenant/VisitorUsers/{visitorUserId}/VisitorUserTags/    ${AdminUser}    ${visitorid}    ${timeout}
-    \    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    \    Should Not Be Empty    ${resp.content}    返回值为空
-    \    ${j}    to json    ${resp.content}
-    \    Should Be Equal    '${j[0]['tenantId']}'    '${AdminUser.tenantId}'    返回的访客数据中tenantId不正确
-    \    Should Be Equal    ${j[0]['visitorUserId']}    ${visitorid}    返回的访客数据中userId不正确
-
 获取访客标签(/v1/Admin/UserTags)
-    [Documentation]    获取访客标签
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取访客标签，调用接口：/v1/Admin/UserTags，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、total_entries字段值大于0。
     #创建局部变量筛选条件
     ${filter}    copy dictionary    ${FilterEntity}   
     set to dictionary    ${filter}    per_page=100
@@ -30,7 +26,12 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     Should Be True    ${j['total_entries']}>=0    获取的访客标签数不正确：${j}
 
 添加访客标签(/v1/Admin/UserTags)
-    [Documentation]    添加访客标签
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加访客标签，调用接口：/v1/Admin/UserTags，接口请求状态码为201。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为201、返回字段值等于预期。
     #创建局部变量筛选条件
     ${filter}    copy dictionary    ${FilterEntity}   
     set to dictionary    ${filter}    per_page=100
@@ -44,7 +45,13 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     Should Be True    ${j['tenantId']}==${AdminUser.tenantId}    接口返回tenantId字段值不正确,应为:${AdminUser.tenantId},${j}
 
 修改访客标签(/v1/Admin/UserTags)
-    [Documentation]    1、添加客户标签    2、修改访客标签
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加访客标签，调用接口：/v1/Admin/UserTags，接口请求状态码为200。
+    ...    - Step2、修改访客标签，调用接口：/v1/Admin/UserTags，接口请求状态码为204。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为204、返回值等于空。
     #创建客户标签
     ${userTagResult}    Create UserTag    ${AdminUser}
     ${userTagId}    set variable   ${userTagResult.userTagId}    #获取客户标签id
@@ -62,7 +69,13 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}
 
 删除访客标签(/v1/Admin/UserTags)
-    [Documentation]    1、添加客户标签    2、删除访客标签
+    [Documentation]    【操作步骤】：
+    ...    - Step1、添加访客标签，调用接口：/v1/Admin/UserTags，接口请求状态码为200。
+    ...    - Step2、删除访客标签，调用接口：/v1/Admin/UserTags，接口请求状态码为204。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为204、返回值等于空。
     #创建局部变量筛选条件
     ${filter}    copy dictionary    ${FilterEntity} 
     #创建客户标签
@@ -73,14 +86,24 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}
 
 导出客户标签(/v1/Admin/UserTags/exportfile)
-    [Documentation]    导出客户标签
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出客户标签，调用接口：/v1/Admin/UserTags/exportfile，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、返回值headers中Content-Disposition字段值等于“attachment;filename=客户标签”。
     #导出客户标签
     ${resp}    Export UserTag    ${AdminUser}
     Should Contain    ${resp.headers['Content-Disposition']}    attachment;filename=客户标签    导出客户标签失败
     # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream; charset=UTF-8    导出客户标签失败
 
 导出客户标签下载模板(/download/tplfiles/%E5%AE%A2%E6%88%B7%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx)
-    [Documentation]    导出客户标签下载模板
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出客户标签下载模板，调用接口：/download/tplfiles/%E5%AE%A2%E6%88%B7%E6%A0%87%E7%AD%BE%E6%A8%A1%E7%89%88.xlsx，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #导出客户标签下载模板
     ${resp}    Export UserTag Template    ${AdminUser}
     # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    导出客户标签下载模板失败

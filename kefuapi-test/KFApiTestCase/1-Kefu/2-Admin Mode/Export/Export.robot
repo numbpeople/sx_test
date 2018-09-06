@@ -162,7 +162,7 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     xlsx_to_xls    ${xlsxPath}    ${xlsPath}
     #模板数据
     @{sheetName}    create list    一级分类(20个字以内)    常用语(1000个字以内)或二级分类(20个字以内)    常用语(1000个字以内)
-    @{sheetValue}    create list    一级分类名称1    常用语1
+    @{sheetValue}    create list    一级分类名称1    #常用语1
     #读取xls表格数据
     @{firstRowsList}    Get Rows List    ${xlsPath}    0
     @{secondRrowsList}    Get Rows List    ${xlsPath}    1
@@ -172,7 +172,8 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     ${sheetNames}    Get Sheet Names
     ${rowCount}    Get Row Count    ${sheetNames[0]}
     #判断导出数据总行数和导出与预期数据相等
-    run keyword if    ${rowCount} != 7    Fail    因为常用语下载模板数据一共7行,所以导出的excel文件总行数应等于7,需要检查文件,路径:${xlsPath}
+    ${status}=    Run Keyword And Return Status    Should Be True    ${rowCount} == 7 or ${rowCount} == 8
+    run keyword if    not ${status}    Fail    因为常用语下载模板数据一共7或者8行,所以导出的excel文件总行数应等于7或者8,需要检查文件,路径:${xlsPath}
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 导出下载会话标签的数据(/v1/Tenants/{tenantId}/ServiceSessionSummaries/exportfile)
@@ -425,8 +426,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     #保存文件到本地目录
     save file    ${xlsxPath}    ${ruleContent}
     xlsx_to_xls    ${xlsxPath}    ${xlsPath}
-    #模板数据
+    #默认私有云的模板定义
     @{sheetName}    create list    模板导入说明：1、文件大小不得超过5M2、单次导入知识规则条目数量不得超过10003、如果不填写分类，默认加入根分类，如需增加分类，可直接添加列，并写入（x级分类，x为阿拉伯数字）4、分类字数不得超过30汉字，分类最多5级5、可以通过增加列来增加问题，问题列的增加格式同模板所示，问题最多20个；6、可以通过增加列来增加答案，答案最多5个，答案与答案不能重复7、仅支持文字类答案8、启用状态如果不填写，按照启用处理
+    #公有云的模板定义
+    @{sheetNamePublic}    create list    模板导入说明:1、知识规则ID只导出，不做导入，修改无效;2、文件大小不得超过5M;3、单次导入知识规则条目数量不得超过1000;4、如果不填写分类，默认加入根分类，如需增加分类，可直接添加列，并写入（x级分类，x为阿拉伯数字）;5、分类字数不得超过30汉字，分类最多5级;6、问句字数不超过30个汉字，最多300条；7、可以通过增加列来增加问题，问题列的增加格式同模板所示;8、可以通过增加列来增加答案，答案字数不超过1000个汉字，最多300个;9、启用状态如果不填写，按照启用处理。
+    #判断如果当前为公有云域名，则使用公有云模板
+    run keyword if    "${kefuurl}" == "http://sandbox.kefu.easemob.com" or "${kefuurl}" == "http://kefu.easemob.com"    set suite variable    ${sheetName}    ${sheetNamePublic}  
     @{sheetValue}    create list    1级分类    2级分类    3级分类    问题问法1    问题问法2
     ...    问题问法3    问题问法4    问题问法5    答案1    是否启用
     #读取xls表格数据
@@ -460,8 +465,12 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     #保存文件到本地目录
     save file    ${xlsxPath}    ${userTagContent}
     xlsx_to_xls    ${xlsxPath}    ${xlsPath}
-    #模板数据
+    #默认私有云的模板定义
     @{sheetName}    create list    模板导入说明：1、文件大小不得超过5M2、单次导入知识规则条目数量不得超过10003、如果不填写分类，默认加入根分类，如需增加分类，可直接添加列，并写入（x级分类，x为阿拉伯数字）4、分类字数不得超过30汉字，分类最多5级5、可以通过增加列来增加问题，问题列的增加格式同模板所示，问题最多20个；6、可以通过增加列来增加答案，答案最多5个，答案与答案不能重复7、仅支持文字类答案8、启用状态如果不填写，按照启用处理
+    #公有云的模板定义
+    @{sheetNamePublic}    create list    模板导入说明:1、知识规则ID只导出，不做导入，修改无效;2、文件大小不得超过5M;3、单次导入知识规则条目数量不得超过1000;4、如果不填写分类，默认加入根分类，如需增加分类，可直接添加列，并写入（x级分类，x为阿拉伯数字）;5、分类字数不得超过30汉字，分类最多5级;6、问句字数不超过30个汉字，最多300条；7、可以通过增加列来增加问题，问题列的增加格式同模板所示;8、可以通过增加列来增加答案，答案字数不超过1000个汉字，最多300个;9、启用状态如果不填写，按照启用处理。
+    #判断如果当前为公有云域名，则使用公有云模板
+    run keyword if    "${kefuurl}" == "http://sandbox.kefu.easemob.com" or "${kefuurl}" == "http://kefu.easemob.com"    set suite variable    ${sheetName}    ${sheetNamePublic}  
     @{sheetValue}    create list    1级分类    2级分类    3级分类    问题问法1    问题问法2
     ...    问题问法3    问题问法4    问题问法5    答案1    是否启用
     #读取xls表格数据
@@ -663,20 +672,26 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     log dictionary    ${customerInfo}
     ${createDateTime}    evaluate    '${customerInfo.createDateTime}'[0:-3]    #去除时间戳最后三位
     ${createDateTime}    Get Time    ${EMPTY}    ${createDateTime}    #由1527238033格式转为2018-05-25 16:47:13格式
-    @{sheetName}    create list    创建时间    更新时间    客户最新会话时间    
-    ...    ID    昵称    名字    手机    qq    邮箱    
-    ...    公司    描述    qq    城市    客户标签
+    # @{sheetName}    create list    创建时间    更新时间    客户最新会话时间    
+    # ...    ID    昵称    名字    手机    qq    邮箱    
+    # ...    公司    描述    qq    城市1    客户标签
+    @{sheetName}    Get DisplayNames For Columndefinitions    ${AdminUser}
+    Remove Values From List    ${sheetName}    QQ    微信号
+    Append To List    ${sheetName}    qq    创建时间    更新时间    客户最新会话时间    客户标签
+    log list    ${sheetName}
     @{sheetValue}    create list    ${customerInfo.userName}    ${createDateTime}
     #读取xls表格数据
     @{firstRowsList}    Get Rows List    ${xlsPath}    0
     @{secondRrowsList}    Get Rows List    ${xlsPath}    1
+    @{stringfirstRowsList}    Convert List Element To String    ${firstRowsList}
     log list    ${firstRowsList}
+    log list    ${stringfirstRowsList}
     log list    ${secondRrowsList}
     #获取文件总行数
     ${sheetNames}    Get Sheet Names
     ${rowCount}    Get Row Count    ${sheetNames[0]}
     #判断导出数据总行数和导出与预期数据相等
     run keyword if    ${rowCount} != 2    Fail    因为只导出一个客户中心的数据,所以导出的excel文件总行数应为2,需要检查文件,路径:${xlsPath}
-    Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
+    Should Be ExportFiles Excel Equal    ${sheetName}    ${stringfirstRowsList}    ${sheetValue}    ${secondRrowsList}
 
 # 导出下载告警记录的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)

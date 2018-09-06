@@ -140,3 +140,68 @@ Entry Should Contain EntryId
     :FOR    ${i}    IN    @{result}
     \    return from keyword if    ${i['entryId']} == ${entryId}    ${i}
     return from keyword    {}
+
+Delete Knowledge Entry And Category With Specify Name
+    [Documentation]    根据指定的名称删除知识库中知识和分类
+    #删除知识库
+    Delete Knowledge Entry With EntryName
+    #删除知识库分类
+    Delete Categories With CategoryName
+
+Delete Categories With CategoryName
+    [Documentation]    删除知识库分类
+    #设置知识库分类名称包含指定关键字
+    ${preCategoryName}=    convert to string    ${AdminUser.tenantId}
+    #获取知识库的所有分类
+    ${j}    Get Knowledge Categories Tree    ${AdminUser}
+    :FOR    ${i}    IN    @{j['entities']}
+    \    ${categoryName}=    convert to string    ${i['name']}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${categoryName}    ${preCategoryName}
+    \    ${userIdValue}    set variable    ${i['categoryId']}
+    \    Run Keyword If    '${status}' == 'True'    Delete Category With CategoryId   ${AdminUser}    ${userIdValue}
+
+Delete Category With CategoryId
+    [Arguments]    ${agent}    ${categoryId}
+    [Documentation]    根据分类id删除知识库分类
+    ${j}    Set Knowledge Category    delete    ${agent}    ${EMPTY}    ${categoryId}
+    should be equal    ${j['status']}    OK    返回值status不是OK：${j}
+
+Delete Knowledge Entry With EntryName
+    [Documentation]    删除所有的已发布和草稿的知识库数据
+    @{entryStatesList}    create list    Published    Drafting
+    :FOR    ${i}    IN    @{entryStatesList}
+    \    Delete Knowledge Entry With EntryState    ${i}
+
+Delete Knowledge Entry With EntryState
+    [Arguments]    ${entryStates}
+    [Documentation]    删除知识库数据
+    #设置知识库知识名称包含指定关键字
+    ${preEntryName}=    convert to string    ${AdminUser.tenantId}
+    #创建筛选条件
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    page=0    size=100    type=0    entryStates=${entryStates}    #entryStates：代表添加知识类型, 值为：Published、Drafting
+    #获取知识库数据
+    ${j}    Set Knowledge Entry    get    ${AdminUser}    ${filter}
+    should be equal    ${j['status']}    OK    返回值status不是OK：${j}
+    #循环删除知识库数据
+    ${times}    set variable    ${j['totalPages']}
+    Repeat Keyword    ${times} times    Delete Knowledge Entry For Loop    ${AdminUser}    ${filter}    ${preEntryName}
+
+Delete Knowledge Entry For Loop
+    [Arguments]    ${agent}    ${filter}    ${preEntryName}
+    [Documentation]    循环删除知识库数据
+    #获取知识库数据
+    ${j}    Set Knowledge Entry    get    ${agent}    ${filter}
+    should be equal    ${j['status']}    OK    返回值status不是OK：${j}
+    #循环删除知识库数据
+    :FOR    ${i}    IN    @{j['entities']}
+    \    ${entryName}=    convert to string    ${i['title']}
+    \    ${status}=    Run Keyword And Return Status    Should Contain    ${entryName}    ${preEntryName}
+    \    ${userIdValue}    set variable    ${i['entryId']}
+    \    Run Keyword If    '${status}' == 'True'    Delete Knowledge Entry With EntryId   ${AdminUser}    ${filter}    ${userIdValue}
+   
+Delete Knowledge Entry With EntryId
+    [Arguments]    ${agent}    ${filter}    ${entryId}
+    #删除知识
+    ${j}    Set Knowledge Entry    delete    ${agent}    ${filter}    ${EMPTY}    ${entryId}
+    should be equal    ${j['status']}    OK    返回值status不是OK：${j}

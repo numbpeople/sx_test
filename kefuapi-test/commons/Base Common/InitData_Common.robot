@@ -17,6 +17,7 @@ Resource          ../admin common/Setting/ConversationTags_Common.robot
 Resource          ../admin common/Setting/CustomerTags_Common.robot
 Resource          ../admin common/Note/Note_Common.robot
 Resource          ../Initializtion_Common/Initializtion_Common.robot
+Resource          ../admin common/Knowledge/Knowledge_Common.robot
 
 *** Keywords ***
 Login Init
@@ -80,3 +81,4 @@ Clear Data
     Delete ServiceSessionSummaries With SpecifiedKey    #删除会话标签测试数据
     Delete UserTag With SpecifiedKey    #删除客户标签测试数据
     Del Export Files    #删除导出缓存在目录下的文件
+    Delete Knowledge Entry And Category With Specify Name    #删除知识库中知识和分类

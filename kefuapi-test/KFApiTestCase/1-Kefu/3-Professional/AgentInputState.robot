@@ -13,6 +13,14 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
 
 *** Test Cases ***
 获取客服输入状态数据(/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【客服输入状态】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step3、获取客服输入状态数据，调用接口：/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -32,6 +40,14 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
     Should Be Equal    '${j['entity']['service_session_id']}'    '${serviceSessionId}'    客服输入状态接口返回service_session_id数据不是${serviceSessionId}：${j}
 
 创建客服输入状态数据(/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【客服输入状态】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step3、上报客服输入状态数据，调用接口：/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -52,6 +68,15 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
     Should Be True    ${j['entity']}    客服输入状态接口返回entity字段数据不是True：${j}
 
 创建并获客服输入状态数据(/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【客服输入状态】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、访客发起新会话，坐席从待接入接入会话到进行中会话列表（创建技能组->调整路由规则顺序->新访客发起消息->待接入搜索会话->手动接入会话->获取坐席的进行中会话）。
+    ...    - Step3、上报客服输入状态数据，调用接口：/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state，接口请求状态码为200。
+    ...    - Step4、获取上报的客服输入状态数据，调用接口：/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、获取到输入状态数据等于预期。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行

@@ -12,6 +12,13 @@ Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 获取自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【自定义表情包】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -23,6 +30,14 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     Run Keyword if    ${length} > 0    should be equal    ${j['entities'][0]['type']}    CUSTOM    返回值中type字段不等于CUSTOM: ${j}
 
 上传自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【自定义表情包】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取自定义表情包，已有表情总数大于等于5不执行，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step3、上传自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、上传图片名字等于beautiful_girl、等等。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -39,6 +54,14 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     should be equal    ${j['entities'][0]['packageName']}.zip    ${fileEntity.filename}    返回值中压缩包名称与预期不符: ${j}
 
 删除自定义表情包(/v1/emoj/tenants/{tenantId}/packages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【自定义表情包】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、上传自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step3、删除自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -52,6 +75,15 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
 
 排序自定义表情包(/v1/emoj/tenants/{tenantId}/packages/sort)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【自定义表情包】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取自定义表情包，已有表情总数大于等于3不执行，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step3、上传两个自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step4、将已上传的两个表情进行排序，调用接口：/v1/emoj/tenants/{tenantId}/packages/sort，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -77,6 +109,15 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${k}
 
 获取自定义表情包文件(/v1/emoj/tenants/{tenantId}/packages/{packageId}/files)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【自定义表情包】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取自定义表情包，已有表情总数大于等于5不执行，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step3、上传自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step4、获取自定义表情包，调用接口：/v1/emoj/tenants/{tenantId}/packages，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行

@@ -22,7 +22,7 @@ Setting Teardown
 
 Setting Setup Data
     [Documentation]    清除自定义表情包、获取默认时间计划
-    Clear Stickers    #删除自定义表情包
+    # Clear Stickers    #删除自定义表情包
     Get ScheduleId    #获取时间计划列表，并取默认时间的${scheduleId}作为全局变量
 
 Setting Teatdown Data

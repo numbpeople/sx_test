@@ -10,6 +10,12 @@ Resource          ../../../../commons/admin common/Setting/ReviewSettings_Common
 
 *** Test Cases ***
 获取质检评分设置(/v1/tenants/{tenantId}/qualityreviews/qualityitems)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取质检评分设置，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、返回数据长度大于0。
     #获取质检评分设置
     ${j}    Set ReviewSettings    get    ${AdminUser}    ${EMPTY}
     ${length}    get length    ${j['entities']}
@@ -17,6 +23,14 @@ Resource          ../../../../commons/admin common/Setting/ReviewSettings_Common
     should be true    ${length} > 0    默认的数据结果为空 ,${j}
 
 新增质检并获取质检数据(/v1/tenants/{tenantId}/qualityreviews/qualityitems)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增质检评分设置数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step2、获取该次新增的质检评分设置数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step3、查询质检分数和分级的数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/scoremapping，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、返回数据长度等于5。
     #新增质检并获取质检数据
     ${uuid}    Uuid 4
     ${name}    set variable    ${AdminUser.tenantId}-${uuid}
@@ -39,6 +53,14 @@ Resource          ../../../../commons/admin common/Setting/ReviewSettings_Common
     should be true    ${length} == 5    默认质检分数总数不是5个数据 ,${j}
 
 新增质检并删除质检数据(/v1/tenants/{tenantId}/qualityreviews/qualityitems)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增质检评分设置数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step2、删除新增的质检评分设置数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step3、查询质检分数和分级的数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/scoremapping，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、返回数据长度等于5。
     #新增质检并删除质检数据
     ${uuid}    Uuid 4
     ${name}    set variable    ${AdminUser.tenantId}-${uuid}
@@ -61,6 +83,13 @@ Resource          ../../../../commons/admin common/Setting/ReviewSettings_Common
     should be true    ${length} == 5    默认质检分数总数不是5个数据 ,${j}
 
 获取质检分布统计数据(/v1/tenants/{tenantId}/qualityreviews/scoremapping)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取质检评分设置数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/qualityitems，接口请求状态码为200。
+    ...    - Step2、查询质检分数和分级的数据，调用接口：/v1/tenants/{tenantId}/qualityreviews/scoremapping，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、返回数据长度等于5、并且5组数据中minScore和maxScore等于预期值。
     #获取质检评分设置
     ${j}    Set ReviewSettings    get    ${AdminUser}    ${EMPTY}
     ${length}    get length    ${j['entities']}

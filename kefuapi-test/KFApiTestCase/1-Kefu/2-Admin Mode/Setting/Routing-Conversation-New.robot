@@ -28,14 +28,17 @@ Resource          ../../../../api/IM/IMApi.robot
 
 *** Test Cases ***
 渠道指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step4、路由规则设置将网页渠道全天指定技能组，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、发送消息并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    1.渠道指定技能组A
-    ...    2.将关联a指定为空
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
@@ -63,14 +66,16 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联指定规则(全天指定)(/v1/tenants/{tenantId}/channel-data-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、路由规则设置关联指定全天指定技能组，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step4、发送消息并创建访客。
+    ...    - Step5、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
     ...
-    ...    规则为：关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.将关联a指定技能组A
-    ...    2.渠道未设置
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -97,13 +102,15 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、发送消息指定技能组并创建访客。
+    ...    - Step4、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step5、判断返回值各字段情况。
     ...
-    ...    规则为：入口指定技能组规则
-    ...
-    ...    前提：
-    ...    1.将入口优先级最先
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
@@ -125,14 +132,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和关联指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step4、路由规则设置APP渠道全天指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联指定全天指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.将渠道指定技能组A
-    ...    2.关联指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -168,14 +179,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和渠道指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定全天指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道全天指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：关联/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    1.关联指定技能组A
-    ...    2.将渠道指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -211,14 +226,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和入口指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为渠道-入口-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step4、路由规则设置APP渠道全天指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、发送消息入口指定指定技能组B并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    1.渠道指定技能组A
-    ...    2.入口指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -250,14 +268,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和渠道指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step4、路由规则设置APP渠道全天指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、发送消息入口指定指定技能组A并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：入口/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口指定技能组A
-    ...    2.渠道指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到入口指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -289,14 +310,16 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和入口指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为关联-入口-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、路由规则设置关联指定全天指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step4、发送消息入口指定指定技能组B并创建访客。
+    ...    - Step5、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
     ...
-    ...    规则为：关联/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    1.关联指定技能组A
-    ...    2.入口指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -327,14 +350,16 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和关联指定规则(全天指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、将规则排序设置为入口-关联-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step3、路由规则设置关联指定全天指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step4、发送消息入口指定指定技能组A并创建访客。
+    ...    - Step5、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口指定技能组A
-    ...    2.关联指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到入口指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -365,15 +390,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置网页渠道上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定技能组A；下班指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道上班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -405,16 +433,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-data-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定技能组A，下班：指定技能组B
-    ...    2.渠道未设置
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联上班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -445,16 +474,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和关联指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置关联指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step7、发送消息并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将渠道上班：指定技能组A，下班：指定技能组B
-    ...    2.关联上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道上班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -496,16 +528,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和渠道指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置APP渠道指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：关联/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定技能组A，下班：指定技能组B
-    ...    2.渠道上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联上班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -543,16 +578,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和入口指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-入口-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组B并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定技能组A，下班：指定技能组B
-    ...    2.将入口上班：指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道上班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -586,16 +623,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和渠道指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：入口/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.入口上班：指定技能组A，下班：指定技能组B
-    ...    2.渠道上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到入口指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -629,16 +668,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和入口指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-入口-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息入口指定技能组B并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.关联a上班：指定技能组A，下班：指定技能组B
-    ...    2.将入口上班：指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联上班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -671,14 +711,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和关联指定规则(上班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为入口-关联-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息入口指定技能组A并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口上班：指定技能组A，下班：指定技能组B
-    ...    2.关联a上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到入口指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -711,15 +754,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置网页渠道指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定技能组A；下班指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道下班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -751,16 +797,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-data-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定技能组A，下班：指定技能组B
-    ...    2.渠道未设置
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联下班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -791,16 +838,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和关联指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置关联指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step7、发送消息并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将渠道上班：指定技能组A，下班：指定技能组B
-    ...    2.关联上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道下班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -838,16 +888,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和渠道指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置APP渠道指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：关联/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定技能组A，下班：指定技能组B
-    ...    2.渠道上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联下班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -885,16 +938,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和入口指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-入口-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定技能组A，下班：指定技能组B
-    ...    2.将入口上班：指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到渠道下班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -928,16 +983,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和渠道指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：入口/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.入口上班：指定技能组A，下班：指定技能组B
-    ...    2.渠道上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到入口指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -971,16 +1028,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和入口指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-入口-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息入口指定技能组A并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.关联a上班：指定技能组A，下班：指定技能组B
-    ...    2.将入口上班：指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到关联下班指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1013,14 +1071,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和关联指定规则(下班时间指定)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为入口-关联-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联指定上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息入口指定技能组A并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口上班：指定技能组A，下班：指定技能组B
-    ...    2.关联a上班：指定技能组B，下班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且会话分配到入口指定的技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1053,13 +1114,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置渠道全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道指定机器人的规则
-    ...
-    ...    前提：
-    ...    1.渠道指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
@@ -1089,13 +1155,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 关联指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-data-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息并创建访客。
+    ...    - Step6、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联指定机器人规则
-    ...
-    ...    前提：
-    ...    1.将关联a指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1124,14 +1194,21 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 渠道和关联指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置渠道全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置关联全天指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step7、发送消息并创建访客。
+    ...    - Step8、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step9、发送转人工消息。
+    ...    - Step10、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step11、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.将渠道指定机器人A
-    ...    2.关联指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后会话所属技能组等于关联指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1179,14 +1256,21 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和渠道指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置关联全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置渠道全天指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息并创建访客。
+    ...    - Step8、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step9、发送转人工消息。
+    ...    - Step10、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step11、判断返回值各字段情况。
     ...
-    ...    规则为：关联/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    1.关联指定机器人A
-    ...    2.将渠道指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后会话所属技能组等于渠道指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1234,14 +1318,20 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和入口指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置渠道全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step8、发送转人工消息。
+    ...    - Step9、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step10、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    1.渠道指定机器人A
-    ...    2.入口指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1285,14 +1375,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和渠道指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置APP渠道全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：入口/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口指定技能组A
-    ...    2.渠道指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1328,14 +1422,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和入口指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-入口-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息指定技能组A并创建访客。
+    ...    - Step6、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step7、发送转人工消息。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：关联/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    1.关联指定机器人A
-    ...    2.入口指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后会话所属技能组等于关联指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1378,14 +1477,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和关联指定规则(全天-指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为入口-关联-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联全天指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息指定技能组A并创建访客。
+    ...    - Step6、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口指定技能组A
-    ...    2.关联指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且待接列表话所属技能组等于关联指定技能组A。
+ 
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday
@@ -1422,15 +1525,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置网页渠道上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道上班时间指定机器人规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定机器人A；下班不指定
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1461,15 +1567,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 关联指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-data-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息并创建访客。
+    ...    - Step6、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联指定机器人规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定机器人A，下班：不指定
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1499,16 +1607,22 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 渠道和关联指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置APP渠道上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、路由规则设置关联上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step8、发送消息并创建访客。
+    ...    - Step9、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step10、发送转人工消息。
+    ...    - Step11、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step12、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/关联指定机器人规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将渠道上班：指定机器人A，下班：不指定
-    ...    2.关联上班：指定技能组A，下班：指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于关联上班指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1560,16 +1674,22 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和渠道指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step6、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、路由规则设置APP渠道上班时间指定技能组A、下班时间指定技能组B，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step8、发送消息并创建访客。
+    ...    - Step9、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step10、发送转人工消息。
+    ...    - Step11、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step12、判断返回值各字段情况。
     ...
-    ...    规则为：关联/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定机器人A
-    ...    2.渠道上班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于APP渠道上班指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1621,16 +1741,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和入口指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为渠道-入口-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置渠道上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息入口指定技能组A并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定机器人A
-    ...    2.将入口上班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1676,16 +1799,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和渠道指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置渠道上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息入口指定技能组A并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：入口/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.入口上班：指定技能组A
-    ...    2.渠道上班：指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1723,16 +1849,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和入口指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为关联-入口-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：关联/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.关联a上班：指定机器人A
-    ...    2.将入口上班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1777,14 +1905,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和关联指定规则(上班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为上班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/worktimes，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为入口-关联-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联上班时间指定机器人、下班时间不指定，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口上班：指定技能组A
-    ...    2.关联a上班：指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1821,15 +1953,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step5、路由规则设置网页渠道上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、发送消息并创建访客。
+    ...    - Step7、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：渠道上班时间指定机器人规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定机器人A；下班不指定
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1862,15 +1997,17 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 关联指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-data-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step2、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step3、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step4、路由规则设置关联上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step5、发送消息并创建访客。
+    ...    - Step6、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
     ...
-    ...    规则为：关联指定机器人规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定机器人A，下班：不指定
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1903,16 +2040,22 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Be True    '${j['items'][0]['agentUserId']}' == '${robotUserId}'    获取当前会话数所属的机器人不正确：${j}
 
 渠道和关联指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为渠道-关联-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置APP渠道上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、路由规则设置关联上班时间指定技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step8、发送消息并创建访客。
+    ...    - Step9、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step10、发送转人工消息。
+    ...    - Step11、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step12、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/关联指定机器人规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将渠道上班：指定机器人A，下班：不指定
-    ...    2.关联上班：指定技能组A，下班：指定技能组B
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于关联下班指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -1968,16 +2111,22 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和渠道指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A和B，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为关联-渠道-入口顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step6、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、路由规则设置APP渠道上班时间技能组B、下班时间指定技能组A，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step8、发送消息并创建访客。
+    ...    - Step9、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step10、发送转人工消息。
+    ...    - Step11、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step12、判断返回值各字段情况。
     ...
-    ...    规则为：关联/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.将关联a上班：指定机器人A
-    ...    2.渠道上班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于APP渠道下班指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -2031,23 +2180,28 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 渠道和入口指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为渠道-入口-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置APP渠道上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息入口指定技能组A并创建访客。
+    ...    - Step8、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step9、发送转人工消息。
+    ...    - Step10、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step11、判断返回值各字段情况。
     ...
-    ...    规则为：渠道/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.渠道上班：指定机器人A
-    ...    2.将入口上班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
     #快速创建两个技能组
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${curTime}A
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组A
-    #创建扩展消息体：包括扩展字段技能组B
+    #创建扩展消息体：包括扩展字段技能组A
     ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"${queueentityA.queueName}"}}
     ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originTypeentity.originType}
     #设置当日设置为上班时间
@@ -2090,16 +2244,19 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和渠道指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为入口-渠道-关联顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、获取渠道绑定关系，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step6、路由规则设置APP渠道上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-binding，接口请求状态码为200。
+    ...    - Step7、发送消息入口指定技能组A并创建访客。
+    ...    - Step8、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step9、判断返回值各字段情况。
     ...
-    ...    规则为：入口/渠道指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.入口上班：指定技能组A
-    ...    2.渠道上班：指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -2141,16 +2298,20 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 关联和入口指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为关联-入口-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询当前会话列表，调用接口：/v1/tenants/{tenantId}/servicesessioncurrents，接口请求状态码为200。
+    ...    - Step8、发送转人工消息。
+    ...    - Step9、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step10、判断返回值各字段情况。
     ...
-    ...    规则为：关联/入口指定技能组规则
-    ...
-    ...    前提：
-    ...    上下班时间
-    ...
-    ...    1.关联a上班：指定机器人A
-    ...    2.将入口上班：指定技能组A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且当前会话中，该会话分配给机器人，转人工后待接入会话所属技能组等于关联指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}
@@ -2197,14 +2358,18 @@ Resource          ../../../../api/IM/IMApi.robot
     Should Not Be True    ${j['items'][0]['vip']}    非vip用户显示为vip：${resp.content}
 
 入口和关联指定规则(下班时间指定机器人)(/v1/tenants/{tenantId}/channel-binding)
-    [Documentation]    设置路由规则：
+    [Documentation]    【操作步骤】：
+    ...    - Step1、创建技能组A，调用接口：/v1/AgentQueue，接口请求状态码为200。
+    ...    - Step2、设置当日设置为下班时间，调用接口：/v1/tenants/{tenantId}/timeplans/schedules/{scheduleId}/holidays，接口请求状态码为200。
+    ...    - Step3、获取机器人账号信息的列表，调用接口：/v1/Tenants/{tenantId}/robot/profile/personalInfos，接口请求状态码为200。
+    ...    - Step4、将规则排序设置为入口-关联-渠道顺序，调用接口：/tenants/{tenantId}/options/RoutingPriorityList，接口请求状态码为200。
+    ...    - Step5、路由规则设置关联上班时间不指定、下班时间指定机器人，调用接口：/v1/tenants/{tenantId}/channel-data-binding，接口请求状态码为200。
+    ...    - Step6、发送消息入口指定技能组A并创建访客。
+    ...    - Step7、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
     ...
-    ...    规则为：入口/关联指定技能组规则
-    ...
-    ...    前提：
-    ...    1.入口上班：指定技能组A
-    ...    2.关联a上班：指定机器人A
-    [Tags]
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、待接入会话所属技能组等于入口指定技能组A。
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Onoff    scheduleId=${timeScheduleId}

@@ -10,11 +10,25 @@ Resource          ../../../commons/admin common/Setting/Questionnaire_Common.rob
 
 *** Test Cases ***
 获取问卷账号列表(/v1/tenants/{tenantId}/questionnaires/accounts)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【问卷调查】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取调查问卷账号列表，调用接口：/v1/tenants/{tenantId}/questionnaires/accounts，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #获取问卷账号列表
     ${j}    Set Questionnaire    ${AdminUser}    get    ${EMPTY}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
 
-创建问卷账号列表(/v1/tenants/{tenantId}/questionnaires/accounts)
+创建问卷账号数据(/v1/tenants/{tenantId}/questionnaires/accounts)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【问卷调查】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、创建问卷账号数据，调用接口：/v1/tenants/{tenantId}/questionnaires/accounts，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
     ${j}    Set Questionnaire    ${AdminUser}    post    ${data}
@@ -26,11 +40,25 @@ Resource          ../../../commons/admin common/Setting/Questionnaire_Common.rob
     Should Contain    ${j['entity']['username']}    ${tenantid}    返回值中的账号名称不正确: ${j}
 
 获取问卷问题列表(/v1/tenants/{tenantId}/questionnaires/list)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【问卷调查】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取问卷问题列表，调用接口：/v1/tenants/{tenantId}/questionnaires/list，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #获取问卷账号列表
     ${j}    Get Questionnaires List    WJW
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
 
-删除问卷账号列表(/v1/tenants/{tenantId}/questionnaires/accounts)
+删除问卷账号(/v1/tenants/{tenantId}/questionnaires/accounts)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【问卷调查】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、删除问卷账号，调用接口：/v1/tenants/{tenantId}/questionnaires/accounts，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
     ${j}    Set Questionnaire    ${AdminUser}    delete    ${data}

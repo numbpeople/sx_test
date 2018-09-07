@@ -10,9 +10,14 @@ Resource          ../../../../api/BaseApi/Settings/SatisfactionSurveyApi.robot
 Resource          ../../../../commons/admin common/Setting/SatisfactionSurvey_Common.robot
 
 *** Test Cases ***
-获取满意度评价级别（/v1/tenants/{tenantId}/evaluationdegrees）
-    ${resp}=    /v1/tenants/{tenantId}/evaluationdegrees    ${AdminUser}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+获取满意度评价级别(/v1/tenants/{tenantId}/evaluationdegrees)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取满意度评价级别，调用接口：/v1/tenants/{tenantId}/evaluationdegrees，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
+    #获取评价级别
     ${resp}=    /v1/tenants/{tenantId}/evaluationdegrees    ${AdminUser}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
@@ -30,6 +35,12 @@ Resource          ../../../../commons/admin common/Setting/SatisfactionSurvey_Co
     set global variable    ${evaluationdegreeId}    ${degreeId[0]}
 
 获取租户满意度评价标签(/v1/tenants/{tenantId}/evaluationdegrees/{evaluationdegreeId}/appraisetags)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取租户满意度评价标签，调用接口：/v1/tenants/{tenantId}/evaluationdegrees/{evaluationdegreeId}/appraisetags，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     set global variable    ${evaluationdegreeId}    ${degreeId}
     ${resp}=    /v1/tenants/{tenantId}/evaluationdegrees/{evaluationdegreeId}/appraisetags    ${AdminUser}    ${timeout}    ${evaluationdegreeId}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -43,7 +54,12 @@ Resource          ../../../../commons/admin common/Setting/SatisfactionSurvey_Co
     \    ${name}=    Convert To String    ${j['entities'][${i}]['name']}
 
 保存评分选项设置(/v1/tenants/{tenantId}/evaluationdegrees/batchupdate)
-    [Documentation]    保存评分选项设置
+    [Documentation]    【操作步骤】：
+    ...    - Step1、保存评分选项设置，调用接口：/v1/tenants/{tenantId}/evaluationdegrees/batchupdate，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、返回值数据总长度等于5。
     @{appraisetagsNameOne}    create list    非常不满意标签
     @{appraisetagsNameTwo}    create list    不满意标签
     @{appraisetagsNameThree}    create list    一般标签

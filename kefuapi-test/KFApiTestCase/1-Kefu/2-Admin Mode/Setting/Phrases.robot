@@ -16,7 +16,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ...    - Step2、判断返回值各字段情况。
     ...
     ...    【预期结果】：
-    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id。
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id。
     #创建参数字典，坐席模式获取个人常用语
     &{phrasesEntity}    create dictionary    systemOnly=false    buildChildren=true    buildCount=true
     #获取常用语分类
@@ -31,7 +31,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ...    - Step2、判断返回值各字段情况。
     ...
     ...    【预期结果】：
-    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id。
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -50,7 +50,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ...    - Step3、判断返回值各字段情况。
     ...
     ...    【预期结果】：
-    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -79,7 +79,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ...    - Step3、判断返回值各字段情况。
     ...
     ...    【预期结果】：
-    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -109,7 +109,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ...    - Step4、判断返回值各字段情况。
     ...
     ...    【预期结果】：
-    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -150,7 +150,7 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     ...    - Step4、判断返回值各字段情况。
     ...
     ...    【预期结果】：
-    ...    接口返回值中，请求状态码为、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
+    ...    接口返回值中，请求状态码为200、status字段值等于OK、tenantId字段值等于租户id、各字段等于预期。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -184,6 +184,13 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     Run Keyword if    ${length} > 0    should be equal    ${j['entity']['phrase']}    ${changepHrasesEnt.phrase}    返回值中phrase字段值不正确: ${j}
 
 删除分类(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、删除常用语分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step3、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -200,6 +207,14 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     should be equal    ${j['status']}    OK    获取status值不正确：${j}
 
 删除公共常用语(/v1/organs/{organName}/tenants/{tenantId}/commonphrases)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、新增分类，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step2、在新建分类下新增公共常用，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step3、删除共公常用语，调用接口：/v1/organs/{organName}/tenants/{tenantId}/commonphrases，接口请求状态码为200。
+    ...    - Step4、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #创建参数字典，管理员模式获取公共常用语
     ${uuid}    Uuid 4
     &{phrasesEntity}    create dictionary    systemOnly=true    buildChildren=true    buildCount=true
@@ -226,14 +241,24 @@ Resource          ../../../../api/BaseApi/Settings/PhrasesApi.robot
     should be equal    ${j['status']}    OK    获取status值不正确：${j}
 
 获取常用语模板(/download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取常用语模板，调用接口：/download/tplfiles/%E5%AF%BC%E5%85%A5%E5%B8%B8%E7%94%A8%E8%AF%AD%E8%A7%84%E5%88%99.xlsx，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     ${resp}=    Export Commonphrases Template    ${AdminUser}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    #log    ${resp.headers.Content-Length}
     log    ${resp.headers}
     log    ${resp.headers['Content-Type']}
     # Should Be Equal    ${resp.headers['Content-Type']}    application/octet-stream    获取知识库模板失败
 
 导出常用语(/v1/tenants/{tenantId}/commonphrases/exportFile)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、导出常用语，调用接口：/v1/tenants/{tenantId}/commonphrases/exportFile，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     ${resp}=    Commonphrases ExportFile    ${AdminUser}
     log    ${resp.headers}
     log    ${resp.headers['Content-Type']}

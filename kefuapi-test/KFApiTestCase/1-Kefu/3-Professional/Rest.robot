@@ -14,7 +14,17 @@ Resource          ../../../api/BaseApi/Channels/RestApi.robot
 Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
-添加、查询、编辑并删除rest channel
+添加、查询、编辑并删除rest channel(/v1/tenants/{tenantId}/channels)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【RESTAPI渠道】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、添加rest 关联数据，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step3、查询rest 关联数据中是否有新添加的关联，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step4、修改rest 关联，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step5、删除rest 关联，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step6、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
@@ -81,7 +91,19 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${d}    Clear Dictionary    &{RestChannelEntity}
     set test variable    ${RestChannelEntity}    ${d}
 
-用rest渠道发送消息并关闭会话
+用rest渠道发送消息并关闭会话(/api/tenants/{tenantId}/rest/channels/{channelId}/messages)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【RESTAPI渠道】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、添加rest 关联数据，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step3、查询rest 关联数据中是否有新添加的关联，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step4、发起restapi消息并创建新会话，调用接口：/api/tenants/{tenantId}/rest/channels/{channelId}/messages，接口请求状态码为200。
+    ...    - Step5、根据访客昵称查询待接入列表，调用接口：/v1/Tenant/me/Agents/me/UserWaitQueues/search，接口请求状态码为200。
+    ...    - Step6、关闭待接入的该rest渠道会话，调用接口：/v1/tenants/{tenantId}/queues/waitqueue/waitings/{waitingId}/abort，接口请求状态码为200。
+    ...    - Step7、删除该rest关联，调用接口：/v1/tenants/{tenantId}/channels，接口请求状态码为200。
+    ...    - Step8、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行

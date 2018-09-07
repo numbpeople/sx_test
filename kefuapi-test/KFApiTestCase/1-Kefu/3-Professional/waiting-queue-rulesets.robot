@@ -16,7 +16,18 @@ Resource          ../../../api/IM/IMApi.robot
 Library           uuid
 
 *** Test Cases ***
-添加、查询、编辑并删除rule
+添加、查询、编辑并删除rule(/v1/tenants/{tenantId}/waiting-queue-rulesets)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、判断租户的增值功能【排队规则-技能组溢出】灰度开关状态，未开通灰度功能，不执行。
+    ...    - Step2、获取坐席所在技能组列表，调用接口：/v1/tenants/{tenantId}/agents/{agentId}/skillgroups，接口请求状态码为200。
+    ...    - Step3、添加技能组溢出规则，调用接口：/v1/tenants/{tenantId}/waiting-queue-rulesets，接口请求状态码为200。
+    ...    - Step4、查询技能组溢出规则数据中是否有新添加的规则，调用接口：/v1/tenants/{tenantId}/waiting-queue-rulesets，接口请求状态码为200。
+    ...    - Step5、修改新增的规则，调用接口：/v1/tenants/{tenantId}/waiting-queue-rulesets/{ruleId}，接口请求状态码为200。
+    ...    - Step6、删除新增的规则，调用接口：/v1/tenants/{tenantId}/waiting-queue-rulesets/{ruleId}，接口请求状态码为200。
+    ...    - Step7、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #获取坐席所在技能组列表
     ${j}    Get Agent QueueInfo    ${AdminUser}   ${AdminUser.userId}
     ${qid}    set variable    ${j['entities'][0]['queueId']}

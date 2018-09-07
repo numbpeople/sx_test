@@ -9,6 +9,12 @@ Resource          ../../../api/HomePage/VerifyCode/VerifyCodeApi.robot
 
 *** Test Cases ***
 获取图片验证码(/imgVerifyCode)
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取图片验证码，调用接口：/imgVerifyCode，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    接口返回值中，请求状态码为200。
     #获取codeId
     ${resp}=    /imgVerifyCode    ${AdminUser}    post    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

@@ -141,8 +141,8 @@ send_video_to_Agent
     Comment    直接发送已经录制的短视频
     click element    //android.widget.GridView/android.widget.FrameLayout[@index='1']
     Click Element    ${packagename}:id/btn_less
-    Wait Until Element Is Visible    ${packagename}:id/chatting_video_data_area    ${timeout}
-    ${j}    Should Contain Visitor Message In Processing Conversation    ${AdminUser}    ${leave_message.name}    file
+    Comment    Wait Until Element Is Visible    ${packagename}:id/chatting_video_data_area    ${timeout}
+    ${j}    Should Contain Visitor Message In Processing Conversation    ${AdminUser}    ${leave_message.name}    video
     should be true    ${j}    【实际结果】：进行中会话，并未找到指定的视频类型消息：${j}
 
 send_location_to_Agent
@@ -153,7 +153,7 @@ send_location_to_Agent
     ...    【预期结果】：
     ...    - Step1、坐席端可以正常收到访客端的位置消息
     Click Element    ${packagename}:id/btn_more
-    : FOR    ${i}    IN RANGE    3
+    : FOR    ${i}    IN RANGE    2
     \    Click Element    ${packagename}:id/chat_menu_map
     \    sleep    3
     \    Click Element    ${packagename}:id/btn_location_send
@@ -162,17 +162,39 @@ send_location_to_Agent
     ${j}    Should Contain Visitor Message In Processing Conversation    ${AdminUser}    ${leave_message.name}    loc
     should be true    ${j}    【实际结果】：进行中会话，并未找到指定的位置类型消息：${j}
 
-send_commodityLink_to_Agent
+send_order_to_Agent
     [Documentation]    【操作步骤】：
     ...    - Step1、给座席端发送商品连接图文消息
     ...
     ...
     ...    【预期结果】：
     ...    - Step1、坐席端可以正常收到访客端的商品的图文的消息
-    : FOR    ${i}    IN RANGE    3
-    \    swipe_up
+    go back
+    go_shop
+    Comment    进入track消息类型商品
+    click element    ${packagename}:id/ib_shop_imagetwo
+    Click Element    //${TextView}[@text='Connect to Customer Service']
     Wait Until Element Is Visible    ${packagename}:id/bubble    ${timeout}    【实际结果】：没有找到商品链接
     Click Element    ${packagename}:id/button_send
+    go back
+    ${j}    Should Contain Visitor Message In Processing Conversation    ${AdminUser}    ${leave_message.name}    order
+    should be true    ${j}    【实际结果】：进行中会话，并未找到指定的位置类型消息：${j}
+
+send_track_to_Agent
+    [Documentation]    【操作步骤】：
+    ...    - Step1、给座席端发送商品连接图文消息
+    ...
+    ...
+    ...    【预期结果】：
+    ...    - Step1、坐席端可以正常收到访客端的商品的图文的消息
+    go back
+    go_shop
+    Comment    进入track消息类型商品
+    click element    ${packagename}:id/ib_shop_imagethree
+    Click Element    //${TextView}[@text='Connect to Customer Service']
+    Element Should Be Enabled    ${packagename}:id/bubble
+    ${j}    Should Contain Visitor Message In Processing Conversation    ${AdminUser}    ${leave_message.name}    track
+    should be true    ${j}    【实际结果】：进行中会话，并未找到指定的位置类型消息：${j}
 
 Agent_send_txt
     [Documentation]    【操作步骤】：
@@ -238,6 +260,7 @@ Agent_send_file
     should be true    ${j}    【实际结果】：座席端发送消息失败，${j}
     Wait Until Element Is Visible    ${packagename}:id/tv_userid    ${timeout}    【实际结果】：没有找到用户发的消息
     Element Should Be Enabled    ${packagename}:id/bubble
+    Wait Until Element Is Visible    ${packagename}:id/tv_file_name
     ${filename}    get text    ${packagename}:id/tv_file_name
     should be equal    ${filename}    image.gif
     click element    ${packagename}:id/tv_file_name
@@ -245,4 +268,5 @@ Agent_send_file
     click element    //android.widget.TextView[@text='Gallery']
     click element    //android.widget.TextView[@text='ES Image Browser']
     click element    android:id/button_once
+    go back
     go back

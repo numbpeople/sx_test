@@ -10,6 +10,7 @@ Library           String
 Resource          env.robot
 Resource          ../../../api/BaseApi/Note/NoteApi.robot
 Resource          ../../../AgentRes.robot
+Resource          ../../../commons/agent common/Conversations/Conversations_Common.robot
 
 *** Test Cases ***
 startdemo
@@ -36,6 +37,8 @@ startdemo
     ${height}    Get Window Height
     set global variable    ${width}
     set global variable    ${height}
+    #查询租户是否开启了访客昵称更新功能
+    ${status}    Set ServiceSessionUpdateCustomer Status    ${AdminUser}    false
 
 QR_code
     [Documentation]    【操作步骤】：

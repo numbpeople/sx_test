@@ -43,6 +43,8 @@ Set Option
     ...    2.${value}的值只能为小写的true和false
     ${data}    set variable    {"value":${value}}
     ${resp}=    /tenants/{tenantId}/options/{optionName}    ${agent}    put    ${optionname}    ${data}    ${timeout}
+    ${j}    to json    ${resp.text}
+    return from keyword    ${j}
 
 Return Result
     [Arguments]    ${resp}
@@ -120,7 +122,7 @@ Check Tenant Gray Status
     ...    | audioToMsg | 语音转文字 |
     ...    | slack | slack渠道 |
     ...    | rest | rest api |
-    ...    | webChannelConfigEnable	| 网页插件配置 |
+    ...    | webChannelConfigEnable | 网页插件配置 |
     ...    | agentInputStateEnable | 旗舰-坐席输入状态 |
     ...    | reganswer | 关键词匹配 |
     ...    | statsReport | 自定义报表 |

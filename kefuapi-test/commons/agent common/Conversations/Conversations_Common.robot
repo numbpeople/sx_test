@@ -66,7 +66,7 @@ Get Processing Session
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
     &{apiResponse}    Return Result    ${resp}
-    run keyword if    not ${apiStatus}    set to dictionary     ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
     Return From Keyword    ${apiResponse}
 
 Get Processing Conversations With FieldName
@@ -83,7 +83,7 @@ Get Processing Conversations With FieldName
     ${sessionList}    create list
     #获取进行中会话列表
     &{apiResponse}    Get Processing Session    ${agent}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${text}    set variable    ${apiResponse.text}
     ${length}    get length    ${text}
     run keyword if    ${length} > 50    ${sessionList}
@@ -783,6 +783,25 @@ Should Be Rated
     ${detailStatus}    Run Keyword And Return Status    Should Be Equal    ${j['data'][0]['detail']}    ${detail}
     Run Keyword And Return    Run Keyword And Return Status    Should Be True    "${scoreStatus}" == "${detailStatus}" == "True"
 
+Set ServiceSessionUpdateCustomer Status
+    [Arguments]    ${agent}    ${value}
+    [Documentation]    更新租户访客昵称更新功能开关状态
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${value} | 必填 | 开关的值，为true或false |
+    ...
+    ...    【返回值】
+    ...    | 执行成功：True，否则返回False |
+    ...
+    ...    【调用方式】
+    ...    | 更新访客昵称更新功能开关状态 | ${status} | Set ServiceSessionUpdateCustomer Status | ${AdminUser} | false |
+    #更新serviceSessionUpdateCustomerEnable状态
+    ${j}    Set Option    ${agent}    serviceSessionUpdateCustomerEnable    ${value}
+    return from keyword If    "${j['status']}" == "OK"    True
+    return from keyword    False
+
 Robot Reply Message To Visitor
     [Arguments]    ${agent}    ${nickname}    ${type}    ${msg}=
     [Documentation]    判断进行中会话中，是否包含指定访客消息
@@ -810,4 +829,3 @@ Robot Reply Message To Visitor
     ...    | Step 6 | 返回值：True |
     #Step 1、根据访客昵称查找所属会话是否已经结束，如会话不属于机器人，则手动结束，并模拟访客发消息给机器人
     #Step 2、判断访客所需要机器人回复的消息类型，来进行创建知识规则，包括。
-    

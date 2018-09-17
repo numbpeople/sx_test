@@ -6,6 +6,7 @@ Library           RequestsLibrary
 Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/Channels/WebimApi.robot
+Resource          ../../Base Common/Base_Common.robot
 
 *** Keywords ***
 Get Template
@@ -225,6 +226,17 @@ Set AgentInputState
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
     Return From Keyword    ${j}
+
+Set WaitListNumber
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}
+    [Documentation]    获取显示排队人数
+    #获取显示排队人数
+    ${resp}    /v1/visitors/waitings/data    ${agent}    ${serviceSessionId}    ${queueId}    ${timeout}
+    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    errorDescribetion=【实际结果】：获取显示排队人数接口，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}
+    Return From Keyword    ${apiResponse}
 
 Create AgentInputState Data
     [Arguments]    ${agent}

@@ -66,7 +66,7 @@ Get Processing Session
     ${resp}=    /v1/Agents/me/Visitors    ${agent}    ${timeout}
     ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
     &{apiResponse}    Return Result    ${resp}
-    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：获取进行中会话接口，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
     Return From Keyword    ${apiResponse}
 
 Get Processing Conversations With FieldName
@@ -186,9 +186,10 @@ Stop Processing Conversation
     ...    | Step 2 | 判断接口返回状态是否为200，并且返回值是否为true |
     #关闭会话
     ${resp}=    /v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Stop    ${agent}    ${visitoruserid}    ${servicesessionid}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    【实际结果】：关闭会话时接口状态码不是200：调用接口：${resp.url}，实际状态码是：${resp.status_code}，原因是：${resp.text}。
-    ${j}    Return Result    ${resp}
-    Should Be True    ${j.text}    【实际结果】：关闭会话时接口调用失败：调用接口：${j.url}，判断返回值预期值：True，实际接口返回结果值为：${j.text}。
+    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：关闭进行中会话时，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Stop Processing Conversations
     [Arguments]    ${agent}    ${sessionList}
@@ -208,13 +209,17 @@ Stop Processing Conversations
     ...    【函数操作步骤】
     ...    | Step 1 | 根据传入参数${sessionList} ，获取有多少元素，如果超过100，则不执行用例，标记为Fail |
     ...    | Step 2 | 依次全部关闭进行中的会话 |
+    #构造返回字典
+    &{apiResponse}    Copy Dictionary    ${ApiResponse}
     #判断进行中是否超过100会话
     ${length}    get length    ${sessionList}
     Run Keyword If    ${length} > 100    Fail    进行中会话超过100个会话，以防性能问题，不允许执行 , ${sessionList}
     #批量关闭进行中会话
     : FOR    ${i}    IN    @{sessionList}
-    \    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    &{apiResponse}    Stop Processing Conversation    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
+    \    return from keyword if     "${apiResponse.status}" != "${ResponseStatus.OK}"    ${apiResponse}
     \    sleep    50ms
+    return from keyword    ${apiResponse}
 
 Agent Send Message
     [Arguments]    ${agent}    ${visitoruserid}    ${servicesessionid}    ${msg}
@@ -283,7 +288,7 @@ Create Processiong Conversation
     ...    | Step 6 | 获取坐席的进行中会话列表数据 |
     ...    | Step 7 | 返回该会话的所有属性，包括：会话id、访客昵称、访客userId、访客消息、技能组id等 |
     #Step 1、添加一个技能组、创建渠道变量、创建消息体字典数据、创建访客信息字典数据
-    ${originType}    set variable    weixin
+    ${originType}    set variable    webim
     # ${curTime}    get time    epoch
     ${randoNumber}    Generate Random String    5    [NUMBERS]
     #创建技能组
@@ -323,6 +328,74 @@ Create Processiong Conversation
     Should Be Equal    ${a['techChannelName']}    ${restentity.channelName}    关联信息不正确：${a}
     Should Be Equal    ${a['techChannelId']}    ${restentity.channelId}    关联id不正确：${a}
     set to dictionary    ${GuestEntity}    msgEntity=${MsgEntity}    guestEntity=${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    sessionServiceId=${a['serviceSessionId']}
+    ...    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    userName=${GuestEntity.userName}    msg=${MsgEntity.msg}    originType=${GuestEntity.originType}
+    Return From Keyword    ${GuestEntity}
+
+Create Processing Conversation
+    [Arguments]    ${originType}=webim
+    [Documentation]    创建会话并手动接入到进行中会话列表，返回会话的属性以及访客的信息
+    ...
+    ...    【参数值】：
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${originType} | 无 | 会话渠道类型 |
+    ...
+    ...    【返回值】
+    ...    | 字段描述 | 会话id | 访客昵称 | 访客userId | 访客消息 | 技能组id | ... |
+    ...    | 字段名称 | sessionServiceId | userName | userId | msg | queueId | ... |
+    ...
+    ...    【调用方式】
+    ...    | 创建一个进行中会话 | ${sessionInfo} | Create Processing Conversation |
+    ...    | 获取会话id | ${serviceSessionId} | Set Variable | ${sessionInfo.sessionServiceId} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 添加一个技能组、创建渠道变量、创建消息体字典数据、创建访客信息字典数据 |
+    ...    | Step 2 | 改变路由规则优先级顺序，使其入口指定优先 |
+    ...    | Step 3 | 访客发起新消息，创建新会话 |
+    ...    | Step 4 | 根据访客昵称搜索待接入数据 |
+    ...    | Step 5 | 手动从待接入接入会话到进行中会话 |
+    ...    | Step 6 | 获取坐席的进行中会话列表数据 |
+    ...    | Step 7 | 返回该会话的所有属性，包括：会话id、访客昵称、访客userId、访客消息、技能组id等 |
+    #Step 1、添加一个技能组、创建渠道变量、创建消息体字典数据、创建访客信息字典数据
+    # ${originType}    set variable    webim
+    # ${curTime}    get time    epoch
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    #创建技能组
+    ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}${randoNumber}A
+    ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    ${MsgEntity}    create dictionary    msg=${randoNumber}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}"}}
+    ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${randoNumber}    originType=${originType}
+    #Step 2 、 改变路由规则优先级顺序，使其入口指定优先
+    Set RoutingPriorityList    入口    渠道    关联
+    #Step 3 、 访客发起新消息，创建新会话(访客名称为租户id与随机数的组合)
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #根据访客昵称查询待接入列表
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    visitorName=${GuestEntity.userName}
+    set to dictionary    ${filter}    page=0    #visitorName=${guestentity.userName}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${filter}    ${DateRange}
+    ${expectConstruction}    set variable    ['totalElements']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    1    #该参数为获取接口某字段的预期值
+    #Step 4 、 根据访客昵称搜索待接入数据
+    ${j}    Repeat Keyword Times    Get Waiting    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    待接入会话没有找到指定会话
+    # ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${DateRange}
+    # ${j}    to json    ${resp.content}
+    Should Be True    ${j['totalElements']} ==1    查询结果为空：${j}
+    Should Be Equal    ${j['entities'][0]['visitor_name']}    ${guestentity.userName}    访客名称不正确：${j}
+    Should Be Equal    ${j['entities'][0]['skill_group_id']}    ${queueentityA.queueId}    技能组id不正确：${j}
+    Should Not Be True    ${j['entities'][0]['vip']}    非vip用户显示为vip：${j}
+    #Step 5 、手动从待接入接入会话到进行中会话
+    Access Conversation    ${AdminUser}    ${j['entities'][0]['session_id']}
+    #查询进行中会话是否有该访客
+    ${j}    Get Processing Conversation    ${AdminUser}
+    : FOR    ${a}    IN    @{j}
+    \    Exit For Loop If    '${a['user']['nicename']}'=='${GuestEntity.userName}'
+    log    ${a}
+    Should Be Equal    ${a['user']['nicename']}    ${GuestEntity.userName}    访客昵称不正确：${a}
+    Should Be Equal    ${a['techChannelName']}    ${restentity.channelName}    关联信息不正确：${a}
+    Should Be Equal    ${a['techChannelId']}    ${restentity.channelId}    关联id不正确：${a}
+    set to dictionary    ${GuestEntity}    msgEntity=${MsgEntity}    guestEntity=${GuestEntity}    userId=${a['user']['userId']}    chatGroupId=${a['chatGroupId']}    serviceSessionId=${a['serviceSessionId']}
     ...    chatGroupSeqId=${a['lastChatMessage']['chatGroupSeqId']}    queueId=${queueentityA.queueId}    userName=${GuestEntity.userName}    msg=${MsgEntity.msg}    originType=${GuestEntity.originType}
     Return From Keyword    ${GuestEntity}
 
@@ -829,3 +902,21 @@ Robot Reply Message To Visitor
     ...    | Step 6 | 返回值：True |
     #Step 1、根据访客昵称查找所属会话是否已经结束，如会话不属于机器人，则手动结束，并模拟访客发消息给机器人
     #Step 2、判断访客所需要机器人回复的消息类型，来进行创建知识规则，包括。
+
+Get Whisper Message
+    [Arguments]    ${agent}    ${filter}
+    [Documentation]    获取耳语消息
+    #获取耳语消息
+    ${resp}=    /v1/tenants/{tenantId}/whisper-messages    ${agent}    ${filter}    ${timeout}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取耳语消息，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
+
+Send Whisper Message
+    [Arguments]    ${agent}    ${serviceSessionId}    ${data}
+    [Documentation]    发送耳语消息
+    #发送耳语消息
+    ${resp}=    /v1/tenants/{tenantId}/sessions/{serviceSessionId}/whisper-messages    ${agent}    ${serviceSessionId}    ${data}    ${timeout}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：发送耳语消息，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}

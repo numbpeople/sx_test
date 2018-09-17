@@ -31,3 +31,18 @@
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/sessions/${serviceSessionId}/messages/read
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/whisper-messages
+    [Arguments]    ${agent}    ${filter}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/whisper-messages
+    ${params}    set variable    serviceSessionId=${filter.serviceSessionId}&chatGroupId=${filter.chatGroupId}&officialAccountId=${filter.officialAccountId}&beginTimestamp=${filter.beginTimestamp}&endTimestamp=${filter.endTimestamp}&asc=${filter.asc}&_=1537165262797
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+
+/v1/tenants/{tenantId}/sessions/{serviceSessionId}/whisper-messages
+    [Arguments]    ${agent}    ${serviceSessionId}    ${data}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/sessions/${serviceSessionId}/whisper-messages
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    

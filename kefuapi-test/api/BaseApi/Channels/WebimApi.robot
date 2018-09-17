@@ -203,3 +203,11 @@
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}
     ...    timeout=${timeout}
+
+/v1/visitors/waitings/data
+    [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${params}    set variable    tenantId=${agent.tenantId}&queueId=${queueId}&serviceSessionId=${serviceSessionId}
+    ${uri}    set variable    /v1/visitors/waitings/data
+    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}

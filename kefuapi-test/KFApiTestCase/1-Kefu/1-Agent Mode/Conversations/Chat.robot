@@ -35,7 +35,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 
 获取空访客列表(/v1/Agents/me/Visitors)
     [Documentation]    【操作步骤】：
-    ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话数。
+    ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话数，调用接口：/v1/Agents/me/Visitors，返回状态码为200。
     ...    - Step2、如果进行中会话数大于50个，则标记为失败，不继续执行，否则关闭所有会话。
     ...    - Step3、查询坐席模式-进行中会话的接口返回值。
     ...
@@ -43,23 +43,24 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
     #Step1、获取进行中会话列表，并获取会话数
     &{apiResponse}    Get Processing Session    ${AdminUser}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    步骤1时，发生异常：${apiResponse.errorDescribetion}
     ${text}    set variable    ${apiResponse.text}
     ${status}    set variable    ${apiResponse.status}
     ${url}    set variable    ${apiResponse.url}
     ${length}    get length    ${text}
     #Step2、如果进行中会话数大于50个，则标记为失败，不继续执行，否则关闭所有会话。
-    Run Keyword If    ${length} > 50    Fail    进行中会话超过50个会话，case不允许执行
+    Run Keyword If    ${length} > 50    Fail    步骤2时，调用接口：${url}，获取进行中会话超过50个会话，case不允许执行
     #批量结束进行中会话
-    Stop Processing Conversations    ${AdminUser}    ${text}
+    &{apiResponse2}    Stop Processing Conversations    ${AdminUser}    ${text}
+    Should Be Equal     ${apiResponse2.status}    ${ResponseStatus.OK}    步骤2时，发生异常：${apiResponse2.errorDescribetion}
     #Step3、查询坐席模式-进行中会话的会话数结果值。
     &{apiResponse1}    Get Processing Session    ${AdminUser}
-    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
+    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    步骤3时，发生异常：${apiResponse1.errorDescribetion}
     ${text1}    set variable    ${apiResponse1.text}
     ${status1}    set variable    ${apiResponse1.status}
     ${url1}    set variable    ${apiResponse1.url}
     #【预期结果】：获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
-    should be true    ${text1} == []    【实际结果】：在操作步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
+    should be true    ${text1} == []    步骤3时，调用接口：${url1}后，判断返回值预期值：[],实际值为：${text1}，接口返回结果：${text1}
 
 获取进行中会话访客列表最后一条消息(/v1/Agents/me/Visitors)
     [Documentation]    【操作步骤】：

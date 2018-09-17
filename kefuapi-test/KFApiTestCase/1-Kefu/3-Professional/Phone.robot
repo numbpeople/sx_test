@@ -1,4 +1,6 @@
 *** Settings ***
+Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
+...               | 无 | 呼叫中心 | 数据库插入数据 | 无 |
 Default Tags      phone
 Library           json
 Library           requests

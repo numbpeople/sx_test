@@ -23,7 +23,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${sessionInfo}    Create Processiong Conversation
     log    ${sessionInfo.userId}
     #获取客户标签
-    ${j}=    Get Visitor Tags    ${AdminUser}    ${sessionInfo.userId}
+    ${apiResponse}    Get Visitor Tags    ${AdminUser}    ${sessionInfo.userId}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    访客中心人数不正确：${j}
 
 获取租户客户中心的筛选filters(/v1/crm/tenants/{tenantId}/filters)
@@ -34,7 +36,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ...    【预期结果】：
     ...    接口返回值中，status字段的值等于OK。
     #获取租户客户中心的筛选filters
-    ${j}=    Set Filters    get    ${AdminUser}
+    ${apiResponse}=    Set Filters    get    ${AdminUser}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     ${length} =    get length    ${j['entities']}
     Run Keyword if    ${length} == 0    Pass Execution    租户的filters为空， ${j}
@@ -58,7 +62,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${crmFilter}    create dictionary    displayName=${displayName}    status=ENABLE    type=normal    visible=true
     ${conditionList}    create dictionary    fieldName=createDateTime    operation=RANGE    param=${param}    value=${value}
     ${data}    set variable    {"displayName":"${crmFilter.displayName}","visible":${crmFilter.visible},"type":"${crmFilter.type}","status":"${crmFilter.status}","conditionList":[{"fieldName":"${conditionList.fieldName}","operation":"${conditionList.operation}","value":"${conditionList.value}","param":"${conditionList.param}"}]}
-    ${j}=    Set Filters    post    ${AdminUser}    ${data}
+    ${apiResponse}=    Set Filters    post    ${AdminUser}    ${data}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     should be equal    ${j['entity']['displayName']}    ${crmFilter.displayName}    返回值中displayName值不正确: ${j}
     Comment    should be equal    ${j['entity']['visible']}    ${crmFilter.visible}    返回值中visible值不正确: ${j}
@@ -69,7 +75,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     should be equal    ${j['entity']['conditionList'][0]['value']}    ${conditionList.value}    返回值中value字段值不正确: ${j}
     should be equal    ${j['entity']['conditionList'][0]['param']}    ${conditionList.param}    返回值中param字段值不正确: ${j}
     #获取租户客户中心的筛选filters
-    ${j}=    Set Filters    get    ${AdminUser}
+    ${apiResponse1}=    Set Filters    get    ${AdminUser}
+    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
+    ${j}    set variable    ${apiResponse1.text}
     ${length} =    get length    ${j['entities']}
     should be true    ${length} > 0    因为刚刚创建了新的客户中心筛选数据，获取到的数据总数应大于0。
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
@@ -93,7 +101,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${crmFilter}    create dictionary    displayName=${displayName}    status=ENABLE    type=normal    visible=true
     ${conditionList}    create dictionary    fieldName=createDateTime    operation=RANGE    param=${param}    value=${value}
     ${data}    set variable    {"displayName":"${crmFilter.displayName}","visible":${crmFilter.visible},"type":"${crmFilter.type}","status":"${crmFilter.status}","conditionList":[{"fieldName":"${conditionList.fieldName}","operation":"${conditionList.operation}","value":"${conditionList.value}","param":"${conditionList.param}"}]}
-    ${j}=    Set Filters    post    ${AdminUser}    ${data}
+    ${apiResponse}=    Set Filters    post    ${AdminUser}    ${data}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     should be equal    ${j['entity']['displayName']}    ${crmFilter.displayName}    返回值中displayName值不正确: ${j}
     Comment    should be equal    ${j['entity']['visible']}    ${crmFilter.visible}    返回值中visible值不正确: ${j}
@@ -106,7 +116,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     #获取filterId
     ${filterId}    set variable    ${j['entity']['filterId']}
     #创建租户客户中心的筛选filters
-    ${j}=    Set Filters    delete    ${AdminUser}    ${EMPTY}    ${filterId}
+    ${apiResponse1}=    Set Filters    delete    ${AdminUser}    ${EMPTY}    ${filterId}
+    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
+    ${j}    set variable    ${apiResponse1.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     should be equal    ${j['entity']['displayName']}    ${crmFilter.displayName}    返回值中displayName值不正确: ${j}
     Comment    should be equal    ${j['entity']['visible']}    ${crmFilter.visible}    返回值中visible值不正确: ${j}
@@ -128,7 +140,9 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #获取访客的筛选filters
-    ${j}=    Get Visitor Filters    ${AdminUser}    ${sessionInfo.userId}
+    ${apiResponse}=    Get Visitor Filters    ${AdminUser}    ${sessionInfo.userId}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
 
 获取访客的黑名单列表(/v1/tenants/{tenantId}/visitors/{visitorUserId}/blacklists)
@@ -142,5 +156,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     #获取访客黑名单列表
-    ${j}    Get Visitor Blacklists    ${AdminUser}    ${sessionInfo.userId}
+    ${apiResponse}    Get Visitor Blacklists    ${AdminUser}    ${sessionInfo.userId}
+    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${j}    set variable    ${apiResponse.text}
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}

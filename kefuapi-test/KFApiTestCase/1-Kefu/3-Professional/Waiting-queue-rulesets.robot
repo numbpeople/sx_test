@@ -1,5 +1,7 @@
 *** Settings ***
-Force Tags        routing
+Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
+...               | teamOverflow | 技能组溢出 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
+Default Tags      teamOverflow
 Library           json
 Library           requests
 Library           Collections
@@ -13,7 +15,7 @@ Resource          ../../../commons/admin common/Setting/Routing_Common.robot
 Resource          ../../../commons/admin common/BaseKeyword.robot
 Resource          ../../../commons/admin common/Robot/Robot_Common.robot
 Resource          ../../../api/IM/IMApi.robot
-Library           uuid
+Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 添加、查询、编辑并删除rule(/v1/tenants/{tenantId}/waiting-queue-rulesets)
@@ -28,6 +30,9 @@ Library           uuid
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取坐席所在技能组列表
     ${j}    Get Agent QueueInfo    ${AdminUser}   ${AdminUser.userId}
     ${qid}    set variable    ${j['entities'][0]['queueId']}

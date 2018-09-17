@@ -26,7 +26,8 @@ ${delay}          1
 &{VisitorFilterEntity}    page=1    size=15    userTagIds=    categoryId=-1    subCategoryId=-1    visitorName=    summaryIds=
 ...               enquirySummary=    beginDateTime=    endDateTime=
 &{DateRange}      beginDate=    endDate=    beginDateTime=    endDateTime=    beginWeekDate=    endWeekDate=    beginWeekDateTime=
-...               endWeekDateTime=    beginMonthDate=    endMonthDate=    beginMonthDateTime=    endMonthDateTime=    stopDateFrom=    stopDateTo=    createDateFrom=    createDateTo=
+...               endWeekDateTime=    beginMonthDate=    endMonthDate=    beginMonthDateTime=    endMonthDateTime=    stopDateFrom=    stopDateTo=
+...               createDateFrom=    createDateTo=
 ${switchType}     0
 &{commonphrasesVariables}    systemOnly=false    buildChildren=true
 &{MsgCenterEntity}    total_pages=1    total_entries=9    status=unread
@@ -53,10 +54,13 @@ ${SeleniumTimeout}    20
 @{originType}     app    webim    weibo    weixin    phone    rest    slack
 ${ScheduleTimeout}    5
 ${daasDelay}      3
-&{customerFieldName}    createDateTime=    lastSessionCreateDateTime=    nickname=    username=    customerTags=    truename=    email=   phone=
-&{customerOperation}    createDateTime=RANGE    lastSessionCreateDateTime=RANGE    nickname=CONTAIN    username=CONTAIN    customerTags=CONTAIN_ANY    truename=CONTAIN    email=CONTAIN   phone=CONTAIN
-&{evaluationdegreesName}    score1=非常不满意    score2=不满意    score3=一般    score4=满意   score5=非常满意
-&{evaluationdegreesNameScore}    score1=1    score2=2    score3=3    score4=4   score5=5
-${grayFunctionOption}        False    #判断增值功能测试用例是否执行，True即执行，False为不执行
-&{ApiResponse}    status=    errorDescribetion=    statusCode=    text=    url=
+&{customerFieldName}    createDateTime=    lastSessionCreateDateTime=    nickname=    username=    customerTags=    truename=    email=
+...               phone=
+&{customerOperation}    createDateTime=RANGE    lastSessionCreateDateTime=RANGE    nickname=CONTAIN    username=CONTAIN    customerTags=CONTAIN_ANY    truename=CONTAIN    email=CONTAIN
+...               phone=CONTAIN
+&{evaluationdegreesName}    score1=非常不满意    score2=不满意    score3=一般    score4=满意    score5=非常满意
+&{evaluationdegreesNameScore}    score1=1    score2=2    score3=3    score4=4    score5=5
+${grayFunctionOption}    False    #判断增值功能测试用例是否执行，True即执行，False为不执行
+&{ApiResponse}    status=${ResponseStatus.OK}    errorDescribetion=    statusCode=    text=    url=    describetion=
 &{ResponseStatus}    OK=OK    FAIL=FAIL
+&{WhisperMessageEntity}    serviceSessionId=    chatGroupId=    officialAccountId=    beginTimestamp=    endTimestamp=    asc=True

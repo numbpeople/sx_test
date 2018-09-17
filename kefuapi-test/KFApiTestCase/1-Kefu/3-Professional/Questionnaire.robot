@@ -1,4 +1,7 @@
 *** Settings ***
+Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
+...               | questionnaireEnable | 第三方问卷调查 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
+Default Tags      questionnaireEnable
 Library           json
 Library           requests
 Library           Collections
@@ -7,6 +10,7 @@ Library           String
 Library           uuid
 Resource          ../../../AgentRes.robot
 Resource          ../../../commons/admin common/Setting/Questionnaire_Common.robot
+Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 获取问卷账号列表(/v1/tenants/{tenantId}/questionnaires/accounts)
@@ -17,6 +21,9 @@ Resource          ../../../commons/admin common/Setting/Questionnaire_Common.rob
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取问卷账号列表
     ${j}    Set Questionnaire    ${AdminUser}    get    ${EMPTY}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
@@ -29,6 +36,9 @@ Resource          ../../../commons/admin common/Setting/Questionnaire_Common.rob
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行    
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
     ${j}    Set Questionnaire    ${AdminUser}    post    ${data}
@@ -47,6 +57,9 @@ Resource          ../../../commons/admin common/Setting/Questionnaire_Common.rob
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行 
     #获取问卷账号列表
     ${j}    Get Questionnaires List    WJW
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
@@ -59,6 +72,9 @@ Resource          ../../../commons/admin common/Setting/Questionnaire_Common.rob
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行 
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
     ${j}    Set Questionnaire    ${AdminUser}    delete    ${data}

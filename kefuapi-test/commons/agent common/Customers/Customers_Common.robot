@@ -9,6 +9,7 @@ Library           DateTime
 Library           ../../../lib/KefuUtils.py
 Resource          ../../../api/BaseApi/Customers/Customers_Api.robot
 Resource          ../../../api/MicroService/Webapp/WebappApi.robot
+Resource          ../../Base Common/Base_Common.robot
 
 *** Keywords ***
 Get Admin Customers
@@ -56,36 +57,40 @@ Get Visitor Tags
     [Documentation]    查询访客的客户标签信息
     #查询访客的客户标签信息
     ${resp}=    /v1/crm/tenants/{tenantId}/visitors/{visitorId}/tags    ${agent}    ${userId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
+    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：查询访客的客户标签信息，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Set Filters
     [Arguments]    ${method}    ${agent}    ${data}=    ${filterId}=
     [Documentation]    获取/新增/修改/删除租户的客户的filters
     #操作租户的客户的filters
     ${resp}=    /v1/crm/tenants/{tenantId}/filters    ${method}    ${agent}    ${timeout}    ${data}    ${filterId}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.text}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：获取/新增/修改/删除租户的客户的filters，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Get Visitor Filters
     [Arguments]    ${agent}    ${userId}
     [Documentation]    获取客户的filters
     #获取客户的filters
     ${resp}=    /v1/crm/tenants/{tenantId}/visitor/{visitorId}/filters    ${agent}    ${userId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
+    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：获取客户的filters，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Get Visitor Blacklists
     [Arguments]    ${agent}    ${userId}
     [Documentation]    获取访客的黑名单列表
     #获取访客的黑名单列表
     ${resp}=    /v1/tenants/{tenantId}/visitors/{visitorUserId}/blacklists    ${agent}    ${userId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}:${resp.content}
-    ${j}    to json    ${resp.content}
-    Return From Keyword    ${j}
+   ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
+    &{apiResponse}    Return Result    ${resp}
+    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：获取访客的黑名单列表，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Create Time Value
     [Arguments]    ${param}
@@ -148,7 +153,9 @@ Clear Filters
     #设置filter名称模板
     ${preDisplayName}=    convert to string    ${AdminUser.tenantId}
     #获取客户中心filter数据
-    ${j}    Set Filters    get    ${AdminUser}
+    ${apiResponse}    Set Filters    get    ${AdminUser}
+    return from keyword if     "${apiResponse.status}" != "${ResponseStatus.OK}"    ${apiResponse}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
     #循环删除包含${preDisplayName}的客户中心filter数据
     : FOR    ${i}    IN    @{j['entities']}

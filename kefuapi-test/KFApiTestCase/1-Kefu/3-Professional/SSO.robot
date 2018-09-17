@@ -1,4 +1,7 @@
 *** Settings ***
+Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
+...               | ssocfg | 单点登录 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
+Default Tags      ssocfg
 Library           json
 Library           requests
 Library           Collections
@@ -7,6 +10,7 @@ Library           String
 Library           uuid
 Resource          ../../../AgentRes.robot
 Resource          ../../../commons/HomePage_Common/SSO_Common.robot
+Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 获取单点登录配置(/v1/access/config)
@@ -17,6 +21,9 @@ Resource          ../../../commons/HomePage_Common/SSO_Common.robot
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     ${j}    Get Access Config    ${AdminUser}
     Should Be Equal    ${j['status']}    OK    获取单点登录失败：${j}
 
@@ -28,5 +35,8 @@ Resource          ../../../commons/HomePage_Common/SSO_Common.robot
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     ${j}    Get Access    ${AdminUser}
     Should Be Equal    ${j['status']}    OK    获取单点登录失败：${j}

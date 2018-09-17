@@ -203,9 +203,6 @@ Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.ro
     ${j}    Set Knowledge Entry    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${entryId}
     should be equal    ${j['status']}    OK    返回值status不是OK：${j}
 
-Delete Knowledge Entry And Category With Specify Name
-    Delete Knowledge Entry And Category With Specify Name
-
 获取所有知识总数(/v1/tenants/{tenantId}/knowledge/entries/count)
     [Documentation]    【操作步骤】：
     ...    - Step1、创建知识并发布，调用接口：/v1/tenants/{tenantId}/knowledge/categories，/v1/tenants/{tenantId}/knowledge/entries，接口请求状态码为200。

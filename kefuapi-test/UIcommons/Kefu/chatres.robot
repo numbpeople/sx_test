@@ -13,7 +13,6 @@ ${maxcallinlistr}    '{"elements":[{"name":"li","xPath":"/html/body/ul[1]/li[%d]
 @{actviedattributes}    ''    ' activated'
 ${searchongoinstr}    '{"elements":[{"name":"searchdiv","xPath":"//*[@id=\\'em-chat\\']/div[1]/div/div[1]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"p","xPath":"/div[2]/p/div/div[1]/div/div/span/input","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"placeholder","value":{"zh-CN":"搜索名字、昵称","en-US":"Search"}}],"elements":[]},{"name":"closespan","xPath":"/div[2]/p/div/div[1]/div/div/span/span[2]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
 ${searchongoinglistr}    '{"elements":[{"name":"li","xPath":"/li[%d]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"p","xPath":"/div[2]/p","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
-ents":[{"name":"p","xPath":"/div[2]/p","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"class","value":{"zh-CN":"channel-source-%s","en-US":"channel-source-%s"}}],"elements":[]}]}]}'
 ${chatdetailstr}    '{"elements":[{"name":"chatdetail","xPath":"//*[@id=\\'em-chat\\']/div[2]/div[1]/h2","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"guestnamespan1","xPath":"/span[1]","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"channelspan3","xPath":"/span[3]","text":{"zh-CN":"(会话来自: %s)","en-US":"(From: %s)"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
 
 *** Keywords ***
@@ -336,6 +335,7 @@ Check ChatDetail Case
     set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
     #检查会话进入进行中：格式化会话列表json并检查ui
     @{p}    create list    '${guest.userName}'    '${guest.userName}'    '${restentity.channelName}'    '${restentity.channelName}'
+    #把list转换为,分隔的字符串，map的作用是将list中的非string转换为string，否则会出错，另：uuid不加''会被认为uuid类型，而不是string
     ${t}    evaluate    ','.join(list(map(str,@{p})))
     ${t}    decode bytes to string    ${t}    utf-8
     Format String And Check Elements    ${agent}    Format Jsonstr    ${chatdetailstr}    ${t}

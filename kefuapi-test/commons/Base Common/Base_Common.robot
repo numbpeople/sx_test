@@ -69,7 +69,7 @@ Return Result
     #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
     ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
     set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
-    Run Keyword And Return If    not ${status}    ${apiResponse}
+    Return From Keyword If    not ${status}    ${apiResponse}
     #设置请求返回值
     ${text}    to json    ${resp.text}
     set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}

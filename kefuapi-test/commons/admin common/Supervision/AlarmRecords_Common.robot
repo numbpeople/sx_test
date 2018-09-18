@@ -25,7 +25,7 @@ Get Monitor Unreadalarmcount
     #获取告警记录未读数
     ${resp}=    /v1/monitor/unreadalarmcount    ${agent}    get    ${timeout}
     &{apiResponse}    Return Result    ${resp}
-    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取耳语消息，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取告警记录未读数，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
     Return From Keyword    ${apiResponse}
 
 Clear Monitor Unreadalarmcount
@@ -34,5 +34,5 @@ Clear Monitor Unreadalarmcount
     #清空告警记录未读数
     ${resp}=    /v1/monitor/unreadalarmcount    ${agent}    put    ${timeout}
     &{apiResponse}    Return Result    ${resp}
-    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取耳语消息，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：清空告警记录未读数，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
     Return From Keyword    ${apiResponse}

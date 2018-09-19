@@ -4,7 +4,7 @@
 # Author : Pizza Li
 
 # CI 邮件登陆
-Alarm_Email_Auth = ('kefu_ci@easemob.com','Easemob2016')
+Alarm_Email_Auth = ('kefu_ci@easemob.com','Easemob2016','smtp.exmail.qq.com','465')
 
 # CI 短信token
 Alarm_SMS_Auth = ("easemob", "YjBiYjQzOTJiYTg1NTBhODk0ZGVhYjIzNWYzNjA4YjY=")

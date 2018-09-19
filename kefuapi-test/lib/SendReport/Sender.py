@@ -8,6 +8,7 @@ import requests
 import time
 import hashlib
 import smtplib
+from smtplib import SMTP_SSL
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from settings import Alarm_Email_Auth,  Alarm_SMS_Auth
@@ -137,9 +138,10 @@ class Sender(object):
         to_list = ['<%s>' % user for user in to]
         print 'to_list: %s' % to_list
         cc_list = []
-        mail_server = 'smtp.exmail.qq.com'
         mail_user = Alarm_Email_Auth[0]
         mail_pass = Alarm_Email_Auth[1]
+        mail_server = Alarm_Email_Auth[2]
+        port = Alarm_Email_Auth[3]
 
         from_mail = mail_user
         htmlText = msg
@@ -199,11 +201,17 @@ class Sender(object):
                     data.attach(att1)
 
         try:
-            s = smtplib.SMTP()
-            s.connect(mail_server)
-            s.ehlo()
-            s.starttls()
-            s.ehlo()
+            if port == '465':
+                print 'use 465 port'
+                s = smtplib.SMTP_SSL(mail_server,port)
+                #s.set_debuglevel(1)
+            else:
+                print 'use 25 port'
+                s = smtplib.SMTP()
+                s.connect(mail_server,port)
+                s.ehlo()
+                s.starttls()
+                s.ehlo()
             s.login(mail_user, mail_pass)
             s.sendmail(from_mail, to_list, data.as_string())
             s.quit()
@@ -219,7 +227,7 @@ class Sender(object):
 if __name__ == '__main__':
     s = Sender()
     # s.send_sms('test')
-    recieve = u"leoli@easemob.com,260553619@qq.com"
+    recieve = u"leoli@easemob.com"
 #     recieve = ['leoli@easemob.com','260553619@qq.com']
 #     recieve = []
-    s.sendReportMail('测试用例集：【Kefuapi-Test.Tool.Tools-Case】- -> 测试用例：【发送邮件】状态为FAIL', '1 != 2', recieve,'C:\Users\leo\git\kefu-auto-test\kefuapi-test\listen.html')
+    s.sendReportMail('测试用例集：【Kefuapi-Test.Tool.Tools-Case】- -> 测试用例：【发送邮件】状态为FAIL', '1 != 2', recieve,'C:\Users\leo\git\kefu-auto-test\kefuapi-test\emailreport.html')

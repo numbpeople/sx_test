@@ -61,35 +61,103 @@ AgentRes.robot: 定义客服登录地址、账号/密码、筛选字典、接口
 
 ## 项目运行
 
-* Ride工具: 界面点击运行按钮即可, 如下图:
+### Ride工具: 
+- #### 界面点击运行按钮即可, 如下图:
 
 ![image](https://sandbox.kefu.easemob.com/v1/Tenant/11699/MediaFiles/cc4161e7-d48c-4e9a-b20d-d20c3dce0ab3aW1hZ2UucG5n)
 
 
-* 命令行:
+### 命令行:
 
-按照tag标记名称执行
+- #### 按照tag标记名称执行
 ```
-$ cd kefu-auto-test/kefuapi-test/
-$ pybot.bat --include baselogin --exclude tool --exclude org --exclude ui C:\Users\leo\git\kefu-auto-test\kefuapi-test
+$ cd kefu-auto-test/kefuapi-test/(进入到用例执行目录下)
+$ pybot.bat --include debugChat --exclude tool --exclude ui --exclude appui --exclude org C:\Users\leo\git\kefu-auto-test\kefuapi-test
 
 ```
 
 
-支持用例完毕后发送邮件和报告到邮箱
+- #### 支持用例完毕后发送邮件和报告到邮箱
 
 ```
 MyListener.py 脚本支持两个参数
     1、receive：接收邮件的邮箱地址，多个邮箱使用逗号隔开
     2、outpath：报告名称或目录地址
 ```
+
+- #### Windows环境运行
 ```
-$ pybot.bat --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py;leoli@easemob.com,zhukai@easemob.com;emailreport.html --include baselogin --exclude tool --exclude ui --exclude org  C:\Users\leo\git\kefu-auto-test\kefuapi-test
+$ cd kefu-auto-test/kefuapi-test/(进入到用例执行目录下)
+$ pybot.bat --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py;leoli@easemob.com,zhukai@easemob.com;emailreport.html --include debugChat --exclude tool --exclude ui --exclude appui --exclude org  C:\Users\leo\git\kefu-auto-test\kefuapi-test
+
+```
+- #### Mac或Linux环境运行
+```
+$ cd kefu-auto-test/kefuapi-test/ (进入到用例执行目录下)
+$ pybot --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py:leoli@easemob.com,zhukai@easemob.com:emailreport.html --include baselogin --exclude tool --exclude ui --exclude appui --exclude org  C:\Users\leo\git\kefu-auto-test\kefuapi-test
+
+或执行运行脚本
+$ sh ./start.sh
 
 ```
 
 
+###### 更多pybot参数介绍 : [pybot参数介绍](https://blog.csdn.net/huashao0602/article/details/72846217)
 
-更多pybot参数介绍:
-[pybot参数介绍](https://blog.csdn.net/huashao0602/article/details/72846217)
+
+
+# Docker 搭建客服自动化环境
+
+## 目的
+
+使用Docker容器技术，以便于客服项目自动化可以在不同系统环境、不同团队、不同项目快速实施搭建、构建以及运行，执行完毕后将测试用报告发送给执行人员。以达到一键构建、秒级运行、快速定位问题终极目标
+
+## 构建
+
+```
+$ cd kefu-auto-test (进入kefu-auto-test目录下)
+$ docker build -t kf-docker .
+
+或执行项目下的脚本
+$ sh ./docker_build.sh
+
+```
+
+## 运行 
+
+- #### 终端运行测试用例方式
+```
+$ cd kefu-auto-test (进入kefu-auto-test目录下)
+$ docker run -it --rm -v $(pwd)/kefuapi-test:/$ROBOT_TESTS -ti $DOCKER_IMAGE_NAME --listener /$ROBOT_TESTS/lib/MyListener.py:$EMAIL_RECEIVE $includetag $excludetag $ROBOT_TESTS
+
+或执行项目下的脚本
+$ sh ./docker_start.sh
+```
+
+- #### 使用已上传的镜像文件
+```
+$ cd kefu-auto-test (进入kefu-auto-test目录下)
+$ docker run -it --rm -v $(pwd)/kefuapi-test:/$ROBOT_TESTS -ti $DOCKER_IMAGE_NAME --listener /$ROBOT_TESTS/lib/MyListener.py:$EMAIL_RECEIVE $includetag $excludetag $ROBOT_TESTS
+
+或执行项目下的脚本
+$ sh ./docker_start_already_image.sh
+
+```
+* 目前我已将镜像文件上传到官网，如有需要可以直接使用
+> docker pull 260553619/kf-docker
+
+[docker镜像地址](https://hub.docker.com/r/260553619/kf-docker/)
+
+
+- #### 执行docker_start.sh脚本中，参数定义：
+
+
+
+|参数名称|参数值|参数描述|建议|
+| ---- | --- | --- | --- |
+|ROBOT_TESTS|kefuapi-test|执行用例suite集|不建议修改|
+|DOCKER_IMAGE_NAME|kf-docker|docker镜像名称|不建议修改|
+|EMAIL_RECEIVE|leoli@easemob.com|邮件接收邮箱地址|可以填写执行用例自己的邮箱|
+|INCLUED_TAG|debugChat|要执行用例的标签名称，使用逗号隔开|若需要全部执行用例，可以不填写值|
+|EXCLUED_TAG|org,tool,ui,appui|不执行用例的标签名称，使用逗号隔开|若需要全部执行用例，该四个值不要修改|
 

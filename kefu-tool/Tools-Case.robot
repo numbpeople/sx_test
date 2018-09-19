@@ -614,8 +614,8 @@ ${datadir}        ${CURDIR}${/}${/}resource
     set to dictionary    ${FilterEntity}    page=1    per_page=150    state=Processing,Resolved    isAgent=${False}    agentIds=b45e3530d2714f23b7246e97537b3eee
     set to dictionary    ${DateRange}    beginDate=2017-03-01T00:00:00.000Z    endDate=2017-04-01T00:00:00.000Z
     #关闭进行中会话
-    ${resp}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
-    ${j}    to json    ${resp.content}
+    ${j}    Get Current Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}
+    Comment    ${j}    to json    ${resp.content}
     log    ${j}
     : FOR    ${i}    IN    @{j['items']}
     \    Stop Processing Conversation    ${AdminUser}    ${i['visitorUser']['userId']}    ${i['serviceSessionId']}

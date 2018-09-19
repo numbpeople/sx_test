@@ -1,20 +1,16 @@
-FROM alpine:latest
+FROM python:2.7.15
 
 MAINTAINER "leoli" <leoli@easemob.com>
 
 LABEL name="Docker image for KEFU-AUTOTEST Robot Framework https://github.com/easemob/kefu-auto-test"
-LABEL usage=""
 
-# Install Python Pip Robot framework , other library
-RUN apk add bash py-pip && \
-    pip install --upgrade pip && \
-    pip install robotframework==3.0.2 && \
-    pip install robotframework-requests==0.4.5 && \
-    pip install requests==2.18.4 && \
-    pip install robotframework-excellibrary==0.0.2 && \
-    python --version
+#=========================================
+# Install robotframework and library.
+#=========================================
+RUN pip install -U pandas==0.22.0 -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com
+RUN pip install -U robotframework===3.0.2
+RUN pip install -U requests==2.18.4
+RUN pip install -U robotframework-requests==0.4.5
+RUN pip install -U robotframework-excellibrary==0.0.2
 
-ADD run.sh /usr/local/bin/run.sh
-RUN chmod +x /usr/local/bin/run.sh
-
-CMD ["run.sh"]
+ENTRYPOINT ["robot"]

@@ -19,6 +19,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 
 *** Test Cases ***
 获取访客列表(/v1/Agents/me/Visitors)
+    [Tags]    debugChat
     [Documentation]    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话接口。
     ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}，接口返回状态码为200。

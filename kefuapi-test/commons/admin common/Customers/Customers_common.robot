@@ -347,10 +347,9 @@ Get Customer OperationLog
     [Documentation]    获取客户中心操作日志
     [Arguments]    ${agent}    ${FilterEntity}
     ${resp}=    /v1/tenants/{tenantId}/operationLog    ${agent}    ${FilterEntity}    ${timeout}
-    should be equal as integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    should be equal    ${j['status']}    OK    接口返回值status不正确:${j}
-    return from keyword    ${j}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取客户中心操作日志，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Get DisplayNames For Columndefinitions
     [Arguments]    ${agent}

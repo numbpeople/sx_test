@@ -46,3 +46,9 @@
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/sessions/${serviceSessionId}/whisper-messages
     Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
     
+/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/messages/{msgId}/recall
+    [Arguments]    ${agent}    ${serviceSessionId}    ${msgId}    ${timeout}
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/messages/${msgId}/recall
+    Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    

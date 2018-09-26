@@ -234,7 +234,9 @@ Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.ro
     ...    【预期结果】：
     ...    接口返回值数据中，status值为OK、渠道值为：app、webim、weibo、weixin、sendType为NEWS或TEXT。
     &{sendTypeEntity}    create dictionary    app=TEXT    webim=TEXT    weibo=TEXT    weixin=NEWS
-    ${j}    Set Send-Settings Method    get    ${AdminUser}
+    ${apiResponse}    Set Send-Settings Method    get    ${AdminUser}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤4时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    返回值status不是OK：${j}
     ${length}    get length    ${j['entities']}
     should be true    ${length} == ${4}    返回值不是四组 , ${j}
@@ -249,7 +251,9 @@ Resource          ../../../../commons/admin common/Knowledge/Knowledge_Common.ro
     ...    接口返回值数据中，status值为OK、渠道值为：app、webim、weibo、weixin、sendType为NEWS或TEXT。
     &{sendTypeEntity}    create dictionary    app=TEXT    webim=TEXT    weibo=TEXT    weixin=NEWS
     ${data}    set variable    [{"originType":"app","sendType":"${sendTypeEntity.app}"},{"originType":"webim","sendType":"${sendTypeEntity.webim}"},{"originType":"weibo","sendType":"${sendTypeEntity.weibo}"},{"originType":"weixin","sendType":"${sendTypeEntity.weixin}"}]
-    ${j}    Set Send-Settings Method    put    ${AdminUser}    ${data}
+    ${apiResponse}    Set Send-Settings Method    put    ${AdminUser}    ${data}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤4时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    返回值status不是OK：${j}
     ${length}    get length    ${j['entities']}
     should be true    ${length} == ${4}    返回值不是四组 , ${j}

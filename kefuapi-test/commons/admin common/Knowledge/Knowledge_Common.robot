@@ -9,6 +9,7 @@ Library           uuid
 Library           urllib
 Resource          ../../../AgentRes.robot
 Resource          ../../../api/BaseApi/Knowledge/Knowledge_Api.robot
+Resource          ../../../commons/Base Common/Base_Common.robot
 
 *** Keywords ***
 Get Knowledge Categories Tree
@@ -102,9 +103,9 @@ Set Send-Settings Method
     [Documentation]    获取/修改知识发送方式
     #获取/修改知识发送方式
     ${resp}=    /v1/tenants/{tenantId}/knowledge/send-settings    ${method}    ${agent}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取/修改知识发送方式，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 List Should Correct
     [Arguments]    ${resultList}    ${sendTypeEntity}=

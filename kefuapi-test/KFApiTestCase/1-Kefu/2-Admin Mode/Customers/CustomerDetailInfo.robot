@@ -91,12 +91,15 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     #获取客户中心操作日志列表
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    page=0
-    ${j}    Get Customer OperationLog    ${AdminUser}    ${filter}
+    ${apiResponse}    Get Customer OperationLog    ${AdminUser}    ${filter}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤4时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
     #验证接口返回的第一条数据是加入黑名单的操作
-    should be equal    ${j['entities'][0]['customerId']}    ${customer_Id}    接口返回的第一条数据customerId不正确:${j}
-    should be equal    ${j['entities'][0]['operationType']}    blacklist    接口返回的第一条数据operationType不正确:${j['entities'][0]}
-    should be equal    ${j['entities'][0]['operatorId']}    ${AdminUser.userId}    接口返回的第一条数据operatorId不正确:${j['entities'][0]}
-    should be equal    ${j['entities'][0]['operatorNickname']}    ${AdminUser.nicename}    接口返回的第一条数据operatorNickname不正确:${j['entities'][0]}
-    should be equal    ${j['entities'][0]['status']}    add    接口返回的第一条数据status不正确:${j['entities'][0]}
-    should be equal    ${j['entities'][0]['visitorUserId']}    ${visitor_Id}    接口返回的第一条数据visitorUserId不正确:${j}
-    should be equal    ${j['entities'][0]['visitorUserNickname']}    ${nick_Name}    接口返回的第一条数据visitorUserNickname不正确:${j}
+    should be equal    ${j['status']}    OK    接口返回值status不正确:${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['customerId']}    ${customer_Id}    接口返回的第一条数据customerId不正确:${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['operationType']}    blacklist    接口返回的第一条数据operationType不正确:${j['entities'][0]}，${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['operatorId']}    ${AdminUser.userId}    接口返回的第一条数据operatorId不正确:${j['entities'][0]}，${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['operatorNickname']}    ${AdminUser.nicename}    接口返回的第一条数据operatorNickname不正确:${j['entities'][0]}，${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['status']}    add    接口返回的第一条数据status不正确:${j['entities'][0]}，${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['visitorUserId']}    ${visitor_Id}    接口返回的第一条数据visitorUserId不正确，${apiResponse.describetion}
+    should be equal    ${j['entities'][0]['visitorUserNickname']}    ${nick_Name}    接口返回的第一条数据visitorUserNickname不正确，${apiResponse.describetion}

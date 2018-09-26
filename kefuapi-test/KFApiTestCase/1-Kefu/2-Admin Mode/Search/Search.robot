@@ -24,10 +24,9 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     set to dictionary    ${filter}    page=0    per_page=20
     ${j}    Set Searchrecords    get    ${AdminUser}    ${filter}    ${EMPTY}
     ${length}    get length    ${j['entities']}
-    run keyword if    ${length} == 0    Pass Execution    该坐席没有搜索记录
-    Should Be Equal    ${j['status']}    OK    接口返回结果中status值不正确：${j}
-    Should Be Equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId不正确：${j}
-    Should Be Equal    ${j['entities'][0]['agentUserId']}    ${AdminUser.userId}    返回值中agentUserId不正确：${j}
+    run keyword if    ${length} > 0    Should Be Equal    ${j['status']}    OK    接口返回结果中status值不正确：${j}
+    run keyword if    ${length} > 0    Should Be Equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    返回值中tenantId不正确：${j}
+    run keyword if    ${length} > 0    Should Be Equal    ${j['entities'][0]['agentUserId']}    ${AdminUser.userId}    返回值中agentUserId不正确：${j}
 
 新增并获取搜索记录(/v1/tenants/{tenantId}/searchrecords)
     [Documentation]    【操作步骤】：

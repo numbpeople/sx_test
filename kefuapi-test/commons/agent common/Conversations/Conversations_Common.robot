@@ -638,7 +638,9 @@ Upload MediaFile Amr
     ${picpath}    Find MediaFile Image Path    resource    blob.amr
     &{fileEntity}    create dictionary    filename=blob    filepath=${picpath}    contentType=audio/webm
     #上传语音
-    ${j}    Upload Amr    ${agent}    ${fileEntity}
+    ${apiResponse}    Upload Amr    ${agent}    ${fileEntity}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
     set to dictionary    ${fileEntity}    url=${j['url']}    uuid=${j['uuid']}    contentLength=${j['contentLength']}
     return from keyword    ${fileEntity}
 
@@ -668,13 +670,13 @@ Upload MediaFile
 Upload Amr
     [Arguments]    ${agent}    ${file}
     [Documentation]    上传一张语音富媒体文件
-    #打开图片文件
+    #打开语音富媒体文件
     ${fileData}    Open MediaFile    ${file}
-    #上传图片
+    #上传语音富媒体
     ${resp}=    /v1/tenants/{tenantId}/mediafiles/amr    ${agent}    ${fileData}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    ${j}    to json    ${resp.text}
-    return from keyword    ${j}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：上传一张语音富媒体文件，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Open MediaFile
     [Arguments]    ${file}
@@ -919,4 +921,13 @@ Send Whisper Message
     ${resp}=    /v1/tenants/{tenantId}/sessions/{serviceSessionId}/whisper-messages    ${agent}    ${serviceSessionId}    ${data}    ${timeout}
     &{apiResponse}    Return Result    ${resp}
     set to dictionary    ${apiResponse}    describetion=【实际结果】：发送耳语消息，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
+
+Recall Message
+    [Arguments]    ${agent}    ${serviceSessionId}    ${msgId}
+    [Documentation]    消息撤回
+    #消息撤回
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/messages/{msgId}/recall    ${agent}    ${serviceSessionId}    ${msgId}    ${timeout}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：消息撤回，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
     Return From Keyword    ${apiResponse}

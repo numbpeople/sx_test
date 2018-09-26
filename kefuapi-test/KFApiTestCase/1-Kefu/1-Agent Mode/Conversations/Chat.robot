@@ -661,14 +661,16 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     #Step1、找到resource文件夹下的图片文件，并返回图片的绝对路径。
     ${picpath}    Find MediaFile Image Path    resource    blob.amr
     &{fileEntity}    create dictionary    filename=blob    filepath=${picpath}    contentType=audio/webm
-    #上传语音
-    ${j}    Upload Amr    ${AdminUser}    ${fileEntity}
+    #Step1、上传语音
+    &{apiResponse}    Upload Amr    ${AdminUser}    ${fileEntity}
     #Step3、断言接口返回值中各字段的值，是否包含各字段。
-    Should Be True    ${j['contentLength']} > 0    接口返回值中字段contentLength未大于0：${j}
-    Should Be True    '${j['fileName']}' == '${fileEntity.filename}'    接口返回值中字段fileName不等于${fileEntity.filename}：${j}
-    Should Be True    '${j['contentType']}' == '${fileEntity.contentType}'    接口返回值中字段contentType不等于${fileEntity.contentType}：${j}
-    Dictionary Should Contain Key    ${j}    url    接口返回值中未包含url字段，${j}
-    Dictionary Should Contain Key    ${j}    uuid    接口返回值中未包含uuid字段，${j}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be True    ${j['contentLength']} > 0    步骤3时，接口返回值中字段contentLength未大于0：${apiResponse.describetion}
+    Should Be True    '${j['fileName']}' == '${fileEntity.filename}'    步骤3时，接口返回值中字段fileName不等于${fileEntity.filename}：${apiResponse.describetion}
+    Should Be True    '${j['contentType']}' == '${fileEntity.contentType}'    步骤3时，接口返回值中字段contentType不等于${fileEntity.contentType}：${apiResponse.describetion}
+    Dictionary Should Contain Key    ${j}    url    步骤3时，接口返回值中未包含url字段，${apiResponse.describetion}
+    Dictionary Should Contain Key    ${j}    uuid    步骤3时，接口返回值中未包含uuid字段，${apiResponse.describetion}
 
 坐席发送图片消息(/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages)
     [Documentation]    【操作步骤】：

@@ -114,7 +114,7 @@ Download Agent Data
     [Documentation]    导出客服信息
     ...    ${language}:值为en-US或zh-CN
     ${resp}=    /v1/Admin/Agents/file    ${agent}    ${filter}    ${language}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    204    【实际结果】：导出客服信息，返回实际状态码：${resp.status_code}，调用接口：${resp.url}，接口返回值：${resp.text}
     return from keyword    ${resp}
 
 Create Agent And Download Data

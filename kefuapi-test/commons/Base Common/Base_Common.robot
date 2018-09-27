@@ -186,16 +186,21 @@ Check Tenant Gray Status
     Return From Keyword If    ${grayFunctionOption}    True
     #获取灰度列表，包括增值功能和开关设置
     # ${j}    Get GrayList    ${agent}
+    #判断指定灰度功能的灰度状态
+    Run Keyword And Return If    "${grayName}" != "${EMPTY}"    Check Specific GrayName Status    ${grayName}
     #移除默认的tag设置：base
     Remove Values From List    ${TEST TAGS}    base
-    ${index}    set variable    -1
-    ${defaultindex}    Get Index From List    ${tenantGrayList}    ${TEST TAGS[0]}
-    ${specifyindex}    Get Index From List    ${tenantGrayList}    ${grayName}
-    run keyword if    "${grayName}" == "${EMPTY}"    set suite variable    ${index}    ${defaultindex}
-    run keyword if    "${grayName}" != "${EMPTY}"    set suite variable    ${index}    ${specifyindex}
+    ${index}    Get Index From List    ${tenantGrayList}    ${TEST TAGS[0]}
     #如果灰度列表没有该key或者option未打开，返回False，开通则返回True
     log    ${TEST TAGS[0]}
     log    ${tenantGrayList}
     log    ${index}
     Return From Keyword If    ${index}==-1    False
+    Return From Keyword    True
+
+Check Specific GrayName Status
+    [Arguments]    ${grayName}
+    [Documentation]    判断指定灰度功能的灰度状态
+    ${specifyindex}    Get Index From List    ${tenantGrayList}    ${grayName}
+    Return From Keyword If    ${specifyindex}==-1    False
     Return From Keyword    True

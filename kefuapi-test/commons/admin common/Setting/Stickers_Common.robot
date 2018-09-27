@@ -8,6 +8,7 @@ Library           calendar
 Library          ../../../lib/KefuUtils.py
 Resource          ../../../AgentRes.robot
 Resource          ../../../api/BaseApi/Settings/CustomStickersApi.robot
+Resource          ../../Base Common/Base_Common.robot
 
 *** Keywords ***
 Get Stickers
@@ -59,6 +60,9 @@ Get Stickers Numbers
     Return From Keyword    ${length}
 
 Clear Stickers
+    #判断租户的增值功能，灰度开关状态
+    ${status}    Check Tenant Gray Status    customMagicEmoji
+    Pass Execution If    not ${status}    该租户未开通自定义表情灰度功能，不执行
     #获取表情包
     ${j}    Get Stickers    ${AdminUser}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}

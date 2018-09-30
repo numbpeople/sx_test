@@ -13,7 +13,7 @@ ${maxcallinlistr}    '{"elements":[{"name":"li","xPath":"/html/body/ul[1]/li[%d]
 @{actviedattributes}    ''    ' activated'
 ${searchongoinstr}    '{"elements":[{"name":"searchdiv","xPath":"//*[@id=\\'em-chat\\']/div[1]/div/div[1]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"p","xPath":"/div[2]/p/div/div[1]/div/div/span/input","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"placeholder","value":{"zh-CN":"搜索名字、昵称","en-US":"Search"}}],"elements":[]},{"name":"closespan","xPath":"/div[2]/p/div/div[1]/div/div/span/span[2]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
 ${searchongoinglistr}    '{"elements":[{"name":"li","xPath":"/li[%d]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"p","xPath":"/div[2]/p","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
-${chatdetailstr}    '{"elements":[{"name":"chatdetail","xPath":"//*[@id=\\'em-chat\\']/div[2]/div[1]/h2","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"guestnamespan1","xPath":"/span[1]","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"channelspan3","xPath":"/span[3]","text":{"zh-CN":"(会话来自: %s)","en-US":"(From: %s)"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}]}'
+${chatdetailstr}    '{"elements":[{"name":"会话title","xPath":"//*[@id=\\'em-chat\\']/div[2]/div[1]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"详情","xPath":"/h2","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[{"name":"访客名称","xPath":"/span[1]","text":{"zh-CN":"%s","en-US":"%s"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]},{"name":"渠道信息","xPath":"/span[3]","text":{"zh-CN":"(会话来自: %s)","en-US":"(From: %s)"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]},{"name":"关闭会话按钮","xPath":"/a[1]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"title","value":{"zh-CN":"结束会话","en-US":"Close conversation"}}],"elements":[]},{"name":"会话标签按钮","xPath":"/a[2]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"title","value":{"zh-CN":"会话标签","en-US":"Conversation tags"}}],"elements":[]},{"name":"邀请评价按钮","xPath":"/a[3]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"title","value":{"zh-CN":"邀请评价","en-US":"Satisfaction ratings"}},{"name":"can","value":{"zh-CN":"%s","en-US":"%s"}}],"elements":[]},{"name":"转接按钮","xPath":"/a[4]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[{"name":"title","value":{"zh-CN":"转接","en-US":"Transfer"}}],"elements":[]},{"name":"工单按钮","xPath":"/a[5]","text":{"zh-CN":"","en-US":""},"op":"show","opjson":"","GrayKey":"ticket","ResourceKey":"base","attributes":[{"name":"title","value":{"zh-CN":"工单","en-US":"Ticket"}}],"elements":[]}]}]}'
 
 *** Keywords ***
 chat smoketest case
@@ -30,7 +30,7 @@ chat smoketest case
     @{p}    create List    '${agent.nicename}'    ${elementstatelist[4]}    ${elementstatelist[0]}    ${elementstatelist[0]}    ${elementstatelist[0]}
     ...    ${elementstatelist[0]}
     ${jbase}    Format String To Json    format avatarloginstatstr    @{p}
-    Check Base Elements    ${agent.language}    ${jbase['elements']}
+    Check Base Elements    ${agent}    ${jbase['elements']}
     #点击弹出状态选择列表，格式化状态列表字符串并检查基本元素
     click element    xpath=${jbase['elements'][0]['xPath']}
     #点击 后状态ul无属性，在线状态li为selected
@@ -323,6 +323,8 @@ Check ChatDetail Case
     [Documentation]    参数说明：
     ...    ${Admin}:管理员，用来设置各接口
     ...    ${agent}:测试坐席，可为管理员或坐席
+    #设置坐席接待状态
+    Set Agent StatusAndMaxServiceUserNumber    ${agent}    ${kefustatus[0]}    1
     #跳转到进行中会话
     switch browser    ${agent.session}
     goto and checkchatebasejson    ${agent}
@@ -334,7 +336,7 @@ Check ChatDetail Case
     ${range}    copy dictionary    ${DateRange}
     set to dictionary    ${filter}    visitorName=${guest.userName}    page=0
     #检查会话进入进行中：格式化会话列表json并检查ui
-    @{p}    create list    '${guest.userName}'    '${guest.userName}'    '${restentity.channelName}'    '${restentity.channelName}'
+    @{p}    create list    '${guest.userName}'    '${guest.userName}'    '${restentity.channelName}'    '${restentity.channelName}'    'true'    'true'
     #把list转换为,分隔的字符串，map的作用是将list中的非string转换为string，否则会出错，另：uuid不加''会被认为uuid类型，而不是string
     ${t}    evaluate    ','.join(list(map(str,@{p})))
     ${t}    decode bytes to string    ${t}    utf-8

@@ -21,6 +21,7 @@ Resource          ../../commons/Base Common/Base_Common.robot
 Library           uuid
 Resource          ../../commons/admin common/Members/Agents_Common.robot
 Resource          ../../api/MicroService/Webapp/LogoutApi.robot
+Library           ../../lib/WebdriverUtils.py
 
 *** Variables ***
 @{elementstatelist}    ''    ' noAnswer'    ' selected'    ' activated'    ' hide'
@@ -91,19 +92,26 @@ Check Element Contains Text
     Wait Until Element Contains    xpath=${locator}    ${text}
 
 Check Base Elements
-    [Arguments]    ${lang}    ${elements}    ${parentxpath}=${empty}    ${hide}=${false}
+    [Arguments]    ${agent}    ${elements}    ${parentxpath}=${empty}    ${hide}=${false}
     Return From Keyword If    ${hide}    log    隐藏元素
     log    ${hide}
     log    ${elements}
     : FOR    ${i}    IN    @{elements}
+    \    ${ig}    Get Index From List    ${agent.graylist}    ${i['GrayKey']}
+    \    ${ir}    Get Index From List    ${agent.resourcelist}    ${i['ResourceKey']}
+    \    #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
+    \    Run Keyword If    ${ig}==-1    log    未灰度此功能：${i['GrayKey']}        
+    \    Continue For Loop If    ${ig}==-1
+    \    Run Keyword If    ${ir}==-1    log    未配置此功能：${i['ResourceKey']}        
+    \    Continue For Loop If    ${ir}==-1
     \    ${locator}    set variable    ${parentxpath}${i['xPath']}
     \    ${lt}    Get Length    ${i['text']}
-    \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${lang}']}
+    \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${agent.language}']}
     \    ${la}    Get Length    ${i['attributes']}
-    \    ${hide}    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${lang}
+    \    ${hide}    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${agent.language}
     \    ...    ${i['attributes']}
     \    ${le}    Get Length    ${i['elements']}
-    \    Run Key word if    ${le}>0    Check Base Elements    ${lang}    ${i['elements']}    ${locator}
+    \    Run Key word if    ${le}>0    Check Base Elements    ${agent}    ${i['elements']}    ${locator}
     \    ...    ${hide}
 
 Check Attributes
@@ -131,10 +139,10 @@ Check Base Module
     ${ig}    Get Index From List    ${agent.graylist}    ${nav['GrayKey']}
     ${ir}    Get Index From List    ${agent.resourcelist}    ${nav['ResourceKey']}
     #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
-    Return From Keyword If    ${ig}==-1    log    未灰度此功能：${ig}
-    Return From Keyword If    ${ir}==-1    log    未配置此功能：${ir}
+    Return From Keyword If    ${ig}==-1    log    未灰度此功能：${nav['GrayKey']}
+    Return From Keyword If    ${ir}==-1    log    未配置此功能：${nav['ResourceKey']}
     go to    ${url}${nav['uri']}
-    Check Base Elements    ${agent.language}    ${json['elements']}
+    Check Base Elements    ${agent}    ${json['elements']}
 
 Update Tab Selector
     [Arguments]    ${key}    &{tab}
@@ -158,7 +166,7 @@ Login And Set Cookies
     set to dictionary    ${tagent}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
     ...    session=${session}    nicename=${j['agentUser']['nicename']}
     #打开浏览器并写入cookie
-    open browser    ${url}    ${agent.browser}    ${agent.session}
+    ud open browser    ${url}    ${agent.browser}    ${agent.session}
     Maximize Browser Window
     Set Browser Cookies    ${tagent}    ${kefuurl}
     Return From Keyword    ${tagent}
@@ -242,7 +250,7 @@ Kefu Chat Suite Teardown
 Format String And Check Elements
     [Arguments]    ${agent}    ${keyword}    @{params}
     ${jbase}    Format String To Json    ${keyword}    @{params}
-    Check Base Elements    ${agent.language}    ${jbase['elements']}
+    Check Base Elements    ${agent}    ${jbase['elements']}
 
 Format String To Json
     [Arguments]    ${keyword}    @{params}
@@ -318,3 +326,32 @@ Format Jsonstr
     [Arguments]    ${jsonstr}    ${formatstr}
     ${s}    evaluate    ${jsonstr} % (${formatstr})
     [Return]    ${s}
+
+UD Open Browser
+    [Arguments]    ${url}    ${browser}    ${alias}
+    [Documentation]    根据不同的浏览器类型，决定调用open browser 还是create webdriver
+    ...
+    ...    create webdriver目前只有browser参数是以下值时才调用：
+    ...    headlesschrome,appheadlesschrome
+    Run Keyword If    '${browser}'=='headlesschrome'    Open HeadlessBrowser    ${url}    ${browser}    ${alias}
+    ...    ELSE IF    '${browser}'=='appheadlesschrome'    Open HeadlessBrowser    ${url}    ${browser}    ${alias}
+    ...    ELSE    Open Browser    ${url}    ${browser}    ${alias}
+
+Open HeadlessBrowser
+    [Arguments]    ${url}    ${browser}    ${alias}
+    [Documentation]    根据不同的浏览器类型，创建option，创建driver
+    ...
+    ...    目前支持：
+    ...    chrome（pc），chrome（app）
+    ...
+    ...    browser参数目前只能是以下值：
+    ...    headlesschrome,appheadlesschrome
+    #创建option
+    ${options}    Run Keyword if    '${browser}'=='headlesschrome'    WebdriverUtils.create_headlesschrome_options
+    ...    ELSE IF    '${browser}'=='appheadlesschrome'    WebdriverUtils.create_app_headlesschrome_options
+    #创建对应browser变量（注意大小写）
+    ${browsertype}    Set Variable if    '${browser}'=='headlesschrome'    Chrome
+    ...    ELSE IF    '${browser}'=='appheadlesschrome'    Chrome
+    #创建webdriver并跳转
+    Create WebDriver    ${browsertype}    ${alias}    options=${options}
+    Go to    ${url}

@@ -7,6 +7,13 @@ Library           RequestsLibrary
 
 *** Test Cases ***
 排队次数与平均排队时间
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取排队统计-排队次数与平均排队时间，调用接口：/daas/internal/wait/total，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    排队统计-排队次数与平均排队时间接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、字段cnt_wc的值等于1，字段avg_wt的值大于等于2。
     #排队统计-排队次数与平均排队时间
     ${filterEntity}    create dictionary    waitTime=1000
     set suite variable    ${filterEntity}    ${filterEntity}
@@ -18,6 +25,13 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["avg_wt"]}>=2    排队次数与平均排队时间不正确:${j["entities"][0]["avg_wt"]}
 
 24小时进线量
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取排队统计-24小时进线量，调用接口：/daas/internal/wait/hour/create，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    排队统计-24小时进线量接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、字段["entities"][0]["key"]的值等于session、字段["entities"][1]["key"]的值等于message等等。
     #排队统计-24小时进线量
     ${daasCreateTime1}    evaluate    ${daasCreateTime}/1000
     ${createTimeHour}    Get Time    \    ${daasCreateTime1}
@@ -33,6 +47,13 @@ Library           RequestsLibrary
     should be true    ${j["entities"][1]["value"][${hour}]["${hour}"]}>=3    24小时进线量消息数不正确:${j["entities"][1]["value"][${hour}]["${hour}"]}
 
 进线量趋势
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取排队统计-进线量趋势，调用接口：/daas/internal/wait/day/create，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    排队统计-进线量趋势接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、字段["entities"][0]["key"]的值等于session、字段["entities"][1]["key"]的值等于message等等。
     #排队统计-进线量趋势
     ${resp}    /daas/internal/wait/day/create    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -44,6 +65,13 @@ Library           RequestsLibrary
     should be true    ${j["entities"][1]["value"][0]["${todayDateRange.beginDateTime}"]}>=3    进线量趋势消息数不正确:${j["entities"][1]["value"][0]["${todayDateRange.beginDateTime}"]}
 
 24小时排队趋势
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取排队统计-24小时排队趋势，调用接口：/daas/internal/wait/hour/wait，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    排队统计-24小时排队趋势接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、字段["entities"][0]["key"]的值等于cnt_wc、字段["entities"][1]["key"]的值等于avc_wc等等。
     #排队统计-24小时排队趋势
     ${resp}    /daas/internal/wait/hour/wait    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -59,6 +87,13 @@ Library           RequestsLibrary
     should be true    ${j["entities"][3]["value"][${hour}]["${hour}"]}>=2    24小时排队趋势最大排队时间不正确:${j["entities"][3]["value"][${hour}]["${hour}"]}
 
 排队趋势
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取排队统计-排队趋势，调用接口：/daas/internal/wait/trend，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    排队统计-排队趋势接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、字段["entities"][0]["key"]的值等于cnt_wc、字段["entities"][1]["key"]的值等于avg_wt等等。
     #排队统计-排队趋势
     ${resp}    /daas/internal/wait/trend    ${AdminUser}    ${timeout}    ${conCreateTime}    ${filterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

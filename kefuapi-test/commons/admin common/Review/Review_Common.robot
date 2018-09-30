@@ -7,6 +7,7 @@ Library           String
 Library           calendar
 Resource          ../../../api/BaseApi/Review/QualityReviews_Api.robot
 Resource          ../Setting/ReviewSettings_Common.robot
+Resource          ../../agent common/Conversations/Conversations_Common.robot
 
 *** Keywords ***
 Get Reviews
@@ -162,5 +163,6 @@ Set Appeal Comment
 Export My QualityReview
     [Arguments]    ${method}    ${agent}    ${filter}    ${range}    ${userId}=    ${language}=en-US
     [Documentation]    导出质检数据
-    ${resp}=    /v1/tenants/{tenantId}/servicesessions/qualityreview/file    ${method}    ${agent}    ${timeout}    ${filter}    ${range}    ${userId}    ${language}
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/qualityreview/file    ${method}    ${agent}    ${timeout}    ${filter}    ${range}
+    ...    ${userId}    ${language}
     should be equal as integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}

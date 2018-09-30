@@ -7,6 +7,13 @@ Library           RequestsLibrary
 
 *** Test Cases ***
 消息/会话趋势
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取客服模式-工作综合，调用接口：/daas/internal/agent/detail/total，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    客服模式-工作综合接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、字段avg_ar大于等于2、字段avg_fr大于等于2等等、字段avg_vm等于1等等。
     #客服模式-工作综合
     ${resp}=    /daas/internal/agent/detail/total    ${AdminUser}    ${timeout}    ${conCreateTime}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -20,6 +27,13 @@ Library           RequestsLibrary
     should be true    ${j["entities"][0]["cnt_tc"]}==1    客服模式工作综合-结束会话数不正确:${j["entities"][0]["cnt_tc"]}
 
 工作综合
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取客服模式-消息/会话趋势，调用接口：/daas/internal/agent/detail/trend，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    客服模式-消息/会话趋势接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、["entities"][0]["key"]字段值等于session、["entities"][1]["key"]字段的值等于message等等。
     #客服模式-消息/会话趋势
     ${resp}=    /daas/internal/agent/detail/trend    ${AdminUser}    ${timeout}    ${conCreateTime}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

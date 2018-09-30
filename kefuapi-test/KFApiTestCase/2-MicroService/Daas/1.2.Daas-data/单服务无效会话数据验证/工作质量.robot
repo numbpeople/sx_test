@@ -14,6 +14,13 @@ Resource          ../../../../../api/BaseApi/Review/QualityReviews_Api.robot
 
 *** Test Cases ***
 客服工作质量
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取工作质量-客服工作质量，调用接口：/daas/internal/agent/kpi/wq，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    工作质量-客服工作质量接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、totalElements字段值等于1、key字段的值等于AdminUser.userId，字段avg_qm等于totalScore等等。
     #验证工作质量-客服工作质量接口返回值
     log dictionary    ${ConDateRange}
     ${resp}=    /daas/internal/agent/kpi/wq    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
@@ -31,6 +38,13 @@ Resource          ../../../../../api/BaseApi/Review/QualityReviews_Api.robot
     should be true    ${j["entities"][0]["cnt_uav"]}==0    客服工作质量-无效人工会话有误(访客无消息):${j["entities"][0]["cnt_uav"]}
 
 技能组工作质量
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取工作质量-技能组工作质量，调用接口：/daas/internal/group/kpi/wq，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    工作质量-技能组工作质量接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、totalElements字段值等于1、key字段的值等于FilterEntity.queueId，字段avg_qm等于totalScore等等。
     #验证工作质量-技能组工作质量接口返回值
     ${resp}=    /daas/internal/group/kpi/wq    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
@@ -48,6 +62,13 @@ Resource          ../../../../../api/BaseApi/Review/QualityReviews_Api.robot
     should be true    ${j["entities"][0]["cnt_uav"]}==0    技能组工作质量-无效人工会话有误(访客无消息):${j["entities"][0]["cnt_uav"]}
 
 有效人工会话占比
+    [Documentation]    【操作步骤】：
+    ...    - Step1、获取工作质量-有效人工会话占比，调用接口：/daas/internal/session/dist/effective，接口请求状态码为200。
+    ...    - Step2、判断返回值各字段情况。
+    ...
+    ...    【预期结果】：
+    ...    工作质量-有效人工会话占比接口请求，状态码正常，返回值与期望一致。
+    ...    status字段的值等于OK、totalElements字段值等于2等等。
     #验证工作质量-有效人工会话占比
     ${resp}=    /daas/internal/session/dist/effective    ${AdminUser}    ${timeout}    ${ConDateRange}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}

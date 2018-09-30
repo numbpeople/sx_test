@@ -25,8 +25,10 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取问卷账号列表
-    ${j}    Set Questionnaire    ${AdminUser}    get    ${EMPTY}
-    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${apiResponse}    Set Questionnaire    ${AdminUser}    get    ${EMPTY}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${apiResponse.describetion}
 
 创建问卷账号数据(/v1/tenants/{tenantId}/questionnaires/accounts)
     [Documentation]    【操作步骤】：
@@ -41,13 +43,15 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行    
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
-    ${j}    Set Questionnaire    ${AdminUser}    post    ${data}
+    ${apiResponse}    Set Questionnaire    ${AdminUser}    post    ${data}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
     ${tenantid}    convert to string    ${AdminUser.tenantId}
-    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
-    should be equal    ${j['entity']['tenant_id']}    ${AdminUser.tenantId}    返回值中租户id不正确: ${j}
-    should be equal    ${j['entity']['type']}    WJW    返回值中的类型不正确: ${j}
-    should be equal    ${j['entity']['status']}    Enable    返回值中的状态不正确: ${j}
-    Should Contain    ${j['entity']['username']}    ${tenantid}    返回值中的账号名称不正确: ${j}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${apiResponse.describetion}
+    should be equal    ${j['entity']['tenant_id']}    ${AdminUser.tenantId}    返回值中租户id不正确: ${apiResponse.describetion}
+    should be equal    ${j['entity']['type']}    WJW    返回值中的类型不正确: ${apiResponse.describetion}
+    should be equal    ${j['entity']['status']}    Enable    返回值中的状态不正确: ${apiResponse.describetion}
+    Should Contain    ${j['entity']['username']}    ${tenantid}    返回值中的账号名称不正确: ${apiResponse.describetion}
 
 获取问卷问题列表(/v1/tenants/{tenantId}/questionnaires/list)
     [Documentation]    【操作步骤】：
@@ -61,8 +65,10 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行 
     #获取问卷账号列表
-    ${j}    Get Questionnaires List    WJW
-    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
+    ${apiResponse}    Get Questionnaires List    WJW
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${apiResponse.describetion}
 
 删除问卷账号(/v1/tenants/{tenantId}/questionnaires/accounts)
     [Documentation]    【操作步骤】：
@@ -77,10 +83,12 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行 
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
-    ${j}    Set Questionnaire    ${AdminUser}    delete    ${data}
+    ${apiResponse}    Set Questionnaire    ${AdminUser}    delete    ${data}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
     ${tenantid}    convert to string    ${AdminUser.tenantId}
-    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
-    should be equal    ${j['entity']['tenant_id']}    ${AdminUser.tenantId}    返回值中租户id不正确: ${j}
-    should be equal    ${j['entity']['type']}    WJW    返回值中的类型不正确: ${j}
-    should be equal    ${j['entity']['status']}    Deleted    返回值中的状态不正确: ${j}
-    Should Contain    ${j['entity']['username']}    ${tenantid}    返回值中的账号名称不正确: ${j}
+    should be equal    ${j['status']}    OK    返回值中status不等于OK: ${apiResponse.describetion}
+    should be equal    ${j['entity']['tenant_id']}    ${AdminUser.tenantId}    返回值中租户id不正确: ${apiResponse.describetion}
+    should be equal    ${j['entity']['type']}    WJW    返回值中的类型不正确: ${apiResponse.describetion}
+    should be equal    ${j['entity']['status']}    Deleted    返回值中的状态不正确: ${apiResponse.describetion}
+    Should Contain    ${j['entity']['username']}    ${tenantid}    返回值中的账号名称不正确: ${apiResponse.describetion}

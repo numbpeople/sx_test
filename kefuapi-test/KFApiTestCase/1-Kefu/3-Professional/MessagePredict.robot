@@ -31,11 +31,13 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
     ${serviceSessionId}    set variable    ${sessionInfo.sessionServiceId}
     ${visitorUserId}    set variable    ${sessionInfo.userId}
     #获取会话的消息预知数据
-    ${j}    Set MessagePredict    get    ${AdminUser}    ${serviceSessionId}
-    Should Be Equal    '${j['status']}'    'OK'    消息预知接口返回status数据不是OK：${j}
-    Should Be Equal    '${j['entity']['content']}'    'None'    消息预知接口返回content数据不是None：${j}
-    Should Be Equal    '${j['entity']['visitor_user_id']}'    'None'    消息预知接口返回visitor_user_id数据不是None：${j}
-    Should Be Equal    '${j['entity']['timestamp']}'    '0'    消息预知接口返回visitor_user_id数据不是None：${j}
+    ${apiResponse}    Set MessagePredict    get    ${AdminUser}    ${serviceSessionId}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    步骤4时，消息预知接口返回status数据不是OK：${apiResponse.describetion}
+    Should Be Equal    '${j['entity']['content']}'    'None'    步骤4时，消息预知接口返回content数据不是None：${apiResponse.describetion}
+    Should Be Equal    '${j['entity']['visitor_user_id']}'    'None'    步骤4时，消息预知接口返回visitor_user_id数据不是None：${apiResponse.describetion}
+    Should Be Equal    '${j['entity']['timestamp']}'    '0'    步骤4时，消息预知接口返回visitor_user_id数据不是None：${apiResponse.describetion}
 
 创建消息预知数据(/v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict)
     [Documentation]    【操作步骤】：
@@ -62,9 +64,11 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
     ${curTime}    get time    epoch
     ${data}    set variable    {"visitor_user_id":"${visitorUserId}","content":"${curTime}","timestamp":${curTime}000}
     #发送创建消息预知数据请求
-    ${j}    Set MessagePredict    post    ${AdminUser}    ${serviceSessionId}    ${data}    ${rest}
-    Should Be Equal    '${j['status']}'    'OK'    消息预知接口返回status数据不是OK：${j}
-    Should Be True    ${j['entity']}    消息预知接口返回entity字段数据不是True：${j}
+    ${apiResponse}    Set MessagePredict    post    ${AdminUser}    ${serviceSessionId}    ${data}    ${rest}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    步骤4时，消息预知接口返回status数据不是OK：${apiResponse.describetion}
+    Should Be True    ${j['entity']}    步骤4时，消息预知接口返回entity字段数据不是True：${apiResponse.describetion}
 
 创建并获取消息预知数据(/v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict)
     [Documentation]    【操作步骤】：

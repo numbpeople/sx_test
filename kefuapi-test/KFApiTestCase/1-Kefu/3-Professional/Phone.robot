@@ -25,8 +25,10 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取坐席绑定呼叫中心的数据
-    ${j}    Get Agent Phone Data    ${AdminUser}
-    Should Be Equal    '${j['status']}'    'OK'    callcenter属性数据不正确：${j}
+    ${apiResponse}    Get Agent Phone Data    ${AdminUser}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    步骤3时，callcenter属性数据不正确：${apiResponse.describetion}
 
 获取呼叫中心信息(/v1/tenants/{tenantId}/phone-tech-channel)
     [Documentation]    【操作步骤】：
@@ -39,6 +41,5 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
-    ${j}    Get PhoneTechChannel    ${AdminUser}
-    # Run Keyword If    ${j}==[]    log    无呼叫中心信息
-    # ...    ELSE    Should Be Equal    '${j[0]['tenantId']}'    '${AdminUser.tenantId}'    呼叫中心信息不正确：${j}
+    ${apiResponse}    Get PhoneTechChannel    ${AdminUser}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}

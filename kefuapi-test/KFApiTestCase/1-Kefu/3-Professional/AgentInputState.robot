@@ -36,10 +36,12 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
     log    ${rest}
     set to dictionary    ${rest}    userName=${userName}
     #获取会话的客服输入状态数据
-    ${j}    Set AgentInputState    get    ${AdminUser}    ${serviceSessionId}    ${EMPTY}    ${rest}
-    Should Be Equal    '${j['status']}'    'OK'    消息预知接口返回status数据不是OK：${j}
-    Should Be Equal    '${j['entity']['input_state_tips']}'    'None'    客服输入状态接口返回input_state_tips数据不是None：${j}
-    Should Be Equal    '${j['entity']['service_session_id']}'    '${serviceSessionId}'    客服输入状态接口返回service_session_id数据不是${serviceSessionId}：${j}
+    ${apiResponse}    Set AgentInputState    get    ${AdminUser}    ${serviceSessionId}    ${EMPTY}    ${rest}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    步骤4时，客服输入状态接口返回status数据不是OK：${apiResponse.describetion}
+    Should Be Equal    '${j['entity']['input_state_tips']}'    'None'    步骤4时，客服输入状态接口返回input_state_tips数据不是None：${apiResponse.describetion}
+    Should Be Equal    '${j['entity']['service_session_id']}'    '${serviceSessionId}'    步骤4时，客服输入状态接口返回service_session_id数据不是${serviceSessionId}：${apiResponse.describetion}
 
 创建客服输入状态数据(/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state)
     [Documentation]    【操作步骤】：
@@ -65,9 +67,11 @@ Resource          ../../../commons/agent common/Conversations/Conversations_Comm
     #创建请求体
     ${curTime}    get time    epoch
     ${data}    set variable    {"service_session_id":"${serviceSessionId}","input_state_tips":"${curTime}","timestamp":${curTime}}
-    ${j}    Set AgentInputState    post    ${AdminUser}    ${serviceSessionId}    ${data}    ${rest}
-    Should Be Equal    '${j['status']}'    'OK'    客服输入状态接口返回status数据不是OK：${j}
-    Should Be True    ${j['entity']}    客服输入状态接口返回entity字段数据不是True：${j}
+    ${apiResponse}    Set AgentInputState    post    ${AdminUser}    ${serviceSessionId}    ${data}    ${rest}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    步骤4时，客服输入状态接口返回status数据不是OK：${apiResponse.describetion}
+    Should Be True    ${j['entity']}    步骤4时，客服输入状态接口返回entity字段数据不是True：${apiResponse.describetion}
 
 创建并获客服输入状态数据(/v1/webimplugin/sessions/{serviceSessionId}/agent-input-state)
     [Documentation]    【操作步骤】：

@@ -24,8 +24,10 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
-    ${j}    Get Access Config    ${AdminUser}
-    Should Be Equal    ${j['status']}    OK    获取单点登录失败：${j}
+    ${apiResponse}    Get Access Config    ${AdminUser}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    ${j['status']}    OK    获取单点登录失败：${apiResponse.describetion}
 
 获取单点登录跳转的地址信息(/v1/access)
     [Documentation]    【操作步骤】：
@@ -38,5 +40,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
-    ${j}    Get Access    ${AdminUser}
-    Should Be Equal    ${j['status']}    OK    获取单点登录失败：${j}
+    ${apiResponse}    Get Access    ${AdminUser}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    ${j['status']}    OK    获取单点登录失败：${apiResponse.describetion}

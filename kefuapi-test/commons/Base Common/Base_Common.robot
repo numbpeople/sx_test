@@ -31,8 +31,13 @@ Repeat Keyword Times
     ...    - 调用${functionName}接口，返回结果中，匹配${expectConstruction}字段结构，值等于${expectValue}的数据结构
     : FOR    ${i}    IN RANGE    ${retryTimes}
     \    ${j}    run keyword    ${functionName}    @{paramList}
+    \    #适配最新的返回结构，获取返回值
+    \    ${status}    Run Keyword And Return Status    Dictionary Should Contain Key    ${j}    statusCode
+    \    run keyword if    ${status}    Set Suite Variable    ${j}    ${j.text}
+    \    #返回结果为空，则进入下次循环
     \    Continue For Loop If    "${j}" == "[]"
-    \    ${dataRes}    set variable    ${j${expectConstruction}}    #想要获取返回值中应取的字段结构，即${j}返回值中，获取${expectConstruction}结构的值 ，例如：${j['data'][0]}
+    \    #想要获取返回值中应取的字段结构，即${j}返回值中，获取${expectConstruction}结构的值 ，例如：${j['data'][0]}
+    \    ${dataRes}    set variable    ${j${expectConstruction}}
     \    return from keyword if    "${dataRes}" == "${expectValue}"    ${j}
     \    sleep    ${delay}
     return from keyword    {}

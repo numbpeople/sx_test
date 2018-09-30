@@ -191,9 +191,9 @@ Set MessagePredict
     #获取/添加消息预知
     ${resp}=    /v1/webimplugin/servicesessions/{serviceSessionId}/messagePredict    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}
     ...    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取/添加消息预知，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Create MessagePredict Data
     [Arguments]    ${agent}
@@ -211,9 +211,11 @@ Create MessagePredict Data
     ${curTime}    get time    epoch
     ${data}    set variable    {"visitor_user_id":"${visitorUserId}","content":"${curTime}","timestamp":${curTime}000}
     #发送创建消息预知数据请求
-    ${j}    Set MessagePredict    post    ${agent}    ${serviceSessionId}    ${data}    ${rest}
-    Should Be Equal    '${j['status']}'    'OK'    消息预知接口返回status数据不是OK：${j}
-    Should Be True    ${j['entity']}    消息预知接口返回entity字段数据不是True：${j}
+    ${apiResponse}    Set MessagePredict    post    ${agent}    ${serviceSessionId}    ${data}    ${rest}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    消息预知接口返回status数据不是OK：${apiResponse.describetion}
+    Should Be True    ${j['entity']}    消息预知接口返回entity字段数据不是True：${apiResponse.describetion}
     set to dictionary    ${rest}    visitorUserId=${visitorUserId}    serviceSessionId=${serviceSessionId}    content=${curTime}
     Return From Keyword    ${rest}
 
@@ -223,9 +225,9 @@ Set AgentInputState
     #获取/添加客服输入状态
     ${resp}=    /v1/webimplugin/sessions/{serviceSessionId}/agent-input-state    ${method}    ${agent}    ${serviceSessionId}    ${data}    ${rest}
     ...    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    &{apiResponse}    Return Result    ${resp}
+    set to dictionary    ${apiResponse}    describetion=【实际结果】：获取/添加客服输入状态，返回实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
+    Return From Keyword    ${apiResponse}
 
 Set WaitListNumber
     [Arguments]    ${agent}    ${serviceSessionId}    ${queueId}
@@ -253,9 +255,11 @@ Create AgentInputState Data
     #创建请求体
     ${curTime}    get time    epoch
     ${data}    set variable    {"service_session_id":"${serviceSessionId}","input_state_tips":"${curTime}","timestamp":${curTime}}
-    ${j}    Set AgentInputState    post    ${AdminUser}    ${serviceSessionId}    ${data}    ${rest}
-    Should Be Equal    '${j['status']}'    'OK'    客服输入状态接口返回status数据不是OK：${j}
-    Should Be True    ${j['entity']}    客服输入状态接口返回entity字段数据不是True：${j}
+    ${apiResponse}    Set AgentInputState    post    ${AdminUser}    ${serviceSessionId}    ${data}    ${rest}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200    发生异常，状态不等于200：${apiResponse.describetion}
+    ${j}    set variable    ${apiResponse.text}
+    Should Be Equal    '${j['status']}'    'OK'    客服输入状态接口返回status数据不是OK：${apiResponse.describetion}
+    Should Be True    ${j['entity']}    客服输入状态接口返回entity字段数据不是True：${apiResponse.describetion}
     set to dictionary    ${rest}    visitorUserId=${visitorUserId}    serviceSessionId=${serviceSessionId}    content=${curTime}
     Return From Keyword    ${rest}
 

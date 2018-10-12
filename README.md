@@ -62,39 +62,59 @@ AgentRes.robot: 定义客服登录地址、账号/密码、筛选字典、接口
 ## 项目运行
 
 ### Ride工具: 
-- #### 界面点击运行按钮即可, 如下图:
+- ##### 界面点击运行按钮即可, 如下图:
 
-![image](https://sandbox.kefu.easemob.com/v1/Tenant/11699/MediaFiles/cc4161e7-d48c-4e9a-b20d-d20c3dce0ab3aW1hZ2UucG5n)
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/1684bef9-ef61-45ca-92fb-89aa9ea46a89aW1hZ2UucG5n)
+
+- ##### 用例执行前，可以填写参数Arguments，例如：
+```
+--variable url:http://sandbox.kefu.easemob.com --variable username:lijipeng_1@qq.com --variable password:lijipeng123 --variable status:Online  --variable messageGateway: --variable orgName: --variable appName: --variable serviceEaseMobIMNumber: --variable restDomain:
+
+```
 
 
 ### 命令行:
+- ##### 使用pybot.bat 或 pybot 命令执行测试用例，例如：
+```
+$ pybot.bat --variable url:http://sandbox.kefu.easemob.com --variable username:lijipeng_1@qq.com --variable password:lijipeng123 --variable status:Online --variable messageGateway: --variable orgName: --variable appName: --variable serviceEaseMobIMNumber: --variable restDomain: --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py;leoli@easemob.com;reportLog\emailreport.html;http://sandbox.kefu.easemob.com;lijipeng_1@qq.com;lijipeng123;Online -d C:\Users\leo\git\kefu-auto-test\kefuapi-test\reportLog --include debugChat --exclude tool --exclude ui --exclude appui --exclude org C:\Users\leo\git\kefu-auto-test\kefuapi-test
 
-- #### 按照tag标记名称执行
+```
+- ##### 命令行执行参数定义：
+
+|参数名称|参数值举例|参数描述|建议|
+| ---- | --- | --- | --- |
+|--variable|url:http://sandbox.kefu.easemob.com|参数传递，设置客服系统登录地址变量|无|
+|--listener|C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py|监听用例执行时的信息和结果|监听脚本支持参数。Windows系统参数之间使用分号分隔，Mac或Linux系统参数之间使用冒号分割|
+|-d|C:\Users\leo\git\kefu-auto-test\kefuapi-test\reportLog|执行用例完成后生成的日志路径|无|
+|--include|debugChat|仅执行标记为debugChat标签的用例集或用例|无|
+|--exclude|tool|不执行标记为tool标签的用例集或用例|无|
+
+
+
+- ##### 支持用例完毕后发送邮件和报告到邮箱，MyListener.py监听脚本参数定义：
+
+|参数名称|参数值举例|参数描述|建议|
+| ---- | --- | --- | --- |
+|receive|leoli@easemob.com|接收邮件的邮箱地址，多个邮箱使用逗号隔开|无|
+|outpath|reportLog\emailreport.html|测试报告邮件报告地址与名称|使用文件夹和邮件名称形式|
+|url|http://sandbox.kefu.easemob.com|客服系统登录地址|Linux或Mac系统不加协议，即：//sandbox.kefu.easemob.com|
+|username|lijipeng_1@qq.com|客服登录账号|无|
+|password|lijipeng123|客服登录密码|无|
+|status|Online|客服登录状态|取值范围：Online、Busy、Leave、Hidden|
+
+- ##### Windows环境运行
 ```
 $ cd kefu-auto-test/kefuapi-test/(进入到用例执行目录下)
-$ pybot.bat --include debugChat --exclude tool --exclude ui --exclude appui --exclude org C:\Users\leo\git\kefu-auto-test\kefuapi-test
+$ pybot.bat --variable url:http://sandbox.kefu.easemob.com --variable username:lijipeng_1@qq.com --variable password:lijipeng123 --variable status:Online --variable messageGateway: --variable orgName: --variable appName: --variable serviceEaseMobIMNumber: --variable restDomain: --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py;leoli@easemob.com;reportLog\emailreport.html;http://sandbox.kefu.easemob.com;lijipeng_1@qq.com;lijipeng123;Online -d C:\Users\leo\git\kefu-auto-test\kefuapi-test\reportLog --include debugChat --exclude tool --exclude ui --exclude appui --exclude org C:\Users\leo\git\kefu-auto-test\kefuapi-test
+
+或执行运行脚本
+$ ./start.bat
 
 ```
-
-
-- #### 支持用例完毕后发送邮件和报告到邮箱
-
-```
-MyListener.py 脚本支持两个参数
-    1、receive：接收邮件的邮箱地址，多个邮箱使用逗号隔开
-    2、outpath：报告名称或目录地址
-```
-
-- #### Windows环境运行
-```
-$ cd kefu-auto-test/kefuapi-test/(进入到用例执行目录下)
-$ pybot.bat --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py;leoli@easemob.com,zhukai@easemob.com;emailreport.html --include debugChat --exclude tool --exclude ui --exclude appui --exclude org  C:\Users\leo\git\kefu-auto-test\kefuapi-test
-
-```
-- #### Mac或Linux环境运行
+- ##### Mac或Linux环境运行
 ```
 $ cd kefu-auto-test/kefuapi-test/ (进入到用例执行目录下)
-$ pybot --listener C:\Users\leo\git\kefu-auto-test\kefuapi-test\lib\MyListener.py:leoli@easemob.com,zhukai@easemob.com:emailreport.html --include baselogin --exclude tool --exclude ui --exclude appui --exclude org  C:\Users\leo\git\kefu-auto-test\kefuapi-test
+$ pybot --variable url:http://sandbox.kefu.easemob.com --variable username:lijipeng_1@qq.com --variable password:lijipeng123 --variable status:Online --variable messageGateway: --variable orgName: --variable appName: --variable serviceEaseMobIMNumber: --variable restDomain: --listener /kefuapi-test/lib/MyListener.py:leoli@easemob.com:/kefuapi-test/reportLog/emailreport.html://sandbox.kefu.easemob.com:lijipeng_1@qq.com:lijipeng123:Online -d kefuapi-test/reportLog --include debugChat --exclude org --exclude tool --exclude ui --exclude appui kefuapi-test
 
 或执行运行脚本
 $ sh ./start.sh
@@ -125,39 +145,45 @@ $ sh ./docker_build.sh
 
 ## 运行 
 
-- #### 终端运行测试用例方式
+- #### Docker构建镜像后，执行测试用例
 ```
 $ cd kefu-auto-test (进入kefu-auto-test目录下)
-$ docker run -it --rm -v $(pwd)/kefuapi-test:/$ROBOT_TESTS -ti $DOCKER_IMAGE_NAME --listener /$ROBOT_TESTS/lib/MyListener.py:$EMAIL_RECEIVE $includetag $excludetag $ROBOT_TESTS
+$ sudo docker run -v $CURDIR/$VOLUME_REPORT:/$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
 
 或执行项目下的脚本
 $ sh ./docker_start.sh
 ```
 
-- #### 使用已上传的镜像文件
+- #### 使用已上传的镜像文件，执行测试用例
 ```
 $ cd kefu-auto-test (进入kefu-auto-test目录下)
-$ docker run -it --rm -v $(pwd)/kefuapi-test:/$ROBOT_TESTS -ti $DOCKER_IMAGE_NAME --listener /$ROBOT_TESTS/lib/MyListener.py:$EMAIL_RECEIVE $includetag $excludetag $ROBOT_TESTS
+$ sudo docker run -v $CURDIR/$VOLUME_REPORT:/$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
 
 或执行项目下的脚本
 $ sh ./docker_start_already_image.sh
 
 ```
-* 目前我已将镜像文件上传到官网，如有需要可以直接使用
-> docker pull 260553619/kf-docker
+* 目前我已将镜像文件上传公司镜像仓库中，如有需要可以直接使用
+> docker pull docker-registry.easemob.com/kefu-qa/kefu-autotest
 
-[docker镜像地址](https://hub.docker.com/r/260553619/kf-docker/)
 
 
 - #### 执行docker_start.sh脚本中，参数定义：
 
 
-
 |参数名称|参数值|参数描述|建议|
 | ---- | --- | --- | --- |
-|ROBOT_TESTS|kefuapi-test|执行用例suite集|不建议修改|
-|DOCKER_IMAGE_NAME|kf-docker|docker镜像名称|不建议修改|
-|EMAIL_RECEIVE|leoli@easemob.com|邮件接收邮箱地址|可以填写执行用例自己的邮箱|
-|INCLUED_TAG|debugChat|要执行用例的标签名称，使用逗号隔开|若需要全部执行用例，可以不填写值|
-|EXCLUED_TAG|org,tool,ui,appui|不执行用例的标签名称，使用逗号隔开|若需要全部执行用例，该四个值不要修改|
+|EMAIL_RECEIVE|leoli@easemob.com,zhukai@easemob.com|接收测试报告的邮箱账号，多个邮箱账号使用逗号隔开|无|
+|KEFUURL|http://sandbox.kefu.easemob.com|客服登录地址|Linux或Mac系统不加协议，即：//sandbox.kefu.easemob.com|
+|USERNAME|lijipeng_1@qq.com|客服可登录的坐席邮箱账号|无|
+|PASSWORD|llijipeng123|客服登录账号的密码|无|
+|STATUS|Online|客服登录状态|无|
+|INCLUED_TAG|debugChat|执行用例的Tag标签名称，多个标签使用逗号隔开|若需要全部执行用例，可以不填写值|
+|EXCLUED_TAG|org,tool,ui,appui|不执行用例的Tag标签名称|若需要全部执行用例，该四个值需要填写不要修改|
+|EMAIL_FILENAME|emailreport.html|接收测试报告HTML文件名称，建议使用英文，暂时仅支持html格式|并且不建议使用report.html、log.html，例如：emailreport.html|
+|MESSAGEGATEWAY|im|访客进行发消息时，选取的消息渠道来源，im：使用IM的rest接口发送消息，secondGateway：使用客服的第二通道接口发送消息|无|
+|ORGNAME|sipsoft|使用租户下已有的关联发消息，orgName为关联下的组织名称|无|
+|APPNAME|sandbox|使用租户下已有的关联发消息，appName为关联下的应用名称|无|
+|SERVICEEASEMOBIMNUMBER|117497|使用租户下已有的关联发消息，serviceEaseMobIMNumber为关联的IM服务号|无|
+|RESTDOMAIN|a1.esemob.com|使用租户下已有的关联发消息，restDomain为appkey所属集群rest地址|无|
 

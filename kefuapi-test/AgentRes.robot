@@ -1,13 +1,16 @@
 *** Variables ***
-${kefuurl}        http://sandbox.kefu.easemob.com
-${orgurl}         http://vpc10.kefu.easemob.com:8000
-&{AdminUser}      username=    password=    status=Online    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
+${kefuurl}        ${url}
+&{AdminUser}      username=${username}    password=${password}    status=${status}    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome    language=zh-CN    graylist=
 ...               resourcelist=
+&{ExistChannelEntity}    orgName=    appName=    restDomain=    serviceEaseMobIMNumber=    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址
+${msgGateway}     ${messageGateway}    # 设置发送消息的方式，如果值为：im，则使用im的rest接口发消息，如果值为：secondGateway，则使用第二通道发送消息
+${grayFunctionOption}    False    # 判断增值功能测试用例是否执行，True即执行，False为不执行
+${orgurl}         http://vpc10.kefu.easemob.com:8000
 &{OrgAdminUser}    username=admin@org.com    password=ORGadmin    orgId=1034    cookies=    session=    userId=    nicename=
 ...               browser=phantomjs
 @{kefustatus}     Online    Busy    Leave    Hidden    # 第一个值必须是Online
-${timeout}        ${30.0}
+${timeout}        ${30.0}    # 接口请求超时时间
 ${delay}          1
 @{WeiboTechChannelType}    weibo    wechat
 &{AgentFilterEntity}    page=0    size=8    keyValue=    orderBy=    orderMethod=    statuses=Enable,Submit
@@ -48,9 +51,7 @@ ${SeleniumTimeout}    20
 &{OrgUser1}       username=    password=    name=    phone=    tenantId=
 &{NotesEntity}    projectId=    tenantId=    userId=    userRoles=admin    page=0    size=20    ticketId=
 ...               sort=createdAt,desc    statusId=    visitorName=    assigned=    agentIds=    Authorization=
-&{msgGateway}     im=    secondGateway=    rest=    # 设置发送消息的方式，如果im设置为1，则使用im，以此类推如果secondGateway设置1或任意值，则使用第二通道发送消息
 &{ConDateRange}    beginDateTime=    endDateTime=    # 测试统计数据时用来筛选会话
-&{ExistChannelEntity}    orgName=    appName=    restDomain=    serviceEaseMobIMNumber=    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址
 @{originType}     app    webim    weibo    weixin    phone    rest    slack
 ${ScheduleTimeout}    5
 ${daasDelay}      3
@@ -60,7 +61,6 @@ ${daasDelay}      3
 ...               phone=CONTAIN
 &{evaluationdegreesName}    score1=非常不满意    score2=不满意    score3=一般    score4=满意    score5=非常满意
 &{evaluationdegreesNameScore}    score1=1    score2=2    score3=3    score4=4    score5=5
-${grayFunctionOption}    False    #判断增值功能测试用例是否执行，True即执行，False为不执行
 &{ApiResponse}    status=${ResponseStatus.OK}    errorDescribetion=    statusCode=    text=    url=    describetion=
 &{ResponseStatus}    OK=OK    FAIL=FAIL
 &{WhisperMessageEntity}    serviceSessionId=    chatGroupId=    officialAccountId=    beginTimestamp=    endTimestamp=    asc=True

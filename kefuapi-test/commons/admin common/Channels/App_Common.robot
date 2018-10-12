@@ -49,7 +49,7 @@ Add Channel
     #快速创建关联
     ${data}=    create dictionary    companyName=对接移动客服 请勿移除管理员    email=${agent.userId}@easemob.com    password=47iw5ytIN8Ab8f2KopaAaq    telephone=13800138000    tenantId=${agent.tenantId}
     ${resp}=    /v1/autoCreateImAssosciation    ${agent}    ${data}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，调用接口：${resp.url}，错误返回值：${resp.text}
     ${j}    to json    ${resp.content}
     Comment    ${restentity}=    create dictionary    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}
     ...    clientSecret=${j['entity']['clientSecret']}    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}    agentQueueId=${j['entity']['agentQueueId']}    robotId=${j['entity']['robotId']}
@@ -57,7 +57,7 @@ Add Channel
     ...    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}
     #查询关联id
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel    ${agent}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，调用接口：${resp.url}，错误返回值：${resp.text}
     Should Not Be Empty    ${resp.content}    返回值为空
     ${j}    to json    ${resp.content}
     Should Not Be Empty    ${j[0]['appKey']}    appkey为空
@@ -116,9 +116,11 @@ Create Channel
     ...    appKey、appName、orgName、clientId、clientSecret、serviceEaseMobIMNumber、channelName、dutyType、agentQueueId、robotId、channelId、token、restDomain、restsession
     &{restentity}    create dictionary
     #判断是否配置了已有的关联
-    log dictionary    ${ExistChannelEntity}
-    ${status}    Run Keyword And Return Status    Should Not Be Empty    ${ExistChannelEntity.appName}${ExistChannelEntity.orgName}
-    Run Keyword And Return If    ${status}    Use Exist Channel    ${agent}    ${ExistChannelEntity}    ${restentity}
+    # log dictionary    ${ExistChannelEntity}
+    ${emptyStatus}    Run Keyword And Return Status    Should Not Be Empty    ${ExistChannelEntity.appName}${ExistChannelEntity.orgName}
+    ${orgNameStatus}    Run Keyword And Return Status    Should Not Contain     ${ExistChannelEntity.orgName}    $
+    ${appNameStatus}    Run Keyword And Return Status    Should Not Contain     ${ExistChannelEntity.appName}    $
+    Run Keyword And Return If    ${emptyStatus} and ${orgNameStatus} and ${appNameStatus}    Use Exist Channel    ${agent}    ${ExistChannelEntity}    ${restentity}
     #快速创建新的关联
     ${restentity}    Create New Channel    ${agent}
     set global variable    ${restentity}    ${restentity}

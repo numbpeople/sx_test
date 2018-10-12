@@ -223,7 +223,7 @@ Send Message
     ...
     ...    ${restentity} ${guestentity} ${msgentity}
     #增加使用第二通道判断
-    ${status}    Run Keyword And Return Status    Should Not Be Empty    ${msgGateway.secondGateway}
+    ${status}    Run Keyword And Return Status    Should Be Equal    ${msgGateway}    secondGateway
     Run Keyword And Return If    ${status}    Send SecondGateway Msg    ${AdminUser}    ${rest}    ${guest}    ${msg}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     ${resp}=    Send Msg    ${rest}    ${guest}    ${msg}    ${timeout}

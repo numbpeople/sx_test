@@ -41,7 +41,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     ${length} =    get length    ${j['entities']}
-    Run Keyword if    ${length} == 0    Pass Execution    租户的filters为空， ${j}
+    # Run Keyword if    ${length} == 0    Pass Execution    租户的filters为空， ${j}
 
 创建客户中心的筛选filters(/v1/crm/tenants/{tenantId}/filters)
     [Documentation]    【操作步骤】：

@@ -68,7 +68,7 @@ Setup Data
     Login Init    #坐席登录，初始化cookie、tenantId、userid等信息
     Run Keyword And Ignore Error	OrganInfo Init    #坐席登录后，获取租户所属的organId和organName
     Run Keyword And Ignore Error	Agent Data Init    #获取坐席登录后的坐席账号等信息
-    Run Keyword And Ignore Error    Create Channel    #快速创建一个关联，以便于全局使用
+    Create Channel    #快速创建一个关联，以便于全局使用
     Run Keyword And Ignore Error    Robot Account Init    #判断租户下是否有机器人账号，如果有则不创建，如果没有则创建机器人账号
     Run Keyword And Ignore Error    Ticket Data Init    #获取租户id下的projectId和留言状态等值
     Run Keyword And Ignore Error    Get GrayList    #查询增值/灰度功能列表

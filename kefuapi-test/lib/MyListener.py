@@ -24,7 +24,7 @@ from Sender import Sender
 class MyListener(object):
     ROBOT_LISTENER_API_VERSION = 2
 
-    def __init__(self,receive=[],outpath='emailreport.html'):
+    def __init__(self,receive=[],outpath='reportLog\emailreport.html',url='',username='',password='',status=''):
         # 打开并创建文件，写入html数据
         self.ROBOT_LIBRARY_LISTENER = self
         self.outpath = outpath
@@ -34,6 +34,10 @@ class MyListener(object):
         self.error_count = 0
         self.total_count = 0
         self.receive = receive
+        self.url = url
+        self.username = username
+        self.password = password
+        self.status = status
         
         # 创建报告、填写报告路径
         self.before_start_table(self.outpath,'emailreport.html')
@@ -93,15 +97,16 @@ class MyListener(object):
 
     def before_start_table(self,outpath,reportname):
         # 拼接emailreport报告路径
-        print 'outpath: %s' % outpath
+        print 'report before value: %s' % outpath
         if os.path.isdir(outpath):
             outpath = outpath + '\\' + reportname
             outpath=outpath.replace("\\", "/")
             print 'isdir: %s'  %outpath
         else:
             outpath = os.path.abspath(outpath)
+            print 'absolute outpath: %s'  %outpath
             outpath=outpath.replace("\\", "/")
-            print 'else: %s'  %outpath
+            print 'report after value: %s'  %outpath
          
         # 定义将输出报告
         self.outpath = outpath
@@ -113,14 +118,38 @@ class MyListener(object):
         
         # 创建报告
         self.outfile = open(self.outpath, 'w')
+        self.outfile.write('<html>\n')
+        self.outfile.write('<head>\n')
+        self.outfile.write('<title>客服项目自动化</title>\n')
+        self.outfile.write('<meta charset="UTF-8" />\n')
+        
+        js = """
+        <link rel="stylesheet" type="text/css" href="http://lijipeng.top/rest/autotest/main.css">
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script type="text/javascript" src="http://lijipeng.top/rest/js/jquery-1.12.1.min.js"></script>
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+        <script type="text/javascript" src="http://lijipeng.top/rest/js/bootstrap.js"></script>
+        <script type="text/javascript" src="http://lijipeng.top/rest/autotest/script.js"></script>
+        <script type="text/javascript" src='http://kefu.easemob.com/webim/easemob.js'></script>
+        <script type="text/javascript" src="http://lijipeng.top/rest/autotest/hp.js" ></script>
+        
+        """
+        
+        self.outfile.write(js+'\n')
+        self.outfile.write('</head>\n')
         self.outfile.write('<div style="width:100%;float:left">\n')
         self.outfile.write('<table cellspacing="0" cellpadding="4" border="1" align="left">\n')
 
     def write_table(self,total_count,passcount,failcount,passpercent):
-        # 读取文件的内容 以及 获取登录地址
-        url = self.get_agentRes(self.papath, 2)
-        # 读取文件的内容 以及 获取登录客服信息
-        agent = self.get_agentRes(self.papath, 4)
+        # 获取登录地址
+        url=self.url
+        if ':' not in url:
+            url = 'http:' + url
+        
+        # 获取登录客服信息
+        username=self.username
+        password=self.password
+        status=self.status
         
         self.outfile.write('<thead>\n')
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
@@ -134,10 +163,10 @@ class MyListener(object):
         self.outfile.write('<td style="width:60px"><b>登录状态</b></td>\n')
         self.outfile.write('</tr>\n')
         self.outfile.write('<tr>\n')
-        self.outfile.write('<td>'+bytes(url['kefuurl'])+'</td>\n')
-        self.outfile.write('<td>'+bytes(agent['username'])+'</span></td>\n')
-        self.outfile.write('<td>'+bytes(agent['password'])+'</span></td>\n')
-        self.outfile.write('<td>'+bytes(agent['status'])+'</span></td>\n')
+        self.outfile.write('<td>'+bytes(url)+'</td>\n')
+        self.outfile.write('<td>'+bytes(username)+'</span></td>\n')
+        self.outfile.write('<td>'+bytes(password)+'</span></td>\n')
+        self.outfile.write('<td>'+bytes(status)+'</span></td>\n')
         self.outfile.write('</tr>\n')
         
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
@@ -162,6 +191,11 @@ class MyListener(object):
         self.outfile.write('</table>')
         self.outfile.write('<hr size="2" width="100%" align="center" />\n')
         self.outfile.write('</div>\n')
+        
+        self.write_cebianlan()
+        
+        self.outfile.write('</body>\n')
+        self.outfile.write('</html> \n')
 
     def testcase_info(self,name, attrs):
         self.outfile.write("name - %s  " % name)
@@ -235,6 +269,35 @@ class MyListener(object):
             self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333"></span></td>\n')
             self.outfile.write('</tr>\n')
             self.outfile.write('</tbody>\n')
+    
+    def write_cebianlan(self):
+        cebianlan = """
+        <ul class="cbl" >
+            <li><a href="http://wpa.qq.com/msgrd?v=3&uin=260553619&site=qq&menu=yes">
+                <div class="icon d1"><i class="i1"></i><span class="title">在线QQ</span></div>
+            </a></li>
+            <i class="clearfix"></i>
+            <li><a href="#">
+                <div class="icon d2"><i class="i2"></i><span class="title">18612390240</span></div>
+            </a></li>
+            <i class="clearfix"></i>
+            <li><a href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3847479" target='_blank'">
+                <div class="icon"><i class="i3"></i><span class="title">配置文档</span></div>
+            </a></li>
+            <i class="clearfix"></i>
+            <li><a href="javascript:;" class="im-biz">
+                <div class="icon d5"><i class="i5"></i><span class="title">在线客服</span></div>
+            </a></li>
+            <i class="clearfix"></i>
+            <li><a href="javascript:;" class="back-top" id="back-top">
+                <div class="icon d4"><i class="i6"></i><span class="title">回到顶部</span></div>
+            </a></li>
+        
+        </ul>
+        
+        """
+        
+        self.outfile.write(cebianlan+'\n')
     
     def get_agentRes(self,papath,line):
         """
@@ -336,9 +399,9 @@ if __name__ == "__main__":
 #     c = b / a
 #     d = "%.2f%%" % (b / a*100)
 #     print d
-        papath = 'C:/Users/leo/git/kefu-auto-test/kefuapi-test'
-        s = MyListener([],'C:/Users/leo/git/kefu-auto-test/kefuapi-test')
-        s.close()
+#         papath = 'C:/Users/leo/git/kefu-auto-test/kefuapi-test'
+#         s = MyListener([],'C:/Users/leo/git/kefu-auto-test/kefuapi-test')
+#         s.close()
 #         # 获取登录地址
 #         kefuurl = s.get_agentRes(papath, 2)
 #         print kefuurl
@@ -348,6 +411,12 @@ if __name__ == "__main__":
 #         print agent
 #         print agent['username']
 #         print s.msformat(1996)
-        s.del_report_file(papath)
+#         s.del_report_file(papath)
         
+        url = "https://sandbox.kefu.easemob.com"
+        
+        if ':' not in url:
+            url = 'http:' + url
+        
+        print url
     

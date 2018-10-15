@@ -160,30 +160,32 @@ $ cd kefu-auto-test (进入kefu-auto-test目录下)
 $ sudo docker run -v $CURDIR/$VOLUME_REPORT:/$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
 
 或执行项目下的脚本
-$ sh ./docker_start_already_image.sh
+$ sh ./docker_start_easemob_registry.sh.sh
 
 ```
-* 目前我已将镜像文件上传公司镜像仓库中，如有需要可以直接使用
-> docker pull docker-registry.easemob.com/kefu-qa/kefu-autotest
+```
+Docker镜像已经上传到公司镜像仓库中
+使用该镜像执行Docker客服自动化，可参照README_DOCKER.md文档说明
+```
 
 
 
-- #### 执行docker_start.sh脚本中，参数定义：
+- #### 执行docker_start.sh 或 docker_start_easemob_registry.sh脚本中，参数定义：
 
 
-|参数名称|参数值|参数描述|建议|
-| ---- | --- | --- | --- |
-|EMAIL_RECEIVE|leoli@easemob.com,zhukai@easemob.com|接收测试报告的邮箱账号，多个邮箱账号使用逗号隔开|无|
-|KEFUURL|http://sandbox.kefu.easemob.com|客服登录地址|Linux或Mac系统不加协议，即：//sandbox.kefu.easemob.com|
-|USERNAME|lijipeng_1@qq.com|客服可登录的坐席邮箱账号|无|
-|PASSWORD|llijipeng123|客服登录账号的密码|无|
-|STATUS|Online|客服登录状态|无|
-|INCLUED_TAG|debugChat|执行用例的Tag标签名称，多个标签使用逗号隔开|若需要全部执行用例，可以不填写值|
-|EXCLUED_TAG|org,tool,ui,appui|不执行用例的Tag标签名称|若需要全部执行用例，该四个值需要填写不要修改|
-|EMAIL_FILENAME|emailreport.html|接收测试报告HTML文件名称，建议使用英文，暂时仅支持html格式|并且不建议使用report.html、log.html，例如：emailreport.html|
-|MESSAGEGATEWAY|im|访客进行发消息时，选取的消息渠道来源，im：使用IM的rest接口发送消息，secondGateway：使用客服的第二通道接口发送消息|无|
-|ORGNAME|sipsoft|使用租户下已有的关联发消息，orgName为关联下的组织名称|无|
-|APPNAME|sandbox|使用租户下已有的关联发消息，appName为关联下的应用名称|无|
-|SERVICEEASEMOBIMNUMBER|117497|使用租户下已有的关联发消息，serviceEaseMobIMNumber为关联的IM服务号|无|
-|RESTDOMAIN|a1.esemob.com|使用租户下已有的关联发消息，restDomain为appkey所属集群rest地址|无|
-
+|参数名称|参数值|参数描述|建议|必填|
+| ---- | --- | --- | --- | --- |
+|EMAIL_RECEIVE|leoli@easemob.com,zhukai@easemob.com|接收测试报告的邮箱账号，多个邮箱账号使用逗号隔开|无|是|
+|KEFUURL|http://sandbox.kefu.easemob.com|客服登录地址|Linux或Mac系统不加协议，即：//sandbox.kefu.easemob.com|是|
+|USERNAME|lijipeng_1@qq.com|客服可登录的坐席邮箱账号|无|是|
+|PASSWORD|llijipeng123|客服登录账号的密码|无|是|
+|STATUS|Online|客服登录状态|无|是|
+|INCLUED_TAG|debugChat|执行用例的Tag标签名称，多个标签使用逗号隔开|若需要全部执行用例，可以不填写值|否|
+|EXCLUED_TAG|org,tool,ui,appui|不执行用例的Tag标签名称|若需要全部执行用例，该四个值需要填写不要修改|是|
+|VOLUME_REPORT|autotest_report|在docker执行的宿主机上挂载挂在的文件夹，存放执行测试用例的报告|无|是|
+|EMAIL_FILENAME|emailreport.html|接收测试报告HTML文件名称，建议使用英文，暂时仅支持html格式|并且不建议使用report.html、log.html，例如：emailreport.html|是|
+|MESSAGEGATEWAY|im|访客进行发消息时，选取的消息渠道来源，im：使用IM的rest接口发送消息，secondGateway：使用客服的第二通道接口发送消息|无|否|
+|ORGNAME|sipsoft|使用租户下已有的关联发消息，orgName为关联下的组织名称|无|否|
+|APPNAME|sandbox|使用租户下已有的关联发消息，appName为关联下的应用名称|无|否|
+|SERVICEEASEMOBIMNUMBER|117497|使用租户下已有的关联发消息，serviceEaseMobIMNumber为关联的IM服务号|无|否|
+|RESTDOMAIN|a1.esemob.com|使用租户下已有的关联发消息，restDomain为appkey所属集群rest地址|无|否|

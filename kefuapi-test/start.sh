@@ -70,11 +70,18 @@ excludetag=$(exclude)
 array=(${KEFUURL//:/ })
 DOCKER_KEFUURL=${array[1]}
 curdir=`cd $(dirname $0) && pwd`
+parentdir= $(dirname "$PWD")
+ROBOT_TESTS=$curdir
+REPORT_FOLDERNAME=$parentdir/log
+LISTENERPATH=$ROBOT_TESTS/lib/MyListener.py
+REPORTFOLDERPATH=$REPORT_FOLDERNAME
+EMAILREPORTPATH=$REPORT_FOLDERNAME/$EMAIL_FILENAME
+
 
 #=========================================
 # pybot执行测试用例
 #=========================================
 
-echo pybot --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $curdir/lib/MyListener.py:$EMAIL_RECEIVE:$curdir/$REPORT_FOLDERNAME/$EMAIL_FILENAME:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $curdir/$REPORT_FOLDERNAME $includetag $excludetag $curdir
+echo pybot --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
 
-pybot --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $curdir/lib/MyListener.py:$EMAIL_RECEIVE:$curdir/$REPORT_FOLDERNAME/$EMAIL_FILENAME:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $curdir/$REPORT_FOLDERNAME $includetag $excludetag $curdir
+pybot --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS

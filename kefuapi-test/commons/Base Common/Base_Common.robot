@@ -71,6 +71,12 @@ Return Result
     #构造返回字典
     &{apiResponse}    Copy Dictionary    ${ApiResponse}
     ${text}    set variable    ${EMPTY}
+    #判断返回值场景：返回是string、json、空、无返回值等
+    #如果返回值resp.text是否包含502 Bad Gateway
+    log    ${resp.text}
+    ${badGatewaystatus}    Run Keyword And Return Status    should contain    ${resp.text}    502 Bad Gateway
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${resp.text}
+    Return From Keyword If    ${badGatewaystatus}    ${apiResponse}
     #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
     ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
     set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}

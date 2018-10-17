@@ -30,8 +30,10 @@ set serviceEaseMobIMNumber=
 set restDomain=
 
 set curdir=%cd%
+cd..
+set "bd=%curdir%"
 set casesuite=%curdir%
-set reportfolder=%casesuite%\reportLog
+set reportfolder=%bd%\log
 set emailname=emailreport.html
 
 

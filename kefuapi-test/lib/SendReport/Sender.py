@@ -16,6 +16,7 @@ from settings import Alarm_Email_Auth,  Alarm_SMS_Auth
 import os, sys,inspect
 from os.path import dirname
 import string
+import tarfile
 path = dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 sys.path.append(os.path.realpath('%s/..' % path))
 reload(sys)
@@ -175,31 +176,38 @@ class Sender(object):
         # 构造附件1，传送当前目录下的 test.txt 文件
         
         # 判断传入参数是路径或者文件。如果是文件则取当前目录下所有html文件作为附件
-        if os.path.isdir(attachment_data):
-            dirs = os.listdir(attachment_data)
-            for i in dirs:               # 循环读取路径下的文件并筛选输出
-                if os.path.splitext(i)[1] == ".html":  # 筛选html文件
-                    print papath + '/' + i              # 输出所有的html文件
-                    path = papath + '/' + i              # 输出所有的html文件
-                    att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
-                    att1["Content-Type"] = 'application/octet-stream'
-                    # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
-                    att1["Content-Disposition"] = 'attachment; filename='+i+''
-                    data.attach(att1)
-    
-        if os.path.isfile(attachment_data):
-            parent = os.path.abspath(attachment_data + '../..')
-            dirs = os.listdir(parent)
-            for i in dirs:               # 循环读取路径下的文件并筛选输出
-                if os.path.splitext(i)[1] == ".html":  # 筛选html文件
-                    path = parent + '/' + i    # 输出所有的html文件
-                    path=path.replace("\\", "/")
-                    att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
-                    att1["Content-Type"] = 'application/octet-stream'
-                    # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
-                    att1["Content-Disposition"] = 'attachment; filename='+i+''
-                    data.attach(att1)
-
+#         if os.path.isdir(attachment_data):
+#             dirs = os.listdir(attachment_data)
+#             for i in dirs:               # 循环读取路径下的文件并筛选输出
+#                 if os.path.splitext(i)[1] == ".html":  # 筛选html文件
+#                     print papath + '/' + i              # 输出所有的html文件
+#                     path = papath + '/' + i              # 输出所有的html文件
+#                     att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
+#                     att1["Content-Type"] = 'application/octet-stream'
+#                     # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+#                     att1["Content-Disposition"] = 'attachment; filename='+i+''
+#                     data.attach(att1)
+#     
+#         if os.path.isfile(attachment_data):
+#             parent = os.path.abspath(attachment_data + '../..')
+#             dirs = os.listdir(parent)
+#             for i in dirs:               # 循环读取路径下的文件并筛选输出
+#                 if os.path.splitext(i)[1] == ".html":  # 筛选html文件
+#                     path = parent + '/' + i    # 输出所有的html文件
+#                     path=path.replace("\\", "/")
+#                     att1 = MIMEText(open(path, 'rb').read(), 'base64', 'utf-8')
+#                     att1["Content-Type"] = 'application/octet-stream'
+#                     # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+#                     att1["Content-Disposition"] = 'attachment; filename='+i+''
+#                     data.attach(att1)
+        
+        reportpath = os.path.abspath(attachment_data + '../..')
+        self.make_targz(reportpath+"/report.tar.gz",reportpath)
+        att1 = MIMEText(open(reportpath+"/report.tar.gz", 'rb').read(), 'base64', 'utf-8')
+        # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+        att1["Content-Disposition"] = 'attachment; filename="客服自动化测试报告.tar"'
+        data.attach(att1)
+        
         try:
             if port == '465':
                 print 'use 465 port'
@@ -223,6 +231,18 @@ class Sender(object):
 
         return False
 
+    # 将输出的log文件打包
+    def make_targz(self,output_filename, source_dir):
+        tar = tarfile.open(output_filename,"w:gz")
+        for root,dir,files in os.walk(source_dir):
+            root_ = os.path.relpath(root,start=source_dir)
+            #tar.add(root,arcname=root_)
+            for file in files:
+                if file.split('.')[1] == "html":  # 筛选html文件
+                    full_path = os.path.join(root,file)
+                    tar.add(full_path,arcname=os.path.join(root_,file))
+        tar.close()
+
 
 if __name__ == '__main__':
     s = Sender()
@@ -230,4 +250,4 @@ if __name__ == '__main__':
     recieve = u"leoli@easemob.com"
 #     recieve = ['leoli@easemob.com','260553619@qq.com']
 #     recieve = []
-    s.sendReportMail('测试用例集：【Kefuapi-Test.Tool.Tools-Case】- -> 测试用例：【发送邮件】状态为FAIL', '1 != 2', recieve,'C:\Users\leo\git\kefu-auto-test\kefuapi-test\emailreport.html')
+    s.sendReportMail('测试用例集：【Kefuapi-Test.Tool.Tools-Case】- -> 测试用例：【发送邮件】状态为FAIL', '1 != 2', recieve,'C:\Users\leo\git\kefu-auto-test\kefuapi-test\log\emailreport.html')

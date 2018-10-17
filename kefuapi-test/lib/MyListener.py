@@ -13,6 +13,7 @@ import shutil
 
 path = dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 path = os.path.abspath(path + '/SendReport')
+metricspath = os.path.abspath(path + '../../')
 parentpath = os.path.abspath(path + '../../../')
 sys.path.append(os.path.realpath(path))
 reload(sys)
@@ -89,6 +90,15 @@ class MyListener(object):
         self.write_table(self.total_count,self.pass_count,self.fail_count,percent)
         self.outfile.close()
         
+        # 获取汇总报告的文件名称和当前路径
+        collectionLogName=os.path.basename(self.outpath)
+        collectionLogDirPath=os.path.dirname(self.outpath)
+        # 调用robotmetrics脚本
+        metricsPath=metricspath.replace("\\", "/")
+        metricsPy = metricsPath + '/robotmetrics.py ' + '-inputpath ' + collectionLogDirPath + '  -receiver '+ self.receive + ' -collectionLogName ' + collectionLogName
+        print metricsPy
+        os.system("python " + metricsPy)
+        
         # 发送html的邮件
         s = Sender()
         htmlf=open(self.outpath,'r')
@@ -138,7 +148,7 @@ class MyListener(object):
         self.outfile.write(js+'\n')
         self.outfile.write('</head>\n')
         self.outfile.write('<div style="width:100%;float:left">\n')
-        self.outfile.write('<table cellspacing="0" cellpadding="4" border="1" align="left">\n')
+        self.outfile.write('<table cellspacing="0" cellpadding="4" border="1" align="left" style="table-layout: fixed;word-break: break-word;">\n')
 
     def write_table(self,total_count,passcount,failcount,passpercent):
         # 获取登录地址
@@ -152,6 +162,10 @@ class MyListener(object):
         status=self.status
         
         self.outfile.write('<thead>\n')
+        self.outfile.write('<tr bgcolor="chartreuse">\n')
+        self.outfile.write('<td style="text-align:center" colspan="4"><b>如若查看详细日志，请手动下载附件到本地，打开metrics.html文件</b></td>\n')
+        self.outfile.write('</tr>\n')
+        
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
         self.outfile.write('<td style="text-align:center" colspan="4"><b>客服自动化测试汇总报告</b></td>\n')
         self.outfile.write('</tr>\n')
@@ -192,7 +206,7 @@ class MyListener(object):
         self.outfile.write('<hr size="2" width="100%" align="center" />\n')
         self.outfile.write('</div>\n')
         
-        self.write_cebianlan()
+#         self.write_cebianlan()
         
         self.outfile.write('</body>\n')
         self.outfile.write('</html> \n')

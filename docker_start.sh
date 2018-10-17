@@ -41,11 +41,11 @@ RESTDOMAIN=
 # 默认配置，不允许修改
 # ROBOT_TESTS: 测试用例集名称
 # DOCKER_IMAGE_NAME: docker镜像名称
-# REPORT_FOLDERNAME: 接收测试报告的文件夹名称，例如：reportLog
+# REPORT_FOLDERNAME: 接收测试报告的文件夹名称，例如：log
 #=========================================
 ROBOT_TESTS=kefuapi-test
 DOCKER_IMAGE_NAME=kf-docker
-REPORT_FOLDERNAME=reportLog
+REPORT_FOLDERNAME=log
 
 
 #=========================================
@@ -86,11 +86,11 @@ excludetag=$(exclude)
 array=(${KEFUURL//:/ })
 DOCKER_KEFUURL=${array[1]}
 LISTENERPATH=/$ROBOT_TESTS/lib/MyListener.py
-REPORTFOLDERPATH=$ROBOT_TESTS/$REPORT_FOLDERNAME
-EMAILREPORTPATH=/$ROBOT_TESTS/$REPORT_FOLDERNAME/$EMAIL_FILENAME
+REPORTFOLDERPATH=/$REPORT_FOLDERNAME
+EMAILREPORTPATH=/$REPORT_FOLDERNAME/$EMAIL_FILENAME
 CURDIR=`cd $(dirname $0) && pwd`
 
-echo sudo docker run -v $CURDIR/$VOLUME_REPORT:/$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
+echo sudo docker run -v $CURDIR/$VOLUME_REPORT:$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
 
 #docker执行客服自动化项目
-sudo docker run -v $CURDIR/$VOLUME_REPORT:/$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS
+sudo docker run -v $CURDIR/$VOLUME_REPORT:$REPORTFOLDERPATH -it --rm $DOCKER_IMAGE_NAME --variable url:${KEFUURL} --variable username:${USERNAME} --variable password:${PASSWORD} --variable status:${STATUS} --variable messageGateway:${MESSAGEGATEWAY} --variable orgName:${ORGNAME} --variable appName:${APPNAME} --variable serviceEaseMobIMNumber:${SERVICEEASEMOBIMNUMBER} --variable restDomain:${RESTDOMAIN} --listener $LISTENERPATH:$EMAIL_RECEIVE:$EMAILREPORTPATH:${DOCKER_KEFUURL}:${USERNAME}:${PASSWORD}:${STATUS} -d $REPORTFOLDERPATH $includetag $excludetag $ROBOT_TESTS

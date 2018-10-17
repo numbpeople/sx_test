@@ -25,6 +25,10 @@
 #### 6.至此docker执行客服自动化已完毕
 ![image](http://kefu.easemob.com/v1/Tenant/634/MediaFiles/c6e981e6-77e4-45a4-9eba-c4e3ab5538a7aW1hZ2UucG5n)
 
+#### 7.如若通知客服自动化镜像文件有更新，则需要运行脚本：sh ./docker_pull_easemob_registry.sh 后再执行docker_start_easemob_registry脚本执行自动化
+
+
+---
 
 
 ### 特别注意：

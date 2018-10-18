@@ -15,5 +15,6 @@ RUN pip install -U robotframework===3.0.2
 RUN pip install -U requests==2.18.4
 RUN pip install -U robotframework-requests==0.4.5
 RUN pip install -U robotframework-excellibrary==0.0.2
+RUN pip install -U beautifulsoup4==4.4.1
 
 ENTRYPOINT ["robot"]

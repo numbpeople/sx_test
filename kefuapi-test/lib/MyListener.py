@@ -90,12 +90,16 @@ class MyListener(object):
         self.write_table(self.total_count,self.pass_count,self.fail_count,percent)
         self.outfile.close()
         
+        # 处理接收人邮件账号
+        email_receive=self.get_email(self.receive)
+        print email_receive
+        
         # 获取汇总报告的文件名称和当前路径
         collectionLogName=os.path.basename(self.outpath)
         collectionLogDirPath=os.path.dirname(self.outpath)
         # 调用robotmetrics脚本
         metricsPath=metricspath.replace("\\", "/")
-        metricsPy = metricsPath + '/robotmetrics.py ' + '-inputpath ' + collectionLogDirPath + '  -receiver '+ self.receive + ' -collectionLogName ' + collectionLogName
+        metricsPy = metricsPath + '/robotmetrics.py ' + '-inputpath ' + collectionLogDirPath + '  -receiver '+ email_receive + ' -collectionLogName ' + collectionLogName
         print metricsPy
         os.system("python " + metricsPy)
         
@@ -405,6 +409,25 @@ class MyListener(object):
                     self.chmod_file(path)
                     os.remove(path)    #删除文件
                     print 'del_report_file,isfile:%s' % path
+
+    def get_email(self,receiver):   
+        # 判断参数为unicode类型，则转换为list
+        if isinstance(receiver, unicode):
+            to = receiver.encode('utf-8')
+            to = receiver.split(",") 
+        
+        # 转化为['leoli@easemob.com', '260553619@qq.com'] 格式
+        to_list = ['%s' % user for user in to]
+        print to_list
+        
+        # 获取邮件名前缀
+        num = []
+        for username in to_list:
+            list = username.split('@')
+            num.append(list[0])
+        print num
+        print ','.join(num)               
+        return ','.join(num)
 
 
 if __name__ == "__main__":

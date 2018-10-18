@@ -41,7 +41,7 @@ RESTDOMAIN=
 # 默认配置，不允许修改
 # ROBOT_TESTS: 测试用例集名称
 # DOCKER_IMAGE_NAME: docker镜像名称
-# REPORT_FOLDERNAME: 接收测试报告的文件夹名称，例如：reportLog
+# REPORT_FOLDERNAME: 接收测试报告的文件夹名称，例如：log
 #=========================================
 ROBOT_TESTS=kefuapi-test
 DOCKER_IMAGE_NAME=docker-registry.easemob.com/kefu-qa/kefu-autotest

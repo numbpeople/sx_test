@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        profile
 Library           json
 Library           requests
 Library           Collections
@@ -83,8 +84,8 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     &{type1}    create dictionary    ruleCount=${2}    menuCount=${9}    promptCount=${4}
     &{type2}    create dictionary    ruleCount=${4}    menuCount=${17}    promptCount=${4}
     &{type3}    create dictionary    ruleCount=${1}    menuCount=${15}    promptCount=${4}
-    #循环4个获取接口并断言返回值 
-    :FOR    ${i}    IN RANGE    ${sum}
+    #循环4个获取接口并断言返回值
+    : FOR    ${i}    IN RANGE    ${sum}
     \    #使用局部变量进行筛选
     \    &{j}    Get RobotGuide ApplyTemplates    ${AdminUser}    ${i}
     \    #断言接口数据
@@ -101,7 +102,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     ${sum}    set variable    ${4}
     ${filter}    copy dictionary    ${RobotFilter}
     #type为0、1、2、3下,循环4个获取接口并断言返回值
-    :FOR    ${i}    IN RANGE    ${sum}
+    : FOR    ${i}    IN RANGE    ${sum}
     \    #使用局部变量进行筛选,设置{type}可取值的总数
     \    ${j}    Get RobotGuide Prompt    ${AdminUser}    ${filter}    ${i}
     \    #断言接口数据

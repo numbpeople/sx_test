@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        peviewSetting
 Library           json
 Library           requests
 Library           Collections

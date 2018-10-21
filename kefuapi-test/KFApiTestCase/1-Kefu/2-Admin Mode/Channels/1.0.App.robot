@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        app
 Library           json
 Library           requests
 Library           Collections

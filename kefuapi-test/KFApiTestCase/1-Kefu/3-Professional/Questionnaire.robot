@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | questionnaireEnable | 第三方问卷调查 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
-Default Tags      questionnaireEnable
+Force Tags        questionnaireEnable
 Library           json
 Library           requests
 Library           Collections
@@ -40,7 +40,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
-    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行    
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
     ${apiResponse}    Set Questionnaire    ${AdminUser}    post    ${data}
@@ -63,7 +63,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
-    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行 
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取问卷账号列表
     ${apiResponse}    Get Questionnaires List    WJW
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤2时，发生异常，状态不等于200：${apiResponse.describetion}
@@ -80,7 +80,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ...    接口返回值中，请求状态码为200、status字段值等于OK。
     #判断租户的增值功能，灰度开关状态
     ${status}    Check Tenant Gray Status
-    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行 
+    Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #创建问卷账号列表
     ${data}    set variable    {"type":"WJW" }
     ${apiResponse}    Set Questionnaire    ${AdminUser}    delete    ${data}

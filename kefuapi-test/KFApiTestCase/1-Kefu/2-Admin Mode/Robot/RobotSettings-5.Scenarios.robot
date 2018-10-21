@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        scenarios
 Library           json
 Library           requests
 Library           Collections
@@ -21,4 +22,3 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #获取机器人智能场景应答
     ${j}    Get Robot Scenarios    ${AdminUser}
     Should Be Equal    '${j['logistics']['name']}'    '物流'    返回的机器人智能场景应答信息不正确：${j}
- 

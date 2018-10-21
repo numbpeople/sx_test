@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        knowledgeRule
 Library           json
 Library           requests
 Library           Collections
@@ -119,7 +120,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['entity'][0]['questions'][0]['question']}    ${ruleResult.question}    接口返回的question不正确,正确值是:${ruleResult.question}返回结果:${j}
     Should Be Equal    ${j['entity'][0]['answers'][0]['answer']}    ${ruleResult.answer}    接口返回的answer不正确,正确值是:${ruleResult.answer},返回结果:${j}
     Should Be Equal    ${j['entity'][0]['status']}    ${ruleResult.status}    接口返回的status不正确,正确值是:${ruleResult.status},返回结果:${j}
-    
+
 知识库测试(/v1/Tenants/{tenantId}/robots/kb/ask)
     [Documentation]    【操作步骤】：
     ...    - Step1、添加知识规则，调用接口：/v3/Tenants/{tenantId}/robots/rules/item，接口请求状态码为200。
@@ -140,7 +141,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     ${content}    Replace String    ${content}    "    ${EMPTY}
     ${content}    Replace String    ${content}    [    ${EMPTY}
     ${content}    Replace String    ${content}    ]    ${EMPTY}
-    @{content}     Split String    ${content}    ,
+    @{content}    Split String    ${content}    ,
     ${answerResult}    set variable    ${content[1]}    #获取知识库测试返回的答案
     #断言接口数据
     Should Be Equal    ${answerResult}    ${ruleResult.answer}    接口返回的content值不正确,正确值是:${ruleResult.answer},返回结果:${j}
@@ -161,7 +162,8 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #创建数据字典
     &{adminEntity}    create dictionary    userId=${AdminUser.userId}    name=${AdminUser.nicename}
     #创建添加分类的字典元数据
-    &{categoryEntity}    create dictionary    robotId=${AdminUser.tenantId}    level=0    rootId=    parentId=root    name=${categoryName}    desc=    
+    &{categoryEntity}    create dictionary    robotId=${AdminUser.tenantId}    level=0    rootId=    parentId=root    name=${categoryName}
+    ...    desc=
     #设置添加分类的请求数据
     ${data}    set variable    {"admin":{"userId":"${adminEntity.userId}","name":"${adminEntity.name}"},"entity":{"robotId":${categoryEntity.robotId},"level":${categoryEntity.level},"rootId":"${categoryEntity.rootId}","parentId":"${categoryEntity.parentId}","name":"${categoryEntity.name}","desc":"${categoryEntity.desc}"}}
     #创建分类
@@ -253,4 +255,3 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     Should Be Equal    ${j['status']}    OK    接口返回的status不正确,正确值是:OK,返回结果:${j}
     Should Be True    ${j['totalElements']}>0    接口返回的totalElements值不大于0,返回结果:${j}
     Should Be True    ${length}>0    接口返回的entity未查到有数据,返回结果:${j}
-  

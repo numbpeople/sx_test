@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        customerSetting
 Resource          ../../../../commons/admin common/Customers/Customers_common.robot
 
 *** Test Cases ***

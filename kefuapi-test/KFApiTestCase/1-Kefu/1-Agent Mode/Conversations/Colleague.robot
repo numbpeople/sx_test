@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        colleague
 Library           json
 Library           requests
 Library           Collections
@@ -20,8 +21,7 @@ Resource          ../../../../commons/agent common/Conversations/Colleague_Commo
     ${j}    Get Colleagues    ${AdminUser}
     Run Keyword If    ${j}==[]    Fail    租户下仅有一个Admin坐席来测试？需要确认，如有只有一个，忽略case：${j}
     Should Be Equal    '${j[0]['user']['tenantId']}'    '${AdminUser.tenantId}'    获取同事列表失败，返回值中tenantId不正确:${j}
-
-# 客服设置状态--暂先不执行该用例，47.32上增加了限制，会导致执行失败(/v1/tenants/{tenantId}/agents/{agentId}/status)
+    # 客服设置状态--暂先不执行该用例，47.32上增加了限制，会导致执行失败(/v1/tenants/{tenantId}/agents/{agentId}/status)
     # [Documentation]    【操作步骤】：
     # ...    - Step1、坐席模式下，调用设置坐席状态接口：/v1/tenants/{tenantId}/agents/{agentId}/status，接口请求状态码为200。
     # ...    - Step2、查询坐席接待人数和状态信息，调用接口：/v1/Agents/me，接口请求状态码为200。

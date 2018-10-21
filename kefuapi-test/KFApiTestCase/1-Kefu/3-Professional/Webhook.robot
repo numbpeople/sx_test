@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | showCallback | 自定义事件推送 | redis灰度租户 | 登录主redis机器上，执行：sadd kf:callback:enable 11699，命令来添加灰度 |
-Default Tags      showCallback
+Force Tags        showCallback
 Library           json
 Library           requests
 Library           Collections

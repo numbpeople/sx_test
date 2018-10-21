@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        agentHistory
 Library           json
 Library           requests
 Library           Collections

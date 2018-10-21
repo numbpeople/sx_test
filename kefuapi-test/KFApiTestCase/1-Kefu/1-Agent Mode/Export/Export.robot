@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        agentExport
 Library           json
 Library           requests
 Library           Collections
@@ -6,8 +7,8 @@ Library           RequestsLibrary
 Library           String
 Library           uuid
 Library           ../../../../lib/ExcelLibraryExtra/ExcelLibraryExtra.py
-Library           ../../../../lib/ReadFile.py    
-Library           ../../../../lib/KefuUtils.py    
+Library           ../../../../lib/ReadFile.py
+Library           ../../../../lib/KefuUtils.py
 Resource          ../../../../AgentRes.robot
 Resource          ../../../../commons/agent common/Conversations/Conversations_Common.robot
 Resource          ../../../../commons/agent common/Export/Export_Common.robot

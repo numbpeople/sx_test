@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        adminExport
 Library           json
 Library           requests
 Library           Collections
@@ -431,7 +432,7 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     #公有云的模板定义
     @{sheetNamePublic}    create list    模板导入说明:1、知识规则ID只导出，不做导入，修改无效;2、文件大小不得超过5M;3、单次导入知识规则条目数量不得超过1000;4、如果不填写分类，默认加入根分类，如需增加分类，可直接添加列，并写入（x级分类，x为阿拉伯数字）;5、分类字数不得超过30汉字，分类最多5级;6、问句字数不超过30个汉字，最多300条；7、可以通过增加列来增加问题，问题列的增加格式同模板所示;8、可以通过增加列来增加答案，答案字数不超过1000个汉字，最多300个;9、启用状态如果不填写，按照启用处理。
     #判断如果当前为公有云域名，则使用公有云模板
-    run keyword if    "${kefuurl}" == "http://sandbox.kefu.easemob.com" or "${kefuurl}" == "http://kefu.easemob.com"    set suite variable    ${sheetName}    ${sheetNamePublic}  
+    run keyword if    "${kefuurl}" == "http://sandbox.kefu.easemob.com" or "${kefuurl}" == "http://kefu.easemob.com"    set suite variable    ${sheetName}    ${sheetNamePublic}
     @{sheetValue}    create list    1级分类    2级分类    3级分类    问题问法1    问题问法2
     ...    问题问法3    问题问法4    问题问法5    答案1    是否启用
     #读取xls表格数据
@@ -470,7 +471,7 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     #公有云的模板定义
     @{sheetNamePublic}    create list    模板导入说明:1、知识规则ID只导出，不做导入，修改无效;2、文件大小不得超过5M;3、单次导入知识规则条目数量不得超过1000;4、如果不填写分类，默认加入根分类，如需增加分类，可直接添加列，并写入（x级分类，x为阿拉伯数字）;5、分类字数不得超过30汉字，分类最多5级;6、问句字数不超过30个汉字，最多300条；7、可以通过增加列来增加问题，问题列的增加格式同模板所示;8、可以通过增加列来增加答案，答案字数不超过1000个汉字，最多300个;9、启用状态如果不填写，按照启用处理。
     #判断如果当前为公有云域名，则使用公有云模板
-    run keyword if    "${kefuurl}" == "http://sandbox.kefu.easemob.com" or "${kefuurl}" == "http://kefu.easemob.com"    set suite variable    ${sheetName}    ${sheetNamePublic}  
+    run keyword if    "${kefuurl}" == "http://sandbox.kefu.easemob.com" or "${kefuurl}" == "http://kefu.easemob.com"    set suite variable    ${sheetName}    ${sheetNamePublic}
     @{sheetValue}    create list    1级分类    2级分类    3级分类    问题问法1    问题问法2
     ...    问题问法3    问题问法4    问题问法5    答案1    是否启用
     #读取xls表格数据
@@ -590,8 +591,8 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     ...    会话创建时间    首次响应时长    平均响应时长    会话时长    会话标签    会话备注
     ...    访客消息数    客服消息数    满意度评价分数    满意度评价详情    质检总分    质检备注
     ...    质检员    关联名称    来源
-    @{sheetValue}    create list    ${sessionInfo.userName}    ${sessionInfo.userName}    ${${sessionInfo.vmsgCount}}    ${${sessionInfo.amsgCount}}    #${${sessionInfo.qualityMark}}
-    ...    [${sessionInfo.originType}]
+    @{sheetValue}    create list    ${sessionInfo.userName}    ${sessionInfo.userName}    ${${sessionInfo.vmsgCount}}    ${${sessionInfo.amsgCount}}    [${sessionInfo.originType}]
+    ...    #${${sessionInfo.qualityMark}}
     #读取xls表格数据
     @{firstRowsList}    Get Rows List    ${xlsPath}    0
     @{secondRowsList}    Get Rows List    ${xlsPath}    1
@@ -628,11 +629,10 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     csv_to_xls_pd    ${csvPath}    ${sheetname}    ${xlsPath}
     #模板数据
     log dictionary    ${ticketInfo}
-    @{sheetName}    create list    id    状态    分类    昵称    手机号    
-    ...    qq    email    公司    描述    坐席昵称    
-    ...    创建时间    主题    内容    评论
-    @{sheetValue}    create list    ${${ticketInfo.ticketId}}    ${ticketInfo.name}    
-    ...    ${ticketInfo.subject}    ${ticketInfo.email}    ${${ticketInfo.phone}}
+    @{sheetName}    create list    id    状态    分类    昵称    手机号
+    ...    qq    email    公司    描述    坐席昵称    创建时间
+    ...    主题    内容    评论
+    @{sheetValue}    create list    ${${ticketInfo.ticketId}}    ${ticketInfo.name}    ${ticketInfo.subject}    ${ticketInfo.email}    ${${ticketInfo.phone}}
     #读取xls表格数据
     @{firstRowsList}    Get Rows List    ${xlsPath}    0
     @{secondRrowsList}    Get Rows List    ${xlsPath}    1
@@ -644,7 +644,7 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     #判断导出数据总行数和导出与预期数据相等
     run keyword if    ${rowCount} != 2    Fail    因为只导出一个留言的数据,所以导出的excel文件总行数应为2,需要检查文件,路径:${xlsPath}
     Should Be ExportFiles Excel Equal    ${sheetName}    ${firstRowsList}    ${sheetValue}    ${secondRrowsList}
-    
+
 导出下载客户中心的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
     [Documentation]    【操作步骤】：
     ...    - Step1、创建新客户中心，导出客户中心数据信息，接口：/v1/crm/tenants/{tenantId}/customers/newfile。
@@ -672,8 +672,8 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     log dictionary    ${customerInfo}
     ${createDateTime}    evaluate    '${customerInfo.createDateTime}'[0:-3]    #去除时间戳最后三位
     ${createDateTime}    Get Time    ${EMPTY}    ${createDateTime}    #由1527238033格式转为2018-05-25 16:47:13格式
-    # @{sheetName}    create list    创建时间    更新时间    客户最新会话时间    
-    # ...    ID    昵称    名字    手机    qq    邮箱    
+    # @{sheetName}    create list    创建时间    更新时间    客户最新会话时间
+    # ...    ID    昵称    名字    手机    qq    邮箱
     # ...    公司    描述    qq    城市1    客户标签
     @{sheetName}    Get DisplayNames For Columndefinitions    ${AdminUser}
     Remove Values From List    ${sheetName}    QQ    微信号
@@ -693,5 +693,4 @@ Resource          ../../../../commons/admin common/Customers/Customers_common.ro
     #判断导出数据总行数和导出与预期数据相等
     run keyword if    ${rowCount} != 2    Fail    因为只导出一个客户中心的数据,所以导出的excel文件总行数应为2,需要检查文件,路径:${xlsPath}
     Should Be ExportFiles Excel Equal    ${sheetName}    ${stringfirstRowsList}    ${sheetValue}    ${secondRrowsList}
-
-# 导出下载告警记录的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)
+    # 导出下载告警记录的数据(/tenants/{tenantId}/serviceSessionHistoryFiles)

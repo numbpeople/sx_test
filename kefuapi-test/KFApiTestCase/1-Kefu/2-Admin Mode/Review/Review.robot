@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        basicReview
 Library           json
 Library           requests
 Library           Collections
@@ -532,4 +533,3 @@ Resource          ../../../../commons/admin common/Daas/Daas_Common.robot
     Should Be Equal    ${j['entities'][0]['originType'][0]}    ${session.originType}    质检接口返回值originType不正确：${j}
     Should Be True    '${j['entities'][0]['vmsgCount']}' == '1'    质检接口返回值vmsgCount不正确：${j}
     Should Be True    '${j['entities'][0]['amsgCount']}' == '0'    质检接口返回值amsgCount不正确：${j}
-

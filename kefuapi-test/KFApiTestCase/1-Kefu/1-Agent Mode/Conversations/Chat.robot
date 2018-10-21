@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        chat
 Library           json
 Library           requests
 Library           Collections
@@ -19,16 +20,16 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
 
 *** Test Cases ***
 获取访客列表(/v1/Agents/me/Visitors)
-    [Tags]    debugChat
     [Documentation]    【操作步骤】：
     ...    - Step1、坐席模式-进行中会话，获取坐席进行中会话接口。
     ...    - Step2、判断/v1/Agents/me/Visitors接口返回值${j[0]['user']['tenantId']}，接口返回状态码为200。
     ...
     ...    【预期结果】：
     ...    如果坐席进行中会话数不为0，则判断接口第一条数据的tenantId值，等于${AdminUser.tenantId}。
+    [Tags]    debugChat
     #Step1、获取进行中会话列表，并获取会话数
     &{apiResponse}    Get Processing Session    ${AdminUser}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${text}    set variable    ${apiResponse.text}
     ${length}    get length    ${apiResponse.text}
     #Step2、判断返回接口返回值${text[0]['user']['tenantId']}
@@ -44,7 +45,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ...    获取坐席的进行中会话请求地址：/v1/Agents/me/Visitors，请求返回值等于：[]。
     #Step1、获取进行中会话列表，并获取会话数
     &{apiResponse}    Get Processing Session    ${AdminUser}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    步骤1时，发生异常：${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    步骤1时，发生异常：${apiResponse.errorDescribetion}
     ${text}    set variable    ${apiResponse.text}
     ${status}    set variable    ${apiResponse.status}
     ${url}    set variable    ${apiResponse.url}
@@ -53,10 +54,10 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     Run Keyword If    ${length} > 50    Fail    步骤2时，调用接口：${url}，获取进行中会话超过50个会话，case不允许执行
     #批量结束进行中会话
     &{apiResponse2}    Stop Processing Conversations    ${AdminUser}    ${text}
-    Should Be Equal     ${apiResponse2.status}    ${ResponseStatus.OK}    步骤2时，发生异常：${apiResponse2.errorDescribetion}
+    Should Be Equal    ${apiResponse2.status}    ${ResponseStatus.OK}    步骤2时，发生异常：${apiResponse2.errorDescribetion}
     #Step3、查询坐席模式-进行中会话的会话数结果值。
     &{apiResponse1}    Get Processing Session    ${AdminUser}
-    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    步骤3时，发生异常：${apiResponse1.errorDescribetion}
+    Should Be Equal    ${apiResponse1.status}    ${ResponseStatus.OK}    步骤3时，发生异常：${apiResponse1.errorDescribetion}
     ${text1}    set variable    ${apiResponse1.text}
     ${status1}    set variable    ${apiResponse1.status}
     ${url1}    set variable    ${apiResponse1.url}

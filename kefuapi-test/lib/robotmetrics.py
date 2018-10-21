@@ -67,6 +67,7 @@ if '-report' in myargs:
     report_name = myargs['-report'][0]
 else:
     report_name = 'report.html'
+report_name = report_name + "#totals?all"
 
 # log.html file
 if '-log' in myargs:
@@ -92,8 +93,6 @@ if '-collectionLogName' in myargs:
 else:
     collection_log_name = 'emailreport.html'
 
-print receiver_name
-print collection_log_name
 
 mtTime = datetime.now().strftime('%Y%m%d-%H%M%S')
 # Output result file location
@@ -320,8 +319,6 @@ icons_txt= """
                     <ul class="nav flex-column">                            
                   <img src="%s" style="height:15vh!important;border-radius:50%%;margin: 10px 0px 0px 37px;width:50%%;"/>
                 
-				<br>
-				
 				<h6 class="sidebar-heading d-flex justify-content-between align-items-center text-muted">
                         <span>Metrics</span>
                         <a class="d-flex align-items-center text-muted" href="#"></a>
@@ -342,6 +339,11 @@ icons_txt= """
                               <i class="fa fa-wpforms"></i> RF 原生日志
                             </a>
                         </li>
+                        
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center text-muted">
+                        <span>QA Team</span>
+                        <a class="d-flex align-items-center text-muted" href="#"></a>
+                    </h6>
                         <li class="nav-item">
                             <a class="tablink nav-link" href="#" onclick="openPage('testMetrics', this, 'orange');executeDataTable('#tm',5)">
                               <i class="fa fa-list-alt"></i> 测试用例日志
@@ -364,7 +366,7 @@ icons_txt= """
                     </h6>
                     <ul class="nav flex-column mb-2">
                         <li class="nav-item">
-                            <a style="color:blue;" class="tablink nav-link" target="_blank" href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3847479">
+                            <a style="color:blue;" class="tablink nav-link" target="_blank" href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3848227">
 							  <i class="fa fa-external-link"></i> 教程文档
 							</a>
                         </li>
@@ -480,7 +482,7 @@ dashboard_content="""
 
                 <div class="col-md-4" onclick="openPage('suiteMetrics', this, '')" data-toggle="tooltip" title="Click to view Suite metrics" style="cursor: pointer;">
                     <div class="panel-body sm-data-box-1 tile tile-fail">
-                        <span class="weight-500 block text-center txt-dark mt-8">SUITE STATISTICS</span>	
+                        <span class="weight-500 block text-center txt-dark mt-8">测试用例集统计</span>	
                         <div class="cus-sat-stat weight-500 txt-success text-center mt-5">
                             <span>%s</span><span style="font-size:15px">%%</span>
                         </div>
@@ -503,7 +505,7 @@ dashboard_content="""
 
                 <div class="col-md-4" onclick="openPage('testMetrics', this, '')" data-toggle="tooltip" title="Click to view Test metrics" style="cursor: pointer;">
                     <div class="panel-body sm-data-box-1  tile tile-pass">
-                        <span class="weight-500 block text-center txt-dark mt-8">TEST STATISTICS</span>
+                        <span class="weight-500 block text-center txt-dark mt-8">测试用例统计</span>
                         <div class="cus-sat-stat weight-500 txt-success text-center mt-5">
                             <span>%s</span><span style="font-size:15px">%%</span>
                         </div>
@@ -526,7 +528,7 @@ dashboard_content="""
 
                 <div class="col-md-4" onclick="openPage('keywordMetrics', this, '')" data-toggle="tooltip" title="Click to view Keyword metrics" style="cursor: pointer;">
                     <div class="panel-body sm-data-box-1  tile tile-info">
-                        <span class="weight-500 block text-center txt-dark mt-8">KEYWORD STATISTICS</span>	
+                        <span class="weight-500 block text-center txt-dark mt-8">关键字统计</span>	
                         <div class="cus-sat-stat weight-500 txt-success text-center mt-5">
                             <span>%s</span><span style="font-size:15px">%%</span>
                         </div>
@@ -741,6 +743,14 @@ th = soup.new_tag('th')
 th.string = "Elapsed (s)"
 tr.insert(3, th)
 
+th = soup.new_tag('th')
+th.string = "Tags"
+tr.insert(4, th)
+
+th = soup.new_tag('th')
+th.string = "Error Message"
+tr.insert(5, th)
+
 tbody = soup.new_tag('tbody')
 table.insert(11, tbody)
 
@@ -771,6 +781,14 @@ class TestCaseResults(ResultVisitor):
         table_td = soup.new_tag('td')
         table_td.string = str(test.elapsedtime/float(1000))
         table_tr.insert(3, table_td)
+
+        table_td = soup.new_tag('td')
+        table_td.string = str(test.tags)
+        table_tr.insert(4, table_td)
+        
+        table_td = soup.new_tag('td')
+        table_td.string = str(test.message)
+        table_tr.insert(5, table_td)
 
 result.visit(TestCaseResults())
 
@@ -901,7 +919,7 @@ test_icon_txt="""
   <div class="embed-responsive embed-responsive-4by3">
     <iframe class="embed-responsive-item" src=%s></iframe>
   </div>
-"""%(log_name)
+"""%(report_name)
 log_div.append(BeautifulSoup(test_icon_txt, 'html.parser'))
 
 ### ============================ END OF LOGS ======================================= ####
@@ -1071,6 +1089,14 @@ cebianlan= """
             <i class="clearfix"></i>
             <li><a href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3847479" target='_blank'">
                 <div class="icon"><i class="i3"></i><span class="title">配置文档</span></div>
+            </a></li>
+            <i class="clearfix"></i>
+            <li><a href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3848256" target='_blank'">
+                <div class="icon"><i class="i3"></i><span class="title">常见错误</span></div>
+            </a></li>
+            <i class="clearfix"></i>
+            <li><a href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3848230" target='_blank'">
+                <div class="icon"><i class="i3"></i><span class="title">标签用法</span></div>
             </a></li>
             <i class="clearfix"></i>
             <li><a href="javascript:;" class="im-biz">

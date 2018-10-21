@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        agentCustomer
 Library           json
 Library           requests
 Library           Collections
@@ -19,12 +20,13 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ...
     ...    【预期结果】：
     ...    接口返回值中，status字段的值等于OK。
+    [Tags]
     #创建会话并手动接入到进行中会话
     ${sessionInfo}    Create Processiong Conversation
     log    ${sessionInfo.userId}
     #获取客户标签
     ${apiResponse}    Get Visitor Tags    ${AdminUser}    ${sessionInfo.userId}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    访客中心人数不正确：${j}
 
@@ -37,7 +39,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ...    接口返回值中，status字段的值等于OK。
     #获取租户客户中心的筛选filters
     ${apiResponse}=    Set Filters    get    ${AdminUser}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     ${length} =    get length    ${j['entities']}
@@ -63,7 +65,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${conditionList}    create dictionary    fieldName=createDateTime    operation=RANGE    param=${param}    value=${value}
     ${data}    set variable    {"displayName":"${crmFilter.displayName}","visible":${crmFilter.visible},"type":"${crmFilter.type}","status":"${crmFilter.status}","conditionList":[{"fieldName":"${conditionList.fieldName}","operation":"${conditionList.operation}","value":"${conditionList.value}","param":"${conditionList.param}"}]}
     ${apiResponse}=    Set Filters    post    ${AdminUser}    ${data}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     should be equal    ${j['entity']['displayName']}    ${crmFilter.displayName}    返回值中displayName值不正确: ${j}
@@ -76,7 +78,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     should be equal    ${j['entity']['conditionList'][0]['param']}    ${conditionList.param}    返回值中param字段值不正确: ${j}
     #获取租户客户中心的筛选filters
     ${apiResponse1}=    Set Filters    get    ${AdminUser}
-    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
+    Should Be Equal    ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
     ${j}    set variable    ${apiResponse1.text}
     ${length} =    get length    ${j['entities']}
     should be true    ${length} > 0    因为刚刚创建了新的客户中心筛选数据，获取到的数据总数应大于0。
@@ -102,7 +104,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${conditionList}    create dictionary    fieldName=createDateTime    operation=RANGE    param=${param}    value=${value}
     ${data}    set variable    {"displayName":"${crmFilter.displayName}","visible":${crmFilter.visible},"type":"${crmFilter.type}","status":"${crmFilter.status}","conditionList":[{"fieldName":"${conditionList.fieldName}","operation":"${conditionList.operation}","value":"${conditionList.value}","param":"${conditionList.param}"}]}
     ${apiResponse}=    Set Filters    post    ${AdminUser}    ${data}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     should be equal    ${j['entity']['displayName']}    ${crmFilter.displayName}    返回值中displayName值不正确: ${j}
@@ -117,7 +119,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${filterId}    set variable    ${j['entity']['filterId']}
     #创建租户客户中心的筛选filters
     ${apiResponse1}=    Set Filters    delete    ${AdminUser}    ${EMPTY}    ${filterId}
-    Should Be Equal     ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
+    Should Be Equal    ${apiResponse1.status}    ${ResponseStatus.OK}    ${apiResponse1.errorDescribetion}
     ${j}    set variable    ${apiResponse1.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
     should be equal    ${j['entity']['displayName']}    ${crmFilter.displayName}    返回值中displayName值不正确: ${j}
@@ -141,7 +143,7 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${sessionInfo}    Create Processiong Conversation
     #获取访客的筛选filters
     ${apiResponse}=    Get Visitor Filters    ${AdminUser}    ${sessionInfo.userId}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${j}    set variable    ${apiResponse.text}
     should be equal    ${j['status']}    OK    接口返回值中status不正确：${j}
 
@@ -157,6 +159,6 @@ Resource          ../../../../commons/agent common/Customers/Customers_Common.ro
     ${sessionInfo}    Create Processiong Conversation
     #获取访客黑名单列表
     ${apiResponse}    Get Visitor Blacklists    ${AdminUser}    ${sessionInfo.userId}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
     ${j}    set variable    ${apiResponse.text}
     Should Be Equal    ${j['status']}    OK    获取接口返回status不是OK: ${j}

@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup       set suite variable    ${session}    ${AdminUser.session}
-Force Tags        msgcenter
+Force Tags        AdminMsgcenter
 Library           json
 Library           requests
 Library           Collections

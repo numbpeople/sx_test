@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | msgRecall | 旗舰-消息撤回 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
-Default Tags      msgRecall
+Force Tags        msgRecall
 Library           json
 Library           requests
 Library           Collections
@@ -42,7 +42,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤4时，发生异常，状态不等于200：${apiResponse.describetion}
     ${text}    set variable    ${apiResponse.text}
     #Step5、判断接口各字段的返回值
-    Should Be Equal     ${text['status']}    OK    步骤5时，status字段值不等于OK：${apiResponse.describetion}
+    Should Be Equal    ${text['status']}    OK    步骤5时，status字段值不等于OK：${apiResponse.describetion}
 
 消息撤回并获取消息撤回历史消息(/v1/tenants/{tenantId}/whisper-messages)
     [Documentation]    【操作步骤】：
@@ -72,7 +72,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     &{apiResponse}    Recall Message    ${AdminUser}    ${serviceSessionId}    ${msgId}
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤4时，发生异常，状态不等于200：${apiResponse.describetion}
     ${text}    set variable    ${apiResponse.text}
-    Should Be Equal     ${text['status']}    OK    步骤5时，status字段值不等于OK：${apiResponse.describetion}
+    Should Be Equal    ${text['status']}    OK    步骤5时，status字段值不等于OK：${apiResponse.describetion}
     #Step5、获取该会话的所有消息
     &{filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    page=0    size=10
@@ -80,5 +80,5 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     #获取会话最近一条消息id
     ${recallMsgId}    set variable    ${j['entities'][0]['body']['ext']['weichat']['recall_msg_id']}
     #Step6、判断接口各字段的返回值
-    Should Be Equal     ${recallMsgId}    ${msgId}    步骤6时，回撤的消息id不正确，${j}
-    Should Be Equal     "${j['entities'][0]['body']['bodies'][0]['action']}"    "KEFU_MESSAGE_RECALL"    步骤6时，字段action不等于KEFU_MESSAGE_RECALL，${j}
+    Should Be Equal    ${recallMsgId}    ${msgId}    步骤6时，回撤的消息id不正确，${j}
+    Should Be Equal    "${j['entities'][0]['body']['bodies'][0]['action']}"    "KEFU_MESSAGE_RECALL"    步骤6时，字段action不等于KEFU_MESSAGE_RECALL，${j}

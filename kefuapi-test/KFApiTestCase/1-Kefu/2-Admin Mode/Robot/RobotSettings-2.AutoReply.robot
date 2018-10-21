@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        autoReply
 Library           json
 Library           requests
 Library           Collections
@@ -50,7 +51,6 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     ${j}    Set Robot AutoReply    get    ${AdminUser}    ${filter}
     Should Be Equal    '${j['first']}'    'True'    返回的机器人重复回复不正确：${j}
     Should Be Equal    '${j['last']}'    'True'    返回的机器人重复回复不正确：${j}
-
 
 获取机器人超时回复(/v1/Tenants/{tenantId}/robot/profile/predefinedReplys)
     [Documentation]    【操作步骤】：
@@ -219,7 +219,7 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     ${filter}    copy dictionary    ${RobotFilter}
     #获取多机器人资料信息
     ${j}    Get MutilRobot PersonalInfos Settings    ${AdminUser}    ${filter}
-    ${length}    set variable    @{j['content']} 
+    ${length}    set variable    @{j['content']}
     Should Be True    ${length} > 0    接口返回值中content的数据不正确 ,${j}
     Should Be True    ${j['totalElements']} > 0    接口返回值中totalElements不正确 ,${j}
 
@@ -235,12 +235,12 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #使用局部变量进行筛选
     ${filter}    copy dictionary    ${RobotFilter}
     #获取多机器人资料信息
-    ${robotInfo}    Get MutilRobot PersonalInfos	${AdminUser}    ${filter}
+    ${robotInfo}    Get MutilRobot PersonalInfos    ${AdminUser}    ${filter}
     ${robotName}    set variable    ${robotInfo['content'][0]['name']}
     ${robotRulesCount}    set variable    ${robotInfo['content'][0]['rulesCount']}
     #获取多机器人设置
     ${robotSettings}    Get MutilRobot PersonalInfos Settings    ${AdminUser}    ${filter}
-    ${length}    set variable    @{robotSettings['content']} 
+    ${length}    set variable    @{robotSettings['content']}
     Should Be True    ${length} > 0    接口返回值中content的数据不正确 ,${robotSettings}
     Should Be True    ${robotSettings['totalElements']} > 0    接口返回值中totalElements不正确 ,${robotSettings}
     #获取第一个机器人的设置，并添加name和rulesCount字段

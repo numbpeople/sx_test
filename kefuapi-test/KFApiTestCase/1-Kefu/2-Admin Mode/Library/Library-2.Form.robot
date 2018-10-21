@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        libraryForm
 Library           json
 Library           requests
 Library           Collections

@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | teamOverflow | 技能组溢出 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
-Default Tags      teamOverflow
+Force Tags        teamOverflow
 Library           json
 Library           requests
 Library           Collections
@@ -34,7 +34,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${status}    Check Tenant Gray Status
     Pass Execution If    not ${status}    该租户未开通灰度功能，不执行
     #获取坐席所在技能组列表
-    ${j}    Get Agent QueueInfo    ${AdminUser}   ${AdminUser.userId}
+    ${j}    Get Agent QueueInfo    ${AdminUser}    ${AdminUser.userId}
     ${qid}    set variable    ${j['entities'][0]['queueId']}
     ${rname}    uuid 4
     #添加rule
@@ -89,4 +89,3 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     \    set test variable    ${diffs3}    ${i['rule_set_name']}${i['rule_set_enable']}${i['rule_set_id']}
     \    Run Keyword If    '${diffs1}' == '${diffs3}'    Exit For Loop
     Should Not Be True    '${diffs1}' == '${diffs3}'    查询到已删除的rule信息:${j}
-    

@@ -1,5 +1,6 @@
 *** Settings ***
 Suite Setup       set suite variable    ${session}    ${AdminUser.session}
+Force Tags        wechat    weibo
 Library           json
 Library           requests
 Library           Collections

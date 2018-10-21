@@ -9,7 +9,7 @@ Documentation     该新的路由规则是在47.17版本上新增，并且配合
 ...               ***
 ...
 ...               在执行或跳过用例时，tag名请确认为newrouting
-Force Tags        newrouting
+Force Tags        routing
 Library           json
 Library           requests
 Library           Collections
@@ -1488,7 +1488,6 @@ Resource          ../../../../api/IM/IMApi.robot
     ...
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、根据访客昵称查询待接入会话数等于1、并且待接列表话所属技能组等于关联指定技能组A。
- 
     #初始化参数：消息、渠道信息、客户信息
     ${curTime}    get time    epoch
     ${originTypeentity}=    create dictionary    name=APP    originType=app    key=APP    dutyType=Allday

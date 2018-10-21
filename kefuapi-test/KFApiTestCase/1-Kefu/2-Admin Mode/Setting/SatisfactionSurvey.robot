@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        satisfactionSurvey
 Library           json
 Library           requests
 Library           Collections
@@ -77,4 +78,3 @@ Resource          ../../../../commons/admin common/Setting/SatisfactionSurvey_Co
     ${length}    get length    ${j['entities']}
     should be equal    ${j['status']}    OK    返回结果中status不是OK,${j}
     should be equal    ${length}    ${5}    返回结果中应该有五组数据,${j}
-

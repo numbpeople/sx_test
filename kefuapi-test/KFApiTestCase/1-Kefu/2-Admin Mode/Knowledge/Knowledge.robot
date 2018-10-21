@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        adminKnowledge
 Library           json
 Library           requests
 Library           Collections

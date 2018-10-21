@@ -1,5 +1,5 @@
 *** Settings ***
-Force Tags        note
+Force Tags        note    adminNote
 Library           json
 Library           requests
 Library           Collections

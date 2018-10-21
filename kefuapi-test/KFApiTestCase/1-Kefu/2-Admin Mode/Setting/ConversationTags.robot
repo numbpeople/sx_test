@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        conversationTags
 Library           json
 Library           requests
 Library           Collections
@@ -38,8 +39,8 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${data}    set variable    {"name":"${summaryEntity.name}","color":${summaryEntity.color},"tenantId":${summaryEntity.tenantId}}
     #创建会话标签
     ${j}    Set ServiceSessionSummary    post    ${AdminUser}    ${serviceSessionSummaryId}    ${data}
-    Should Be Equal      ${j['name']}    ${summaryEntity.name}    接口返回name不是${summaryEntity.name},${j}
-    Should Be Equal      ${j['color']}    ${${summaryEntity.color}}    接口返回color不是${summaryEntity.color},${j}
+    Should Be Equal    ${j['name']}    ${summaryEntity.name}    接口返回name不是${summaryEntity.name},${j}
+    Should Be Equal    ${j['color']}    ${${summaryEntity.color}}    接口返回color不是${summaryEntity.color},${j}
 
 修改会话标签(/v1/Tenants/{tenantId}/ServiceSessionSummaries/{ServiceSessionSummaryId}/children)
     [Documentation]    【操作步骤】：
@@ -58,7 +59,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${data}    set variable    {"id":${serviceSessionSummaryId},"name":"${summaryEntity.name}","description":${summaryEntity.description},"color":${summaryEntity.color}}
     #修改会话标签
     ${j}    Set ServiceSessionSummary    put    ${AdminUser}    ${serviceSessionSummaryId}    ${data}
-    Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}
+    Should Be Equal    ${j}    ${EMPTY}    接口返回不是空,${j}
 
 删除会话标签(/v1/Tenants/{tenantId}/ServiceSessionSummaries/{ServiceSessionSummaryId}/children)
     [Documentation]    【操作步骤】：
@@ -73,7 +74,7 @@ Resource          ../../../../commons/admin common/Setting/ConversationTags_Comm
     ${serviceSessionSummaryId}    set variable    ${summaryResult.id}
     #删除会话标签
     ${j}    Set ServiceSessionSummary    delete    ${AdminUser}    ${serviceSessionSummaryId}
-    Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}
+    Should Be Equal    ${j}    ${EMPTY}    接口返回不是空,${j}
 
 导出会话标签(/v1/Tenants/{tenantId}/ServiceSessionSummaries/exportfile)
     [Documentation]    【操作步骤】：

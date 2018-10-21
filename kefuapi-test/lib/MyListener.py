@@ -82,32 +82,38 @@ class MyListener(object):
         passcount = float(self.pass_count)
         # 通过率
         percent = "0.0"
-        print passcount
         if str(passcount) == "0.0":
             percent = "0.00%"
         else:
             percent = "%.2f%%" % (passcount / totalcount*100)
         self.write_table(self.total_count,self.pass_count,self.fail_count,percent)
         self.outfile.close()
-        
+
         # 处理接收人邮件账号
         email_receive=self.get_email(self.receive)
-        print email_receive
-        
+        print 'email_receive value is: '+email_receive
+
         # 获取汇总报告的文件名称和当前路径
         collectionLogName=os.path.basename(self.outpath)
         collectionLogDirPath=os.path.dirname(self.outpath)
+
         # 调用robotmetrics脚本
         metricsPath=metricspath.replace("\\", "/")
         metricsPy = metricsPath + '/robotmetrics.py ' + '-inputpath ' + collectionLogDirPath + '  -receiver '+ email_receive + ' -collectionLogName ' + collectionLogName
-        print metricsPy
+        print 'robotmetrics dir log: '+metricsPy
         os.system("python " + metricsPy)
-        
+
         # 发送html的邮件
         s = Sender()
         htmlf=open(self.outpath,'r')
         htmlcont=htmlf.read()
         s.sendReportMail('客服项目自动化测试结果', htmlcont, self.receive,self.outpath)
+        htmlf.close()
+
+        #删除本地日志输入文件夹
+        print 'start del log folder'
+#         self.del_folder(collectionLogDirPath)
+        print 'end del log folder'
 
     def before_start_table(self,outpath,reportname):
         # 拼接emailreport报告路径
@@ -418,17 +424,26 @@ class MyListener(object):
         
         # 转化为['leoli@easemob.com', '260553619@qq.com'] 格式
         to_list = ['%s' % user for user in to]
-        print to_list
         
         # 获取邮件名前缀
         num = []
         for username in to_list:
             list = username.split('@')
             num.append(list[0])
-        print num
-        print ','.join(num)               
         return ','.join(num)
 
+    def del_folder(self,path):
+        #删除文件
+        #path=find_folder_path(folderName)
+        #给文件夹赋权限
+        sysstr = platform.system()
+        if(sysstr =="Windows"):
+            print ("use windows system,del log folder")
+            os.chmod(path, stat.S_IWRITE)
+        #删除文件夹
+        print ("start use shutil.rmtree() to del folder: " + path)
+        shutil.rmtree(path)
+        print ("end use shutil.rmtree() to del folder" + path)
 
 if __name__ == "__main__":
 #     a = float(18)

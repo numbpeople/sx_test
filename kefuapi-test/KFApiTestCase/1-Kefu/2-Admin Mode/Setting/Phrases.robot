@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        phrase
 Library           json
 Library           requests
 Library           Collections

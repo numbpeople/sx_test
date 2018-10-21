@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | waitListNumberEnable | 显示排队人数 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
-Default Tags      waitListNumberEnable
+Force Tags        waitListNumberEnable
 Library           json
 Library           requests
 Library           Collections
@@ -32,6 +32,6 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${queueId}    set variable    ${sessionInfo.queueId}
     #获取会话的排队人数
     &{apiResponse}    Set WaitListNumber    ${AdminUser}    ${serviceSessionId}    ${queueId}
-    Should Be Equal     ${apiResponse.status}    ${ResponseStatus.OK}    步骤3时，发生异常：${apiResponse.errorDescribetion}
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    步骤3时，发生异常：${apiResponse.errorDescribetion}
     ${text}    set variable    ${apiResponse.text}
-    Should Be Equal     ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.errorDescribetion}
+    Should Be Equal    ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.errorDescribetion}

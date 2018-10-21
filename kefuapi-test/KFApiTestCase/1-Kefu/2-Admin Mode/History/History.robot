@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        adminHistory
 Library           json
 Library           requests
 Library           Collections

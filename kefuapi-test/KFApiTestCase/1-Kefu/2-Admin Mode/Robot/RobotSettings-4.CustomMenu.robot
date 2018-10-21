@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        customMenu
 Library           json
 Library           requests
 Library           Collections
@@ -37,7 +38,8 @@ Resource          ../../../../commons/admin common/Robot/RobotSettings_Common.ro
     #创建数据字典
     ${randoNumber}    Generate Random String    5    [NUMBERS]
     &{adminEntity}    create dictionary    userId=${AdminUser.userId}    name=${AdminUser.nicename}
-    &{menuEntity}    create dictionary    parentId=null    name=添加父级自定义菜单-${AdminUser.tenantId}-${randoNumber}    menuAnswerType=MENU    level=0    desc=    rootId=null    robotId=${AdminUser.tenantId}    returnUpperLayer=false
+    &{menuEntity}    create dictionary    parentId=null    name=添加父级自定义菜单-${AdminUser.tenantId}-${randoNumber}    menuAnswerType=MENU    level=0    desc=
+    ...    rootId=null    robotId=${AdminUser.tenantId}    returnUpperLayer=false
     #设置请求体
     ${data}    set variable    {"admin":{"userId":"${adminEntity.userId}","name":"${adminEntity.name}"},"entity":{"parentId":"${menuEntity.parentId}","name":"${menuEntity.name}","menuAnswerType":"${menuEntity.menuAnswerType}","level":"${menuEntity.level}","desc":"${menuEntity.desc}","rootId":"${menuEntity.rootId}","robotId":${menuEntity.robotId},"returnUpperLayer":${menuEntity.returnUpperLayer}}}
     #创建机器人自定义菜单

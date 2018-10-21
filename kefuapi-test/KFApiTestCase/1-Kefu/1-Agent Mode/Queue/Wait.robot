@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags
 Library           json
 Library           requests
 Library           Collections
@@ -337,7 +338,7 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     Should Be Equal    ${j['entities'][-1]['origin_type']}    ${originType}    获取接口渠道值不正确: ${j}
     Should Be True    '${j['totalElements']}' == '1'    待接入数不正确，不唯一： ${j['totalElements']}
     Should Be True    ${j['entities'][-1]['vip']}    待接入该会话vip值不是true，不唯一：${j}
-    Should Be True    '${j['entities'][-1]['priority']}' == 'vip1'   待接入该会话priority值不是vip1，不唯一：${j}
+    Should Be True    '${j['entities'][-1]['priority']}' == 'vip1'    待接入该会话priority值不是vip1，不唯一：${j}
 
 获取待接入的返回字段信息(/waitings)
     [Documentation]    【操作步骤】：
@@ -385,7 +386,7 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     set to dictionary    ${filter}    isAgent=False    page=1    visitorName=${session.userName}
     ${r}    Search History    ${AdminUser}    ${filter}    ${DateRange}
     run keyword if    ${r} == {}    管理员模式下未查到该访客的历史会话
-    Should Be True    '${r['items'][0]['serviceSessionId']}' == '${session.serviceSessionId}'   管理员模式查到该访客的历史会话会话id不正确：${r}
+    Should Be True    '${r['items'][0]['serviceSessionId']}' == '${session.serviceSessionId}'    管理员模式查到该访客的历史会话会话id不正确：${r}
 
 手动接入待接入会话(/v6/Tenant/me/Agents/me/UserWaitQueues/{serviceSesssionId})
     [Documentation]    【操作步骤】：
@@ -463,7 +464,7 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     #创建转接请求体
     ${assignData}    set variable    {"agentUserId":"${userId}","queueId":${agentInQueueId}}
     #待接入转接会话到坐席
-    ${j}=    Assign Agent For Waiting Session    ${AdminUser}    ${session.serviceSessionId}    ${userId}    ${assignData} 
+    ${j}=    Assign Agent For Waiting Session    ${AdminUser}    ${session.serviceSessionId}    ${userId}    ${assignData}
     Should Be Equal    '${j['status']}'    'OK'    转接待接入会话结果status不为OK：${j}
     #设置查询当前会话的参数
     set to dictionary    ${filter}    state=Processing    isAgent=${False}    visitorName=${session.userName}

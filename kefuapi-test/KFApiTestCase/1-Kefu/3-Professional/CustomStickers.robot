@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | customMagicEmoji | 自定义魔法表情 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
-Default Tags      customMagicEmoji
+Force Tags        customMagicEmoji
 Library           json
 Library           requests
 Library           Collections

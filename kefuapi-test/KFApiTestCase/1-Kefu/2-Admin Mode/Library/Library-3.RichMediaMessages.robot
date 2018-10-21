@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        libraryMediaMessage
 Library           json
 Library           requests
 Library           Collections
@@ -20,7 +21,8 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     #上传一张图片到素材库
     ${imageResult}    Upload Library Image    ${AdminUser}
     #构造请求体
-    &{articlesEntity}    create dictionary    order=0    content=<p>${AdminUser.tenantId}正文</p><p><img alt='' src='${kefuurl}/v1/Tenant/${AdminUser.tenantId}/MediaFiles/${imageResult.objectId}' style='width:auto' /></p>    author=leoli    digest=正文    title=正文    restUrl=/v1/Tenants/${AdminUser.tenantId}/robot/media/item    thumb_media_id=${imageResult.objectId}    text=正文    tenantId=${AdminUser.tenantId}    prop=null    src=
+    &{articlesEntity}    create dictionary    order=0    content=<p>${AdminUser.tenantId}正文</p><p><img alt='' src='${kefuurl}/v1/Tenant/${AdminUser.tenantId}/MediaFiles/${imageResult.objectId}' style='width:auto' /></p>    author=leoli    digest=正文    title=正文
+    ...    restUrl=/v1/Tenants/${AdminUser.tenantId}/robot/media/item    thumb_media_id=${imageResult.objectId}    text=正文    tenantId=${AdminUser.tenantId}    prop=null    src=
     ${data}    set variable    {"tenantId":${articlesEntity.tenantId},"prop":${articlesEntity.prop},"articles":[{"order":${articlesEntity.order},"content":"${articlesEntity.content}","author":"${articlesEntity.author}","digest":"${articlesEntity.digest}","title":"${articlesEntity.title}","restUrl":"${articlesEntity.restUrl}","thumb_media_id":"${articlesEntity.thumb_media_id}","src":"${articlesEntity.src}","text":"${articlesEntity.text}","prop":${articlesEntity.prop},"tenantId":${articlesEntity.tenantId}}]}
     #添加素材库图文消息
     ${filter}    copy dictionary    ${RobotFilter}
@@ -59,7 +61,7 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     ${newsId}    set variable    ${newsResult.newsId}
     #获取素材库图文消息
     ${filter}    copy dictionary    ${RobotFilter}
-    ${j}    Set Library News    delete    ${AdminUser}    ${filter}    ${EMPTY}   ${newsId} 
+    ${j}    Set Library News    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${newsId}
     Should Be True    "${j}"=="1"    返回的结果不是1：${j}
 
 按搜索删除素材库图文消息(/v1/Tenants/{tenantId}/robot/news/{newsId})
@@ -74,6 +76,7 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     ${filter}    copy dictionary    ${RobotFilter}
     set to dictionary    ${filter}    page=0    per_page=100    keyword=${AdminUser.tenantId}正文    source=0
     ${j}    Set Library News    get    ${AdminUser}    ${filter}    ${EMPTY}
-    :FOR    ${i}    IN    @{j['content']}
-    \    ${j}    Set Library News    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${i['newsId']}
+    : FOR    ${i}    IN    @{j['content']}
+    \    ${j}    Set Library News    delete    ${AdminUser}    ${filter}    ${EMPTY}
+    \    ...    ${i['newsId']}
     \    Should Be True    "${j}"=="1"    返回的结果不是1, 实际结果: ${j}

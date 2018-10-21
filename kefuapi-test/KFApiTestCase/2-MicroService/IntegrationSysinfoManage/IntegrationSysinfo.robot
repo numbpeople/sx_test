@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        integrationSysinfo
 Library           json
 Library           requests
 Library           Collections

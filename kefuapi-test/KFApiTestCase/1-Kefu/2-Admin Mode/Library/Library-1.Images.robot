@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        libraryImage
 Library           json
 Library           requests
 Library           Collections
@@ -69,7 +70,7 @@ Resource          ../../../../commons/admin common/Library/Library_Common.robot
     #获取素材库图片
     ${j}    Set Library Image    get    ${AdminUser}    ${filter}
     #删除搜索出来的素材库图片
-    :FOR    ${i}    IN    @{j['content']}
-    \    ${j}    Set Library Image    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${i['objectId']}
+    : FOR    ${i}    IN    @{j['content']}
+    \    ${j}    Set Library Image    delete    ${AdminUser}    ${filter}    ${EMPTY}
+    \    ...    ${i['objectId']}
     \    Should Be True    "${j}"=="1"    返回的结果不是1, 实际结果: ${j}
-    

@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation     | 灰度名称 | 灰度描述 | 灰度方式 | 灰度系统地址 |
 ...               | whisper | 旗舰-耳语 | 公网内网灰度管理系统 | http://sandbox.kefumanage.easemob.com/grayctrl/login.html |
-Default Tags      whisper
+Force Tags        whisper
 Library           json
 Library           requests
 Library           Collections
@@ -42,7 +42,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     &{apiResponse}    Get Whisper Message    ${AdminUser}    ${whisperMessageEntity}
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
     ${text}    set variable    ${apiResponse.text}
-    Should Be Equal     ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.describetion}
+    Should Be Equal    ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.describetion}
 
 发送耳语消息(/v1/tenants/{tenantId}/sessions/{serviceSessionId}/whisper-messages)
     [Documentation]    【操作步骤】：
@@ -68,7 +68,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     &{apiResponse}    Send Whisper Message    ${AdminUser}    ${serviceSessionId}    ${data}
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
     ${text}    set variable    ${apiResponse.text}
-    Should Be Equal     ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.describetion}
+    Should Be Equal    ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.describetion}
 
 发送耳语消息并获取耳语消息数据(/v1/tenants/{tenantId}/sessions/{serviceSessionId}/whisper-messages)
     [Documentation]    【操作步骤】：
@@ -96,7 +96,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     &{apiResponse}    Send Whisper Message    ${AdminUser}    ${serviceSessionId}    ${data}
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤3时，发生异常，状态不等于200：${apiResponse.describetion}
     ${text}    set variable    ${apiResponse.text}
-    Should Be Equal     ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.describetion}
+    Should Be Equal    ${text['status']}    OK    步骤3时，status字段值不等于OK：${apiResponse.describetion}
     #获取该会话的所有消息
     &{filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    page=0    size=10
@@ -109,7 +109,6 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     &{apiResponse}    Get Whisper Message    ${AdminUser}    ${whisperMessageEntity}
     Should Be Equal As Integers    ${apiResponse.statusCode}    200    步骤4时，发生异常，状态不等于200：${apiResponse.describetion}
     ${text}    set variable    ${apiResponse.text}
-    Should Be Equal     ${text['status']}    OK    步骤4时，status字段值不等于OK：${apiResponse.describetion}
-    Should Be Equal     ${text['totalElements']}    ${1}    步骤4时，totalElements字段值不等于1，实际值：${text['totalElements']}，${apiResponse.describetion}
-    Should Be Equal     ${text['entities'][0]['body']['bodies'][0]['msg']}    ${msg}    步骤4时，msg字段值不等于${msg}，实际值：${text['entities'][0]['body']['bodies'][0]['msg']}，${apiResponse.describetion}
-    
+    Should Be Equal    ${text['status']}    OK    步骤4时，status字段值不等于OK：${apiResponse.describetion}
+    Should Be Equal    ${text['totalElements']}    ${1}    步骤4时，totalElements字段值不等于1，实际值：${text['totalElements']}，${apiResponse.describetion}
+    Should Be Equal    ${text['entities'][0]['body']['bodies'][0]['msg']}    ${msg}    步骤4时，msg字段值不等于${msg}，实际值：${text['entities'][0]['body']['bodies'][0]['msg']}，${apiResponse.describetion}

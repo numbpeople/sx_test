@@ -1,5 +1,6 @@
 *** Settings ***
 Suite Setup       Create Customer Setup
+Force Tags        customerDetailInfo
 Resource          ../../../../commons/admin common/Customers/Customers_common.robot
 Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.robot
 
@@ -84,9 +85,9 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     ${params}    set variable    visitorName=${nickname}
     ${j}    Get blacklists    ${AdminUser}    ${params}
     should be true    ${j['totalElements']} == 1    接口返回totalElements不正确:${j}
-    should be equal    ${j['entities'][0]['visitorUserId']}     ${visitor_Id}    接口返回visitorUserId不正确:${j['entities'][0]['visitorUserId']}
-    should be equal    ${j['entities'][0]['actorNickname']}     ${AdminUser.nicename}    接口返回actorNickname不正确:${j['entities'][0]['actorNickname']}
-    should be equal    ${j['entities'][0]['visitorUserNickname']}     ${nickname}    接口返回visitorUserNickname不正确:${j['entities'][0]['visitorUserNickname']}
+    should be equal    ${j['entities'][0]['visitorUserId']}    ${visitor_Id}    接口返回visitorUserId不正确:${j['entities'][0]['visitorUserId']}
+    should be equal    ${j['entities'][0]['actorNickname']}    ${AdminUser.nicename}    接口返回actorNickname不正确:${j['entities'][0]['actorNickname']}
+    should be equal    ${j['entities'][0]['visitorUserNickname']}    ${nickname}    接口返回visitorUserNickname不正确:${j['entities'][0]['visitorUserNickname']}
     should be true    '${j['entities'][0]['reason']}' == 'blacklist reason'    接口返回reason不正确:${j['entities'][0]['reason']}
     #获取客户中心操作日志列表
     ${filter}    copy dictionary    ${FilterEntity}

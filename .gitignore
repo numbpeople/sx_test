@@ -15,6 +15,9 @@
 *.xml
 *.iml
 *.log
+*.tar.gz
+*.zip
+
 
 # export Files #
 *.csv
@@ -23,3 +26,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# project Files
+*.prefs
+*.name
+*.pydevproject
+*.project
+
+# other Files
+*.txt
+*.pub

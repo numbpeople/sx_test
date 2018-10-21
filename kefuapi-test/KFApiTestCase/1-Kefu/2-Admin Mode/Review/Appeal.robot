@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        appeal
 Library           json
 Library           requests
 Library           Collections

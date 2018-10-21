@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        customerTags
 Library           json
 Library           requests
 Library           Collections
@@ -19,7 +20,7 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为200、total_entries字段值大于0。
     #创建局部变量筛选条件
-    ${filter}    copy dictionary    ${FilterEntity}   
+    ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    per_page=100
     #获取访客标签
     ${j}    Set UserTags    get    ${AdminUser}    ${filter}
@@ -33,7 +34,7 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为201、返回字段值等于预期。
     #创建局部变量筛选条件
-    ${filter}    copy dictionary    ${FilterEntity}   
+    ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    per_page=100
     #创建请求体
     ${uuid}    Uuid 4
@@ -54,10 +55,10 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     ...    接口返回值中，请求状态码为204、返回值等于空。
     #创建客户标签
     ${userTagResult}    Create UserTag    ${AdminUser}
-    ${userTagId}    set variable   ${userTagResult.userTagId}    #获取客户标签id
-    ${createDateTime}    set variable   ${userTagResult.createDateTime}    #获取客户标签创建时间
+    ${userTagId}    set variable    ${userTagResult.userTagId}    #获取客户标签id
+    ${createDateTime}    set variable    ${userTagResult.createDateTime}    #获取客户标签创建时间
     #创建局部变量筛选条件
-    ${filter}    copy dictionary    ${FilterEntity}   
+    ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    per_page=100
     #创建请求体
     ${uuid}    Uuid 4
@@ -66,7 +67,7 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     ${data}    set variable    {"tenantId":${AdminUser.tenantId},"userTagId":${updateUserTagEntity.userTagId},"tagName":"${updateUserTagEntity.tagName}","createDateTime":"${updateUserTagEntity.createDateTime}"}
     #修改访客标签
     ${j}    Set UserTags    put    ${AdminUser}    ${filter}    ${data}    ${updateUserTagEntity.userTagId}
-    Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}
+    Should Be Equal    ${j}    ${EMPTY}    接口返回不是空,${j}
 
 删除访客标签(/v1/Admin/UserTags)
     [Documentation]    【操作步骤】：
@@ -77,13 +78,13 @@ Resource          ../../../../commons/admin common/Setting/CustomerTags_Common.r
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为204、返回值等于空。
     #创建局部变量筛选条件
-    ${filter}    copy dictionary    ${FilterEntity} 
+    ${filter}    copy dictionary    ${FilterEntity}
     #创建客户标签
     ${userTagResult}    Create UserTag    ${AdminUser}
-    ${userTagId}    set variable   ${userTagResult.userTagId}    #获取客户标签id
+    ${userTagId}    set variable    ${userTagResult.userTagId}    #获取客户标签id
     #删除访客标签
     ${j}    Set UserTags    delete    ${AdminUser}    ${filter}    ${EMPTY}    ${userTagId}
-    Should Be Equal      ${j}    ${EMPTY}    接口返回不是空,${j}
+    Should Be Equal    ${j}    ${EMPTY}    接口返回不是空,${j}
 
 导出客户标签(/v1/Admin/UserTags/exportfile)
     [Documentation]    【操作步骤】：

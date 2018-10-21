@@ -18,6 +18,7 @@ rem INCLUED_TAG: 执行用例的Tag标签名称，多个标签使用逗号隔开
 rem EXCLUED_TAG: 不执行用例的Tag标签名称，使用逗号隔开。若需要全部执行用例，该四个值需要填写不要修改，例如：org,tool,ui,appui
 rem ##################################################################################################################
 
+::设置变量
 set email_reveiver=
 set url=
 set username=
@@ -28,6 +29,8 @@ set orgName=
 set appName=
 set serviceEaseMobIMNumber=
 set restDomain=
+set INCLUED_TAG="debugChat"
+set EXCLUED_TAG="org,tool,ui,appui"
 
 set curdir=%cd%
 cd..
@@ -37,7 +40,32 @@ set reportfolder=%bd%\log
 set emailname=emailreport.html
 
 
-echo pybot.bat --variable url:%url% --variable username:%username% --variable password:%password% --variable status:%status% --variable messageGateway:%messageGateway% --variable orgName:%orgName% --variable appName:%appName% --variable serviceEaseMobIMNumber:%serviceEaseMobIMNumber% --variable restDomain:%restDomain% --listener %casesuite%\lib\MyListener.py;%email_reveiver%;%reportfolder%\%emailname%;%url%;%username%;%password%;%status% -d %reportfolder% --include debugChat --exclude tool --exclude ui --exclude appui --exclude org %casesuite%
+
+::设置执行的tag标签
+set intag=
+:INTAG
+for /f "delims=,, tokens=1,*" %%i in (%INCLUED_TAG%) do (
+	set include=--include
+	set intag=%intag%%include% %%i 
+	echo %intag%
+    set INCLUED_TAG="%%j"
+    goto INTAG
+)
+::设置不执行的tag标签
+set extag=
+:EXTAG
+for /f "delims=,, tokens=1,*" %%i in (%EXCLUED_TAG%) do (
+	set exclude=--exclude
+	set extag=%extag%%exclude% %%i 
+    set EXCLUED_TAG="%%j"
+    goto EXTAG
+)
+
+echo %intag%
+echo %extag%
 
 
-pybot.bat --variable url:%url% --variable username:%username% --variable password:%password% --variable status:%status% --variable messageGateway:%messageGateway% --variable orgName:%orgName% --variable appName:%appName% --variable serviceEaseMobIMNumber:%serviceEaseMobIMNumber% --variable restDomain:%restDomain% --listener %casesuite%\lib\MyListener.py;%email_reveiver%;%reportfolder%\%emailname%;%url%;%username%;%password%;%status% -d %reportfolder% --include debugChat --exclude tool --exclude ui --exclude appui --exclude org %casesuite%
+echo pybot.bat --variable url:%url% --variable username:%username% --variable password:%password% --variable status:%status% --variable messageGateway:%messageGateway% --variable orgName:%orgName% --variable appName:%appName% --variable serviceEaseMobIMNumber:%serviceEaseMobIMNumber% --variable restDomain:%restDomain% --listener %casesuite%\lib\MyListener.py;%email_reveiver%;%reportfolder%\%emailname%;%url%;%username%;%password%;%status% -d %reportfolder% %intag% %extag% %casesuite%
+
+
+pybot.bat --variable url:%url% --variable username:%username% --variable password:%password% --variable status:%status% --variable messageGateway:%messageGateway% --variable orgName:%orgName% --variable appName:%appName% --variable serviceEaseMobIMNumber:%serviceEaseMobIMNumber% --variable restDomain:%restDomain% --listener %casesuite%\lib\MyListener.py;%email_reveiver%;%reportfolder%\%emailname%;%url%;%username%;%password%;%status% -d %reportfolder% %intag% %extag% %casesuite%

@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        businessHours
 Library           json
 Library           requests
 Library           Collections

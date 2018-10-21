@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        agentSearch
 Library           json
 Library           requests
 Library           Collections

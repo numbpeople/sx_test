@@ -58,10 +58,10 @@ class MyListener(object):
 
         self.write_testcase(name, attrs)
 
-    def start_suite(self, name, attrs):
-        self.outfile.write('<tr>\n')
-        self.outfile.write('<td colspan="4"><b>'+bytes(attrs['longname'])+'</b></td>\n')
-        self.outfile.write('</tr>\n')
+#     def start_suite(self, name, attrs):
+#         self.outfile.write('<tr>\n')
+#         self.outfile.write('<td colspan="1"><b>'+bytes(attrs['longname'])+'</b></td>\n')
+#         self.outfile.write('</tr>\n')
 
     # def start_test(self, name, attrs):
 
@@ -112,7 +112,7 @@ class MyListener(object):
 
         #删除本地日志输入文件夹
         print 'start del log folder'
-#         self.del_folder(collectionLogDirPath)
+        self.del_folder(collectionLogDirPath)
         print 'end del log folder'
 
     def before_start_table(self,outpath,reportname):
@@ -144,21 +144,26 @@ class MyListener(object):
         self.outfile.write('<meta charset="UTF-8" />\n')
         
         js = """
-        <link rel="stylesheet" type="text/css" href="http://lijipeng.top/rest/autotest/main.css">
-        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-        <script type="text/javascript" src="http://lijipeng.top/rest/js/jquery-1.12.1.min.js"></script>
-        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-        <script type="text/javascript" src="http://lijipeng.top/rest/js/bootstrap.js"></script>
-        <script type="text/javascript" src="http://lijipeng.top/rest/autotest/script.js"></script>
-        <script type="text/javascript" src='http://kefu.easemob.com/webim/easemob.js'></script>
-        <script type="text/javascript" src="http://lijipeng.top/rest/autotest/hp.js" ></script>
+        <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+         
+        <!-- jQuery -->
+        <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+         
+        <!-- DataTables -->
+        <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+        
+        <!--引入fixedHeader css-->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.semanticui.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.semanticui.min.css">
         
         """
         
         self.outfile.write(js+'\n')
         self.outfile.write('</head>\n')
-        self.outfile.write('<div style="width:100%;float:left">\n')
-        self.outfile.write('<table cellspacing="0" cellpadding="4" border="1" align="left" style="table-layout: fixed;word-break: break-word;">\n')
+        self.outfile.write('<body>\n')
+        self.outfile.write('<tbody>\n')
+        self.outfile.write('<table id="example" cellspacing="0" cellpadding="4" border="1" align="left" style="table-layout: fixed;word-break: break-word;width: 100%;">\n')
 
     def write_table(self,total_count,passcount,failcount,passpercent):
         # 获取登录地址
@@ -188,9 +193,9 @@ class MyListener(object):
         self.outfile.write('</tr>\n')
         self.outfile.write('<tr>\n')
         self.outfile.write('<td>'+bytes(url)+'</td>\n')
-        self.outfile.write('<td>'+bytes(username)+'</span></td>\n')
-        self.outfile.write('<td>'+bytes(password)+'</span></td>\n')
-        self.outfile.write('<td>'+bytes(status)+'</span></td>\n')
+        self.outfile.write('<td>'+bytes(username)+'</td>\n')
+        self.outfile.write('<td>'+bytes(password)+'</td>\n')
+        self.outfile.write('<td>'+bytes(status)+'</td>\n')
         self.outfile.write('</tr>\n')
         
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
@@ -200,23 +205,64 @@ class MyListener(object):
         self.outfile.write('<td style="width:100px"><b>通过率</b></td>\n')
         self.outfile.write('</tr>\n')
         self.outfile.write('<tr>\n')
-        self.outfile.write('<td>'+bytes(total_count)+'</td>\n')
-        self.outfile.write('<td><b><span style="color:#66CC00">'+bytes(passcount)+'</span></b></td>\n')
+        self.outfile.write('<td><b><span style="color:blue">'+bytes(total_count)+'</span></b></td>\n')
+        self.outfile.write('<td><b><span style="color:greenyellow">'+bytes(passcount)+'</span></b></td>\n')
         self.outfile.write('<td><b><span style="color:#FF3333">'+bytes(failcount)+'</span></b></td>\n')
-        self.outfile.write('<td>'+bytes(passpercent)+'</td>\n')
+        self.outfile.write('<td><b><span style="color:black">'+bytes(passpercent)+'</span></b></td>\n')
         self.outfile.write('</tr>\n')
         
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
         self.outfile.write('<td><b>用例名称</b></td>\n')
         self.outfile.write('<td><b>用例描述</b></td>\n')
         self.outfile.write('<td><b>用例状态</b></td>\n')
-        self.outfile.write('<td><b>耗时</b></td>\n')
+        self.outfile.write('<td><b>错误描述</b></td>\n')
         self.outfile.write('</tr>\n')
+        self.outfile.write('</thead>\n')
+        self.outfile.write('</tbody>\n')
         self.outfile.write('</table>')
         self.outfile.write('<hr size="2" width="100%" align="center" />\n')
-        self.outfile.write('</div>\n')
         
 #         self.write_cebianlan()
+        
+        dataTable = """
+            <script>
+                $(document).ready(function() {
+                    $('#example').dataTable( {
+                        "fixedHeader": true,
+                        "aLengthMenu": [
+                            [5,10, 15, 20, -1],
+                            ['每页5条', '每页10条', '每页15条', '每页20条', "全部数据"] // change per page values here
+                        ],
+                        "oLanguage": {
+                            "oAria":{
+                                "sSortAscending": " - click/return to sort ascending",
+                                "sSortDescending": " - click/return to sort descending"
+                            },
+                            "sLengthMenu": "显示 _MENU_ 记录", 
+                            "sZeroRecords": "对不起，查询不到任何相关数据", 
+                            "sEmptyTable":"未有相关数据",
+                            "sLoadingRecords":"正在加载数据-请等待...",
+                            "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。", 
+                            "sInfoEmpty": "当前显示0到0条，共0条记录", 
+                            "sInfoFiltered": "（总共为 _MAX_ 条记录）", 
+                            "sProcessing": "<img src='${pageContext.request.contextPath }/image/loading.gif'/> 正在加载数据...", 
+                            "sSearch": "模糊查询：", 
+                            "sUrl": "", //多语言配置文件，可将oLanguage的设置放在一个txt文件中，例：Javascript/datatable/dtCH.txt 
+                            "oPaginate": { 
+                                "sFirst": "第一页", 
+                                "sPrevious": " 上一页 ", 
+                                "sNext": " 下一页 ", 
+                                "sLast": " 最后一页 "
+                            } 
+                        }, //多语言配置
+                    
+                } );
+            } );
+            </script> 
+        
+        """
+        
+        self.outfile.write(dataTable+'\n')
         
         self.outfile.write('</body>\n')
         self.outfile.write('</html> \n')
@@ -245,14 +291,39 @@ class MyListener(object):
 
     def write_testcase(self,name, attrs):
         self.outfile.write('<tr>\n')
-        self.outfile.write('<td colspan="2">'+name+'</td>\n')
-        if attrs['status'] == 'PASS':
+        logname = "log.html"
+        
+        # 获取用例测试状态
+        testCaseStatus = attrs['status']
+
+        # 增加用例名称
+        self.outfile.write("<td><a href="+logname+"#"+attrs['id']+" target='_blank'  style='text-decoration: underline;color: blue;'>"+name+"</a></td>\n")
+        
+        # 增加用例测试操作步骤
+        doc = attrs['doc']
+        doc = doc.encode("utf-8")
+        if testCaseStatus != 'PASS':
+            if ("【" in doc):
+                doc = doc.replace('【','<br>【')
+                doc = doc.replace('- Step','<br> &nbsp;&nbsp; - Step')
+                self.outfile.write('<td><span style="font-size:10px">'+doc+'</span></td>\n')
+        else:
+            self.outfile.write('<td><span style="font-size:10px">测试用例通过，忽略用例描述</span></td>\n')
+        
+        # 增加用例执行通过状态
+        if testCaseStatus == 'PASS':
             self.outfile.write('<td><b><span style="color:#66CC00">'+attrs['status']+'</span></b></td>\n')
         else:
             self.outfile.write('<td><b><span style="color:#FF3333">'+attrs['status']+'</span></b></td>\n')
-        elapsedtime = self.msformat(attrs['elapsedtime'])
-        self.outfile.write('<td>'+elapsedtime+'</td>\n')
-        self.outfile.write('</tr>\n')
+        
+        # 增加用例错误描述
+        message = attrs['message']
+        self.outfile.write('<td><span style="font-size:10px;color:#FF3333;display:block;word-wrap:break-word;">'+message+'</span></td>\n')
+
+#         # 增加用例执行时间
+#         elapsedtime = self.msformat(attrs['elapsedtime'])
+#         self.outfile.write('<td>'+elapsedtime+'</td>\n')
+#         self.outfile.write('</tr>\n')
 
         # message = attrs['message']
         # if message != '':
@@ -271,7 +342,7 @@ class MyListener(object):
         #     self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333">'+message+'</span></td>\n')
         #     self.outfile.write('</tr>\n')
         #     self.outfile.write('</tbody>\n')
-
+        '''
         message = attrs['message']
         if message != '':
             self.outfile.write('<tr>\n')
@@ -289,10 +360,10 @@ class MyListener(object):
             else:
                 self.outfile.write('<td colspan="2"><span style="font-size:10px">'+doc+'</span></td>\n')
 
-            self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333;width:200px;display:block;word-wrap:break-word;">'+message+'</span></td>\n')
+            self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333;display:block;word-wrap:break-word;">'+message+'</span></td>\n')
             self.outfile.write('<td colspan="1"><span style="font-size:10px;color:#FF3333"></span></td>\n')
             self.outfile.write('</tr>\n')
-            self.outfile.write('</tbody>\n')
+        '''
     
     def write_cebianlan(self):
         cebianlan = """

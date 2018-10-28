@@ -142,28 +142,35 @@ class MyListener(object):
         self.outfile.write('<head>\n')
         self.outfile.write('<title>客服项目自动化</title>\n')
         self.outfile.write('<meta charset="UTF-8" />\n')
-        
+
         js = """
-        <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
-         
-        <!-- jQuery -->
-        <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-         
-        <!-- DataTables -->
-        <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
-        
-        <!--引入fixedHeader css-->
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.semanticui.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.5/css/fixedHeader.semanticui.min.css">
-        
+        <link rel="shortcut icon" href="https://png.icons8.com/windows/50/000000/bot.png" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">
+
+        <script type="text/javascript" language="javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" language="javascript" src="http://cdn.datatables.net/1.10-dev/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+        <script src="http://lijipeng.top/rest/autotest/script.js" type="text/javascript">
+        </script>
+        <script src="http://kefu.easemob.com/webim/easemob.js" type="text/javascript">
+        </script>
         """
-        
+
         self.outfile.write(js+'\n')
         self.outfile.write('</head>\n')
+
+        # 样式
+        self.write_style()
+
         self.outfile.write('<body>\n')
+
+        # 顶部添加导航栏
+        self.write_layui()
+
         self.outfile.write('<tbody>\n')
-        self.outfile.write('<table id="example" cellspacing="0" cellpadding="4" border="1" align="left" style="table-layout: fixed;word-break: break-word;width: 100%;">\n')
+        self.outfile.write('<table id="example" class="display" class="layui-table" cellspacing="0" cellpadding="4" border="1" align="left" style="table-layout: fixed;word-break: break-word;width: 100%;">\n')
 
     def write_table(self,total_count,passcount,failcount,passpercent):
         # 获取登录地址
@@ -186,10 +193,10 @@ class MyListener(object):
         self.outfile.write('</tr>\n')
         
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
-        self.outfile.write('<td style="width:80px"><b>客服环境地址</b></td>\n')
-        self.outfile.write('<td style="width:80px"><b>登录账号</b></td>\n')
-        self.outfile.write('<td style="width:60px"><b>登录密码</b></td>\n')
-        self.outfile.write('<td style="width:60px"><b>登录状态</b></td>\n')
+        self.outfile.write('<td><b>客服环境地址</b></td>\n')
+        self.outfile.write('<td><b>登录账号</b></td>\n')
+        self.outfile.write('<td><b>登录密码</b></td>\n')
+        self.outfile.write('<td><b>登录状态</b></td>\n')
         self.outfile.write('</tr>\n')
         self.outfile.write('<tr>\n')
         self.outfile.write('<td>'+bytes(url)+'</td>\n')
@@ -199,14 +206,14 @@ class MyListener(object):
         self.outfile.write('</tr>\n')
         
         self.outfile.write('<tr bgcolor="#F3F3F3">\n')
-        self.outfile.write('<td style="width:80px"><b>用例总数</b></td>\n')
+        self.outfile.write('<td><b>用例总数</b></td>\n')
         self.outfile.write('<td><b>通过</b></td>\n')
-        self.outfile.write('<td style="width:60px"><b>不通过</b></td>\n')
-        self.outfile.write('<td style="width:100px"><b>通过率</b></td>\n')
+        self.outfile.write('<td><b>不通过</b></td>\n')
+        self.outfile.write('<td><b>通过率</b></td>\n')
         self.outfile.write('</tr>\n')
         self.outfile.write('<tr>\n')
-        self.outfile.write('<td><b><span style="color:blue">'+bytes(total_count)+'</span></b></td>\n')
-        self.outfile.write('<td><b><span style="color:greenyellow">'+bytes(passcount)+'</span></b></td>\n')
+        self.outfile.write('<td><b><span style="color:black">'+bytes(total_count)+'</span></b></td>\n')
+        self.outfile.write('<td><b><span style="color:#66CC00">'+bytes(passcount)+'</span></b></td>\n')
         self.outfile.write('<td><b><span style="color:#FF3333">'+bytes(failcount)+'</span></b></td>\n')
         self.outfile.write('<td><b><span style="color:black">'+bytes(passpercent)+'</span></b></td>\n')
         self.outfile.write('</tr>\n')
@@ -259,6 +266,12 @@ class MyListener(object):
                 } );
             } );
             </script> 
+            <script type="text/javascript">
+                // For demo to fit into DataTables site builder...
+                $('#example')
+                        .removeClass( 'display' )
+                        .addClass('table table-striped table-bordered');
+            </script>
         
         """
         
@@ -393,6 +406,128 @@ class MyListener(object):
         """
         
         self.outfile.write(cebianlan+'\n')
+
+    def write_layui(self):
+        layui = """
+            <ul class="layui-nav" lay-filter="" style="position: relative;padding: 0 20px;background-color: #393D49;color: #fff;border-radius: 2px;font-size: 0;box-sizing: border-box;text-align: center;">
+              <li class="layui-nav-item"><a href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3848227" target="_blank">使用文档</a></li>
+              <li class="layui-nav-item"><a href="http://c1.private.easemob.com/pages/viewpage.action?pageId=3848256" target="_blank">常见错误</a></li>
+              <li class="layui-nav-item im-biz"><a href="javascript:;">在线客服</a></li>
+              <li class="layui-nav-item"><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=260553619&amp;site=qq&amp;menu=yes" target="_blank">在线QQ</a></li>
+            </ul>
+            <script>
+            //注意：导航 依赖 element 模块，否则无法进行功能性操作
+            layui.use('element', function(){
+              var element = layui.element;
+              
+              //…
+            });
+            </script>
+        
+        """
+        
+        self.outfile.write(layui+'\n')
+
+    def write_style(self):
+        style = """
+            <style>
+        .layui-nav {
+            position: relative;
+            padding: 0 20px;
+            background-color: #393D49;
+            color: #fff;
+            border-radius: 2px;
+            font-size: 0;
+            box-sizing: border-box
+        }
+        
+        .layui-nav * {
+            font-size: 14px
+        }
+        
+        .layui-nav .layui-nav-item {
+            position: relative;
+            display: inline-block;
+            *display: inline;
+            *zoom:1;vertical-align: middle;
+            line-height: 60px
+        }
+        
+        .layui-nav .layui-nav-item a {
+            display: block;
+            padding: 0 20px;
+            color: #fff;
+            color: rgba(255,255,255,.7);
+            transition: all .3s;
+            -webkit-transition: all .3s
+        }
+        
+        .layui-nav .layui-this:after,.layui-nav-bar,.layui-nav-tree .layui-nav-itemed:after {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 5px;
+            background-color: #5FB878;
+            transition: all .2s;
+            -webkit-transition: all .2s
+        }
+        
+        .layui-nav-bar {
+            z-index: 1000
+        }
+        
+        .layui-nav .layui-nav-item a:hover,.layui-nav .layui-this a {
+            color: #fff
+        }
+        
+        .layui-nav .layui-this:after {
+            content: '';
+            top: auto;
+            bottom: 0;
+            width: 100%
+        }
+        
+        .layui-nav-img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 50%
+        }
+        
+        .layui-nav .layui-nav-more {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid dashed dashed;
+            border-color: #fff transparent transparent;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .2s;
+            -webkit-transition: all .2s;
+            position: absolute;
+            top: 50%;
+            right: 3px;
+            margin-top: -3px;
+            border-width: 6px;
+            border-top-color: rgba(255,255,255,.7)
+        }
+        
+        .layui-nav .layui-nav-mored,.layui-nav-itemed>a .layui-nav-more {
+            margin-top: -9px;
+            border-style: dashed dashed solid;
+            border-color: transparent transparent #fff
+        }
+
+        .row {
+            margin-right: 0px;
+            margin-left: 0px;
+        }
+        </style>
+        
+        """
+        
+        self.outfile.write(style+'\n')
     
     def get_agentRes(self,papath,line):
         """

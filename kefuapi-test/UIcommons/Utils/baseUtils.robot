@@ -100,9 +100,9 @@ Check Base Elements
     \    ${ig}    Get Index From List    ${agent.graylist}    ${i['GrayKey']}
     \    ${ir}    Get Index From List    ${agent.resourcelist}    ${i['ResourceKey']}
     \    #如果灰度列表没有该key或者option未打开，输出log，否则检查元素
-    \    Run Keyword If    ${ig}==-1    log    未灰度此功能：${i['GrayKey']}        
+    \    Run Keyword If    ${ig}==-1    log    未灰度此功能：${i['GrayKey']}
     \    Continue For Loop If    ${ig}==-1
-    \    Run Keyword If    ${ir}==-1    log    未配置此功能：${i['ResourceKey']}        
+    \    Run Keyword If    ${ir}==-1    log    未配置此功能：${i['ResourceKey']}
     \    Continue For Loop If    ${ir}==-1
     \    ${locator}    set variable    ${parentxpath}${i['xPath']}
     \    ${lt}    Get Length    ${i['text']}
@@ -181,7 +181,7 @@ Set Browser Cookies
     \    log    ${key}
     \    ${value}=    Get From Dictionary    ${agent.cookies}    ${key}
     \    Comment    Add Cookie    ${key}    ${value}    /    60.205.245.1
-    \    Add Cookie    ${key}    ${value}    /    .${domain}
+    \    Add Cookie    ${key}    ${value}    /    ${domain}
 
 Create Random Session
     [Arguments]    ${url}

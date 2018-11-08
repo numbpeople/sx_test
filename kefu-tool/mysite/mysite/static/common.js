@@ -70,7 +70,7 @@ function isAndrioadOrIos(){
        return 'android';
     }
     if(isIOS) {
-　　　   return 'ios';
+    	return 'ios';
     }
 }
 

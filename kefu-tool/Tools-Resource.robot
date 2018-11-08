@@ -81,6 +81,15 @@ Create Queue And Add Agents To Queue
     ${resp}=    /v1/AgentQueue    post    ${agent}    ${data}    ${timeout}
     Comment    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
+    #更新技能组的时间计划、下班提示语开关及下班提示语内容
+    ${data}=    set variable    {"tenantId":${agent.tenantId},"queueId":${j['queueId']},"timeScheduleId":0,"timeOffWorkEnable":"false","timeOffWorkMessage":""}
+    ${resp}=    Put Time-Options    ${agent}    ${j['queueId']}    ${data}
+    #设置问候语开关
+    ${data}=    set variable    {"name":"GreetingMsgAgentQueueEnable_${j['queueId']}","value":false}
+    ${resp}=    Post Option Value    ${agent}    ${data}
+    #设置问候语内容
+    ${data}=    set variable    {"name":"GreetingMsgAgentQueueContent_${j['queueId']}","value":""}
+    ${resp}=    Post Option Value    ${agent}    ${data}
     #添加坐席到技能组
     ${resp}=    /v1/AgentQueue/{queueId}/AgentUser    ${agent}    ${j['queueId']}    ${agentslist}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code}
@@ -93,10 +102,8 @@ Close Valid New Session
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${agent.tenantId}-${i}-1    originType=${originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${guestentity.originType}"}}
-    \    Comment    Repeat Keyword    5    Send Message    ${rest}    ${guestentity}
-    \    ...    ${msgentity}
-    \    Repeat Keyword    5    Send SecondGateway Msg    ${AdminUser}    ${restentity}    ${GuestEntity}
-    \    ...    ${MsgEntity}
+    \    Comment    Repeat Keyword    5    Send Message    ${rest}    ${guestentity}    ${msgentity}
+    \    Repeat Keyword    5    Send SecondGateway Msg    ${AdminUser}    ${restentity}    ${GuestEntity}    ${MsgEntity}
     \    sleep    10ms
     sleep    1s
     #接入200个访客
@@ -113,8 +120,7 @@ Close Valid New Session
     : FOR    ${i}    IN    @{j}
     \    ${curTime}    get time    epoch
     \    ${AgentMsgEntity}    create dictionary    msg=${curTime}:agent test msg!    type=txt
-    \    Repeat Keyword    5    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}
-    \    ...    ${AgentMsgEntity}
+    \    Repeat Keyword    5    Agent Send Message    ${agent}    ${i['user']['userId']}    ${i['serviceSessionId']}    ${AgentMsgEntity}
     \    sleep    50ms
     sleep    1
     #关闭进行中会话

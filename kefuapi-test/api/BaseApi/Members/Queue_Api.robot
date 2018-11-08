@@ -20,11 +20,12 @@
     Run Keyword And Return    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /v1/tenants/{tenantId}/skillgroups/{queueId}/time-options
-    [Arguments]    ${agent}    ${queueId}    ${timeout}
+    [Arguments]    ${method}    ${agent}    ${queueId}    ${data}    ${timeout}    
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/skillgroups/${queueId}/time-options
     ${params}    set variable    _=1511244671763
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='put'    Put Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /v2/tenants/{tenantId}/agents
     [Arguments]    ${agent}    ${queueId}    ${timeout}

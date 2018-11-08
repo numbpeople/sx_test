@@ -76,7 +76,7 @@ Get GrayList
     #添加所有控制页面显示option项为true的optionNaem到graylist
     @{optionlist}    create list    agentVisitorCenterVisible    robotOptimizationStatus    growingioEnable
     : FOR    ${i}    IN    @{optionlist}
-    \    ${t}    Get Option Value    ${agent}    ${i}
+    \    ${t}    Get Option Value By optionName    ${agent}    ${i}
     \    Run Keyword If    '${t}'=='true'    Append to List    ${graylist}    ${i}
     #获取callback
     ${resp}=    /home/initdata    ${agent}    ${timeout}

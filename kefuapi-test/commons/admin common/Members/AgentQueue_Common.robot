@@ -13,7 +13,7 @@ Resource          Agents_Common.robot
 
 *** Keywords ***
 Add Agentqueue
-    [Arguments]    ${agentqueue}    ${queueName}
+    [Arguments]    ${agentqueue}    ${queueName}    ${agent}=${Adminuser}
     [Documentation]    创建一个技能组，返回该技能组的id和名字
     ...
     ...    describtion：参数技能组名字
@@ -23,11 +23,20 @@ Add Agentqueue
     ...    queueId、queueName
     #添加技能组
     ${data}=    set variable    {"queueName":"${queueName}"}
-    ${resp}=    /v1/AgentQueue    post    ${AdminUser}    ${data}    ${timeout}
+    ${resp}=    /v1/AgentQueue    post    ${agent}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code},${resp.text}
     ${j}    to json    ${resp.text}
-    Should Be Equal    '${j['tenantId']}'    '${AdminUser.tenantId}'    技能组列表数据不正确：${resp.text}
+    Should Be Equal    '${j['tenantId']}'    '${agent.tenantId}'    技能组列表数据不正确：${resp.text}
     set to dictionary    ${agentqueue}    queueId=${j['queueId']}
+    #更新技能组的时间计划、下班提示语开关及下班提示语内容
+    ${data}=    set variable    {"tenantId":${agent.tenantId},"queueId":${j['queueId']},"timeScheduleId":0,"timeOffWorkEnable":"false","timeOffWorkMessage":""}
+    ${resp}=    Put Time-Options    ${agent}    ${j['queueId']}    ${data}
+    #设置问候语开关
+    ${data}=    set variable    {"name":"GreetingMsgAgentQueueEnable_${j['queueId']}","value":false}
+    ${resp}=    Post Option Value    ${agent}    ${data}
+    #设置问候语内容
+    ${data}=    set variable    {"name":"GreetingMsgAgentQueueContent_${j['queueId']}","value":""}
+    ${resp}=    Post Option Value    ${agent}    ${data}
     Return From Keyword    ${agentqueue}
 
 Create Agentqueue
@@ -47,6 +56,15 @@ Create Agentqueue
     ${j}    to json    ${resp.content}
     Should Be Equal    '${j['tenantId']}'    '${agent.tenantId}'    技能组列表数据不正确：${resp.content}
     set to dictionary    ${agentqueue}    queueId=${j['queueId']}
+    #更新技能组的时间计划、下班提示语开关及下班提示语内容
+    ${data}=    set variable    {"tenantId":${agent.tenantId},"queueId":${j['queueId']},"timeScheduleId":0,"timeOffWorkEnable":"false","timeOffWorkMessage":""}
+    ${resp}=    Put Time-Options    ${agent}    ${j['queueId']}    ${data}
+    #设置问候语开关
+    ${data}=    set variable    {"name":"GreetingMsgAgentQueueEnable_${j['queueId']}","value":false}
+    ${resp}=    Post Option Value    ${agent}    ${data}
+    #设置问候语内容
+    ${data}=    set variable    {"name":"GreetingMsgAgentQueueContent_${j['queueId']}","value":""}
+    ${resp}=    Post Option Value    ${agent}    ${data}
     Return From Keyword    ${agentqueue}
 
 Set Queue Agents
@@ -104,7 +122,16 @@ Get Time-Options
     [Arguments]    ${agent}    ${queueId}
     [Documentation]    获取技能组时间和开关设置
     #获取技能组时间和开关设置
-    ${resp}=    /v1/tenants/{tenantId}/skillgroups/{queueId}/time-options    ${agent}    ${queueId}    ${timeout}
+    ${resp}=    /v1/tenants/{tenantId}/skillgroups/{queueId}/time-options    get    ${agent}    ${queueId}    ${empty}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    Return From Keyword    ${j}
+
+Put Time-Options
+    [Arguments]    ${agent}    ${queueId}    ${data}
+    [Documentation]    获取技能组时间和开关设置
+    #获取技能组时间和开关设置
+    ${resp}=    /v1/tenants/{tenantId}/skillgroups/{queueId}/time-options    put    ${agent}    ${queueId}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     Return From Keyword    ${j}

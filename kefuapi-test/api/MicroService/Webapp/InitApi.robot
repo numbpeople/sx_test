@@ -18,10 +18,14 @@
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /tenants/{tenantId}/options
-    [Arguments]    ${agent}    ${timeout}
+    [Arguments]    ${agent}    ${method}    ${data}    ${timeout}
     ${header}=    Create Dictionary    Content-Type=application/json
     ${uri}=    set variable    /tenants/${agent.tenantId}/options
-    Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${rs}=    Run Keyword If    '${method}'=='post'    Post Request    ${agent.session}    ${uri}    headers=${header}
+    ...    data=${data}    timeout=${timeout}
+    ...    ELSE IF    '${method}'=='get'    Get Request    ${agent.session}    ${uri}    headers=${header}
+    ...    timeout=${timeout}
+    Return From Keyword    ${rs}
 
 /tenants/{tenantId}/options/{optionName}
     [Arguments]    ${agent}    ${method}    ${optionname}    ${data}    ${timeout}

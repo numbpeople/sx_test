@@ -10,13 +10,27 @@ Resource          ../Initializtion_Common/Initializtion_Common.robot
 Resource          ../admin common/Channels/Phone_Common.robot
 
 *** Keywords ***
-Get Option Value
+Get Option Value By optionName
     [Arguments]    ${agent}    ${optionname}
     ${resp}=    /tenants/{tenantId}/options/{optionName}    ${agent}    get    ${optionname}    ${empty}    ${timeout}
     return from Keyword if    ${resp.status_code}==404    false
     ${j}    to json    ${resp.text}
     Return from Keyword    ${j['data'][0]['optionValue']}
 
+Put Option Value By optionName
+    [Arguments]    ${agent}    ${optionname}    ${data}
+    ${resp}=    /tenants/{tenantId}/options/{optionName}    ${agent}    put    ${optionname}    ${data}    ${timeout}
+    return from Keyword if    ${resp.status_code}==404    false
+    ${j}    to json    ${resp.text}
+    Return from Keyword    ${j['data'][0]['optionValue']}
+
+Post Option Value
+    [Arguments]    ${agent}    ${data}
+    ${resp}=    /tenants/{tenantId}/options    ${agent}    post    ${data}    ${timeout}
+    return from Keyword if    ${resp.status_code}==404    false
+    ${j}    to json    ${resp.text}
+    Return from Keyword    ${j}
+        
 Repeat Keyword Times
     [Arguments]    ${functionName}    ${expectConstruction}    ${expectValue}    @{paramList}
     [Documentation]    重试调用接口多次，判断结果是否包含预期的值，包含则返回结果，否则返回{}
@@ -99,7 +113,7 @@ Get GrayList
     #添加所有控制页面显示option项为true的optionNaem到graylist
     @{optionlist}    create list    agentVisitorCenterVisible    robotOptimizationStatus    growingioEnable
     : FOR    ${i}    IN    @{optionlist}
-    \    ${t}    Get Option Value    ${agent}    ${i}
+    \    ${t}    Get Option Value By optionName    ${agent}    ${i}
     \    Run Keyword If    '${t}'=='true'    Append to List    ${graylist}    ${i}
     #获取自定义事件推送是否灰度
     ${j}    Initdata    ${agent}

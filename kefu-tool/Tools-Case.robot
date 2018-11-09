@@ -402,13 +402,19 @@ ${datadir}        ${CURDIR}${/}${/}resource
     : FOR    ${t}    IN RANGE    50    100
     \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}${t}    password=test2015    maxServiceSessionCount=10    tenantId=${AdminUser.tenantId}
     \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
-    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}    ${timeout}
+    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}
+    \    ...    ${timeout}
+    \    ${j}    to json    ${resp.content}
     \    log    ${resp.content}
     \    Should Be Equal As Integers    ${resp.status_code}    201    不正确的状态码:${resp.status_code}
+    \    #更新角色信息
+    \    ${data}    set variable    {"role_ids":[2]}
+    \    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/roles    ${AdminUser}    ${data}    ${j['userId']}    ${timeout}
     \    sleep    200ms
 
 批量创建坐席（从excel读取）
-    @{account}=    Read Xls File    R:/1.18.xlsx    sheet2
+    @{account}=    Read Xls File    /Users/zhukai/Downloads/tmp.xls    tmp
+    log    ${account}
     Create Session    testsession    ${kefuurl}
     ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
     ${j}    to json    ${resp.content}
@@ -418,9 +424,19 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${d}    Decode Bytes To String In Dict    ${t}
     \    ${max}    convert to number    ${d['maxServiceSessionCount']}
     \    ${max}    convert to integer    ${max}
-    \    ${data}=    set variable    {"nicename":"${d['nicename']}","username":"${d['username']}","password":"${d['password']}","confirmPassword":"${d['confirmPassword']}","trueName":"${d['trueName']}","mobilePhone":"${d['mobilePhone']}","agentNumber":"${d['agentNumber']}","maxServiceSessionCount":"${max}","roles":"${d['roles']}"}
-    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}    ${timeout}
+    \    ${phone}    convert to number    ${d['mobilePhone']}
+    \    ${phone}    convert to integer    ${phone}
+    \    ${roleid}    convert to number    ${d['roleid']}
+    \    ${roleid}    convert to integer    ${roleid}
+    \    ${roles}=    set variable if    ${roleid}!=2    admin,agent    agent
+    \    ${data}=    set variable    {"nicename":"${d['nicename']}","username":"${d['username']}","password":"${d['password']}","confirmPassword":"${d['confirmPassword']}","trueName":"${d['trueName']}","mobilePhone":${phone},"agentNumber":${d['agentNumber']},"maxServiceSessionCount":${max},"permission":${roleid},"roles":"${roles}"}
+    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}
+    \    ...    ${timeout}
+    \    ${j}    to json    ${resp.content}
     \    log    ${resp.content}
+    \    #更新角色信息
+    \    ${data}    set variable    {"role_ids":[${roleid}]}
+    \    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/roles    ${AdminUser}    ${data}    ${j['userId']}    ${timeout}
     \    sleep    500ms
 
 批量发消息给机器人并转人工
@@ -549,15 +565,20 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    #添加坐席
     \    &{AgentUser}=    create dictionary    username=${AdminUser.tenantId}-98-${i}    password=test2015    maxServiceSessionCount=20    tenantId=${AdminUser.tenantId}
     \    ${data}=    set variable    {"nicename":"${AgentUser.username}","username":"${AgentUser.username}@qq.com","password":"${AgentUser.password}","confirmPassword":"${AgentUser.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${AgentUser.maxServiceSessionCount}","roles":"agent"}
-    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}    ${timeout}
+    \    ${resp}=    /v1/Admin/Agents    post    ${AdminUser}    ${AgentFilterEntity}    ${data}
+    \    ...    ${timeout}
     \    ${j}    to json    ${resp.content}
     \    Append To list    ${agentslist}    ${j['userId']}
+    \    #更新角色信息
+    \    ${data}    set variable    {"role_ids":[2]}
+    \    ${resp}=    /v1/permission/tenants/{tenantId}/users/{userId}/roles    ${AdminUser}    ${data}    ${j['userId']}    ${timeout}
     \    #每n个坐席创建一个技能
     \    log    ${agentslist}
     \    ${l}    get length    ${agentslist}
     \    Comment    ${t}    evaluate    ${i}%${PerAgent}
     \    Run Keyword If    ${l} == ${PerAgent}    Create Queue And Add Agents To Queue    ${AdminUser}    ${agentslist}    ${AdminUser.tenantId}-Queue-${q}
-    \    ${q}    Run Keyword If    ${l} == ${PerAgent}    evaluate    ${q}+${1}    ELSE    evaluate    ${q}+${0}
+    \    ${q}    Run Keyword If    ${l} == ${PerAgent}    evaluate    ${q}+${1}
+    \    ...    ELSE    evaluate    ${q}+${0}
     \    sleep    100ms
 
 批量关闭待接入
@@ -987,7 +1008,8 @@ ${datadir}        ${CURDIR}${/}${/}resource
     \    ${curTime}    get time    epoch
     \    #创建技能组
     \    ${msgid}    uuid 4
-    \    set to dictionary    ${RestMsgEntity}    msg=转人工    msg_id=${msgid}    origin_type=rest    timestamp=${curTime}    user_nickname=restguest2-${curTime}-${i}    From=restfrom2-${curTime}-${i}    queue_id=25076
+    \    set to dictionary    ${RestMsgEntity}    msg=转人工    msg_id=${msgid}    origin_type=rest    timestamp=${curTime}
+    \    ...    user_nickname=restguest2-${curTime}-${i}    From=restfrom2-${curTime}-${i}    queue_id=25076
     \    log    ${RestMsgEntity}
     \    set test variable    ${RestMsgJson}    {"bodies":[{"msg":"${RestMsgEntity.msg}","type":"${RestMsgEntity.type}"}],"ext":{"queue_id":"${RestMsgEntity.queue_id}","queue_name":"${RestMsgEntity.queue_name}","agent_username":"${RestMsgEntity.agent_username}","visitor":{"tags":${RestMsgEntity.tags},"callback_user":"${RestMsgEntity.callback_user}","user_nickname":"${RestMsgEntity.user_nickname}","true_name":"${RestMsgEntity.true_name}","sex":"${RestMsgEntity.sex}","qq":"${RestMsgEntity.qq}","email":"${RestMsgEntity.email}","phone":"${RestMsgEntity.phone}","company_name":"${RestMsgEntity.company_name}","description":"${RestMsgEntity.description}"}},"msg_id":"${RestMsgEntity.msg_id}","origin_type":"${RestMsgEntity.origin_type}","from":"${RestMsgEntity.From}","timestamp":"${RestMsgEntity.timestamp}"}
     \    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
@@ -1248,7 +1270,8 @@ Echo
     \    ${curTime}    get time    epoch
     \    #创建技能组
     \    ${msgid}    uuid 4
-    \    set to dictionary    ${RestMsgEntity}    msg=转人工    msg_id=${msgid}    origin_type=rest    timestamp=${curTime}    user_nickname=restguest-${curTime}-${i}    From=restfrom-${curTime}-${i}    queue_id=25076
+    \    set to dictionary    ${RestMsgEntity}    msg=转人工    msg_id=${msgid}    origin_type=rest    timestamp=${curTime}
+    \    ...    user_nickname=restguest-${curTime}-${i}    From=restfrom-${curTime}-${i}    queue_id=25076
     \    log    ${RestMsgEntity}
     \    set test variable    ${RestMsgJson}    {"bodies":[{"msg":"${RestMsgEntity.msg}","type":"${RestMsgEntity.type}"}],"ext":{"queue_id":"${RestMsgEntity.queue_id}","queue_name":"${RestMsgEntity.queue_name}","agent_username":"${RestMsgEntity.agent_username}","visitor":{"tags":${RestMsgEntity.tags},"callback_user":"${RestMsgEntity.callback_user}","user_nickname":"${RestMsgEntity.user_nickname}","true_name":"${RestMsgEntity.true_name}","sex":"${RestMsgEntity.sex}","qq":"${RestMsgEntity.qq}","email":"${RestMsgEntity.email}","phone":"${RestMsgEntity.phone}","company_name":"${RestMsgEntity.company_name}","description":"${RestMsgEntity.description}"}},"msg_id":"${RestMsgEntity.msg_id}","origin_type":"${RestMsgEntity.origin_type}","from":"${RestMsgEntity.From}","timestamp":"${RestMsgEntity.timestamp}"}
     \    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）

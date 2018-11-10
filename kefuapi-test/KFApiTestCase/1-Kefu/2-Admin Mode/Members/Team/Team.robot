@@ -7,7 +7,8 @@ Library           String
 Library           uuid
 Resource          ../../../../../AgentRes.robot
 Resource          ../../../../../commons/admin common/Members/AgentQueue_Common.robot
-Resource          ../../../../../commons/admin common/Members/Agents_Common.robot
+Resource          ../../../../../commons/admin common/Members/Agents_Common.robot    #
+Resource          ../../../../../commons/Base Common/Base_Common.robot
 
 *** Test Cases ***
 获取技能组时间计划和问候语开关设置(/v1/tenants/{tenantId}/skillgroups/{queueId}/time-options)

@@ -121,11 +121,11 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber= kefuchannelimid_586788    orgName=1151170513178510    appName=kefuchannelapp27869
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=shenliang    orgName=shenliang    appName=sldemo    token=YWMt6R0TrEH1EeeTJWs4ubcFKQAAAAAAAAAAAAAAAAAAAAEk52BQF04R5pRlM4iZaoFAAgMAAAFcRBd9owBPGgBKcyU2NQ5_Xp_s6Q_uICN_PJPT0g-ZNH-eGKPrQunlNQ
-    : FOR    ${i}    IN RANGE    100
+    : FOR    ${i}    IN RANGE    5
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-lt1visitor-${i}    originType=${originTypeentity.originType}
     \    ${t}    evaluate    ${i}%10+1
-    \    ${msgentity}=    create dictionary    msg=转人工    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"售后"}}
+    \    ${msgentity}=    create dictionary    msg=转人工1    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"售后"}}
     \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    1000ms
@@ -197,7 +197,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
-    : FOR    ${i}    IN RANGE    50
+    : FOR    ${i}    IN RANGE    5
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
@@ -243,7 +243,7 @@ ${datadir}        ${CURDIR}${/}${/}resource
     #Run Keyword If    ${listlength} > 0    Update Routing    ${originTypeentity}    ${queueentityA.queueId}
     #发送消息并创建200访客
     Comment    set to dictionary    ${restentity}    serviceEaseMobIMNumber=kefuchannelimid_951630    orgName=1100170223012838    appName=kefuchannelapp27800
-    : FOR    ${i}    IN RANGE    49
+    : FOR    ${i}    IN RANGE    5
     \    ${curTime}    get time    epoch
     \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${i}-${curTime}    originType=${originTypeentity.originType}
     \    ${msgentity}=    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
@@ -1310,6 +1310,27 @@ Echo
     \    ${t}    evaluate    ${i}%10+1
     \    ${q}    evaluate    ${i}%3+1
     \    ${msgentity}=    create dictionary    msg=转人工1    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}","queueName":"L${q}"}}
+    \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
+    \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
+    \    sleep    150ms
+
+批量创建待接入（无技能组信息）
+    Create Session    testsession    ${kefuurl}
+    ${resp}=    /login    testsession    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    set to dictionary    ${AdminUser}    cookies=${resp.cookies}    tenantId=${j['agentUser']['tenantId']}    userId=${j['agentUser']['userId']}    roles=${j['agentUser']['roles']}    maxServiceSessionCount=${j['agentUser']['maxServiceSessionCount']}
+    ...    session=testsession    nicename=${j['agentUser']['nicename']}
+    Create Channel
+    #发送消息并创建访客
+    #初始化参数：消息、渠道信息、客户信息
+    ${curTime}    get time    epoch
+    ${originTypeentity}=    create dictionary    name=网页渠道    originType=webim    key=IM    dutyType=Allday
+    : FOR    ${i}    IN RANGE    50
+    \    ${curTime}    get time    epoch
+    \    ${guestentity}=    create dictionary    userName=${AdminUser.tenantId}-${curTime}-${i}    originType=${originTypeentity.originType}
+    \    ${t}    evaluate    ${i}%10+1
+    \    ${q}    evaluate    ${i}%3+1
+    \    ${msgentity}=    create dictionary    msg=转人工1    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Comment    ${msgentity}=    create dictionary    msg=郭德纲    type=txt    ext={"weichat":{"originType":"${originTypeentity.originType}"}}
     \    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     \    sleep    150ms

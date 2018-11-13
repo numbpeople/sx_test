@@ -3,7 +3,7 @@ ${kefuurl}        ${url}
 &{AdminUser}      username=${username}    password=${password}    status=${status}    roles=    tenantId=    maxServiceSessionCount=10    wsconn=0
 ...               cookies=    session=    userId=    nicename=    browser=chrome    language=zh-CN    graylist=
 ...               resourcelist=
-&{ExistChannelEntity}    orgName=    appName=    restDomain=    serviceEaseMobIMNumber=    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址
+&{ExistChannelEntity}    orgName=${orgName}    appName=${appName}    restDomain=${restDomain}    serviceEaseMobIMNumber=${serviceEaseMobIMNumber}    # 使用租户下已有的关联发消息，orgName加appName为appkey，serviceEaseMobIMNumber为关联的im服务号，restDomain为appkey所属集群rest地址
 ${msgGateway}     ${messageGateway}    # 设置发送消息的方式，如果值为：im，则使用im的rest接口发消息，如果值为：secondGateway，则使用第二通道发送消息
 ${grayFunctionOption}    False    # 判断增值功能测试用例是否执行，True即执行，False为不执行
 ${orgurl}         http://vpc10.kefu.easemob.com:8000

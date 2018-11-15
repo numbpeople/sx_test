@@ -119,7 +119,8 @@ Get GrayList
     ${j}    Initdata    ${agent}
     Run Keyword If    ${j['showCallback']}    Append to List    ${graylist}    showCallback
     #获取呼叫中心是否灰度
-    ${j}    Get PhoneTechChannel    ${agent}
+    ${apiResponse}    Get PhoneTechChannel    ${agent}
+    ${j}    set variable    ${apiResponse.text}
     Run Keyword If    "${j}" != "[]"    Append to List    ${graylist}    phone
     log    ${graylist}
     set global variable    ${tenantGrayList}    ${graylist}

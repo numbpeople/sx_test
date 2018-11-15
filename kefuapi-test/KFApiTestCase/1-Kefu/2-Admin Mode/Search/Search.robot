@@ -102,4 +102,4 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     Should Be Equal    ${j['entities'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式搜索历史消息记录的租户id不正确：${j}
     Should Be Equal    ${j['entities'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式搜索历史消息记录的会话id不正确：${j}
     Should Be Equal    ${j['entities'][0]['originType'][0]}    ${session.originType}    坐席模式搜索历史消息记录的originType不正确：${j}
-    Should Be Equal    ${j['entities'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
+    # Should Be Equal    ${j['entities'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}

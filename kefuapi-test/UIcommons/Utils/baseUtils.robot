@@ -105,7 +105,7 @@ Check Base Elements
     \    Run Keyword If    ${ir}==-1    log    未配置此功能：${i['ResourceKey']}
     \    Continue For Loop If    ${ir}==-1
     \    ${locator}    set variable    ${parentxpath}${i['xPath']}
-    \    ${lt}    Get Length    ${i['text']}
+    \    ${lt}    Get Length    ${i['text']['${agent.language}']}
     \    Run Key word if    ${lt}>0    Check Element Contains Text    ${locator}    ${i['text']['${agent.language}']}
     \    ${la}    Get Length    ${i['attributes']}
     \    ${hide}    Run Key word if    ${la}>0    Check Attributes    ${locator}    ${agent.language}

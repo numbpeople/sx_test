@@ -9,14 +9,19 @@ Library           Collections
 *** Test Cases ***
 客服工作量
     [Documentation]    【操作步骤】：
-    ...    - Step1、获取工作量-客服工作量，调用接口：/daas/internal/agent/kpi/wl，接口请求状态码为200。
+    ...    （废弃get接口，改用post）- Step1、获取工作量-客服工作量，调用接口：/daas/internal/agent/kpi/wl，接口请求状态码为200。
+    ...    - Step1、获取工作量-客服工作量，调用接口：/daas/internal/post/agent/kpi/wl，接口请求状态码为200。
     ...    - Step2、判断返回值各字段情况。
     ...
     ...    【预期结果】：
     ...    工作量-客服工作量接口请求，状态码正常，返回值与期望一致。
     ...    status字段的值等于OK、totalElements字段值等于1、key字段的值等于AdminUser.userId，字段avg_mc大于等于3，字段max_mc大于等于3等等。
     #验证工作量-客服工作量接口返回值
-    ${resp}=    /daas/internal/agent/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
+    #get接口
+    #${resp}=    /daas/internal/agent/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
+    #post接口
+    ${data}    set variable    {"beginDateTime":${ConDateRange.beginDateTime},"endDateTime":${ConDateRange.endDateTime},"channelId":[],"sessionTag":"","sessionType":"${FilterEntity.sessionType}","originType":[],"agentId":["${AdminUser.userId}"],"objectType":"O_AGENT","page":${FilterEntity.page},"pageSize":${FilterEntity.per_page},"order":""}
+    ${resp}=    /daas/internal/post/agent/kpi/wl    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     log    ${j}
@@ -41,7 +46,8 @@ Library           Collections
 
 技能组工作量
     [Documentation]    【操作步骤】：
-    ...    - Step1、获取工作量-技能组工作量，调用接口：/daas/internal/group/kpi/wl，接口请求状态码为200。
+    ...    （废弃get接口，改用post）- Step1、获取工作量-技能组工作量，调用接口：/daas/internal/group/kpi/wl，接口请求状态码为200。
+    ...    - Step1、获取工作量-技能组工作量，调用接口：/daas/internal/post/group/kpi/wl，接口请求状态码为200。
     ...    - Step2、判断返回值各字段情况。
     ...
     ...    【预期结果】：
@@ -50,7 +56,11 @@ Library           Collections
     #验证工作量-技能组工作量接口返回值
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    groupId=${queueentity.queueId}
-    ${resp}=    /daas/internal/group/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
+    #get接口
+    #${resp}=    /daas/internal/group/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
+    #post接口
+    ${data}    set variable    {"beginDateTime":${ConDateRange.beginDateTime},"endDateTime":${ConDateRange.endDateTime},"channelId":[],"sessionTag":"all","sessionType":"${FilterEntity.sessionType}","originType":[],"groupId":["${filter.groupId}"],"objectType":"O_GROUP","page":${FilterEntity.page},"pageSize":${FilterEntity.per_page},"order":""}
+    ${resp}=    /daas/internal/post/group/kpi/wl    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    技能组工作量不正确:${resp.content}

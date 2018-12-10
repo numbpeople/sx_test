@@ -354,3 +354,27 @@ Library           uuid
     ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&agentId=${agent.userId}
     ${uri}=    set variable    /daas/internal/agent/detail/trend
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
+
+/daas/internal/post/agent/kpi/wl
+    [Arguments]    ${agent}    ${timeout}    ${data}
+    ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}    Content-Type=application/json
+    ${uri}=    set variable    /daas/internal/post/agent/kpi/wl
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/daas/internal/post/group/kpi/wl
+    [Arguments]    ${agent}    ${timeout}    ${data}
+    ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}    Content-Type=application/json
+    ${uri}=    set variable    /daas/internal/post/group/kpi/wl
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/daas/internal/post/agent/kpi/wq
+    [Arguments]    ${agent}    ${timeout}    ${data}
+    ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}    Content-Type=application/json
+    ${uri}=    set variable    /daas/internal/post/agent/kpi/wq
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/daas/internal/post/group/kpi/wq
+    [Arguments]    ${agent}    ${timeout}    ${data}
+    ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}    Content-Type=application/json
+    ${uri}=    set variable    /daas/internal/post/group/kpi/wq
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}

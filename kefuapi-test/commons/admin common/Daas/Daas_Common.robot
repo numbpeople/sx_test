@@ -309,7 +309,8 @@ Agent CallingBack Conversation Setup
     ${daasStartTime}    set variable    ${daasStartTime}000
     ${daasEndTime}    set variable    ${daasEndTime}000
     set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
-    ${ConInfo}    create dictionary    ConDateRange=${ConDateRange}    queueId=${j['items'][0]['queueId']}    createDatetime=${j['items'][0]['createDatetime']}    startDateTime=${j['items'][0]['startDateTime']}    stopDateTime=${j['items'][0]['stopDateTime']}
-    ...    agentUserId=${j['items'][0]['agentUserId']}    serviceSessionId=${serviceSessionId}
+    #由于stopDateTime经常不能立即获取到，所以下面的ConInfo先不记录stopDateTime了，目前没有影响
+    ${ConInfo}    create dictionary    ConDateRange=${ConDateRange}    queueId=${j['items'][0]['queueId']}    createDatetime=${j['items'][0]['createDatetime']}    startDateTime=${j['items'][0]['startDateTime']}    agentUserId=${j['items'][0]['agentUserId']}
+    ...    serviceSessionId=${serviceSessionId}    #stopDateTime=${j['items'][0]['stopDateTime']}
     set global variable    ${ConInfo}
     sleep    ${daasDelay}

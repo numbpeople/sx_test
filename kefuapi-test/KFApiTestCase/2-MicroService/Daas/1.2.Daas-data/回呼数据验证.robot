@@ -15,7 +15,8 @@ Resource          ../../../../api/MicroService/Daas/DaasApi.robot
 工作量-客服回呼会话数
     [Documentation]    【操作步骤】：
     ...    - Step1、suite的setup负责创建一个已结束的会话，并进行回呼，关闭回呼的会话，记录会话的接起时间范围。
-    ...    - Step2、根据会话接起时间范围、会话类型，筛选客服工作量的统计数据，调用接口：/daas/internal/agent/kpi/wl，接口请求状态码为200。
+    ...    （废弃get接口，改用post）- Step2、根据会话接起时间范围、会话类型，筛选客服工作量的统计数据，调用接口：/daas/internal/agent/kpi/wl，接口请求状态码为200。
+    ...    - Step2、根据会话接起时间范围、会话类型，筛选客服工作量的统计数据，调用接口：/daas/internal/post/agent/kpi/wl，接口请求状态码为200。
     ...    - Step3、判断返回值各字段情况。
     ...
     ...    【预期结果】：
@@ -24,7 +25,11 @@ Resource          ../../../../api/MicroService/Daas/DaasApi.robot
     ${ConDateRange}    set variable    ${ConInfo.ConDateRange}
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    sessionType=S_AGENT
-    ${resp}=    /daas/internal/agent/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
+    #get接口
+    #${resp}=    /daas/internal/agent/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
+    #post接口
+    ${data}    set variable    {"beginDateTime":${ConDateRange.beginDateTime},"endDateTime":${ConDateRange.endDateTime},"channelId":[],"sessionTag":"","sessionType":"${filter.sessionType}","originType":[],"agentId":["${AdminUser.userId}"],"objectType":"O_AGENT","page":${FilterEntity.page},"pageSize":${FilterEntity.per_page},"order":""}
+    ${resp}=    /daas/internal/post/agent/kpi/wl    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    客服工作量不正确:${resp.content}
@@ -35,7 +40,8 @@ Resource          ../../../../api/MicroService/Daas/DaasApi.robot
 工作量-技能组回呼会话数
     [Documentation]    【操作步骤】：
     ...    - Step1、suite的setup负责创建一个已结束的会话，并进行回呼，关闭回呼的会话，记录会话的接起时间范围。
-    ...    - Step2、根据会话接起时间范围、会话类型，筛选技能组工作量的统计数据，调用接口：/daas/internal/group/kpi/wl，接口请求状态码为200。
+    ...    （废弃get接口，改用post）- Step2、根据会话接起时间范围、会话类型，筛选技能组工作量的统计数据，调用接口：/daas/internal/group/kpi/wl，接口请求状态码为200。
+    ...    - Step2、根据会话接起时间范围、会话类型，筛选技能组工作量的统计数据，调用接口：/daas/internal/post/group/kpi/wl，接口请求状态码为200。
     ...    - Step3、判断返回值各字段情况。
     ...
     ...    【预期结果】：
@@ -44,7 +50,11 @@ Resource          ../../../../api/MicroService/Daas/DaasApi.robot
     ${ConDateRange}    set variable    ${ConInfo.ConDateRange}
     ${filter}    copy dictionary    ${FilterEntity}
     set to dictionary    ${filter}    sessionType=S_AGENT    groupId=${ConInfo.queueId}
-    ${resp}=    /daas/internal/group/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
+    #get接口
+    #${resp}=    /daas/internal/group/kpi/wl    ${AdminUser}    ${timeout}    ${ConDateRange}    ${filter}
+    #post接口
+    ${data}    set variable    {"beginDateTime":${ConDateRange.beginDateTime},"endDateTime":${ConDateRange.endDateTime},"channelId":[],"sessionTag":"all","sessionType":"${filter.sessionType}","originType":[],"groupId":["${filter.groupId}"],"objectType":"O_GROUP","page":${FilterEntity.page},"pageSize":${FilterEntity.per_page},"order":""}
+    ${resp}=    /daas/internal/post/group/kpi/wl    ${AdminUser}    ${timeout}    ${data}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    技能组工作量不正确:${resp.content}

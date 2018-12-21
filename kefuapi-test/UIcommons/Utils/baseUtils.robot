@@ -122,6 +122,7 @@ Check Attributes
     log    ${attributes}
     : FOR    ${i}    IN    @{attributes}
     \    log    ${locator}@${i['name']}
+    \    Wait Until Page Contains Element    xpath=${locator}
     \    ${a}    Get Element Attribute    xpath=${locator}@${i['name']}
     \    log    ${a}
     \    Should be True    '${a}'=='${i['value']['${lang}']}'
@@ -167,7 +168,7 @@ Login And Set Cookies
     ...    session=${session}    nicename=${j['agentUser']['nicename']}
     #打开浏览器并写入cookie
     ud open browser    ${url}    ${agent.browser}    ${agent.session}
-    Maximize Browser Window
+    Comment    Maximize Browser Window
     Set Browser Cookies    ${tagent}    ${kefuurl}
     Return From Keyword    ${tagent}
 

@@ -76,7 +76,7 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     Should Be True    ${j['total_entries']} ==1    坐席模式搜索历史会话记录查询到该会话不是唯一：${j}
     Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式搜索历史会话记录的租户id不正确：${j}
     Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式搜索历史会话记录的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式搜索历史会话记录的agentUserId不正确：${j}
+    Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${AdminUser.nicename}    坐席模式搜索历史会话记录的昵称不正确：${j}
     Should Be Equal    ${j['items'][0]['messageDetail']}    ${msg}    坐席模式搜索历史会话记录的messageDetail不正确：${j}
 
 获取管理员模式下消息记录(/v1/tenants/{tenantId}/chatmessagehistorys)

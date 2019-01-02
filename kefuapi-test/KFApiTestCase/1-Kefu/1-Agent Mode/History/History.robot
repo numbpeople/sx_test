@@ -31,21 +31,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=true    visitorName=${session.userName}    #isAgent为true，表示坐席模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    坐席模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    坐席模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    坐席模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    坐席模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    坐席模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    坐席模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    坐席模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    坐席模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    坐席模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
+    Check Agent History Detail    ${AdminUser}    ${j}    ${session}
 
 坐席模式下回呼历史会话(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -94,21 +80,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=true    serviceSessionId=${session.sessionServiceId}    #isAgent为true，表示坐席模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    坐席模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    坐席模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    坐席模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    坐席模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    坐席模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    坐席模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    坐席模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    坐席模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    坐席模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
+    Check Agent History Detail    ${AdminUser}    ${j}    ${session}
 
 坐席模式历史会话根据渠道类型筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -127,21 +99,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=true    originType=${session.originType}    customerName=${session.userName}    #isAgent为true，表示坐席模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    坐席模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    坐席模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    坐席模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    坐席模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    坐席模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    坐席模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    坐席模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    坐席模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    坐席模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
+    Check Agent History Detail    ${AdminUser}    ${j}    ${session}
 
 坐席模式历史会话根据关联ID筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -164,21 +122,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=true    techChannelId=${session.techChannelId}    techChannelType=${channelType}    customerName=${session.userName}    #isAgent为true，表示坐席模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    坐席模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    坐席模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    坐席模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    坐席模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    坐席模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    坐席模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    坐席模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    坐席模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    坐席模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
+    Check Agent History Detail    ${AdminUser}    ${j}    ${session}
 
 坐席模式历史会话根据客户昵称筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -197,21 +141,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=true    customerName=${session.userName}    #isAgent为true，表示坐席模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    坐席模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    坐席模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    坐席模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    坐席模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    坐席模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    坐席模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    坐席模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    坐席模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    坐席模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
+    Check Agent History Detail    ${AdminUser}    ${j}    ${session}
 
 坐席模式历史会话根据是否转接参数筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -238,18 +168,4 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    page=1    isAgent=true    transfered=true    customerName=${session.userName}    #isAgent为true，表示坐席模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
-    Should Be True    ${j['items'][0]['transfered']}    坐席模式历史会话transfered值不正确：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    坐席模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    坐席模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    坐席模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    坐席模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    坐席模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    坐席模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    坐席模式历史会话fromAgentCallback值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    坐席模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    坐席模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    坐席模式历史会话enquirySummary值不正确：${j}
+    Check Agent History Transfered Detail    ${AdminUser}    ${j}    ${session}

@@ -514,10 +514,7 @@ Resource          ../../../../api/IM/IMApi.robot
     Set ChannelData Routing    ${AdminUser}    ${cData}    ${data}
     #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
     log    ${restentity}
-    ${resp}=    send msg    ${restentity}    ${guestentity}    ${msgentity}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
-    ${j}    to json    ${resp.content}
-    Should Be Equal    ${j['data']['${RestEntity.serviceEaseMobIMNumber}']}    success    发送消息失败
+    Send Message    ${restentity}    ${guestentity}    ${msgentity}
     set to dictionary    ${FilterEntity}    visitorName=${guestentity.userName}
     #根据访客昵称查询待接入列表
     ${resp}    Search Waiting Conversation    ${AdminUser}    ${FilterEntity}    ${DateRange}

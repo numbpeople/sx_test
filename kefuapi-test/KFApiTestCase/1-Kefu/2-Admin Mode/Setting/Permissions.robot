@@ -65,8 +65,9 @@ Resource          ../../../../commons/admin common/Setting/Permissions_Common.ro
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为、status字段值等于OK。
     #新增角色
-    ${uuid}    Uuid 4
-    ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}
+    Comment    ${uuid}    Uuid 4
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    ${role_name}    set variable    ${AdminUser.tenantId}-${randoNumber}
     ${data}    set variable    {"role_name":"${role_name}"}
     ${j}    Set Roles    post    ${data}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}
@@ -86,8 +87,9 @@ Resource          ../../../../commons/admin common/Setting/Permissions_Common.ro
     ...    【预期结果】：
     ...    接口返回值中，请求状态码为、status字段值等于OK。
     #新增角色
-    ${uuid}    Uuid 4
-    ${role_name}    set variable    ${AdminUser.tenantId}-${uuid}
+    Comment    ${uuid}    Uuid 4
+    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    ${role_name}    set variable    ${AdminUser.tenantId}-${randoNumber}
     ${data}    set variable    {"role_name":"${role_name}"}
     ${j}    Set Roles    post    ${data}
     should be equal    ${j['status']}    OK    返回值中status不等于OK: ${j}

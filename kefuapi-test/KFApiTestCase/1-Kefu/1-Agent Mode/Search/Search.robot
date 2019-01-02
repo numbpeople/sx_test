@@ -32,5 +32,5 @@ Resource          ../../../../commons/agent common/Conversations/Conversations_C
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话查询到该会话不是唯一：${j}
     Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    坐席模式历史会话的租户id不正确：${j}
     Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    坐席模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    坐席模式历史会话的agentUserId不正确：${j}
+    Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${AdminUser.nicename}    坐席模式历史会话的昵称不正确：${j}
     Should Be Equal    ${j['items'][0]['messageDetail']}    ${msg}    坐席模式历史会话的messageDetail不正确：${j}

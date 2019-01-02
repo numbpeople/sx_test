@@ -13,6 +13,7 @@ Resource          ../../../../commons/agent common/History/History_Common.robot
 Resource          ../../../../commons/Base Common/Base_Common.robot
 Resource          ../../../../commons/admin common/Channels/App_Common.robot
 Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
+Resource          ../../../../commons/admin common/History/History_common.robot
 
 *** Test Cases ***
 获取默认历史会话数据(/v1/Tenant/me/ServiceSessionHistorys)
@@ -45,21 +46,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=false    visitorName=${session.userName}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History Detail    ${AdminUser}    ${j}    ${session}
 
 管理员模式下回呼历史会话(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -108,21 +95,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=false    serviceSessionId=${session.sessionServiceId}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History Detail    ${AdminUser}    ${j}    ${session}
 
 管理员模式历史会话根据渠道类型筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -141,21 +114,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=false    originType=${session.originType}    customerName=${session.userName}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History Detail    ${AdminUser}    ${j}    ${session}
 
 管理员模式历史会话根据关联ID筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -178,21 +137,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=false    techChannelId=${session.techChannelId}    techChannelType=${channelType}    customerName=${session.userName}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History Detail    ${AdminUser}    ${j}    ${session}
 
 管理员模式历史会话根据客户昵称筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -211,21 +156,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    isAgent=false    customerName=${session.userName}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History Detail    ${AdminUser}    ${j}    ${session}
 
 管理员模式历史会话根据是否转接参数筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -252,21 +183,7 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    page=1    isAgent=false    transfered=true    customerName=${session.userName}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History Transfered Detail    ${AdminUser}    ${j}    ${session}
 
 管理员模式历史会话根据会话类型筛选数据(/v1/Tenant/me/ServiceSessionHistorys)
     [Documentation]    【操作步骤】：
@@ -305,18 +222,4 @@ Resource          ../../../../commons/agent common/Queue/Queue_Common.robot
     set to dictionary    ${filter}    page=1    isAgent=false    fromAgentCallback=true    customerName=${session.userName}    #isAgent为true，表示管理员模式查询
     ${j}    Get History    ${AdminUser}    ${filter}    ${range}
     #断言接口返回字段值
-    Should Be True    ${j['total_entries']} ==1    管理员模式历史会话查询到该会话不是唯一：${j}
-    Should Be True    ${j['items'][0]['fromAgentCallback']}    管理员模式历史会话fromAgentCallback值不正确：${j}
-    Should Be Equal    ${j['items'][0]['tenantId']}    ${AdminUser.tenantId}    管理员模式历史会话的租户id不正确：${j}
-    # Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${session.sessionServiceId}    管理员模式历史会话的会话id不正确：${j}
-    Should Be Equal    ${j['items'][0]['agentUserId']}    ${AdminUser.userId}    管理员模式历史会话的agentUserId不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['userId']}    ${session.userId}    管理员模式历史会话的访客userid不正确：${j}
-    Should Be Equal    ${j['items'][0]['visitorUser']['username']}    ${session.userName}    管理员模式历史会话的访客username不正确：${j}
-    Should Be Equal    ${j['items'][0]['chatGroupId']}    ${session.chatGroupId}    管理员模式历史会话的访客chatGroupId不正确：${j}
-    Should Be Equal    ${j['items'][0]['state']}    Terminal    管理员模式历史会话state不是Terminal：${j}
-    # Should Be Equal    ${j['items'][0]['queueId']}    ${session.queueId}    管理员模式历史会话queueId不正确：${j}
-    Should Be Equal    ${j['items'][0]['originType'][0]}    ${session.originType}    管理员模式历史会话originType不正确：${j}
-    Should Not Be True    ${j['items'][0]['transfered']}    管理员模式历史会话transfered值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryDetail']}' == 'None'    管理员模式历史会话enquiryDetail值不正确：${j}
-    Should Be True    '${j['items'][0]['enquiryTagNames']}' == 'None'    管理员模式历史会话enquiryTagNames值不正确：${j}
-    Should Be Equal    ${j['items'][0]['enquirySummary']}    0    管理员模式历史会话enquirySummary值不正确：${j}
+    Check Admin History FromAgentCallback Detail    ${AdminUser}    ${j}    ${session}

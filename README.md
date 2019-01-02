@@ -34,10 +34,12 @@ $ pip install -r requirements.txt
 
 自动化项目示意图：
 
-![image](https://sandbox.kefu.easemob.com/v1/Tenant/11699/MediaFiles/8d06ec46-b4ff-489e-89b9-b42edfe96baeaW1hZ2UucG5n)
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/7ee8369d-66e5-47c7-93a0-4b5e315647a4aW1hZ2UucG5n)
+
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/3a744618-f64b-4e38-a4f7-ac45ed17bfc4aW1hZ2UucG5n)
 
 ```
-KFApiTestCase: 接口测试用例层，包含多个suite层级，每个suite层级包含多个测试用例
+KFApiTestCase: 接口测试用例层，包含多个suite层级，每个suite层级区分不同模块，例如：客服模式、管理员模式、增值功能等，客服模式下又分：会话、待接入、历史会话等模块
 
 UI: UI测试用例suite以及测试用例
 

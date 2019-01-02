@@ -268,9 +268,7 @@ Get Welcome
     [Documentation]    获取企业欢迎语
     ${resp}=    /v1/webimplugin/welcome    ${agent}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code},${resp.text}
-    Return From Keyword If    "${resp.text}" == ""    ${EMPTY}
-    ${j}    to json    ${resp.text}
-    Return From Keyword    ${j}
+    Return From Keyword    ${resp.text}
 
 Get Theme Option
     [Arguments]    ${agent}

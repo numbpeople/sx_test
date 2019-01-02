@@ -30,7 +30,7 @@ Post Option Value
     return from Keyword if    ${resp.status_code}==404    false
     ${j}    to json    ${resp.text}
     Return from Keyword    ${j}
-        
+
 Repeat Keyword Times
     [Arguments]    ${functionName}    ${expectConstruction}    ${expectValue}    @{paramList}
     [Documentation]    重试调用接口多次，判断结果是否包含预期的值，包含则返回结果，否则返回{}
@@ -215,7 +215,9 @@ Check Tenant Gray Status
     #判断指定灰度功能的灰度状态
     Run Keyword And Return If    "${grayName}" != "${EMPTY}"    Check Specific GrayName Status    ${grayName}
     #移除默认的tag设置：base
-    Remove Values From List    ${TEST TAGS}    base
+    log list    ${TEST TAGS}
+    Remove Values From List    ${TEST TAGS}    base    #去除base的标签
+    Remove Values From List    ${TEST TAGS}    professional    #去除professional的标签
     ${index}    Get Index From List    ${tenantGrayList}    ${TEST TAGS[0]}
     #如果灰度列表没有该key或者option未打开，返回False，开通则返回True
     log    ${TEST TAGS[0]}

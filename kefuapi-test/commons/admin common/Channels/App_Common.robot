@@ -51,6 +51,7 @@ Add Channel
     ${resp}=    /v1/autoCreateImAssosciation    ${agent}    ${data}    ${timeout}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}，调用接口：${resp.url}，错误返回值：${resp.text}
     ${j}    to json    ${resp.content}
+    Should Be True    "${j['status']}" == "OK"    快速创建关联失败，返回值：${j}
     Comment    ${restentity}=    create dictionary    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}
     ...    clientSecret=${j['entity']['clientSecret']}    serviceEaseMobIMNumber=${j['entity']['serviceEaseMobIMNumber']}    channelName=${j['entity']['name']}    dutyType=${j['entity']['dutyType']}    agentQueueId=${j['entity']['agentQueueId']}    robotId=${j['entity']['robotId']}
     ${restentity}=    create dictionary    appKey=${j['entity']['appKey']}    appName=${j['entity']['appName']}    orgName=${j['entity']['orgName']}    clientId=${j['entity']['clientId']}    clientSecret=${j['entity']['clientSecret']}
@@ -83,7 +84,7 @@ Delete Channel
     [Documentation]    删除关联，参数为关联Id
     #删除新增关联
     ${resp}=    /v1/Admin/TechChannel/EaseMobTechChannel/{channelId}    ${agent}    ${channelId}    ${timeout}
-    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text} 
+    Should Be Equal As Integers    ${resp.status_code}    204    不正确的状态码:${resp.status_code},${resp.text}
     run keyword if    ${resp.status_code}!=204    log    测试用例集名称:${SUITE NAME}、调用方法:Delete Channel、返回的状态码:${resp.status_code}、请求地址:${resp.url}、返回结果:${resp.text}    level=ERROR
 
 Delete Channels
@@ -118,8 +119,8 @@ Create Channel
     #判断是否配置了已有的关联
     # log dictionary    ${ExistChannelEntity}
     ${emptyStatus}    Run Keyword And Return Status    Should Not Be Empty    ${ExistChannelEntity.appName}${ExistChannelEntity.orgName}
-    ${orgNameStatus}    Run Keyword And Return Status    Should Not Contain     ${ExistChannelEntity.orgName}    $
-    ${appNameStatus}    Run Keyword And Return Status    Should Not Contain     ${ExistChannelEntity.appName}    $
+    ${orgNameStatus}    Run Keyword And Return Status    Should Not Contain    ${ExistChannelEntity.orgName}    $
+    ${appNameStatus}    Run Keyword And Return Status    Should Not Contain    ${ExistChannelEntity.appName}    $
     Run Keyword And Return If    ${emptyStatus} and ${orgNameStatus} and ${appNameStatus}    Use Exist Channel    ${agent}    ${ExistChannelEntity}    ${restentity}
     #快速创建新的关联
     ${restentity}    Create New Channel    ${agent}
@@ -144,10 +145,16 @@ Create New Channel
     [Documentation]    快速创建新的关联
     #快速创建一个关联
     ${restentity}    Add Channel    ${agent}
-    #获取关联appkey的token
+    #创建im接口的restsession
     Create Session    restsession    http://${restentity.restDomain}
+    set to dictionary    ${restentity}    token=    session=restsession
+    #增加使用第二通道判断
+    ${status}    Run Keyword And Return Status    Should Be Equal    ${msgGateway}    secondGateway
+    run keyword if    ${status}    set global variable    ${restentity}    ${restentity}
+    Return From Keyword If    ${status}    ${restentity}
+    #获取关联appkey的token
     ${j}    Get Appkey Token    restsession    ${restentity}
-    set to dictionary    ${restentity}    token=${j['access_token']}    session=restsession
+    set to dictionary    ${restentity}    token=${j['access_token']}
     Return From Keyword    ${restentity}
 
 Use Exist Channel
@@ -168,8 +175,14 @@ Use Exist Channel
     ...    clientSecret=${j['clientSecret']}    channelId=${j['id']}    channelName=${j['name']}    restDomain=${ExistChannelEntity.restDomain}
     #获取关联appkey的token
     Create Session    restsession    http://${restentity.restDomain}
+    set to dictionary    ${restentity}    token=    session=restsession
+    #增加使用第二通道判断
+    ${status}    Run Keyword And Return Status    Should Be Equal    ${msgGateway}    secondGateway
+    run keyword if    ${status}    set global variable    ${restentity}    ${restentity}
+    Return From Keyword If    ${status}    ${restentity}
+    #获取appkey管理员token
     ${j}    Get Appkey Token    restsession    ${restentity}
-    set to dictionary    ${restentity}    token=${j['access_token']}    session=restsession
+    set to dictionary    ${restentity}    token=${j['access_token']}
     set global variable    ${restentity}    ${restentity}
     log dictionary    ${restentity}
     Return From Keyword    ${restentity}
@@ -199,7 +212,7 @@ Get Channel With ChannelId
     [Documentation]    根据关联id获取该关联
     #获取租户下所有的渠道的关联信息
     ${j}    Get Tenant Channels    ${agent}
-    :FOR    ${i}    IN    @{j}
+    : FOR    ${i}    IN    @{j}
     \    Return From Keyword if    "${i['id']}" == "${channelId}"    ${i}
     Return From Keyword    {}
 

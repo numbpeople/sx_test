@@ -1,0 +1,2 @@
+*** Variables ***
+${AvatarPage_ResElement}    {"iv_avatar":{"name":"avatar element","element":"${packagename}:id/iv_avatar","text":{"zh-CN":"头像","en-US":"avatar"}},"tv_status":{"name":"status element","element":"${packagename}:id/tv_status","text":{"zh-CN":"状态","en-US":"status"}},"outmost_container":{"name":"status change element","element":"${packagename}:id/outmost_container","text":{"zh-CN":"状态切换","en-US":"status change"}},"tv_save":{"name":"status button element","element":"${packagename}:id/tv_save","text":{"zh-CN":"确定","en-US":"status button"}}}

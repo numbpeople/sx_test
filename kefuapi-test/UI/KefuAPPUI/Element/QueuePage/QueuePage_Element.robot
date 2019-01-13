@@ -1,0 +1,2 @@
+*** Variables ***
+${QueuePage_ResElement}    {"tv_tab_title_queue":{"name":"queue element","element":"//android.widget.TextView[@text='待接入']","text":{"zh-CN":"待接入","en-US":"queue"}},"rtv_msg_tip":{"name":"queue msg tip element","element":"${packagename}:id/rtv_msg_tip","text":{"zh-CN":"待接入未读会话数","en-US":"queue msg tip"}},"tv_label_total_count":{"name":"current search result element","element":"${packagename}:id/tv_label_total_count","text":{"zh-CN":"当前筛选结果","en-US":"current search result"}}}

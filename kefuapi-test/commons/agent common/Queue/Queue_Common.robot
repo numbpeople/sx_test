@@ -212,3 +212,39 @@ Stop Specified Sessions In Waitings
     : FOR    ${i}    IN    @{j['entities']}
     \    ${resp}=    /v6/tenants/{tenantId}/queues/unused/waitings/{serviceSessionId}/abort    ${agent}    ${i['session_id']}    ${timeout}
     \    sleep    ${delay}
+
+Create Wait Conversation Specific QueueName
+    [Arguments]    ${agent}    ${origintype}    ${queueentity}    ${visitor}={}
+    [Documentation]    创建会话到待接入，返回访客信息、渠道信息、消息信息等
+    ...
+    ...    Params：
+    ...
+    ...    ${originType}：渠道信息，webim、weixin、app、weibo
+    ...    ${visitor}：访客扩展字段
+    ...
+    ...    Return：
+    ...
+    ...    userName、originType、serviceSessionId、userId、queueId、channelId、channelType
+    #设置渠道信息
+    ${originType}    set variable    ${origintype}
+    ${curTime}    get time    epoch
+    ${randoNumber}    Generate Random String    7    [NUMBERS]
+    #创建技能组
+    ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentity.queueName}","visitor":${visitor}}}
+    ${GuestEntity}    create dictionary    userName=${agent.tenantId}-${curTime}    originType=${originType}
+    log dictionary    ${MsgEntity}
+    #将规则排序设置为渠道优先
+    Set RoutingPriorityList    入口    渠道    关联
+    #发送消息并创建访客（tenantId和发送时的时间组合为访客名称，每次测试值唯一）
+    Send Message    ${restentity}    ${GuestEntity}    ${MsgEntity}
+    #根据访客昵称查询待接入列表
+    ${filter}    Copy Dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    visitorName=${guestentity.userName}    page=0
+    Comment    ${j}    Search Waiting Session    ${agent}    ${filter}    ${DateRange}
+    Comment    #断言结果
+    Comment    Should Be True    ${j['totalElements']} ==1    查询结果为空：${j}
+    Comment    Should Be Equal    ${j['entities'][0]['visitor_name']}    ${guestentity.userName}    访客名称不正确：${j}
+    Comment    Should Be Equal    ${j['entities'][0]['skill_group_id']}    ${queueentity.queueId}    技能组id不正确：${j}
+    Comment    set to dictionary    ${GuestEntity}    serviceSessionId=${j['entities'][0]['session_id']}    userId=${j['entities'][0]['visitor_id']}    queueId=${j['entities'][0]['skill_group_id']}    channelId=${j['entities'][0]['channel_id']}
+    ...    channelType=${j['entities'][0]['channel_type']}
+    Return From Keyword    ${GuestEntity}

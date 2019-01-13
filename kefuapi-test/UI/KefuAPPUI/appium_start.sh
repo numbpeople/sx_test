@@ -1,0 +1,3 @@
+#!/bin/bash
+adb connect 127.0.0.1:62001
+appium -a 127.0.0.1 -p 4723 -bp 4724 -U 127.0.0.1:62001 --session-override --command-timeout 1200

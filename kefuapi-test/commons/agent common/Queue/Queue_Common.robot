@@ -248,3 +248,15 @@ Create Wait Conversation Specific QueueName
     Comment    set to dictionary    ${GuestEntity}    serviceSessionId=${j['entities'][0]['session_id']}    userId=${j['entities'][0]['visitor_id']}    queueId=${j['entities'][0]['skill_group_id']}    channelId=${j['entities'][0]['channel_id']}
     ...    channelType=${j['entities'][0]['channel_type']}
     Return From Keyword    ${GuestEntity}
+
+Close Queue Sessions
+    [Arguments]    ${agent}    ${filter}    ${range}
+    [Documentation]    获取待接入列表数据
+    #获取待接入列表数据
+    ${j}    Get Waiting    ${agent}    ${filter}    ${range}
+    ${l}    Get Length    ${j['entities']}
+    Return From Keyword If    ${l}==0
+    #批量关闭符合条件得会话
+    :FOR    ${i}    IN    @{j['entities']}
+    \    Close Waiting Session    ${i['session_id']}
+    \    sleep    ${delay}

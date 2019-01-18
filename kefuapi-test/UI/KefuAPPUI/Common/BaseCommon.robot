@@ -25,14 +25,14 @@ Click Object Element
     click element    ${objectElement}
 
 Repeat Assert Keyword Times
-    [Arguments]    ${keyword}    ${element}    ${retrytimes}=${Retrytimes}
+    [Arguments]    ${keyword}    ${element}    ${retrytimes}=${Retrytimes}    ${isPrintLog}=True
     [Documentation]    多次重试执行断言判断，在规定重试次数内成功即断言成功，否则失败，例如：Element Should Be Enabled
     #重试执行断言关键字
     : FOR    ${i}    IN RANGE    ${retrytimes}
     \    ${status}    Run Keyword And Return Status    ${keyword}    ${element}
     \    return from keyword if    ${status}    True
-    \    sleep    1s
-    Run Keyword    ${keyword}    ${element}
+    \    sleep    200ms
+    run keyword if    ${isPrintLog}    ${keyword}    ${element}
     return from keyword    False
 
 Get Resource Value
@@ -99,7 +99,8 @@ Find Element Swipe
     ${offset_y}    evaluate    ${heightA}*1/4
     #多次滑动
     : FOR    ${i}    IN RANGE    ${Retrytimes}
-    \    Swipe    ${widthA}    ${heightA}    ${widthA}    ${offset_y}
+    \    ${swipeStatus}    Run Keyword And Return Status    Swipe    ${widthA}    ${heightA}    ${widthA}
+    \    ...    ${offset_y}
     \    ${status}    Run Keyword And Return Status    Element Should Be Visible    ${element}
     \    return from keyword if    ${status}    True
     \    sleep    1s
@@ -130,8 +131,10 @@ Find Element Swipe With Status
 Convert Specific String To List
     [Arguments]    ${string}    ${separator}    ${sortBy}=asc
     [Documentation]    根据指定符号进行分割字符串，按照给定的排序方式进行排序后返回列表
+    #根据指定符号进行分割字符串，按照给定的排序方式进行排序后返回列表
     @{stringList}    Split String    ${string}    ${separator}
     @{objectList}    create list
+    #如果排序需要倒序，则倒序排列列表
     run keyword if    "${sortBy}" == "desc"    Reverse List    ${stringList}
     log list    ${stringList}
     : FOR    ${i}    IN    @{stringList}
@@ -181,13 +184,20 @@ Find Specific Path With PageModels
     return from keyword    ${pathList}
 
 Enter Specified PageModel
-    [Arguments]    ${TestPageModel}
+    [Arguments]    ${TestPageModel}=
     [Documentation]    | 一、定义每个页面唯一的标志元素。${BasePage_ResElement}变量中定义了所有模块的模块名称、页面唯一元素、页面唯一文本文案 |
     ...    | 二、根据唯一的标志元素，循环找到属于哪个模块。${BasePage_ResElement}变量中定义了所有模块的模块名称和页面唯一元素，根据查找该模块唯一元素，确定模块名称，例如：Conversation |
     ...    | 三、查询出当前所处的页面，根据当前页面与终点页面，来查询出路径。${BackTrackValitPath}变量中定义了模块与模块之间的路径，例如：Conversation-Avatar-Setting，意思为从Conversation到Avatar再到Setting |
     ...    | 四、循环根据其中路径来确定路程，依次点击到需要的被测的终点页面。从第三步拿到了所有经过的模块路径，依次点击进入到模块即可 |
     #获取当前页面所处的模块名称
     ${currentPageName}    Get Current PageModel
+    #根据测试用标签来设置最终页面模块
+    log list    ${TEST TAGS}
+    #移除默认的kefuappui的标签
+    Remove Values From List    ${TEST TAGS}    kefuappui    #去除kefuappui的标签
+    #如果未指定页面，则获取用例所在的模块标签
+    ${testTag}    set variable    ${TEST TAGS[0]}
+    Run Keyword If    "${TestPageModel}" == "${EMPTY}"    set suite variable    ${TestPageModel}    ${testTag}
     #如果发现当前所处页面和跳转页面一致，则不处理跳转逻辑
     return from keyword if    "${currentPageName}" == "${TestPageModel}"    log    目前处于所需要测试的页面，无需后续跳转
     #判断当前页面未找到所匹配的页面模块信息

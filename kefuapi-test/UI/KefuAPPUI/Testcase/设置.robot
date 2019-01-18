@@ -1,5 +1,5 @@
 *** Settings ***
-Force Tags
+Force Tags        Setting
 Library           requests
 Library           AppiumLibrary
 Library           RequestsLibrary
@@ -9,6 +9,7 @@ Library           String
 Resource          ../Variable.robot
 Resource          ../Common/BaseCommon.robot
 Resource          ../Common/CollectionCommon/Setup/SetupCommon.robot
+Resource          ../Common/CollectionCommon/Setup/TestSetupCommon.robot
 
 *** Test Cases ***
 进入设置页面-登出操作
@@ -24,7 +25,7 @@ Resource          ../Common/CollectionCommon/Setup/SetupCommon.robot
     ${agentProfileLogoutElement}    set variable    ${SettingPageResDic.agentprofile_logout.element}
     ${btnLoginElement}    set variable    ${LoginPageResDic.btnLogin.element}
     #进入到设置页面
-    Enter Specified PageModel    Setting
+    Enter Specified PageModel
     #设置页面多次滑动，找到登出按钮
     ${status}    Find Element Swipe    ${agentProfileLogoutElement}
     should be true    ${status}    多次滑动后，指定的元素在页面中没有查看到

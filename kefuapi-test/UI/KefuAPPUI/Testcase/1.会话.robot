@@ -1,5 +1,5 @@
 *** Settings ***
-Force Tags
+Force Tags        Conversation
 Library           requests
 Library           AppiumLibrary
 Library           RequestsLibrary
@@ -9,6 +9,7 @@ Library           String
 Resource          ../Common/BaseCommon.robot
 Resource          ../Variable.robot
 Resource          ../Common/CollectionCommon/Setup/SetupCommon.robot
+Resource          ../Common/CollectionCommon/Setup/TestSetupCommon.robot
 Resource          ../Common/AgentMode/ConversationCommon/ConversationCommon.robot
 
 *** Variables ***
@@ -23,7 +24,7 @@ Resource          ../Common/AgentMode/ConversationCommon/ConversationCommon.robo
     #获取元素值
     ${tvTabTitleConversationElement}    set variable    ${ConversationPageResDic.tv_tab_title_conversation.element}
     #进入到进行中页面
-    Enter Specified PageModel    Conversation
+    Enter Specified PageModel
     #多次判断会话按钮是否存在
     ${status}    Repeat Assert Keyword Times    Element Should Be Enabled    ${tvTabTitleConversationElement}
     should be true    ${status}    启动异常，页面在10秒中没有进入到会话页面
@@ -48,7 +49,7 @@ Resource          ../Common/AgentMode/ConversationCommon/ConversationCommon.robo
     ${outMostContainerElement}    set variable    ${AvatarPageResDic.outmost_container.element}    #切换状态：空闲、忙碌、离开、隐身
     ${tvSaveElement}    set variable    ${AvatarPageResDic.tv_save.element}    #状态确认按钮
     #进入到进行中页面
-    Enter Specified PageModel    Conversation
+    Enter Specified PageModel
     #点击头像按钮
     Click Object Element    ${ivAvatarElement}
     #点击坐席状态按钮
@@ -70,7 +71,7 @@ Resource          ../Common/AgentMode/ConversationCommon/ConversationCommon.robo
     #获取元素值
     ${listItemLayoutElement}    set variable    ${ConversationPageResDic.list_item_layout.element}    #进行中会话的会话
     #进入到进行中页面
-    Enter Specified PageModel    Conversation
+    Enter Specified PageModel
     #创建新会话
     ${session}    Create Wait Conversation Specific QueueName    ${AdminUser}    app    ${kefuAppAgentInfo}
     ${userName}    set variable    ${session.userName}
@@ -97,7 +98,7 @@ Resource          ../Common/AgentMode/ConversationCommon/ConversationCommon.robo
     ${msgetChatElement}    set variable    ${ChatPageResDic.et_chat.element}    #消息输入框
     ${msgbtnSendElement}    set variable    ${ChatPageResDic.btn_send.element}    #消息输入框
     #进入到进行中页面
-    Enter Specified PageModel    Conversation
+    Enter Specified PageModel
     #创建新会话
     ${session}    Create Wait Conversation Specific QueueName    ${AdminUser}    app    ${kefuAppAgentInfo}
     ${userName}    set variable    ${session.userName}

@@ -82,7 +82,7 @@ LoginApp
     ${status}    Repeat Assert Keyword Times    Page Should Not Contain Element    ${btnLoginElement}
     should be true    ${status}    登录后仍可以查看到登录按钮元素，没有登录成功
     #多次判断是否满足断言条件判断
-    ${status}    Repeat Assert Keyword Times    Page Should Contain Text    租户到期提醒    2
+    ${status}    Repeat Assert Keyword Times    Page Should Contain Text    租户到期提醒    2    False
     #如果有租户过期弹窗，则清楚弹窗
     run keyword if    ${status}    Click Object Element    ${tenantExpireButtonElement}
     #设置${agentInfo}全局变量

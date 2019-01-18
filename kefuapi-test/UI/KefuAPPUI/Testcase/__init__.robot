@@ -7,7 +7,8 @@ Documentation     使用环境：
 ...               屏幕分辨率为：480 * 800
 Suite Setup       Setup Init Base    # Setup Init Base
 Suite Teardown    Teardown Data Base    # 清理工作
-Test Setup
+Test Setup        Close APPUI Queue Sessions    # 清理待接入会话
 Resource          ../Common/CollectionCommon/Setup/SetupCommon.robot
+Resource          ../Common/CollectionCommon/Setup/TestSetupCommon.robot
 Resource          ../Common/CollectionCommon/Teardown/TeardownCommon.robot
 Resource          ../Variable.robot

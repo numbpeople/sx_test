@@ -1,5 +1,5 @@
 *** Settings ***
-Force Tags
+Force Tags        Queue
 Library           requests
 Library           AppiumLibrary
 Library           RequestsLibrary
@@ -9,6 +9,7 @@ Library           String
 Resource          ../Common/BaseCommon.robot
 Resource          ../Variable.robot
 Resource          ../Common/CollectionCommon/Setup/SetupCommon.robot
+Resource          ../Common/CollectionCommon/Setup/TestSetupCommon.robot
 Resource          ../Common/AgentMode/QueueCommon/QueueCommon.robot
 
 *** Test Cases ***
@@ -23,7 +24,7 @@ Resource          ../Common/AgentMode/QueueCommon/QueueCommon.robot
     ${tvBabTitleQueueElement}    set variable    ${QueuePageResDic.tv_tab_title_queue.element}    #待接入按钮
     ${rtvMsgTipElement}    set variable    ${QueuePageResDic.rtv_msg_tip.element}    #待接入会话未读数提示
     #进入到待接入页面
-    Enter Specified PageModel    Queue
+    Enter Specified PageModel
     #创建待接入会话
     Create Wait Conversation    app
     #多次判断指定元素是否存在

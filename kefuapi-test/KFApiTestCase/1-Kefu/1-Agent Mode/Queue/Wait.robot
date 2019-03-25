@@ -427,8 +427,9 @@ Resource          ../../../../api/BaseApi/Queue/WaitApi.robot
     ${filter}    Copy Dictionary    ${FilterEntity}
     #创建待接入会话
     ${session}    Create Wait Conversation    weibo
+    ${queueIdB}    set variable    ${session.queueentityB.queueId}
     #待接入转接会话到技能组
-    ${j}=    Assign Queue For Waiting Session    ${AdminUser}    ${session.serviceSessionId}    ${session.queueId}
+    ${j}=    Assign Queue For Waiting Session    ${AdminUser}    ${session.serviceSessionId}    ${queueIdB}
     Should Be Equal    '${j['status']}'    'OK'    转接待接入会话结果status不为OK：${j}
     Should Be True    ${j['entity']}    转接待接入会话结果entity不为true：${j}
 

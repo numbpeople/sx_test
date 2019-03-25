@@ -61,9 +61,12 @@ Create Wait Conversation
     ${originType}    set variable    ${origintype}
     ${curTime}    get time    epoch
     ${randoNumber}    Generate Random String    7    [NUMBERS]
+    ${randoNumberB}    Generate Random String    7    [NUMBERS]
     #创建技能组
     ${agentqueue}=    create dictionary    queueName=${AdminUser.tenantId}-${randoNumber}A
+    ${agentqueueB}=    create dictionary    queueName=${AdminUser.tenantId}-${randoNumberB}B
     ${queueentityA}=    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}    #创建一个技能组
+    ${queueentityB}=    Add Agentqueue    ${agentqueueB}    ${agentqueueB.queueName}    #创建一个技能组B
     ${MsgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityA.queueName}","visitor":${visitor}}}
     ${GuestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
     log dictionary    ${MsgEntity}
@@ -80,6 +83,7 @@ Create Wait Conversation
     Should Be Equal    ${j['entities'][0]['visitor_name']}    ${guestentity.userName}    访客名称不正确：${j}
     Should Be Equal    ${j['entities'][0]['skill_group_id']}    ${queueentityA.queueId}    技能组id不正确：${j}
     set to dictionary    ${GuestEntity}    serviceSessionId=${j['entities'][0]['session_id']}    userId=${j['entities'][0]['visitor_id']}    queueId=${j['entities'][0]['skill_group_id']}    channelId=${j['entities'][0]['channel_id']}    channelType=${j['entities'][0]['channel_type']}
+    ...    queueentityB=${queueentityB}
     Return From Keyword    ${GuestEntity}
 
 Get UserWaitQueues
@@ -257,6 +261,6 @@ Close Queue Sessions
     ${l}    Get Length    ${j['entities']}
     Return From Keyword If    ${l}==0
     #批量关闭符合条件得会话
-    :FOR    ${i}    IN    @{j['entities']}
+    : FOR    ${i}    IN    @{j['entities']}
     \    Close Waiting Session    ${i['session_id']}
     \    sleep    ${delay}

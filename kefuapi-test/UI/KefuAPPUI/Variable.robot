@@ -1,9 +1,9 @@
 *** Variables ***
 ${packagename}    com.easemob.helpdesk
-${REMOTE_URL}     http://127.0.0.1:4723/wd/hub
+${REMOTE_URL}     http://172.17.1.168:4723/wd/hub
 ${PLATFORM_NAME}    Android
 ${PLATFORM_VERSION}    4.4.
-${DEVICE_NAME}    127.0.0.1:62001
+${DEVICE_NAME}    71d9f2f1
 ${appPackage}     ${packagename}
 ${appActivity}    ${appPackage}.activity.SplashActivity
 ${Retrytimes}     10

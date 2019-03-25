@@ -25,11 +25,11 @@ startdemo
     Comment    启动客服访客端app
     ${REMOTE_URL}    set variable    http://127.0.0.1:4723/wd/hub
     ${PLATFORM_NAME}    set variable    Android
-    ${PLATFORM_VERSION}    set variable    4.4.
+    ${PLATFORM_VERSION}    set variable    5.1.
     Comment    ${DEVICE_NAME}    set variable    517ebeda
-    ${DEVICE_NAME}    set variable    127.0.0.1:62001
+    ${DEVICE_NAME}    set variable    71d9f2f1    #127.0.0.1:62001
     ${appPackage}    set variable    ${packagename}
-    ${appActivity}    set variable    ${packagename}.ui.MainActivity
+    ${appActivity}    set variable    ${packagename}.ui.LauncherActivity    #${packagename}.ui.MainActivity
     Evaluate    os.system("adb -s ${DEVICE_NAME} shell pm clear com.easemob.helpdeskdemo")    os
     Open Application    ${REMOTE_URL}    alias=myapp1    platformName=${PLATFORM_NAME}    platformVersion=${PLATFORM_VERSION}    deviceName=${DEVICE_NAME}    appPackage=${appPackage}
     ...    appActivity=${appActivity}

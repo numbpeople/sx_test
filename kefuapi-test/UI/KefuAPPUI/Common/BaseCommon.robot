@@ -148,6 +148,8 @@ Get Current PageModel
     log    ${BasePageResDic}
     #循环获取所有页面模块中所包含的元素与文本
     : FOR    ${i}    IN    @{pageElementModelList}
+    \    #判断如果等于Base，则跳进下个循环
+    \    Continue For Loop If    "${i}" == "Base"
     \    ${pageElement}    set variable    ${BasePageResDic.${i}.uniqueElement}
     \    ${pageTextName}    set variable    ${BasePageResDic.${i}.uniqueName}
     \    log    ${pageElement}

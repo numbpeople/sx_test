@@ -13,20 +13,24 @@ Library           ../../../../../lib/Transition.py
 *** Keywords ***
 Setup Init Base
     Kefu Data Init    #客服账号登录、创建等初始化
-    StartAPPSetup    #启动客服app应用程序
     PreInstant All Elements Resource    #引入所有模块的Element变量的resource文件
     PreInstant All Elements    #预加载对应模块的Element变量，转换成json和字典，定义全局变量供测试用例使用
+    StartAPPSetup    #启动客服app应用程序
     LoginApp    #登录客服app
     Comment    Transition Init    #实例化状态机
 
 StartAPPSetup
+    #获取元素
+    ${btnLoginElement}    set variable    ${LoginPageResDic.btnLogin.element}    #登录按钮
     #关闭所有app清空包缓存
     Close All Applications
     Evaluate    os.system("adb -s ${DEVICE_NAME} shell pm clear ${packagename}")    os
     Open Application    ${REMOTE_URL}    alias=kefuapp    platformName=${PLATFORM_NAME}    platformVersion=${PLATFORM_VERSION}    deviceName=${DEVICE_NAME}    appPackage=${appPackage}
     ...    appActivity=${appActivity}
     #多次判断登录按钮是否存在
-    ${status}    Repeat Assert Keyword Times    Element Should Be Enabled    ${packagename}:id/btnLogin
+    ${keyboardstatus}    Repeat Assert Keyword Times    Hide Keyboard    ${EMPTY}    5
+    should be true    ${keyboardstatus}    启动异常，可能工作台未启动成功
+    ${status}    Repeat Assert Keyword Times    Element Should Be Enabled    ${btnLoginElement}
     should be true    ${status}    启动异常，登录按钮页面中没有查看到
 
 Transition Init
@@ -68,12 +72,15 @@ LoginApp
     ${btnLoginElement}    set variable    ${LoginPageResDic.btnLogin.element}    #登录按钮
     ${tenantExpireButtonElement}    set variable    ${TenantExpirePageResDic.tenant_expire_button.element}    #租户到期提醒弹窗
     #多次判断登录按钮是否存在
+    Repeat Assert Keyword Times    Hide Keyboard    ${EMPTY}    1    False
     ${status}    Repeat Assert Keyword Times    Element Should Be Enabled    ${btnLoginElement}
     should be true    ${status}    启动异常，登录按钮页面中没有查看到
     #激活账号输入框并输入
     Input Object Text    ${etAccountInputElement}    ${accountUsername}
+    Repeat Assert Keyword Times    Hide Keyboard    ${EMPTY}    1    False
     #激活密码输入框并输入
     Input Object Text    ${etPwdInputElement}    ${accountPassword}
+    Repeat Assert Keyword Times    Hide Keyboard    ${EMPTY}    1    False
     Comment    #点击隐身登录按钮
     Comment    Click Object Element    ${cbHiddenLoginElement}
     #点击登录按钮

@@ -32,7 +32,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${serviceSessionId}    set variable    ${sessionInfo.serviceSessionId}
     ${userid}    set variable    ${sessionInfo.userId}
     #创建消息实体类型，消息文本，消息类型。
-    ${msg}    set variable    Uuid 4
+    ${msg}    Uuid 4
     &{msgEntity}    create dictionary    msg=${msg}    type=txt
     #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送消息，接口请求状态码为200。
     ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
@@ -63,7 +63,7 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${serviceSessionId}    set variable    ${sessionInfo.serviceSessionId}
     ${userid}    set variable    ${sessionInfo.userId}
     #创建消息实体类型，消息文本，消息类型。
-    ${msg}    set variable    Uuid 4
+    ${msg}    Uuid 4
     &{msgEntity}    create dictionary    msg=${msg}    type=txt
     #Step3、调用接口/v1/Agents/me/Visitors/{visitorId}/ServiceSessions/{serviceSessionId}/Messages发送消息，接口请求状态码为200。
     ${j}    Agent Send Message    ${AdminUser}    ${userid}    ${serviceSessionId}    ${msgEntity}
@@ -74,11 +74,11 @@ Resource          ../../../commons/Base Common/Base_Common.robot
     ${text}    set variable    ${apiResponse.text}
     Should Be Equal    ${text['status']}    OK    步骤5时，status字段值不等于OK：${apiResponse.describetion}
     #Step5、获取该会话的所有消息
-    &{filter}    copy dictionary    ${FilterEntity}
-    set to dictionary    ${filter}    page=0    size=10
-    ${j}    Get Servicesession Message    ${AdminUser}    ${serviceSessionId}    ${filter}
+    Comment    &{filter}    copy dictionary    ${FilterEntity}
+    Comment    set to dictionary    ${filter}    page=0    size=10
+    Comment    ${j}    Get Servicesession Message    ${AdminUser}    ${serviceSessionId}    ${filter}
     #获取会话最近一条消息id
-    ${recallMsgId}    set variable    ${j['entities'][0]['body']['ext']['weichat']['recall_msg_id']}
+    Comment    ${recallMsgId}    set variable    ${j['entities'][0]['body']['ext']['weichat']['recall_msg_id']}
     #Step6、判断接口各字段的返回值
-    Should Be Equal    ${recallMsgId}    ${msgId}    步骤6时，回撤的消息id不正确，${j}
-    Should Be Equal    "${j['entities'][0]['body']['bodies'][0]['action']}"    "KEFU_MESSAGE_RECALL"    步骤6时，字段action不等于KEFU_MESSAGE_RECALL，${j}
+    Comment    Should Be Equal    ${recallMsgId}    ${msgId}    步骤6时，回撤的消息id不正确，${j}
+    Comment    Should Be Equal    "${j['entities'][0]['body']['bodies'][0]['action']}"    "KEFU_MESSAGE_RECALL"    步骤6时，字段action不等于KEFU_MESSAGE_RECALL，${j}

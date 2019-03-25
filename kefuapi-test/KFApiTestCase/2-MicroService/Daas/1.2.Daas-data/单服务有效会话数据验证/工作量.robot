@@ -92,7 +92,7 @@ Library           Collections
     ...    工作量-工作量综合接口请求，状态码正常，返回值与期望一致。
     ...    status字段的值等于OK、totalElements字段值等于1、字段avg_mc大于等于3，字段max_mc大于等于3等等。
     #验证工作量-工作量综合接口返回值
-    ${resp}=    /daas/internal/session/wl/total    ${AdminUser}    ${timeout}    ${ConDateRange}
+    ${resp}=    /daas/internal/session/wl/total    ${AdminUser}    ${timeout}    ${ConDateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    工作量综合不正确:${resp.content}
@@ -102,8 +102,8 @@ Library           Collections
     should be true    ${j["entities"][0]["avg_st"]}>=2    工作量综合-会话时长平均值有误:${j["entities"][0]["avg_st"]}
     should be true    ${j["entities"][0]["max_st"]}>=2    工作量综合-会话时长最大值有误:${j["entities"][0]["max_st"]}
     should be true    ${j["entities"][0]["cnt_mc"]}>=3    工作量综合-消息数有误:${j["entities"][0]["cnt_mc"]}
-    should be true    ${j["entities"][0]["cnt_ssc"]}==1    客服工作量-接起会话数有误:${j["entities"][0]["cnt_ssc"]}
-    should be true    ${j["entities"][0]["cnt_sc"]}==1    客服工作量-结束会话数有误:${j["entities"][0]["cnt_sc"]}
+    should be true    ${j["entities"][0]["cnt_ssc"]}==1    工作量综合-接起会话数有误:${j["entities"][0]["cnt_ssc"]}
+    should be true    ${j["entities"][0]["cnt_sc"]}==1    工作量综合-结束会话数有误:${j["entities"][0]["cnt_sc"]}
 
 会话量和消息量趋势图
     [Documentation]    【操作步骤】：

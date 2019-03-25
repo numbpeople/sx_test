@@ -61,9 +61,10 @@ Library           uuid
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /daas/internal/session/wl/total
-    [Arguments]    ${agent}    ${timeout}    ${DateRange}
+    [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${filter}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&channelId=${filter.channelId}&sessionTag=${filter.sessionTag}&sessionType=${filter.sessionType}&originType=${filter.originType}
+    log    ${params}
     ${uri}=    set variable    /daas/internal/session/wl/total
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
@@ -75,9 +76,9 @@ Library           uuid
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 
 /daas/internal/session/dist/session/tag
-    [Arguments]    ${agent}    ${timeout}    ${DateRange}
+    [Arguments]    ${agent}    ${timeout}    ${DateRange}    ${filter}
     ${header}=    Create Dictionary    tenantId="${agent.tenantId}"    SESSION=${agent.session}    userid=${agent.userId}
-    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}
+    ${params}    set variable    beginDateTime=${DateRange.beginDateTime}&endDateTime=${DateRange.endDateTime}&channelId=${filter.channelId}&sessionTag=${filter.sessionTag}&sessionType=${filter.sessionType}&originType=${filter.originType}
     ${uri}=    set variable    /daas/internal/session/dist/session/tag
     Run Keyword And Return    Get Request    ${agent.session}    ${uri}    headers=${header}    params=${params}    timeout=${timeout}
 

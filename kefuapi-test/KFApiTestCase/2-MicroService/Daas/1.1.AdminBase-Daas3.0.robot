@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        daas
 Library           json
 Library           requests
 Library           Collections
@@ -112,7 +113,7 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     ...
     ...    【预期结果】：
     ...    工作量-工作量综合接口请求，状态码正常，有返回值。
-    ${resp}=    /daas/internal/session/wl/total    ${AdminUser}    ${timeout}    ${DateRange}
+    ${resp}=    /daas/internal/session/wl/total    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    工作量综合不正确:${resp.content}
@@ -136,7 +137,7 @@ Resource          ../../../api/MicroService/Daas/DaasApi.robot
     ...
     ...    【预期结果】：
     ...    工作量-会话数分布按会话标签维度接口请求，状态码正常，有返回值。
-    ${resp}=    /daas/internal/session/dist/session/tag    ${AdminUser}    ${timeout}    ${DateRange}
+    ${resp}=    /daas/internal/session/dist/session/tag    ${AdminUser}    ${timeout}    ${DateRange}    ${FilterEntity}
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    会话数分布按会话标签维度不正确:${resp.content}

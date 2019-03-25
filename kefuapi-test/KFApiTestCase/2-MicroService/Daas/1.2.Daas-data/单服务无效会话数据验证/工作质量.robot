@@ -41,6 +41,10 @@ Resource          ../../../../../api/BaseApi/Review/QualityReviews_Api.robot
     should be true    ${j["entities"][0]["cnt_uaa"]}==1    客服工作质量-无效人工会话(客服无消息)有误:${j["entities"][0]["cnt_uaa"]}
     should be true    ${j["entities"][0]["cnt_uaav"]}==0    客服工作质量-无效人工会话有误(均无消息):${j["entities"][0]["cnt_uaav"]}
     should be true    ${j["entities"][0]["cnt_uav"]}==0    客服工作质量-无效人工会话有误(访客无消息):${j["entities"][0]["cnt_uav"]}
+    #验证评价率
+    should be equal    ${j["entities"][0]["pct_eva"]}    0.00%    客服工作质量-客服评价率有误:${j["entities"][0]["pct_eva"]}
+    should be true    "${j["entities"][0]["cnt_vm"]}"=="0"    客服工作质量-有效评价数有误:${j["entities"][0]["cnt_vm"]}
+    should be true    "${j["entities"][0]["cnt_eva"]}"=="1.0"    客服工作质量-有效邀请数有误:${j["entities"][0]["cnt_eva"]}
 
 技能组工作质量
     [Documentation]    【操作步骤】：

@@ -11,6 +11,10 @@ Library           DateTime
 Resource          ../Setting/ReviewSettings_Common.robot
 Resource          ../Review/Review_Common.robot
 Resource          ../Review/Review_Common.robot
+Resource          ../../../api/BaseApi/Conversations/ConversationApi.robot
+Resource          ../../Base Common/Base_Common.robot
+Resource          ../../agent common/Conversations/Conversations_Common.robot
+Resource          ../Setting/ConversationTags_Common.robot
 
 *** Keywords ***
 One Service Valid Conversation
@@ -132,6 +136,9 @@ One Service Unvalid Conversation
     ${userId}    set variable    ${j[0]['user']['userId']}
     ${serviceSessionId}    set variable    ${j[0]['serviceSessionId']}
     ${chatGroupId}    set variable    ${j[0]['chatGroupId']}
+    #坐席发送满意度评价邀请
+    Send InviteEnquiry    ${agent}    ${serviceSessionId}
+    sleep    50ms
     #关闭进行中会话
     Stop Processing Conversation    ${agent}    ${userId}    ${serviceSessionId}
     #获取租户的质检评分项id并进行质检评分
@@ -144,19 +151,27 @@ One Service Unvalid Conversation
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    质检评分不正确:${resp.content}
-    #根据queueId筛选当天质检数据,检查质检评分
-    ${range}    copy dictionary    ${DateRange}
-    ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
-    ${dn}=    Convert To Integer    ${day}
-    set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
-    set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
-    set to dictionary    ${filter}    groupId=${queueentityAA.queueId}
-    ${j}=    Search Reviews    ${AdminUser}    ${filter}    ${range}
-    run keyword if    ${j} == {}    Fail    根据技能组id(queueId)筛选当天质检数据，没有找到数据
-    should be equal    ${j['status']}    OK    接口返回值status不正确, ${j}
-    should be true    '${j['totalElements']}' == '1'    接口返回数据不唯一, ${j}
-    Should Be Equal    ${j["entities"][0]["serviceSessionId"]}    ${serviceSessionId}    会话不正确:${j["entities"][0]["serviceSessionId"]}
-    ${totalScore}    set variable    ${j["entities"][0]["qualityReview"]["totalScore"]}
+    #    #根据queueId筛选当天质检数据,检查质检评分
+    #    ${range}    copy dictionary    ${DateRange}
+    #    ${yyyy}    ${mm}    ${day}=    Get Time    year,month,day
+    #    ${dn}=    Convert To Integer    ${day}
+    #    set to dictionary    ${range}    beginDate=${yyyy}-${mm}-${dn}T00%3A00%3A00.000Z
+    #    set to dictionary    ${range}    endDate=${yyyy}-${mm}-${dn}T23%3A59%3A59.000Z
+    #    set to dictionary    ${filter}    groupId=${queueentityAA.queueId}
+    #    ${j}=    Search Reviews    ${AdminUser}    ${filter}    ${range}
+    #    run keyword if    ${j} == {}    Fail    根据技能组id(queueId)筛选当天质检数据，没有找到数据
+    #    should be equal    ${j['status']}    OK    接口返回值status不正确, ${j}
+    #    should be true    '${j['totalElements']}' == '1'    接口返回数据不唯一, ${j}
+    #    Should Be Equal    ${j["entities"][0]["sessionId"]}    ${serviceSessionId}    会话不正确:${j["entities"][0]["sessionId"]}
+    #    ${totalScore}    set variable    ${j["entities"][0]["qualityReview"]["totalScore"]}
+    #验证质检成功,并记录质检总分
+    ${method}    set variable    get
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/steps/{stepNum}/qualityreview    ${method}    ${AdminUser}    ${timeout}    ${sessionInfo}    ${data}=
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    质检评分不正确:${resp.content}
+    Should Be Equal    ${j["entity"]["serviceSessionId"]}    ${serviceSessionId}    会话不正确:${j["entity"]["serviceSessionId"]}
+    ${totalScore}    set variable    ${j["entity"]["totalScore"]}
     #保存会话接起的时间范围
     ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    totalScore=${totalScore}    userId=${userId}    userName=${guestEntity.userName}
     ...    serviceSessionId=${serviceSessionId}    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    qmActorId=${AdminUser.userId}    vmsgCount=1
@@ -253,7 +268,7 @@ Valid Conversation Setup
     run keyword if    ${j} == {}    Fail    根据技能组id(queueId)筛选当天质检数据，没有找到数据
     should be equal    ${j['status']}    OK    接口返回值status不正确, ${j}
     should be true    '${j['totalElements']}' == '1'    接口返回数据不唯一, ${j}
-    should be equal    ${j['entities'][0]['serviceSessionId']}    ${conInfo.serviceSessionId}    质检接口返回值serviceSessionId不正确, ${j}
+    should be equal    ${j['entities'][0]['sessionId']}    ${conInfo.serviceSessionId}    质检接口返回值serviceSessionId不正确, ${j}
     #获取租户的质检评分项
     ${qualityResults}    Get Qualityitems
     #对该服务进行质检评分
@@ -298,6 +313,7 @@ Agent CallingBack Conversation Setup
     #关闭进行中会话
     Stop Processing Conversation    ${AdminUser}    ${session.userId}    ${serviceSessionId}
     #坐席模式下历史会话按照会话id筛选
+    sleep    ${daasDelay}
     set to dictionary    ${filter}    isAgent=true    serviceSessionId=${serviceSessionId}
     ${j}    Get History    ${AdminUser}    ${filter}    ${DateRange}
     Should Be True    ${j['total_entries']} ==1    坐席模式历史会话未查询到该会话：${j}
@@ -314,3 +330,113 @@ Agent CallingBack Conversation Setup
     ...    serviceSessionId=${serviceSessionId}    #stopDateTime=${j['items'][0]['stopDateTime']}
     set global variable    ${ConInfo}
     sleep    ${daasDelay}
+
+Transfer Conversation Setup
+    ${filter}    copy dictionary    ${FilterEntity}
+    ${range}    copy dictionary    ${DateRange}
+    #将转接预调度关闭掉
+    ${data}    set variable    {"value":false}
+    ${optionResult}    Set Option Value    ${AdminUser}    put    serviceSessionTransferPreScheduleEnable    ${data}
+    Should Be Equal    '${optionResult['status']}'    'OK'    设置转接预调度结果status不为OK：${optionResult}
+    #设置创建坐席请求参数
+    ${uuid}    Uuid 4
+    ${name}    set variable    ${AdminUser.tenantId}${uuid}
+    &{agent}=    create dictionary    username=${name}@qq.com    password=test2015    maxServiceSessionCount=10    nicename=${name}    permission=1
+    ...    roles=admin,agent
+    ${data}=    set variable    {"nicename":"${agent.nicename}","username":"${agent.username}","password":"${agent.password}","confirmPassword":"${agent.password}","trueName":"","mobilePhone":"","agentNumber":"","maxServiceSessionCount":"${agent.maxServiceSessionCount}","permission":${agent.permission},"roles":"${agent.roles}"}
+    ${agentFilter}    copy dictionary    ${AgentFilterEntity}
+    #创建坐席并获取坐席id
+    ${agentInfo}    Create Agent    ${AdminUser}    ${agentFilter}    ${data}
+    ${transferAgentUserId}    set variable    ${agentInfo['userId']}
+    ${originType}    set variable    weixin
+    ${curTime}    get time    epoch
+    ${guestEntity}    create dictionary    userName=${AdminUser.tenantId}-${curTime}    originType=${originType}
+    #创建技能组
+    ${agentqueue}    create dictionary    queueName=${AdminUser.tenantId}${curTime}AA
+    ${queueentityAA}    Add Agentqueue    ${agentqueue}    ${agentqueue.queueName}
+    set global variable    ${FilterEntity.queueId}    ${queueentityAA.queueId}
+    #创建指定技能组的扩展消息体
+    ${msgEntity}    create dictionary    msg=${curTime}:test msg!    type=txt    ext={"weichat":{"originType":"${originType}","queueName":"${queueentityAA.queueName}"}}
+    #将入口指定设置优先顺序
+    Set RoutingPriorityList    入口    渠道    关联
+    #发送消息并创建访客
+    Send Message    ${restentity}    ${guestEntity}    ${msgEntity}
+    #根据访客昵称查询待接入列表
+    ${filter}    copy dictionary    ${FilterEntity}
+    set to dictionary    ${filter}    visitorName=${guestEntity.userName}
+    ${resp}    Search Waiting Conversation    ${AdminUser}    ${filter}    ${DateRange}
+    ${j}    to json    ${resp.content}
+    Should Be True    ${j["total_entries"]} == 1    查询结果为空：${j}
+    Should Be Equal    ${j['items'][0]['userName']}    ${guestEntity.userName}    访客名称不正确：${resp.content}
+    #根据查询结果接入会话
+    Access Conversation    ${AdminUser}    ${j['items'][0]['userWaitQueueId']}
+    #根据Vistiors接口获取会话接起时间createDateTime和创建时间visitorFirstMessageTime,此处sleep增加会话时长
+    sleep    2000ms
+    ${resp}=    /v1/Agents/me/Visitors    ${AdminUser}    ${timeout}
+    ${j}    to json    ${resp.content}
+    ${startTime1}    set variable    ${j[0]['createDateTime']}
+    ${startTime2}    evaluate    ${startTime1}/1000
+    ${startTime3}    evaluate    ${startTime2}+3
+    ${daasStartTime}    set variable    ${startTime2}000
+    ${daasEndTime}    set variable    ${startTime3}000
+    ${createTime1}    set variable    ${j[0]['visitorFirstMessageTime']}
+    ${createTime2}    evaluate    ${createTime1}/1000-1
+    ${daasCreateTime}    set variable    ${createTime2}000
+    set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasEndTime}
+    set global variable    ${ConDateRange}    ${ConDateRange}
+    ${userId}    set variable    ${j[0]['user']['userId']}
+    ${nicename}    set variable    ${j[0]['user']['nicename']}
+    ${serviceSessionId}    set variable    ${j[0]['serviceSessionId']}
+    ${chatGroupId}    set variable    ${j[0]['chatGroupId']}
+    ${queueId}    set variable    ${FilterEntity.queueId}
+    ${agentUserId}    set variable    ${AdminUser.userId}
+    #将会话转接给新创建的坐席
+    ${data}    set variable    {"agentUserId":"${transferAgentUserId}","queueId":${queueId}}
+    ${resp}=    /v6/tenants/{tenantId}/servicesessions/{serviceSessionId}/transfer    ${AdminUser}    ${serviceSessionId}    ${queueId}    ${data}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    转接会话失败:${resp.content}
+    #设置查询当前会话的参数
+    set to dictionary    ${filter}    state=Processing    isAgent=${False}    visitorName=${nicename}
+    #创建Repeat Keyword Times的参数list
+    @{paramList}    create list    ${AdminUser}    ${filter}    ${range}    #该参数为Get EnquiryStatus接口的参数值
+    ${expectConstruction}    set variable    ['items'][0]['agentUserId']    #该参数为接口返回值的应取的字段结构
+    ${expectValue}    set variable    ${transferAgentUserId}    #该参数为获取接口某字段的预期值
+    #验证当前会话数据是否为期望值
+    ${j}    Repeat Keyword Times    Get Current Conversation    ${expectConstruction}    ${expectValue}    @{paramList}
+    Run Keyword If    ${j} == {}    Fail    接口返回结果中会话不属于转接后的坐席
+    Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${serviceSessionId}    获取接口会话id不正确: ${j}
+    Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${name}    获取接口返回agentUserNiceName不正确: ${j}
+    ${curTime}    get time    epoch
+    ${daasTransferStartTime}    set variable    ${curTime}000
+    #获取会话标签数据
+    &{conversationTagEntity}    create dictionary    systemOnly=false    buildCount=true
+    ${j}    Get Conversation Tags    get    ${AdminUser}    0    ${conversationTagEntity}
+    ${tagLength}    Get Length    ${j}
+    ${tagRootId}    Set Variable    ${j[0]["id"]}
+    #获取标签中第一个根节点的叶子标签id值
+    ${tagId}    Get Conversation TagId    ${j}
+    ${data}    set variable    [${tagId}]
+    #会话打标签
+    ${j}    Set ServiceSessionSummaryResults    post    ${AdminUser}    ${serviceSessionId}    ${data}
+    Should Be True    '${j}' == '${EMPTY}'    获取接口返回结果不正确: ${j}
+    #AdminUser关闭transferAgentUser的当前会话
+    ${resp}=    /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/stop    ${AdminUser}    ${serviceSessionId}    ${timeout}
+    Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
+    ${j}    to json    ${resp.content}
+    should be equal    ${j["status"]}    OK    结束会话失败:${resp.content}
+    #保存会话接起的时间范围:begin是第一个服务的接起时间，end是第二个服务的接起时间
+    set to dictionary    ${ConDateRange}    beginDateTime=${daasStartTime}    endDateTime=${daasTransferStartTime}
+    set global variable    ${ConDateRange}    ${ConDateRange}
+    ${transferConversationInfo}    Create Dictionary    transferAgentUserId=${transferAgentUserId}    tagId=${tagId}    tagLength=${tagLength}    tagRootId=${tagRootId}
+    Set Global Variable    ${transferConversationInfo}    ${transferConversationInfo}
+    ${conInfo}    create dictionary    queueentityAA=${queueentityAA}    daasCreateTime=${daasCreateTime}    userId=${userId}    userName=${guestEntity.userName}    serviceSessionId=${serviceSessionId}
+    ...    chatGroupId=${chatGroupId}    queueId=${queueentityAA.queueId}    originType=${originType}    transferAgentUserId=${transferAgentUserId}
+    sleep    ${daasDelay}
+    return from keyword    ${conInfo}
+
+Find Tag Count
+    [Arguments]    @{entities}
+    : FOR    ${n}    IN    @{entities}
+    \    Return From Keyword If    ${n["key"]} == ${transferConversationInfo.tagRootId}    ${n["count"]}
+    Return From Keyword    False

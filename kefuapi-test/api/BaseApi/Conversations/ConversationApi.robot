@@ -83,5 +83,28 @@
     [Arguments]    ${agent}    ${files}    ${timeout}
     ${header}=    Create Dictionary    #Content-Type=application/json
     ${uri}=    set variable    /v1/tenants/${agent.tenantId}/mediafiles/amr
-    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    files=${files}
-    ...    timeout=${timeout}
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    files=${files}    timeout=${timeout}
+
+/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/stop
+    [Arguments]    ${agent}    ${serviceSessionId}    ${timeout}
+    [Documentation]    管理员结束进行中会话API
+    ...
+    ...    【参数值】
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${agent} | 必填 | 包含连接别名、tenantId、userid、roles等坐席信息，例如：${AdminUser} |
+    ...    | ${serviceSessionId} | 必填 | 会话id |
+    ...    | ${timeout} | 必填 | 接口最大调用超时时间，例如：${timeout} |
+    ...
+    ...    【返回值】
+    ...    | 调用接口/v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/stop后，返回true 或 false |
+    ...
+    ...    【调用方式】
+    ...    | 获取进行中会话 | ${resp} | /v1/tenants/{tenantId}/servicesessions/{serviceSessionId}/stop | ${agent} | ${servicesessionid} | ${timeout} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 构造请求header |
+    ...    | Step 2 | 构造请求uri，例如：/v1/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/stop |
+    ...    | Step 2 | 调用get请求 Post Request，返回请求结果 |
+    ${header}=    Create Dictionary    Content-Type=application/json
+    ${uri}=    set variable    /v1/tenants/${agent.tenantId}/servicesessions/${serviceSessionId}/stop
+    Run Keyword And Return    Post Request    ${agent.session}    ${uri}    headers=${header}    timeout=${timeout}

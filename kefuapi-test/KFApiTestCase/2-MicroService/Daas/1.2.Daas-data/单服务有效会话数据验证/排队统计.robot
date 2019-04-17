@@ -77,13 +77,13 @@ Library           RequestsLibrary
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    24小时排队趋势:${resp.content}
-    should be equal    ${j["entities"][0]["key"]}    cnt_wc    24小时排队趋势排队次数不正确:${j["entities"][0]["key"]}
+    should be equal    ${j["entities"][0]["key"]}    cnt_wt    24小时排队趋势排队次数不正确:${j["entities"][0]["key"]}
     should be true    ${j["entities"][0]["value"][${hour}]["${hour}"]}==1    24小时排队趋势排队次数不正确:${j["entities"][0]["value"][${hour}]["${hour}"]}
-    should be equal    ${j["entities"][1]["key"]}    avc_wc    24小时排队趋势平均排队次数不正确:${j["entities"][1]["key"]}
+    should be equal    ${j["entities"][1]["key"]}    cnt_avg_wt    24小时排队趋势平均排队次数不正确:${j["entities"][1]["key"]}
     should be true    ${j["entities"][1]["value"][${hour}]["${hour}"]}==1    24小时排队趋势平均排队次数不正确:${j["entities"][1]["value"][${hour}]["${hour}"]}
-    should be equal    ${j["entities"][2]["key"]}    avg_wt    24小时排队趋势平均排队时间不正确:${j["entities"][2]["key"]}
+    should be equal    ${j["entities"][2]["key"]}    avg_wtt    24小时排队趋势平均排队时间不正确:${j["entities"][2]["key"]}
     should be true    ${j["entities"][2]["value"][${hour}]["${hour}"]}>=2    24小时排队趋势平均排队时间不正确:${j["entities"][2]["value"][${hour}]["${hour}"]}
-    should be equal    ${j["entities"][3]["key"]}    max_wt    24小时排队趋势最大排队时间不正确:${j["entities"][3]["key"]}
+    should be equal    ${j["entities"][3]["key"]}    max_wtt    24小时排队趋势最大排队时间不正确:${j["entities"][3]["key"]}
     should be true    ${j["entities"][3]["value"][${hour}]["${hour}"]}>=2    24小时排队趋势最大排队时间不正确:${j["entities"][3]["value"][${hour}]["${hour}"]}
 
 排队趋势
@@ -99,9 +99,9 @@ Library           RequestsLibrary
     Should Be Equal As Integers    ${resp.status_code}    200    不正确的状态码:${resp.status_code}
     ${j}    to json    ${resp.content}
     should be equal    ${j["status"]}    OK    排队趋势不正确:${resp.content}
-    should be equal    ${j["entities"][0]["key"]}    cnt_wc    排队趋势排队次数不正确:${j["entities"][0]["key"]}
+    should be equal    ${j["entities"][0]["key"]}    cnt_wt    排队趋势排队次数不正确:${j["entities"][0]["key"]}
     should be true    ${j["entities"][0]["value"][0]["${todayDateRange.beginDateTime}"]}==1    排队趋势排队次数不正确:${j["entities"][0]["value"][0]["${todayDateRange.beginDateTime}"]}
-    should be equal    ${j["entities"][1]["key"]}    avg_wt    排队趋势平均排队时间不正确:${j["entities"][1]["key"]}
+    should be equal    ${j["entities"][1]["key"]}    avg_wtt    排队趋势平均排队时间不正确:${j["entities"][1]["key"]}
     should be true    ${j["entities"][1]["value"][0]["${todayDateRange.beginDateTime}"]}>=2    排队趋势平均排队时间不正确:${j["entities"][1]["value"][0]["${todayDateRange.beginDateTime}"]}
-    should be equal    ${j["entities"][2]["key"]}    max_wt    排队趋势最大排队时间不正确:${j["entities"][2]["key"]}
+    should be equal    ${j["entities"][2]["key"]}    max_wtt    排队趋势最大排队时间不正确:${j["entities"][2]["key"]}
     should be true    ${j["entities"][2]["value"][0]["${todayDateRange.beginDateTime}"]}>=2    排队趋势最大排队时间不正确:${j["entities"][2]["value"][0]["${todayDateRange.beginDateTime}"]}

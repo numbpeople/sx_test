@@ -407,6 +407,7 @@ Transfer Conversation Setup
     Run Keyword If    ${j} == {}    Fail    接口返回结果中会话不属于转接后的坐席
     Should Be Equal    ${j['items'][0]['serviceSessionId']}    ${serviceSessionId}    获取接口会话id不正确: ${j}
     Should Be Equal    ${j['items'][0]['agentUserNiceName']}    ${name}    获取接口返回agentUserNiceName不正确: ${j}
+    sleep    1s
     ${curTime}    get time    epoch
     ${daasTransferStartTime}    set variable    ${curTime}000
     #获取会话标签数据

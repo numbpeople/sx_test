@@ -1,1 +1,0 @@
-docker push docker-registry.easemob.com/kefu-qa/kefu-autotest:latest

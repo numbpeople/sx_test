@@ -1,2 +1,0 @@
-*** Variables ***
-${exportsbasejson}    {"navigator":{"Agent":{"uri":"/mo/agent/webapp/myexports","GrayKey":"base","ResourceKey":"agent_export"},"Admin":{"uri":"/mo/admin/webapp/exports","GrayKey":"base","ResourceKey":"admin_export"}},"elements":[{"name":"header","xPath":"//*[@id='em-download']/header/h1","text":{"zh-CN":"导出管理","en-US":"Export"},"op":"show","opjson":"","GrayKey":"base","ResourceKey":"base","attributes":[],"elements":[]}]}

@@ -1,2 +1,0 @@
-*** Variables ***
-${LoginPage_ResElement}    {"etAccount":{"name":"account element","element":"${packagename}:id/etAccount","text":{"zh-CN":"账号","en-US":"account"}},"etPwd":{"name":"password element","element":"${packagename}:id/etPwd","text":{"zh-CN":"密码","en-US":"password"}},"btnLogin":{"name":"loginButton element","element":"${packagename}:id/btnLogin","text":{"zh-CN":"登录","en-US":"login"}},"cb_hidden_login":{"name":"hiddenLogin element","element":"${packagename}:id/cb_hidden_login","text":{"zh-CN":"隐身登录","en-US":"hideLogin"}}}

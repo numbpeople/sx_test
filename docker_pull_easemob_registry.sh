@@ -1,1 +1,0 @@
-docker pull docker-registry.easemob.com/kefu-qa/kefu-autotest:latest

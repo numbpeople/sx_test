@@ -1,2 +1,0 @@
-*** Variables ***
-@{ResourceList}    base

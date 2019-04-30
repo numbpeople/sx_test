@@ -1,0 +1,270 @@
+*** Settings ***
+Library           json
+Library           requests
+Library           Collections
+Library           RequestsLibrary
+Library           String
+Resource          ../Variable_Env.robot
+
+*** Keywords ***
+request
+    [Arguments]    ${method}    ${session}    ${uri}    ${header}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    封装的请求信息，返回相应结果
+    #封装各个请求方法与参数值
+    Run Keyword And Return If    '${method}'=='GET'    GET Request    ${session}    ${uri}    headers=${header}    params=${params}
+    ...    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='POST'    Post Request    ${session}    ${uri}    headers=${header}    data=${data}
+    ...    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='PUT'    PUT Request    ${session}    ${uri}    headers=${header}    data=${data}
+    ...    params=${params}    timeout=${timeout}
+    Run Keyword And Return If    '${method}'=='DELETE'    DELETE Request    ${session}    ${uri}    headers=${header}    data=${data}
+    ...    params=${params}    timeout=${timeout}
+
+Set Base Request Attribute
+    [Arguments]    ${contentType}    ${token}    ${requestHeader}
+    [Documentation]    设置请求header基本属性
+    Log    ${contentType}
+    Log    ${token}
+    Log    ${requestHeader}
+    #定义测试用例的操作描述
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${contentTypeDesc}    set variable    Content-Type值为：${contentType}
+    ${tokenDesc}    set variable    Authorization值为：Bearer ${token}
+    #给相应变量赋值
+    set to dictionary    ${newRequestHeader}    Content-Type=${contentType}
+    set to dictionary    ${newRequestHeader}    Authorization=Bearer ${token}
+    #考虑如果传入content-type、Authorization字段不携带的测试用例场景
+    run keyword if    "${contentType}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Content-Type
+    run keyword if    "${token}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Authorization
+    #定义返回结构
+    &{result}    create dictionary
+    set to dictionary    ${result}    requestHeader=${newRequestHeader}    contentTypeDesc=${contentTypeDesc}    tokenDesc=${tokenDesc}
+    return from keyword    ${result}
+
+Return Result
+    [Arguments]    ${resp}
+    [Documentation]    封装返回值结果
+    ...
+    ...    【参数值】：
+    ...    | 参数名 | 是否必填 | 参数含义 |
+    ...    | ${resp} | 必填 | 接口返回的对象，其中包含请求地址、状态码、返回值 |
+    ...
+    ...    【返回值】
+    ...    | 进行二次封装，将请求状态、请求地址、状态码、返回值进行返回：status、url、statusCode、text |
+    ...
+    ...    【调用方式】
+    ...    | 获取进行中会话 | ${j} | Return Result | ${resp} |
+    ...
+    ...    【函数操作步骤】
+    ...    | Step 1 | 构造返回字典，返回请求状态、请求地址、状态码、返回值：status、url、statusCode、text |
+    ...    | Step 2 | 如果请求返回值为空，则返回值为空字符串 |
+    #构造返回字典
+    &{apiResponse}    Copy Dictionary    ${ApiResponse}
+    ${text}    set variable    ${EMPTY}
+    #判断返回值场景：返回是string、json、空、无返回值等
+    #如果返回值resp.text是否包含502 Bad Gateway
+    log    ${resp.text}
+    ${badGatewaystatus}    Run Keyword And Return Status    should contain    ${resp.text}    502 Bad Gateway
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${resp.text}
+    Return From Keyword If    ${badGatewaystatus}    ${apiResponse}
+    #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
+    ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
+    Return From Keyword If    not ${status}    ${apiResponse}
+    #设置请求返回值
+    ${text}    to json    ${resp.text}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
+    Return From Keyword    ${apiResponse}
+
+Format Jsonstr
+    [Arguments]    ${jsonstr}    ${argument}
+    ${t}    evaluate    ','.join(list(map(str,@{argument})))
+    ${formatstr}    decode bytes to string    ${t}    utf-8
+    ${s}    evaluate    '${jsonstr}' % (${formatstr})
+    return from keyword    ${s}
+
+Repeat Keyword Times
+    [Arguments]    ${functionName}    ${expectConstruction}    ${expectValue}    @{paramList}
+    [Documentation]    重试调用接口多次，判断结果是否包含预期的值，包含则返回结果，否则返回{}
+    ...
+    ...    【参数值】：
+    ...    - ${functionName} ，代表接口封装后的关键字
+    ...    - ${expectConstruction} ，接口返回值中应取的字段结构
+    ...    - ${expectValue} ，获取接口某字段的预期值
+    ...    - @{paramList}，接口封装后所需要传入的参数值
+    ...
+    ...    【返回值】：
+    ...    - 调用${functionName}接口，返回结果中，匹配${expectConstruction}字段结构，值等于${expectValue}的数据结构
+    : FOR    ${i}    IN RANGE    ${retryTimes}
+    \    ${j}    run keyword    ${functionName}    @{paramList}
+    \    #适配最新的返回结构，获取返回值
+    \    ${status}    Run Keyword And Return Status    Dictionary Should Contain Key    ${j}    statusCode
+    \    run keyword if    ${status}    Set Suite Variable    ${j}    ${j.text}
+    \    #返回结果为空，则进入下次循环
+    \    Continue For Loop If    "${j}" == "[]"
+    \    #想要获取返回值中应取的字段结构，即${j}返回值中，获取${expectConstruction}结构的值 ，例如：${j['data'][0]}
+    \    ${dataRes}    set variable    ${j${expectConstruction}}
+    \    return from keyword if    "${dataRes}" == "${expectValue}"    ${j}
+    \    sleep    ${delay}
+    return from keyword    {}
+
+Structure Field Should Be Equal
+    [Arguments]    ${requestResult}    ${diffStructTemplate}
+    #定义返回结构
+    &{diffResult}    create dictionary    status=True    errorDescribtion=
+    log    ${diffStructTemplate}
+    #将模板转换成字典
+    &{diffStructTemplateJson}    to json    ${diffStructTemplate}
+    #获取模板结果中所有的字段
+    @{diffStructTemplateList}    Get Dictionary Keys    ${diffStructTemplateJson}
+    #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
+    ${diffResult}    Check Field Format    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}
+    return from keyword    ${diffResult}
+
+Structure Value Should Be Equal
+    [Arguments]    ${requestResult}    ${diffStructResult}
+    #定义返回结构
+    &{diffResult}    create dictionary    status=True    errorDescribtion=
+    log    ${diffStructResult}
+    ${diffStructResult}    convert to string    ${diffStructResult}
+    return from keyword if    '${diffStructResult}' == '${EMPTY}'    ${diffResult}
+    #将模板转换成字典
+    &{diffStructResultJson}    to json    ${diffStructResult}
+    #获取模板结果中所有的字段
+    @{diffStructResultList}    Get Dictionary Keys    ${diffStructResultJson}
+    #分别校验字段值的正确性，如不正确，则将错误置如返回错误结果中
+    ${diffResult}    Check Value Format    ${requestResult}    ${diffStructResultJson}    ${diffStructResultList}    ${diffResult}
+    return from keyword    ${diffResult}
+
+Check Field Format
+    [Arguments]    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}
+    #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
+    : FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructTemplateList}
+    \    #递归校验结构的正确性
+    \    Check Type Format    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}    ${index}
+    \    ...    ${diffKey}    Check Field Format
+    \    #根据json结构断言字段正确性
+    \    ${keyStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${requestResult}    ${diffKey}
+    \    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
+    \    run keyword if    not ${keyStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中未包含字段：${diffKey}\n
+    return from keyword    ${diffResult}
+
+Check Value Format
+    [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}
+    #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
+    : FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructList}
+    \    #递归校验结构的正确性
+    \    Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}
+    \    ...    ${diffKey}    Check Value Format
+    \    #检查字段值是否相等
+    \    ${valueStatus}    Run Keyword And Return Status    Should Be Equal    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}
+    \    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
+    \    run keyword if    not ${valueStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中字段：${diffKey}，不等于${diffStructResultJson['${diffKey}']}，实际值为：${requestResult['${diffKey}']}。\n
+    return from keyword    ${diffResult}
+
+Check Type Format
+    [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}
+    ...    ${keyword}
+    [Documentation]    递归校验结构的正确性
+    log    ${diffStructResultJson}
+    log    ${requestResult}
+    log list    ${diffStructList}
+    #判断key的类型，如果key是json，则递归循环获取
+    ${keyJsonType}    Check Json Type    ${diffKey}
+    @{keyJsondiffStructList}    run keyword if    ${keyJsonType}    Get Dictionary Keys    ${diffKey}
+    run keyword if    ${keyJsonType}    ${keyword}    ${requestResult[${index}]}    ${diffStructResultJson[${index}]}    ${keyJsondiffStructList}    ${diffResult}
+    Continue For Loop If    ${keyJsonType}
+    #判断结果中key和value均不属于json
+    ${keyStatus}    Run Keyword And Return Status    should contain    "${diffKey}"    :
+    ${valueStatus}    Run Keyword And Return Status    log    ${diffStructResultJson['${diffKey}']}
+    Continue For Loop If    (not ${keyStatus}) and (not ${valueStatus})
+    log    ${diffStructResultJson['${diffKey}']}
+    log    ${requestResult['${diffKey}']}
+    #判断是否是json
+    ${valueJsonType}    Check Json Type    ${diffStructResultJson['${diffKey}']}
+    @{jsondiffStructList}    run keyword if    ${valueJsonType}    Get Dictionary Keys    ${diffStructResultJson['${diffKey}']}
+    #判断是否是list
+    ${valueListType}    Check List Type    ${diffStructResultJson['${diffKey}']}
+    @{listdiffStructList}    run keyword if    ${valueListType}    set variable    ${diffStructResultJson['${diffKey}']}
+    #判断是否是json
+    run keyword if    ${valueJsonType}    ${keyword}    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}    ${jsondiffStructList}    ${diffResult}
+    #判断是否是list
+    run keyword if    ${valueListType}    ${keyword}    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}    ${listdiffStructList}    ${diffResult}
+    Continue For Loop If    ${valueListType}
+
+Check Json Type
+    [Arguments]    ${key}
+    #检查是否是json结构
+    ${jsonValue}    Get Substring    "${key}"    1    2
+    log    ${jsonValue}
+    ${status}    Run Keyword And Return Status    Should Be Equal    ${jsonValue}    {
+    return from keyword    ${status}
+
+Check List Type
+    [Arguments]    ${key}
+    #检查是否是json结构
+    ${jsonValue}    Get Substring    "${key}"    1    2
+    log    ${jsonValue}
+    ${status}    Run Keyword And Return Status    Should Be Equal    ${jsonValue}    [
+    return from keyword    ${status}
+
+Set Request Attribute And Run Keyword
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    ${keyword}    @{arguments}
+    [Documentation]    设置请求头，并运行关键字，并返回接口结果
+    Log    ${contentType}
+    Log    ${token}
+    Log    ${statusCode}
+    Log    ${keywordDescribtion}
+    Log    ${keyword}
+    Log    ${arguments}
+    #设置请求header基本属性
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${result}    Set Base Request Attribute    ${contentType}    ${token}    ${newRequestHeader}
+    #获取测试用例的操作描述和header信息
+    ${contentTypeDesc}    set variable    ${result.contentTypeDesc}
+    ${tokenDesc}    set variable    ${result.tokenDesc}
+    &{requestHeader1}    copy dictionary    ${result.requestHeader}
+    #替换列表参数中header值
+    ${index}    Get Index From List    ${arguments}    ${newRequestHeader}
+    Set List Value    ${arguments}    ${index}    ${requestHeader1}
+    #运行关键字
+    &{apiResponse}    Run keyword    ${keyword}    @{arguments}
+    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}\n ================================================================华丽的分割线================================================================
+    Return From Keyword    ${apiResponse}
+
+Assert Request Result
+    [Arguments]    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    Log    ${apiResponse}
+    Log    ${diffStructTemplate}
+    Log    ${diffStructResult}
+    Log    ${statusCode}
+    Log List    ${argumentField}
+    Log List    ${argumentValue}
+    #验证状态码等于预期值
+    ${codeStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${apiResponse.statusCode}    ${statusCode}
+    ${errorDescribetion}    set variable    ${apiResponse.errorDescribetion}
+    run keyword if    not ${codeStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=${errorDescribetion}，实际返回状态码：${apiResponse.statusCode}
+    #验证接口返回值的字段是否完整
+    ${errorDescribetion}    set variable    ${apiResponse.errorDescribetion}
+    #判断对比的结构中是否有包含替换的值的场景
+    ${diffStructTemplateResultStatus}    Run Keyword And Return Status    Should Contain    ${diffStructTemplate}    %
+    #替换格式化str
+    ${diffStructTemplateResultTemp}    Run Keyword If    ${diffStructTemplateResultStatus}    Format Jsonstr    ${diffStructTemplate}    ${argumentField}
+    run keyword if    ${diffStructTemplateResultStatus}    set suite variable    ${diffStructTemplate}    ${diffStructTemplateResultTemp}
+    #验证接口返回值的字段是否完整
+    ${errorDescribetion}    set variable    ${apiResponse.errorDescribetion}
+    ${fieldDiffResult}    Structure Field Should Be Equal    ${apiResponse.text}    ${diffStructTemplate}
+    run keyword if    not ${fieldDiffResult.status}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=${errorDescribetion}，${fieldDiffResult.errorDescribtion}
+    #验证接口返回值的字段值是否正确
+    ${errorDescribetion}    set variable    ${apiResponse.errorDescribetion}
+    #判断对比的结构中是否有包含替换的值的场景
+    ${diffStructResultStatus}    Run Keyword And Return Status    Should Contain    ${diffStructResult}    %
+    #替换格式化str
+    ${diffStructResultTemp}    Run Keyword If    ${diffStructResultStatus}    Format Jsonstr    ${diffStructResult}    ${argumentValue}
+    run keyword if    ${diffStructResultStatus}    set suite variable    ${diffStructResult}    ${diffStructResultTemp}
+    #验证接口返回值的字段值是否正确
+    ${valueDiffResult}    Structure Value Should Be Equal    ${apiResponse.text}    ${diffStructResult}
+    run keyword if    not ${valueDiffResult.status}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=${errorDescribetion}，${valueDiffResult.errorDescribtion}
+    #验证最终的校验结果
+    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}

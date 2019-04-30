@@ -1,0 +1,7 @@
+robotframework-selenium2library==3.0.0
+robotframework-appiumlibrary==1.4.6
+robotframework-excellibrary==0.0.2
+robotframework-requests==0.4.5
+requests==2.18.4
+pandas==0.22.0
+beautifulsoup4==4.4.1

@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    ../../Common/BaseCommon.robot
+Resource          ../../Common/BaseCommon.robot
 
 *** Keywords ***
 /management/token/superToken
@@ -9,15 +9,17 @@ Resource    ../../Common/BaseCommon.robot
     Run Keyword And Return    Post Request    ${session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
 
 /management/token
-    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}=   ${params}=    ${data}=    ${file}=
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}=    ${params}=    ${data}=
+    ...    ${file}=
     [Documentation]    获取org token
     ${uri}=    set variable    /management/token
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
-    
-/{org_name}/{app_name}/token
-    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}=    ${params}=    ${data}=    ${file}=
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/token
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
     [Documentation]    通过client_id和client_secret获取app token和获取普通用户token
-    ${org_name}    set variable    ${pathParamter.org_name}
-    ${app_name}    set variable    ${pathParamter.app_name}
-    ${uri}=    set variable    /${org_name}/${app_name}/token
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/token
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}

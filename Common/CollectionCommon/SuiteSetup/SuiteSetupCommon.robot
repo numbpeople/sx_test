@@ -8,7 +8,11 @@ Setup
     [Documentation]    测试用例执行初始化部分：包括如下：
     ...    - 1、设置超管Token等相关信息、或获取Org Token
     ...    - 2、在有设置超管Token条件下获取并设置应用数据，或创建新的应用
-    ...    - 3、获取应用下用户数据
-    Get Org Token
-    Get Applications And Set AppName
-    Get Valid And Invalid User
+    ...    - 3、初始化Appkey的token信息
+    ...    - 4、获取应用下用户数据
+    ...    - 5、根据超管token指定情况，设置模板用例的执行状态
+    Get OrgToken Or BestToken Init    #初始化console后台管理token或设置超管token
+    Get Applications And Set AppName Init    #初始化组织下的应用信息
+    Get AppToken Init    #初始化Appkey的token
+    Get Valid And Invalid User Init    #初始化应用下用户信息
+    Set Model Case Run Status Init    #初始化模板case中，各条用例的执行状态

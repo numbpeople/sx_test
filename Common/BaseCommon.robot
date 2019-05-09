@@ -5,19 +5,20 @@ Library           Collections
 Library           RequestsLibrary
 Library           String
 Resource          ../Variable_Env.robot
+Library           ../Lib/KefuUtils.py
 
 *** Keywords ***
 request
     [Arguments]    ${method}    ${session}    ${uri}    ${header}    ${params}=    ${data}=
-    ...    ${file}=
+    ...    ${files}=
     [Documentation]    封装的请求信息，返回相应结果
     #封装各个请求方法与参数值
     Run Keyword And Return If    '${method}'=='GET'    GET Request    ${session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='POST'    Post Request    ${session}    ${uri}    headers=${header}    data=${data}
-    ...    params=${params}    timeout=${timeout}
+    ...    params=${params}    timeout=${timeout}    files=${files}
     Run Keyword And Return If    '${method}'=='PUT'    PUT Request    ${session}    ${uri}    headers=${header}    data=${data}
-    ...    params=${params}    timeout=${timeout}
+    ...    params=${params}    timeout=${timeout}    files=${files}
     Run Keyword And Return If    '${method}'=='DELETE'    DELETE Request    ${session}    ${uri}    headers=${header}    data=${data}
     ...    params=${params}    timeout=${timeout}
 
@@ -34,9 +35,17 @@ Set Base Request Attribute
     #给相应变量赋值
     set to dictionary    ${newRequestHeader}    Content-Type=${contentType}
     set to dictionary    ${newRequestHeader}    Authorization=Bearer ${token}
+    ${restrict-access}    set variable    ${newRequestHeader['restrict-access']}
+    ${thumbnail}    set variable    ${newRequestHeader.thumbnail}
+    ${share-secret}    set variable    ${newRequestHeader['share-secret']}
+    ${Accept}    set variable    ${newRequestHeader.Accept}
     #考虑如果传入content-type、Authorization字段不携带的测试用例场景
     run keyword if    "${contentType}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Content-Type
     run keyword if    "${token}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Authorization
+    run keyword if    "${restrict-access}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    restrict-access
+    run keyword if    "${thumbnail}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    thumbnail
+    run keyword if    "${share-secret}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    share-secret
+    run keyword if    "${Accept}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Accept
     #定义返回结构
     &{result}    create dictionary
     set to dictionary    ${result}    requestHeader=${newRequestHeader}    contentTypeDesc=${contentTypeDesc}    tokenDesc=${tokenDesc}
@@ -66,15 +75,15 @@ Return Result
     #如果返回值resp.text是否包含502 Bad Gateway
     log    ${resp.text}
     ${badGatewaystatus}    Run Keyword And Return Status    should contain    ${resp.text}    502 Bad Gateway
-    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${resp.text}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${resp.text}    resp=${resp}
     Return From Keyword If    ${badGatewaystatus}    ${apiResponse}
     #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
     ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
-    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}    resp=${resp}
     Return From Keyword If    not ${status}    ${apiResponse}
     #设置请求返回值
     ${text}    to json    ${resp.text}
-    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}    resp=${resp}
     Return From Keyword    ${apiResponse}
 
 Format Jsonstr
@@ -268,3 +277,48 @@ Assert Request Result
     run keyword if    not ${valueDiffResult.status}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=${errorDescribetion}，${valueDiffResult.errorDescribtion}
     #验证最终的校验结果
     Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+
+Set Model Case Run Status Init
+    [Documentation]    初始化模板case中，各条用例的执行状态
+    #判断若指定了超管token，则设置其他模板case为不执行
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    OrgToken_ContentType=${RunStatus.NORUN}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    OrgToken_EmptyContentType=${RunStatus.NORUN}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    EmptyOrgToken_ContentType=${RunStatus.NORUN}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    EmptyOrgToken_EmptyContentType=${RunStatus.NORUN}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    AppToken_ContentType=${RunStatus.NORUN}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    BestToken_ContentType=${RunStatus.RUN}
+    set global variable    ${ModelCaseRunStatus}    ${ModelCaseRunStatus}
+
+Generate Random Specified String
+    [Documentation]    随机生成字符串
+    ${randomNumber}    Generate Random String    10    [NUMBERS]
+    ${preString}    set variable    imautotest
+    ${newNumber}    set variable    ${preString}-${randomNumber}
+    Return From Keyword    ${newNumber}
+
+Find Media Path
+    [Arguments]    ${mediaType}=
+    [Documentation]    找到Resource文件夹下的富媒体文件
+    ...
+    ...    参数：${mediaType}为富媒体的类型
+    ...
+    ...    - 1、image：图片文件
+    ...    - 2、audio：语音文件
+    #找到Resource文件夹下的富媒体文件
+    ${folderName}    set variable    Resource
+    ${fileTempName}    set variable    image.gif
+    run keyword if    "${mediaType}" == "audio"    set suite variable    ${fileTempName}    blob.amr
+    ${folderPath}    set variable    ${CURDIR}
+    ${folderPath}    evaluate    os.path.abspath(os.path.dirname("${folderPath}"))    os
+    ${picpath}    set variable    ${folderPath}${/}${folderName}${/}${fileTempName}
+    ${picpath}    Replace String    ${picpath}    \\    /
+    return from keyword    ${picpath}
+
+Should Run Model Case
+    [Arguments]    ${specificModelCaseRunStatus}
+    [Documentation]    是否需要执行该条测试用例
+    ...    - 参数 ${specificModelCaseRunStatus}：传入的模板Case执行状态
+    ...
+    ...    返回值
+    ...    - 传入True则执行该条模板用例，传入False则不执行
+    Return From Keyword    ${specificModelCaseRunStatus}

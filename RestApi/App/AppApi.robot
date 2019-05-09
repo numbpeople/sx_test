@@ -10,11 +10,13 @@ Resource          ../../Common/BaseCommon.robot
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
-/{org_name}/{app_name}/credentials
-    [Arguments]    ${session}    ${org_name}    ${app_name}    ${header}    ${timeout}
+/{orgName}/{appName}/credentials
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
     [Documentation]    获取App密钥
-    ${uri}=    set variable    /${org_name}/${app_name}/credentials
-    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/credentials
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
 
 /management/organizations/{orgName}/applications/{appName}
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=

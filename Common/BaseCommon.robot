@@ -13,6 +13,7 @@ request
     ...    ${files}=
     [Documentation]    封装的请求信息，返回相应结果
     #封装各个请求方法与参数值
+    Log Many    ${uri}    ${header}    ${params}    ${data}    ${files}
     Run Keyword And Return If    '${method}'=='GET'    GET Request    ${session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='POST'    Post Request    ${session}    ${uri}    headers=${header}    data=${data}
@@ -35,17 +36,8 @@ Set Base Request Attribute
     #给相应变量赋值
     set to dictionary    ${newRequestHeader}    Content-Type=${contentType}
     set to dictionary    ${newRequestHeader}    Authorization=Bearer ${token}
-    ${restrict-access}    set variable    ${newRequestHeader['restrict-access']}
-    ${thumbnail}    set variable    ${newRequestHeader.thumbnail}
-    ${share-secret}    set variable    ${newRequestHeader['share-secret']}
-    ${Accept}    set variable    ${newRequestHeader.Accept}
-    #考虑如果传入content-type、Authorization字段不携带的测试用例场景
-    run keyword if    "${contentType}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Content-Type
-    run keyword if    "${token}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Authorization
-    run keyword if    "${restrict-access}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    restrict-access
-    run keyword if    "${thumbnail}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    thumbnail
-    run keyword if    "${share-secret}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    share-secret
-    run keyword if    "${Accept}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    Accept
+    #考虑如果传入header中值为空情况，去掉请求key
+    ${newRequestHeader}    Reset Request Header For Not Empty    ${newRequestHeader}
     #定义返回结构
     &{result}    create dictionary
     set to dictionary    ${result}    requestHeader=${newRequestHeader}    contentTypeDesc=${contentTypeDesc}    tokenDesc=${tokenDesc}
@@ -137,7 +129,8 @@ Structure Value Should Be Equal
     &{diffResult}    create dictionary    status=True    errorDescribtion=
     log    ${diffStructResult}
     ${diffStructResult}    convert to string    ${diffStructResult}
-    return from keyword if    '${diffStructResult}' == '${EMPTY}'    ${diffResult}
+    ${diffStructResultLength}    get length    ${diffStructResult}
+    return from keyword if    ${diffStructResultLength} == 0    ${diffResult}
     #将模板转换成字典
     &{diffStructResultJson}    to json    ${diffStructResult}
     #获取模板结果中所有的字段
@@ -322,3 +315,26 @@ Should Run Model Case
     ...    返回值
     ...    - 传入True则执行该条模板用例，传入False则不执行
     Return From Keyword    ${specificModelCaseRunStatus}
+
+Set Request Header And Return
+    [Arguments]    ${requestHeader}=${requestHeader}
+    [Documentation]    设置请求header中的contentType和token
+    #设置请求header中的contentType和token
+    ${newToken}    set variable    ${Token.orgToken}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
+    set to dictionary    ${newRequestHeader}    Authorization=Bearer ${newToken}
+    #考虑如果传入header中值为空情况，去掉请求key
+    ${newRequestHeader1}    Reset Request Header For Not Empty    ${newRequestHeader}
+    return from keyword    ${newRequestHeader1}
+
+Reset Request Header For Not Empty
+    [Arguments]    ${newRequestHeader}
+    [Documentation]    将请求header中值为空的key去掉
+    #考虑如果传入header中值为空情况，去掉请求key
+    @{keys}    Get Dictionary Keys    ${newRequestHeader}
+    : FOR    ${i}    IN    @{keys}
+    \    ${keyValue}    set variable    ${newRequestHeader['${i}']}
+    \    run keyword if    "${keyValue}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    ${i}
+    return from keyword    ${newRequestHeader}

@@ -17,6 +17,46 @@ Create User
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
 
+Get User
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${params}=
+    [Documentation]    创建应用app下的用户
+    # 创建应用app
+    ${resp}=    /{orgName}/{appName}/users    GET    ${session}    ${header}    pathParamter=${pathParamter}    params=${params}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Get Specific User
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    获取应用app下的指定用户
+    #获取指定用户
+    ${resp}=    /{orgName}/{appName}/users/{userName}    GET    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Delete Specific User
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    删除指定用户
+    #删除指定用户
+    ${resp}=    /{orgName}/{appName}/users/{userName}    DELETE    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Delete User
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${params}=
+    [Documentation]    删除用户
+    # 创建应用app
+    ${resp}=    /{orgName}/{appName}/users    DELETE    ${session}    ${header}    pathParamter=${pathParamter}    params=${params}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Modify User Password
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
+    [Documentation]    重置IM用户密码
+    #重置IM用户密码
+    ${resp}=    /{orgName}/{appName}/users/{imUser}/password    PUT    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
 Create Temp User
     [Documentation]    创建一个新的用户
     #创建获取token的请求体
@@ -24,11 +64,8 @@ Create Temp User
     ${data}    set variable    {"username":"${randomNumber}","password":"${randomNumber}","nickname":"${randomNumber}"}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #给相应变量赋值
-    ${newToken}    set variable    ${Token.orgToken}
-    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
     ${newRequestHeader}    copy dictionary    ${requestHeader}
-    set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
-    set to dictionary    ${newRequestHeader}    Authorization=Bearer ${newToken}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
     ${expectedStatusCode}    set variable    200
     #创建用户
     &{apiResponse}    Create User    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
@@ -38,6 +75,58 @@ Create Temp User
     log    ${text}
     log    ${url}
     Return From Keyword    ${text}
+
+Get Users With Params
+    [Arguments]    ${limit}    ${cursor}=
+    [Documentation]    获取应用下的用户，并返回一个正常用户
+    #创建请求体
+    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
+    ${params}    set variable    limit=${limit}&cursor=${cursor}
+    Run Keyword If    "${cursor}" == "${EMPTY}"    set suite variable    ${params}    limit=${limit}
+    #给相应变量赋值
+    ${newToken}    set variable    ${Token.orgToken}
+    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
+    set to dictionary    ${requestHeader}    Content-Type=${contentType.JSON}
+    set to dictionary    ${requestHeader}    Authorization=Bearer ${newToken}
+    ${expectedStatusCode}    set variable    200
+    #获取用户列表
+    &{apiResponse}    Get User    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${params}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取用户列表失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
+    ${text}    set variable    ${apiResponse.text}
+    ${url}    set variable    ${apiResponse.url}
+    log    ${text}
+    log    ${url}
+    ${application}    set variable    ${text}
+    return from keyword    ${application}
+
+Get Users And Return User
+    [Documentation]    获取应用下的用户，并返回一个正常用户
+    #创建获取token的请求体
+    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
+    #给相应变量赋值
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${expectedStatusCode}    set variable    200
+    #获取用户列表
+    &{apiResponse}    Get User    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取用户列表失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
+    ${text}    set variable    ${apiResponse.text}
+    ${url}    set variable    ${apiResponse.url}
+    log    ${text}
+    log    ${url}
+    ${application}    set variable    ${text['entities']}
+    return from keyword    ${application}
+
+Get Valid And Invalid User Init
+    [Documentation]    初始化应用下用户信息
+    #创建新的用户
+    ${user}    Create Temp User
+    ${validIMUser}    set variable    ${user['entities'][0]['username']}
+    &{validIMUserInfo}    create dictionary    uuid=${user['entities'][0]['uuid']}    created=${user['entities'][0]['created']}    modified=${user['entities'][0]['modified']}    username=${user['entities'][0]['username']}    nickname=${user['entities'][0]['nickname']}
+    #设置全局的有效、无效基本数据
+    ${randomNumber}    Generate Random Specified String
+    set to dictionary    ${baseRes}    validIMUser=${validIMUser}    invalidIMUser=invalidUser${randomNumber}    validIMUserInfo=${validIMUserInfo}
+    set global variable    ${baseRes}    ${baseRes}
 
 Create Exist User Template
     [Arguments]    ${contentType}    ${token}    ${openRegistration}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}
@@ -583,97 +672,3 @@ Modify Inexistent User Password Template
     Comment    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
-
-Get User
-    [Arguments]    ${session}    ${header}    ${pathParamter}    ${params}=
-    [Documentation]    创建应用app下的用户
-    # 创建应用app
-    ${resp}=    /{orgName}/{appName}/users    GET    ${session}    ${header}    pathParamter=${pathParamter}    params=${params}
-    &{apiResponse}    Return Result    ${resp}
-    Return From Keyword    ${apiResponse}
-
-Get Users With Params
-    [Arguments]    ${limit}    ${cursor}=
-    [Documentation]    获取应用下的用户，并返回一个正常用户
-    #创建请求体
-    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
-    ${params}    set variable    limit=${limit}&cursor=${cursor}
-    Run Keyword If    "${cursor}" == "${EMPTY}"    set suite variable    ${params}    limit=${limit}
-    #给相应变量赋值
-    ${newToken}    set variable    ${Token.orgToken}
-    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
-    set to dictionary    ${requestHeader}    Content-Type=${contentType.JSON}
-    set to dictionary    ${requestHeader}    Authorization=Bearer ${newToken}
-    ${expectedStatusCode}    set variable    200
-    #获取用户列表
-    &{apiResponse}    Get User    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${params}
-    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取用户列表失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
-    ${text}    set variable    ${apiResponse.text}
-    ${url}    set variable    ${apiResponse.url}
-    log    ${text}
-    log    ${url}
-    ${application}    set variable    ${text}
-    return from keyword    ${application}
-
-Get Users And Return User
-    [Documentation]    获取应用下的用户，并返回一个正常用户
-    #创建获取token的请求体
-    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
-    #给相应变量赋值
-    ${newToken}    set variable    ${Token.orgToken}
-    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
-    set to dictionary    ${requestHeader}    Content-Type=${contentType.JSON}
-    set to dictionary    ${requestHeader}    Authorization=Bearer ${newToken}
-    ${expectedStatusCode}    set variable    200
-    #获取用户列表
-    &{apiResponse}    Get User    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
-    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取用户列表失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
-    ${text}    set variable    ${apiResponse.text}
-    ${url}    set variable    ${apiResponse.url}
-    log    ${text}
-    log    ${url}
-    ${application}    set variable    ${text['entities']}
-    return from keyword    ${application}
-
-Get Valid And Invalid User Init
-    [Documentation]    初始化应用下用户信息
-    #创建新的用户
-    ${user}    Create Temp User
-    ${validIMUser}    set variable    ${user['entities'][0]['username']}
-    &{validIMUserInfo}    create dictionary    uuid=${user['entities'][0]['uuid']}    created=${user['entities'][0]['created']}    modified=${user['entities'][0]['modified']}    username=${user['entities'][0]['username']}    nickname=${user['entities'][0]['nickname']}
-    #设置全局的有效、无效基本数据
-    ${randomNumber}    Generate Random Specified String
-    set to dictionary    ${baseRes}    validIMUser=${validIMUser}    invalidIMUser=invalidUser${randomNumber}    validIMUserInfo=${validIMUserInfo}
-    set global variable    ${baseRes}    ${baseRes}
-
-Get Specific User
-    [Arguments]    ${session}    ${header}    ${pathParamter}
-    [Documentation]    获取应用app下的指定用户
-    #获取指定用户
-    ${resp}=    /{orgName}/{appName}/users/{userName}    GET    ${session}    ${header}    pathParamter=${pathParamter}
-    &{apiResponse}    Return Result    ${resp}
-    Return From Keyword    ${apiResponse}
-
-Delete Specific User
-    [Arguments]    ${session}    ${header}    ${pathParamter}
-    [Documentation]    删除指定用户
-    #删除指定用户
-    ${resp}=    /{orgName}/{appName}/users/{userName}    DELETE    ${session}    ${header}    pathParamter=${pathParamter}
-    &{apiResponse}    Return Result    ${resp}
-    Return From Keyword    ${apiResponse}
-
-Delete User
-    [Arguments]    ${session}    ${header}    ${pathParamter}    ${params}=
-    [Documentation]    删除用户
-    # 创建应用app
-    ${resp}=    /{orgName}/{appName}/users    DELETE    ${session}    ${header}    pathParamter=${pathParamter}    params=${params}
-    &{apiResponse}    Return Result    ${resp}
-    Return From Keyword    ${apiResponse}
-
-Modify User Password
-    [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
-    [Documentation]    重置IM用户密码
-    #重置IM用户密码
-    ${resp}=    /{orgName}/{appName}/users/{imUser}/password    PUT    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
-    &{apiResponse}    Return Result    ${resp}
-    Return From Keyword    ${apiResponse}

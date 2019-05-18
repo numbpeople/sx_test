@@ -24,15 +24,13 @@ Create Temp App
     ${randoNumber}    Generate Random Specified String
     ${data}    set variable    {"name":"${randoNumber}","productName":"${randoNumber}","appDesc":"${randoNumber}","app_status":"online","allow_open_registration":${openRegistration}}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}
+    ${expectedStatusCode}    set variable    200
     #给相应变量赋值
-    ${newToken}    set variable    ${Token.orgToken}
-    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
     ${newRequestHeader}    copy dictionary    ${requestHeader}
-    set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
-    set to dictionary    ${newRequestHeader}    Authorization=Bearer ${newToken}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
     #创建应用app
     &{apiResponse}    Create App    POST    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
-    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    创建应用失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
     ${text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}
     log    ${text}

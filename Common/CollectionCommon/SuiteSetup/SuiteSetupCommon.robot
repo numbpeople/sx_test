@@ -2,6 +2,7 @@
 Resource          ../../TokenCommon/TokenCommon.robot
 Resource          ../../AppCommon/AppCommon.robot
 Resource          ../../UserCommon/UserCommon.robot
+Resource          ../../GroupCommon/GroupCommon.robot
 
 *** Keywords ***
 Setup
@@ -15,4 +16,5 @@ Setup
     Get Applications And Set AppName Init    #初始化组织下的应用信息
     Get AppToken Init    #初始化Appkey的token
     Get Valid And Invalid User Init    #初始化应用下用户信息
+    Get Chatgroup Init    #初始化群组信息
     Set Model Case Run Status Init    #初始化模板case中，各条用例的执行状态

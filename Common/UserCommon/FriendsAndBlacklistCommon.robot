@@ -25,13 +25,11 @@ Add Friend For User
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
     #给相应变量赋值
-    ${newToken}    set variable    ${Token.orgToken}
-    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
-    set to dictionary    ${requestHeader}    Content-Type=${contentType.JSON}
-    set to dictionary    ${requestHeader}    Authorization=Bearer ${newToken}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
     ${expectedStatusCode}    set variable    200
     #添加好友
-    &{apiResponse}    Add Friend    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Add Friend    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
     Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    添加好友失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
     ${text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}
@@ -72,13 +70,11 @@ Add Blacklist For User
     ${data}    set variable    {"usernames":["${blacklistUser}"]}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}
     #给相应变量赋值
-    ${newToken}    set variable    ${Token.orgToken}
-    Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
-    set to dictionary    ${requestHeader}    Content-Type=${contentType.JSON}
-    set to dictionary    ${requestHeader}    Authorization=Bearer ${newToken}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
     ${expectedStatusCode}    set variable    200
     #添加好友
-    &{apiResponse}    Add Blacklist    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    &{apiResponse}    Add Blacklist    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
     Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    添加黑名单失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
     ${text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}

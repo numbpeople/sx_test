@@ -82,6 +82,23 @@ Resource          ../../Common/BaseCommon.robot
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
+/{orgName}/{appName}/chatgroups/{groupId}/mute
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    1、禁言群成员
+    ...    2、获取禁言成员列表
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/mute
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{groupId}/mute/{userName}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    解除禁言
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/mute/${pathParamter.userName}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
 /{org_name}/{app_name}/publicchatgroups
     [Arguments]    ${session}    ${org_name}    ${app_name}    ${header}    ${timeout}
     [Documentation]    不分页获取APP下的公开群组
@@ -127,23 +144,6 @@ Resource          ../../Common/BaseCommon.robot
     [Arguments]    ${session}    ${org_name}    ${app_name}    ${groupid}    ${header}    ${timeout}
     [Documentation]    离开群组
     ${uri}=    set variable    /${org_name}/${app_name}/chatgroups/${groupid}/quit
-    Run Keyword And Return    delete Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
-
-/{org_name}/{app_name}/chatgroups/{groupid}/mute
-    [Arguments]    ${method}    ${session}    ${org_name}    ${app_name}    ${groupid}    ${header}
-    ...    ${data}    ${timeout}
-    [Documentation]    1、禁言群成员
-    ...    2、获取禁言成员列表
-    ${uri}=    set variable    /${org_name}/${app_name}/chatgroups/${groupid}/mute
-    Run Keyword And Return if    ${method}=='get'    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
-    Run Keyword And Return if    ${method}=='post'    Post Request    ${session}    ${uri}    headers=${header}    data=${data}
-    ...    timeout=${timeout}
-
-/{org_name}/{app_name}/chatgroups/{groupid}/mute/{user}
-    [Arguments]    ${session}    ${org_name}    ${app_name}    ${groupid}    ${user}    ${header}
-    ...    ${timeout}
-    [Documentation]    解除禁言
-    ${uri}=    set variable    /${org_name}/${app_name}/chatgroups/${groupid}/mute/${user}
     Run Keyword And Return    delete Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
 
 /{org_name}/{app_name}/chatgroups/{groupid}/share_files

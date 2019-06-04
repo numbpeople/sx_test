@@ -11,3 +11,6 @@ ${UserUnAuthorizedDiffEntity}    {"error":"unauthorized","exception":"org.apache
 ${NoAdminUserAccessAuthorized}    {"error":"unauthorized","timestamp":1557205950389,"duration":0,"exception":"org.apache.usergrid.rest.exceptions.SecurityException","error_description":"No admin user access authorized"}
 ${NoAdminUserAccessAuthorizedDiffEntity}    {"error":"unauthorized","exception":"org.apache.usergrid.rest.exceptions.SecurityException","error_description":"No admin user access authorized"}
 &{NoAdminUserAccessAuthorizedDictionary}    statusCode=401    reponseResult=${NoAdminUserAccessAuthorized}
+${TokenAuthorizationIsBlank}    {"error":"group_authorization","timestamp":1558506436181,"duration":0,"exception":"com.easemob.group.exception.GroupAuthorizationException","error_description":"token is blank!"}
+${TokenAuthorizationIsBlankDiffEntity}    {"error":"group_authorization","exception":"com.easemob.group.exception.GroupAuthorizationException","error_description":"token is blank!"}
+&{TokenAuthorizationIsBlankDictionary}    statusCode=401    reponseResult=${TokenAuthorizationIsBlank}

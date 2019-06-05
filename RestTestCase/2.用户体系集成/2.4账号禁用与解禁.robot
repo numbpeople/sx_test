@@ -3,29 +3,26 @@ Library           requests
 Library           RequestsLibrary
 Library           Collections
 Library           json
-Resource          ../../Common/TokenCommon/TokenCommon.robot
-Resource          ../../Common/UserCommon/UserOnlineAndOffline.robot
 Resource          ../../Variable_Env.robot
-Resource          ../../Result/UserResult/FriendsAndBlacklist_Result.robot
-Resource          ../../Result/UserResult/UserManagement_Result.robot
+Resource          ../../Common/UserCommon/UserActivateAndDeactivate.robot
+Resource          ../../Result/UserResult/UserActivateAndDeactivate_Result.robot
 Resource          ../../Result/BaseResullt.robot
-Resource          ../../Result/UserResult/UserOnlineAndOffline_Result.robot
 
 *** Test Cases ***
-待编写：用户账号禁用(/{orgName}/{appName}/users/{userName}/deactivate)
-    [Template]
-    ${contentType.JSON}    ${Token.orgToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${Token.appToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+用户账号禁用(/{orgName}/{appName}/users/{userName}/deactivate)
+    [Template]    Activate User Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ActivateUserDictionary.statusCode}    ${ActivateUserDictionary.reponseResult}    ${ActivateUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${NoAdminUserAccessAuthorizedDictionary.statusCode}    ${NoAdminUserAccessAuthorizedDictionary.reponseResult}    ${NoAdminUserAccessAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${ActivateUserDictionary.statusCode}    ${ActivateUserDictionary.reponseResult}    ${ActivateUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${NoAdminUserAccessAuthorizedDictionary.statusCode}    ${NoAdminUserAccessAuthorizedDictionary.reponseResult}    ${NoAdminUserAccessAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ActivateUserDictionary.statusCode}    ${ActivateUserDictionary.reponseResult}    ${ActivateUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${ActivateUserDictionary.statusCode}    ${ActivateUserDictionary.reponseResult}    ${ActivateUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
-待编写：用户账号解禁(/{orgName}/{appName}/users/{userName}/activate)
-    [Template]
-    ${contentType.JSON}    ${Token.orgToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${Token.appToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${SingleUserStatusDictionary.statusCode}    ${SingleUserStatusDictionary.reponseResult}    ${SingleUserStatusDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+用户账号解禁(/{orgName}/{appName}/users/{userName}/activate)
+    [Template]    Deactivate User Template
+    ${contentType.JSON}    ${Token.orgToken}    ${DeactivateUserDictionary.statusCode}    ${DeactivateUserDictionary.reponseResult}    ${DeactivateUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${NoAdminUserAccessAuthorizedDictionary.statusCode}    ${NoAdminUserAccessAuthorizedDictionary.reponseResult}    ${NoAdminUserAccessAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${DeactivateUserDictionary.statusCode}    ${DeactivateUserDictionary.reponseResult}    ${DeactivateUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${NoAdminUserAccessAuthorizedDictionary.statusCode}    ${NoAdminUserAccessAuthorizedDictionary.reponseResult}    ${NoAdminUserAccessAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${DeactivateUserDictionary.statusCode}    ${DeactivateUserDictionary.reponseResult}    ${DeactivateUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${DeactivateUserDictionary.statusCode}    ${DeactivateUserDictionary.reponseResult}    ${DeactivateUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}

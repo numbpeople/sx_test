@@ -12,11 +12,7 @@ Get Management Token
     [Arguments]    ${session}    ${header}    ${data}
     #获取console后台的登录token
     ${resp}=    /management/token    POST    ${session}    ${header}    data=${data}
-    # 断言接口是否为200
-    ${apiStatus}    Run Keyword And Return Status    Should Be Equal As Integers    ${resp.status_code}    200
     &{apiResponse}    Return Result    ${resp}
-    #如果接口不为200，则设置返回status为FAIL，并将错误结果置入返回值中
-    run keyword if    not ${apiStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=【实际结果】：获取进行中会话接口，返回状态码不等于200，实际状态码：${apiResponse.statusCode}，调用接口：${apiResponse.url}，接口返回值：${apiResponse.text}
     Return From Keyword    ${apiResponse}
 
 Get OrgToken Or BestToken Init
@@ -33,7 +29,8 @@ Get OrgToken Or BestToken Init
     ${data}    set variable    {"username":"${RestRes.username}","password":"${RestRes.password}","grant_type":"password"}
     #获取Management Token
     &{apiResponse}    Get Management Token    ${RestRes.alias}    ${requestHeader}    ${data}
-    Should Be Equal    ${apiResponse.status}    ${ResponseStatus.OK}    ${apiResponse.errorDescribetion}
+    ${expectedStatusCode}    set variable    200
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取console后台token失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
     ${text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}
     #获取orgName

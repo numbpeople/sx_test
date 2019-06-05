@@ -173,38 +173,29 @@ Resource          ../../Result/BaseResullt.robot
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserPasswordEntityNotFoundDictionary.statusCode}    ${ModifyUserPasswordEntityNotFoundDictionary.reponseResult}    ${ModifyUserPasswordEntityNotFoundDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
     #token为空时修改用户密码，应该是返回状态码为401才对，现在看是返回404状态码，接口并没有验证token，直接返回用户不存在{"error":"entity_not_found","timestamp":1557054005153,"duration":0,"exception":"org.apache.usergrid.persistence.exceptions.EntityNotFoundException","error_description":"User null not found"}
 
-待编写：修改用户昵称(/{orgName}/{appName}/users/{userName})
-    [Template]
-    ${contentType.JSON}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${Token.appToken}    ${GetMultiUserDictionary.statusCode}    ${GetMultiUserDictionary.reponseResult}    ${GetMultiUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+修改用户昵称(/{orgName}/{appName}/users/{userName})
+    [Template]    Modify User Nickname Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
-待编写：修改用户昵称-用户不存在(/{orgName}/{appName}/users/{userName})
-    [Template]
-    ${contentType.JSON}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${Token.appToken}    ${GetMultiUserDictionary.statusCode}    ${GetMultiUserDictionary.reponseResult}    ${GetMultiUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+设置推送消息展示方式(/{orgName}/{appName}/users/{userName})
+    [Template]    Modify User Notification_Display_Style Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
-待编写：修改用户device_token(/{orgName}/{appName}/users/{userName})
-    [Template]
-    ${contentType.JSON}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${Token.appToken}    ${GetMultiUserDictionary.statusCode}    ${GetMultiUserDictionary.reponseResult}    ${GetMultiUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
-待编写：修改用户device_token-用户不存在(/{orgName}/{appName}/users/{userName})
-    [Template]
-    ${contentType.JSON}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    ${UserNoUnauthorizedDictionary.statusCode}    ${UserNoUnauthorizedDictionary.reponseResult}    ${UserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${Token.appToken}    ${GetMultiUserDictionary.statusCode}    ${GetMultiUserDictionary.reponseResult}    ${GetMultiUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+设置免打扰(/{orgName}/{appName}/users/{userName})
+    [Template]    Modify User Notification_No_Disturbing Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}

@@ -65,22 +65,22 @@ Resource          ../../Common/BaseCommon.robot
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
-/{org_name}/{app_name}/chatrooms/{RoomID}/mute
-    [Arguments]    ${method}    ${session}    ${org_name}    ${app_name}    ${RoomID}    ${header}
-    ...    ${data}    ${timeout}
+/{orgName}/{appName}/chatrooms/{chatroomId}/mute
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
     [Documentation]    1、添加聊天室禁言成员
     ...    2、获取聊天室禁言列表
-    ${uri}=    set variable    /${org_name}/${app_name}/chatrooms/${RoomID}/mute
-    Run Keyword And Return if    ${method}=='get'    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
-    Run Keyword And Return if    ${method}=='post'    Post Request    ${session}    ${uri}    headers=${header}    data=${data}
-    ...    timeout=${timeout}
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/mute
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
 
-/{org_name}/{app_name}/chatrooms/{RoomID}/mute/{muteuser}
-    [Arguments]    ${session}    ${org_name}    ${app_name}    ${RoomID}    ${muteuser}    ${header}
-    ...    ${timeout}
+/{orgName}/{appName}/chatrooms/{chatroomId}/mute/{userName}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
     [Documentation]    解除被禁言成员
-    ${uri}=    set variable    /${org_name}/${app_name}/chatrooms/${RoomID}/mute/${muteuser}
-    Run Keyword And Return    delete Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/mute/${pathParamter.userName}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
 
 /{org_name}/{app_name}/chatrooms/{RoomID}/blocks/users/{user}
     [Arguments]    ${method}    ${session}    ${org_name}    ${app_name}    ${RoomID}    ${user}

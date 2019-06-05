@@ -120,3 +120,73 @@ Get User Batch Status Template
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Get User Offline Msg Count Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    获取用户离线消息数
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    return from keyword    True
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #设置请求数据
+    ${user}    Create Temp User
+    ${user1}    set variable    ${user['entities'][0]['username']}
+    ${user2}    set variable    ${baseRes.validIMUserInfo.username}
+    ${data}    set variable    {"usernames":["${user1}","${user2}"]}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    ${userName}    set variable    ${baseRes.validIMUser}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get User Batch Status
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list    '${user1}'    'offline'    '${user2}'    'offline'
+    @{argumentValue}    create list    '${user1}'    'offline'    '${user2}'    'offline'
+    @{argumentValueUnauthorized}    create list
+    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Get User Offline Msg Status Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    获取某条离线消息状态
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    return from keyword    True
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #设置请求数据
+    ${user}    Create Temp User
+    ${user1}    set variable    ${user['entities'][0]['username']}
+    ${user2}    set variable    ${baseRes.validIMUserInfo.username}
+    ${data}    set variable    {"usernames":["${user1}","${user2}"]}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    ${userName}    set variable    ${baseRes.validIMUser}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get User Batch Status
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list    '${user1}'    'offline'    '${user2}'    'offline'
+    @{argumentValue}    create list    '${user1}'    'offline'    '${user2}'    'offline'
+    @{argumentValueUnauthorized}    create list
+    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}

@@ -41,7 +41,7 @@ Resource          ../../Result/UserResult/UserOnlineAndOffline_Result.robot
     ${contentType.JSON}    ${Token.bestToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：获取用户离线消息数(/{orgName}/{appName}/users/{userName}/offline_msg_count)
-    [Template]
+    [Template]    Get User Offline Msg Count Template
     ${contentType.JSON}    ${Token.orgToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${NoAdminUserAccessAuthorizedDictionary.statusCode}    ${NoAdminUserAccessAuthorizedDictionary.reponseResult}    ${NoAdminUserAccessAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${EMPTY}    ${Token.orgToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
@@ -50,7 +50,7 @@ Resource          ../../Result/UserResult/UserOnlineAndOffline_Result.robot
     ${contentType.JSON}    ${Token.bestToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：获取某条离线消息状态(/{orgName}/{appName}/users/{userName}/offline_msg_count)
-    [Template]
+    [Template]    Get User Offline Msg Status Template
     ${contentType.JSON}    ${Token.orgToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${NoAdminUserAccessAuthorizedDictionary.statusCode}    ${NoAdminUserAccessAuthorizedDictionary.reponseResult}    ${NoAdminUserAccessAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${EMPTY}    ${Token.orgToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}

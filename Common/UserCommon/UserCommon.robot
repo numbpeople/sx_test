@@ -57,6 +57,14 @@ Modify User Password
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
 
+Modify Specific User
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
+    [Documentation]    修改指定用户信息
+    #修改指定用户信息
+    ${resp}=    /{orgName}/{appName}/users/{userName}    PUT    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
 Create Temp User
     [Documentation]    创建一个新的用户
     #创建获取token的请求体
@@ -670,5 +678,126 @@ Modify Inexistent User Password Template
     @{argumentValue}    create list
     Comment    @{argumentValueUnauthorized}    create list
     Comment    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Modify User Nickname Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    设置推送消息显示昵称
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 应用APP是否是开放注册
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${uuid}    set variable    ${user['entities'][0]['uuid']}
+    ${created}    set variable    ${user['entities'][0]['created']}
+    ${modified}    set variable    ${user['entities'][0]['modified']}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${randomNumber}    Generate Random Specified String
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
+    ${newNickname}    set variable    change-${userName}
+    ${data}    set variable    {"nickname":"${newNickname}"}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Modify Specific User
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${userName}'    'true'    '${newNickname}'
+    ...    '${orgName}'    '${appName}'
+    @{argumentValueUnauthorized}    create list    'put'    '${applicationUUID}'    '/${uuid}'
+    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Modify User Notification_Display_Style Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    设置推送消息展示方式
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 应用APP是否是开放注册
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${uuid}    set variable    ${user['entities'][0]['uuid']}
+    ${created}    set variable    ${user['entities'][0]['created']}
+    ${modified}    set variable    ${user['entities'][0]['modified']}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
+    ${notification_display_style}    set variable    1
+    ${data}    set variable    {"notification_display_style": "${notification_display_style}"}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Modify Specific User
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${userName}'    'true'    '${notification_display_style}'
+    ...    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValueUnauthorized}    create list    'put'    '${applicationUUID}'    '/${uuid}'
+    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Modify User Notification_No_Disturbing Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    设置免打扰
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 应用APP是否是开放注册
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${uuid}    set variable    ${user['entities'][0]['uuid']}
+    ${created}    set variable    ${user['entities'][0]['created']}
+    ${modified}    set variable    ${user['entities'][0]['modified']}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
+    ${notification_no_disturbing}    ${notification_no_disturbing_start}    ${notification_no_disturbing_end}    set variable    true    1    3
+    ${data}    set variable    {"notification_no_disturbing":${notification_no_disturbing},"notification_no_disturbing_start":"${notification_no_disturbing_start}","notification_no_disturbing_end":"${notification_no_disturbing_end}"}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Modify Specific User
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${userName}'    'true'    '${notification_no_disturbing}'
+    ...    '${notification_no_disturbing_start}'    '${notification_no_disturbing_end}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValueUnauthorized}    create list    'put'    '${applicationUUID}'    '/${uuid}'
+    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}

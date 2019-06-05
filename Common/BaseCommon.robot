@@ -232,7 +232,7 @@ Set Request Attribute And Run Keyword
     Set List Value    ${arguments}    ${index}    ${requestHeader1}
     #运行关键字
     &{apiResponse}    Run keyword    ${keyword}    @{arguments}
-    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}\n ================================================================华丽的分割线================================================================
+    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.resp.text}\n ================================================================华丽的分割线================================================================
     Return From Keyword    ${apiResponse}
 
 Assert Request Result

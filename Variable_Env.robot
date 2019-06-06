@@ -14,3 +14,4 @@ ${allowOpenRegistration}    true    # 应用APP开放注册（true）、授权�
 &{Token}          bestToken=    orgToken=    appToken=    userToken=
 &{RunStatus}      RUN=True    NORUN=False
 &{ModelCaseRunStatus}    OrgToken_ContentType=${RunStatus.RUN}    EmptyOrgToken_EmptyContentType=${RunStatus.RUN}    OrgToken_EmptyContentType=${RunStatus.RUN}    EmptyOrgToken_ContentType=${RunStatus.RUN}    BestToken_ContentType=${RunStatus.NORUN}    AppToken_ContentType=${RunStatus.RUN}
+${preRandomString}    imautotest

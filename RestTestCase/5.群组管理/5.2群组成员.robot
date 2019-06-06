@@ -1,4 +1,5 @@
 *** Settings ***
+Suite Teardown    Delete Temp Specific User For Loop
 Library           requests
 Library           RequestsLibrary
 Library           Collections

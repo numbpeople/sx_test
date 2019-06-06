@@ -1,4 +1,5 @@
 *** Settings ***
+Suite Teardown    Delete Temp Specific User For Loop
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -9,6 +10,7 @@ Resource          ../../Common/ChatroomCommon/ChatroomMuteCommon.robot
 Resource          ../../Result/ChatroomResult/ChatroomMember_Result.robot
 Resource          ../../Result/GroupResult/Group_Result.robot
 Resource          ../../Result/ChatroomResult/ChatroomMute_Result.robot
+Resource          ../../Result/GroupResult/GroupMember_Result.robot
 
 *** Test Cases ***
 添加禁言用户(/{orgName}/{appName}/chatrooms/{chatroomId}/mute)

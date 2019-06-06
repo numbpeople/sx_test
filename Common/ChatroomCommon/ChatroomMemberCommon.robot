@@ -330,8 +330,8 @@ Add Multi Chatroom Member Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${userName}'    '${userName1}'    'add_member'    '${chatroomId}'
-    ...    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${orgName}'    '${appName}'    #'${userName1}'    '${userName}'
+    ...    # 'add_member'    '${chatroomId}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 

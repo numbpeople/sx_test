@@ -283,10 +283,12 @@ Set Model Case Run Status Init
     set global variable    ${ModelCaseRunStatus}    ${ModelCaseRunStatus}
 
 Generate Random Specified String
+    [Arguments]    ${specificPreString}=
     [Documentation]    随机生成字符串
     ${randomNumber}    Generate Random String    10    [NUMBERS]
-    ${preString}    set variable    imautotest
+    ${preString}    set variable    ${preRandomString}
     ${newNumber}    set variable    ${preString}-${randomNumber}
+    return from keyword if    '${specificPreString}' != '${EMPTY}'    ${specificPreString}-${randomNumber}
     Return From Keyword    ${newNumber}
 
 Find Media Path

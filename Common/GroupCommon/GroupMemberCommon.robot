@@ -783,9 +783,9 @@ Transfer Chatgroup Template
     #设置请求数据
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
-    ${groupId}    set variable    ${baseRes.validChatgroup.groupId}    #获取初始化的有效群组
     #添加普通成员并设置群管理
-    ${chatGroup}    Create New Chatgroup And Set Group Admin    groupId=${groupId}    userName=${userName}
+    ${chatGroup}    Create New Chatgroup And Set Group Admin    userName=${userName}
+    ${groupId}    set variable    ${chatGroup.groupId}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${groupId}
     ${data}    set variable    {"newowner":"${userName}"}

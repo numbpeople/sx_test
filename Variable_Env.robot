@@ -6,7 +6,7 @@ ${timeout}        ${30.0}    # 接口请求超时时间
 &{ResponseStatus}    OK=OK    FAIL=FAIL
 &{ApiResponse}    status=${ResponseStatus.OK}    errorDescribetion=    statusCode=    text=    url=    describetion=
 &{contentType}    JSON=application/json    TEXT=text/plain
-&{requestHeader}    Content-Type=    Authorization=    restrict-access=    thumbnail=    share-secret=    Accept=
+&{requestHeader}    Content-Type=    Authorization=    restrict-access=    thumbnail=    share-secret=    Accept=    thumbnail=
 &{FilterEntity}    page_size=5    page_num=1    limit=20
 &{baseRes}        validOrgName=    invalidOrgName=    validAppName=    invalidAppName=    validIMUser=    invalidIMUser=    validOrgUUID=
 ...               validAppUUID=    validChatgroup=    validChatroom=    # 有效的app和user均在validOrgName组织下，无效变量则随机取值

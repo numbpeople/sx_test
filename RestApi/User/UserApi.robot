@@ -83,6 +83,14 @@ Resource          ../../Common/BaseCommon.robot
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
+/{orgName}/{appName}/users/{userName}/offline_msg_status/{msgId}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取某条离线消息状态
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName}/offline_msg_status/${pathParamter.msgId}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
 /{orgName}/{appName}/users/{userName}/deactivate
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=

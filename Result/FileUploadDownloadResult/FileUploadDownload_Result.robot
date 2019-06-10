@@ -6,5 +6,8 @@ ${UploadMediaFile}    {"action":"post","application":"99f49ef0-7162-11e9-ae0b-11
 ${UploadMediaFileDiffEntity}    {"action":"post","application":"%s","path":"/chatfiles","entities":[{"type":"chatfile"}],"organization":"%s","applicationName":"%s"}
 ${UploadMediaUnAuthenticate}    {"error":"unauthorized","exception":"EasemobSecurityException","timestamp":1557376513883,"duration":0,"error_description":"Unable to authenticate (OAuth)"}
 ${UploadMediaUnAuthenticateDiffEntity}    {"error":"unauthorized","exception":"EasemobSecurityException","error_description":"Unable to authenticate (OAuth)"}
+${DownloadMediaFile}    ${EMPTY}
+${DownloadMediaFileDiffEntity}    ${EMPTY}
 &{UploadMediaFileDictionary}    statusCode=200    reponseResult=${UploadMediaFile}
 &{UploadMediaUnAuthenticateDictionary}    statusCode=200    reponseResult=${UploadMediaUnAuthenticate}
+&{DownloadMediaFileDictionary}    statusCode=200    reponseResult=${DownloadMediaFile}

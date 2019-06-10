@@ -14,3 +14,6 @@ ${NoAdminUserAccessAuthorizedDiffEntity}    {"error":"unauthorized","exception":
 ${TokenAuthorizationIsBlank}    {"error":"group_authorization","timestamp":1558506436181,"duration":0,"exception":"com.easemob.group.exception.GroupAuthorizationException","error_description":"token is blank!"}
 ${TokenAuthorizationIsBlankDiffEntity}    {"error":"group_authorization","exception":"com.easemob.group.exception.GroupAuthorizationException","error_description":"token is blank!"}
 &{TokenAuthorizationIsBlankDictionary}    statusCode=401    reponseResult=${TokenAuthorizationIsBlank}
+${UnableToAuthenticate}    {"error":"auth_bad_access_token","timestamp":1559816593002,"duration":0,"exception":"org.apache.usergrid.rest.exceptions.SecurityException","error_description":"Unable to authenticate due to corrupt access token"}
+${UnableToAuthenticateDiffEntity}    {"error":"auth_bad_access_token","exception":"org.apache.usergrid.rest.exceptions.SecurityException","error_description":"Unable to authenticate due to corrupt access token"}
+&{UnableToAuthenticateDictionary}    statusCode=401    reponseResult=${UnableToAuthenticate}

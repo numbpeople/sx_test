@@ -70,12 +70,15 @@ Return Result
     set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${resp.text}    resp=${resp}
     Return From Keyword If    ${badGatewaystatus}    ${apiResponse}
     #如果返回值resp.text不为空，则设置返回值，否则text设置为空值
-    ${status}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
+    ${emptyStatus}    Run Keyword And Return Status    Should Not Be Equal    "${resp.text}"    "${EMPTY}"
     set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}    resp=${resp}
-    Return From Keyword If    not ${status}    ${apiResponse}
+    Return From Keyword If    not ${emptyStatus}    ${apiResponse}
     #设置请求返回值
-    ${text}    to json    ${resp.text}
-    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${text}    resp=${resp}
+    ${jsonStatus}    Run Keyword And Return Status    to json    ${resp.text}
+    Return From Keyword If    not ${jsonStatus}    ${apiResponse}
+    #设置请求返回值
+    ${textJson}    to json    ${resp.text}
+    set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${textJson}    resp=${resp}
     Return From Keyword    ${apiResponse}
 
 Format Jsonstr
@@ -115,6 +118,9 @@ Structure Field Should Be Equal
     #定义返回结构
     &{diffResult}    create dictionary    status=True    errorDescribtion=
     log    ${diffStructTemplate}
+    #
+    ${diffStructTemplateLength}    get length    ${diffStructTemplate}
+    return from keyword if    ${diffStructTemplateLength} == 0    ${diffResult}
     #将模板转换成字典
     &{diffStructTemplateJson}    to json    ${diffStructTemplate}
     #获取模板结果中所有的字段
@@ -221,7 +227,7 @@ Set Request Attribute And Run Keyword
     Log    ${keyword}
     Log    ${arguments}
     #设置请求header基本属性
-    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    &{newRequestHeader}    set variable    ${arguments[1]}
     ${result}    Set Base Request Attribute    ${contentType}    ${token}    ${newRequestHeader}
     #获取测试用例的操作描述和header信息
     ${contentTypeDesc}    set variable    ${result.contentTypeDesc}
@@ -325,7 +331,9 @@ Set Request Header And Return
     ${newToken}    set variable    ${Token.orgToken}
     Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set suite variable    ${newToken}    ${RunModelCaseConditionDic.specificBestToken}
     ${newRequestHeader}    copy dictionary    ${requestHeader}
-    set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
+    #判断是否包含指定key
+    ${contentTypeStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${newRequestHeader}    Content-Type
+    run keyword if    ${contentTypeStatus}    set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
     set to dictionary    ${newRequestHeader}    Authorization=Bearer ${newToken}
     #考虑如果传入header中值为空情况，去掉请求key
     ${newRequestHeader1}    Reset Request Header For Not Empty    ${newRequestHeader}

@@ -24,7 +24,7 @@ Get OrgToken Or BestToken Init
     ${bestTokenNotEmpty}    evaluate    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"
     Run Keyword If    ${specificBestTokenAndAppkeyStatus}    FAIL    配置了指定超管token，但是没有配置orgName，请检查变量：RunModelCaseConditionDic 配置
     ${randomNumber}    Generate Random String    10    [NUMBERS]
-    Return From Keyword If    ${bestTokenNotEmpty}    Get BestToken And Set Global Variable    ${randomNumber}
+    Run Keyword And Return If    ${bestTokenNotEmpty}    Get BestToken And Set Global Variable    ${randomNumber}
     #创建获取token的请求体
     ${data}    set variable    {"username":"${RestRes.username}","password":"${RestRes.password}","grant_type":"password"}
     #获取Management Token

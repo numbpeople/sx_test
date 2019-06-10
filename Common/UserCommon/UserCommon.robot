@@ -68,14 +68,14 @@ Modify Specific User
 Create Temp User
     [Arguments]    ${specificPreString}=
     [Documentation]    创建一个新的用户
-    #创建获取token的请求体
-    ${randomNumber}    Generate Random Specified String    ${specificPreString}
-    ${data}    set variable    {"username":"${randomNumber}","password":"${randomNumber}","nickname":"${randomNumber}"}
-    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #给相应变量赋值
     ${newRequestHeader}    copy dictionary    ${requestHeader}
     ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
     ${expectedStatusCode}    set variable    200
+    #创建请求体
+    ${randomNumber}    Generate Random Specified String    ${specificPreString}
+    ${data}    set variable    {"username":"${randomNumber}","password":"${randomNumber}","nickname":"${randomNumber}"}
+    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #创建用户
     &{apiResponse}    Create User    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
     Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    创建用户失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}

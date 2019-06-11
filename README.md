@@ -4,7 +4,7 @@ IM自动化是一个企业级自动化项目，包含接口&UI自动化。致力
 
 ## 环境搭建:
 
-1. IM服自动化使用robotframework测试自动化框架进行验收测试： [官网地址](http://robotframework.org/)
+1. IM自动化使用robotframework测试自动化框架进行验收测试： [官网地址](http://robotframework.org/)
 2. 使用GIT下载项目： https://github.com/easemob/kefu-auto-test/tree/im-auto-test
 3. 项目依赖
 
@@ -49,4 +49,33 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 
 
 
+## 项目运行
 
+当前IM自动化项目支持以下两个配置方式运行用例：
+
+- 环信Console管理后台账号和密码执行用例
+
+```
+使用环信Console管理后台已存在的【管理员登录邮箱和密码】，执行用例会创建新的应用来执行所有测试用例
+```
+
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/c95647b2-4eea-44d6-abb2-757e22c10761Y29uc29sZeaJp-ihjOaWueW8jy5wbmc=)
+
+
+- 指定Appkey和超管Token执行用例
+
+```
+使用指定的Appkey和超管Token执行属于正常使用的测试用例
+```
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/77e94d89-a5fe-4670-be14-8ba30efd712a5oyH5a6aYXBwa2V55omn6KGMLnBuZw==)
+
+
+
+## Variable_Env变量参数的定义
+
+|参数名称|参数值举例|参数描述|
+| ---- | --- | --- |
+|&{RestRes}|RestUrl=${URLDeclare.rest1_sdb}、username=leoli@easemob.com、password=lijipeng123|测试环境、console登录账号密码配置|
+|&{URLDeclare}|bj=https://a1.easemob.com|定义了常用的Rest集群地址|
+|&{RunModelCaseConditionDic}|orgName=sipsoft、appName=sandbox、specificBestToken=YWMtzyUm6ItOEemUEgcakCE-pgAAAAAAAAAAAAAAAAAAAAFe2JYa1n8R45heowo6U5LUAQMAAAFrQDk7fQBPGgDzCSzjnyAlJr1bFVAh7729xKey1_D2gZ7JMRqZZ6Pk8g|指定Appkey场景下配置的Appkey信息和超管token，该配置优先于console后台账号密码配置|
+|${timeout}|${30.0}|接口超时时间设置|

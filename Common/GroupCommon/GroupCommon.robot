@@ -19,7 +19,7 @@ Create Chatgroup
     Return From Keyword    ${apiResponse}
 
 Create Temp Chatgroup
-    [Arguments]    ${owner}=${baseRes.validIMUserInfo.username}    ${maxusers}=200    ${public}=true    ${members_only}=false
+    [Arguments]    ${owner}=${validIMUserInfo.username}    ${maxusers}=200    ${public}=true    ${members_only}=false
     [Documentation]    创建一个群组
     #创建请求体
     ${randomNumber}    Generate Random Specified String
@@ -43,7 +43,7 @@ Create Temp Chatgroup
     Return From Keyword    ${chatGroupEntity}
 
 Get Chatgroup Init
-    [Arguments]    ${owner}=${baseRes.validIMUserInfo.username}    ${maxusers}=200    ${public}=true    ${members_only}=false
+    [Arguments]    ${owner}=${validIMUserInfo.username}    ${maxusers}=200    ${public}=true    ${members_only}=false
     [Documentation]    创建一个群组，初始化群组信息
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup
@@ -51,6 +51,7 @@ Get Chatgroup Init
     #设置全局的有效、无效基本数据
     set to dictionary    ${baseRes}    validChatgroup=${validChatgroup}
     set global variable    ${baseRes}    ${baseRes}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
 
 Edit Chatgroup
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
@@ -106,7 +107,7 @@ Create New Chatgroup Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
+    ${username}    set variable    ${validIMUserInfo.username}
     &{chatGroupEntity}    Create Dictionary    groupname=${randomNumber}    desc=${randomNumber}    owner=${username}    maxusers=200    public=true
     ...    members_only=false
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","desc":"${chatGroupEntity.desc}","owner":"${chatGroupEntity.owner}","maxusers":${chatGroupEntity.maxusers},"public":${chatGroupEntity.public},"members_only":${chatGroupEntity.members_only}}
@@ -138,7 +139,7 @@ Create New Chatgroup With Inexistent Owner Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
+    ${username}    set variable    ${validIMUserInfo.username}
     &{chatGroupEntity}    Create Dictionary    groupname=${randomNumber}    desc=${randomNumber}    owner=${randomNumber}    maxusers=200    public=true
     ...    members_only=false
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","desc":"${chatGroupEntity.desc}","owner":"${chatGroupEntity.owner}","maxusers":${chatGroupEntity.maxusers},"public":${chatGroupEntity.public},"members_only":${chatGroupEntity.members_only}}
@@ -170,7 +171,7 @@ Create New Chatgroup With Inexistent PublicTemplate
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
+    ${username}    set variable    ${validIMUserInfo.username}
     &{chatGroupEntity}    Create Dictionary    groupname=${randomNumber}    desc=${randomNumber}    owner=${randomNumber}    maxusers=200    public=true
     ...    members_only=false
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","desc":"${chatGroupEntity.desc}","owner":"${chatGroupEntity.owner}","maxusers":${chatGroupEntity.maxusers},"members_only":${chatGroupEntity.members_only}}
@@ -413,7 +414,7 @@ Get Chatgroup Detail Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${owner}    set variable    ${baseRes.validIMUserInfo.username}
+    ${owner}    set variable    ${validIMUserInfo.username}
     ${maxusers}    set variable    200
     ${public}    set variable    true
     ${members_only}    set variable    false
@@ -451,7 +452,7 @@ Get Chatgroup Detail With Inexistent GroupIdTemplate
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${owner}    set variable    ${baseRes.validIMUserInfo.username}
+    ${owner}    set variable    ${validIMUserInfo.username}
     ${maxusers}    set variable    200
     ${public}    set variable    true
     ${members_only}    set variable    false

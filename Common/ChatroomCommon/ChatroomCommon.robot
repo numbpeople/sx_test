@@ -58,7 +58,7 @@ Get IMUser Joined Chatroom
     Return From Keyword    ${apiResponse}
 
 Create Temp Chatroom
-    [Arguments]    ${userName}=${baseRes.validIMUserInfo.username}    ${maxusers}=200
+    [Arguments]    ${userName}=${validIMUserInfo.username}    ${maxusers}=200
     [Documentation]    创建一个聊天室
     #给相应变量赋值
     ${newRequestHeader}    copy dictionary    ${requestHeader}
@@ -83,7 +83,7 @@ Create Temp Chatroom
 Get Chatroom Init
     [Documentation]    创建一个聊天室，初始化聊天室信息
     #创建一个聊天室
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     ${maxusers}    set variable    200
     ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
     ${chatroomId}    set variable    ${chatroom.data.id}
@@ -91,6 +91,7 @@ Get Chatroom Init
     #设置全局的有效
     set to dictionary    ${baseRes}    validChatroom=${validChatroom}
     set global variable    ${baseRes}    ${baseRes}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
 
 Get All Chatrooms List
     [Documentation]    获取APP中所有的聊天室
@@ -123,12 +124,12 @@ Create Chatroom Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据
@@ -160,12 +161,12 @@ Create Chatroom With Owner Is The Same As Member Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     Comment    ${user}    Create Temp User
     ${userName}    set variable    ${ownerUserName}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据
@@ -200,10 +201,10 @@ Create Chatroom With Inexistent Owner Template
     #创建新的用户
     ${randomNumber}    Generate Random Specified String
     ${ownerUserName}    set variable    ${randomNumber}
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据
@@ -236,11 +237,11 @@ Create Chatroom With Inexistent Member Template
     Return From Keyword If    not ${runStatus}
     #创建新的用户
     ${randomNumber}    Generate Random Specified String
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     ${userName}    set variable    ${randomNumber}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据
@@ -272,11 +273,11 @@ Create Chatroom With Name Filed Discarded Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据
@@ -309,11 +310,11 @@ Create Chatroom With Owner Filed Discarded Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据
@@ -349,10 +350,10 @@ Modify Chatroom Template
     ${chatroom}    Create Temp Chatroom
     ${chatroomId}    set variable    ${chatroom.data.id}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
     #创建请求数据
@@ -387,10 +388,10 @@ Modify Chatroom With MaxUser Larger Than Current User Template
     ${chatroom}    Create Temp Chatroom
     ${chatroomId}    set variable    ${chatroom.data.id}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
     #创建请求数据
@@ -426,10 +427,10 @@ Modify Chatroom With Inexistent ChatroomIdTemplate
     Comment    ${chatroom}    Create Temp Chatroom
     ${chatroomId}    set variable    ${randomNumber}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
     #创建请求数据
@@ -464,10 +465,10 @@ Delete Chatroom Template
     ${chatroom}    Create Temp Chatroom
     ${chatroomId}    set variable    ${chatroom.data.id}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
     #设置请求集和
@@ -495,13 +496,13 @@ Get Specific Chatroom Detail Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建一个聊天室
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     ${maxusers}    set variable    200
     ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
     ${chatroomId}    set variable    ${chatroom.data.id}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
     #设置请求集和
@@ -536,7 +537,7 @@ Get All Chatrooms Template
     run keyword if    ${chatroomList} == 0    Create Temp Chatroom
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #设置请求集和
@@ -571,7 +572,7 @@ Get IMUser Joined Chatroom Template
     ${chatroomId}    set variable    ${chatroom.data.id}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
     #设置请求集和

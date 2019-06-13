@@ -11,6 +11,7 @@ Resource          ../../Result/BaseResullt.robot
 Resource          ../../Result/FileUploadDownloadResult/FileUploadDownload_Result.robot
 Resource          ../../Common/SendMessageCommon/SendMessageCommon.robot
 Resource          ../../Common/NotifierCertificateCommon/NotifierCertificateCommon.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 待编写：删除华为证书

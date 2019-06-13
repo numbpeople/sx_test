@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Teardown    Delete Temp Specific User For Loop
+Force Tags        chatgroupManagement
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -9,6 +9,7 @@ Resource          ../../Common/TokenCommon/TokenCommon.robot
 Resource          ../../Common/GroupCommon/GroupCommon.robot
 Resource          ../../Result/BaseResullt.robot
 Resource          ../../Result/GroupResult/Group_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 创建一个新的群组(/{orgName}/{appName}/chatgroups)

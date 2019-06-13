@@ -9,6 +9,7 @@ Resource          ../../Common/UserCommon/FriendsAndBlacklistCommon.robot
 Resource          ../../Common/FileUploadDownloadCommon/FileUploadDownloadCommon.robot
 Resource          ../../Result/BaseResullt.robot
 Resource          ../../Result/FileUploadDownloadResult/FileUploadDownload_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 上传图片文件(/{orgName}/{appName}/chatfiles)

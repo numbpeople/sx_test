@@ -110,7 +110,7 @@ Add Single User Chatgroup Blacklist With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #创建新的用户
     ${randomNumber}    Generate Random Specified String
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
+    ${username}    set variable    ${validIMUserInfo.username}
     ${groupId}    set variable    ${randomNumber}
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
@@ -246,7 +246,7 @@ Get Chatgroup Blacklist With Inexistent GroupIdTemplate
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
+    ${username}    set variable    ${validIMUserInfo.username}
     ${groupId}    set variable    ${randomNumber}
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}

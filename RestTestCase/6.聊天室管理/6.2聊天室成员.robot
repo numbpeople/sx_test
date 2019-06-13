@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Teardown    Delete Temp Specific User For Loop
+Force Tags        chatroomMember
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -9,6 +9,7 @@ Resource          ../../Result/BaseResullt.robot
 Resource          ../../Common/ChatroomCommon/ChatroomMemberCommon.robot
 Resource          ../../Result/ChatroomResult/ChatroomMember_Result.robot
 Resource          ../../Result/GroupResult/Group_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 添加单个聊天室成员(/{orgName}/{appName}/chatrooms/{chatroomId}/users/{userName})

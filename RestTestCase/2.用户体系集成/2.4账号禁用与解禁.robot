@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        userActivateAndDeactivate
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -7,6 +8,7 @@ Resource          ../../Variable_Env.robot
 Resource          ../../Common/UserCommon/UserActivateAndDeactivate.robot
 Resource          ../../Result/UserResult/UserActivateAndDeactivate_Result.robot
 Resource          ../../Result/BaseResullt.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 用户账号禁用(/{orgName}/{appName}/users/{userName}/deactivate)

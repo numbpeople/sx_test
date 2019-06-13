@@ -69,10 +69,10 @@ Send Text Message Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #定义消息接收人列表
@@ -110,7 +110,7 @@ Send Picture Message Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #上传图片文件
     ${pictureResponse}    Upload Picture
     ${uuid}    set variable    ${pictureResponse.uuid}
@@ -119,7 +119,7 @@ Send Picture Message Template
     ${filename}    set variable    ${pictureResponse.filename}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #定义消息接收人列表
@@ -159,7 +159,7 @@ Send Audio Message Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #上传语音文件
     ${pictureResponse}    Upload Audio
     ${uuid}    set variable    ${pictureResponse.uuid}
@@ -168,7 +168,7 @@ Send Audio Message Template
     ${filename}    set variable    ${pictureResponse.filename}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #定义消息接收人列表
@@ -207,7 +207,7 @@ Send Video Message Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #上传语音文件
     ${pictureResponse}    Upload Audio
     ${uuid}    set variable    ${pictureResponse.uuid}
@@ -216,7 +216,7 @@ Send Video Message Template
     ${filename}    set variable    ${pictureResponse.filename}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #定义消息接收人列表
@@ -255,7 +255,7 @@ Send Ext Message Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #上传语音文件
     ${pictureResponse}    Upload Audio
     ${uuid}    set variable    ${pictureResponse.uuid}
@@ -264,7 +264,7 @@ Send Ext Message Template
     ${filename}    set variable    ${pictureResponse.filename}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #定义消息接收人列表

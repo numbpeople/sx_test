@@ -8,6 +8,7 @@ Resource          ../../Common/AppCommon/AppCommon.robot
 Resource          ../../Variable_Env.robot
 Resource          ../../Result/APPResult/AppManagement_Result.robot
 Resource          ../../Result/BaseResullt.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 创建已存在的应用(/management/organizations/{orgName}/applications)

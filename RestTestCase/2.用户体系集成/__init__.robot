@@ -1,3 +1,4 @@
 *** Settings ***
-Suite Teardown    Delete Temp Specific User For Loop
-Resource          ../../Common/UserCommon/UserCommon.robot
+Test Teardown     Test Data Teardown
+Force Tags        user
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot

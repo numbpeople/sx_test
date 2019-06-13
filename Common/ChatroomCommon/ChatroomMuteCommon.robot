@@ -36,7 +36,7 @@ Get Chatroom Member Mute List
     Return From Keyword    ${apiResponse}
 
 Add Temp Chatroom Member Mute
-    [Arguments]    ${chatroomId}=${baseRes.validChatroom.chatroomId}    ${userName}=${baseRes.validIMUserInfo.username}
+    [Arguments]    ${chatroomId}=${baseRes.validChatroom.chatroomId}    ${userName}=${validIMUserInfo.username}
     [Documentation]    添加禁言
     #给相应变量赋值
     ${newRequestHeader}    copy dictionary    ${requestHeader}
@@ -68,7 +68,7 @@ Add Chatroom Member Mute Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #创建一个聊天室
     ${chatroom}    Create Temp Chatroom    ${userName}
     ${chatroomId}    set variable    ${chatroom.data.id}
@@ -76,7 +76,7 @@ Add Chatroom Member Mute Template
     ${chatroomMember}    Add Temp Single Chatroom Member    ${chatroomId}    ${userName}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}
     ${data}    set variable    {"usernames":["${userName}"],"mute_duration":86400000}
@@ -106,11 +106,11 @@ Add Chatroom Member Mute With Inexistent ChatroomId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     ${chatroomId}    set variable    ${randomNumber}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}
     ${data}    set variable    {"usernames":["${userName}"],"mute_duration":86400000}
@@ -145,7 +145,7 @@ Add Chatroom Member Mute With Inexistent Member Template
     ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效聊天室信息
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}
     ${data}    set variable    {"usernames":["${userName}"],"mute_duration":86400000}
@@ -174,7 +174,7 @@ Remove Chatroom Member Mute Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #创建一个聊天室
     ${chatroom}    Create Temp Chatroom    ${userName}
     ${chatroomId}    set variable    ${chatroom.data.id}
@@ -184,7 +184,7 @@ Remove Chatroom Member Mute Template
     ${chatroomMemberMute}    Add Temp Chatroom Member Mute    ${chatroomId}    ${userName}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}
     #设置请求集和
@@ -212,7 +212,7 @@ Get Chatroom Member Mute List Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #创建一个聊天室
     ${chatroom}    Create Temp Chatroom    ${userName}
     ${chatroomId}    set variable    ${chatroom.data.id}
@@ -222,7 +222,7 @@ Get Chatroom Member Mute List Template
     ${chatroomMemberMute}    Add Temp Chatroom Member Mute    ${chatroomId}    ${userName}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
     #设置请求集和

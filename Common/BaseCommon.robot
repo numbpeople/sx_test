@@ -4,8 +4,9 @@ Library           requests
 Library           Collections
 Library           RequestsLibrary
 Library           String
-Resource          ../Variable_Env.robot
 Library           ../Lib/KefuUtils.py
+Library           pabot.PabotLib
+Resource          ../Variable_Env.robot
 
 *** Keywords ***
 request
@@ -287,6 +288,7 @@ Set Model Case Run Status Init
     Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    AppToken_ContentType=${RunStatus.NORUN}
     Run Keyword If    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    set to dictionary    ${ModelCaseRunStatus}    BestToken_ContentType=${RunStatus.RUN}
     set global variable    ${ModelCaseRunStatus}    ${ModelCaseRunStatus}
+    Set Parallel Value For Key    ParallelModelCaseRunStatus    ${ModelCaseRunStatus}
 
 Generate Random Specified String
     [Arguments]    ${specificPreString}=

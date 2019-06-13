@@ -4,8 +4,23 @@ Resource          ../../AppCommon/AppCommon.robot
 Resource          ../../UserCommon/UserCommon.robot
 Resource          ../../GroupCommon/GroupCommon.robot
 Resource          ../../ChatroomCommon/ChatroomCommon.robot
+Resource          ../../../Variable_Env.robot
+Library           pabot.PabotLib
 
 *** Keywords ***
+Setup Init
+    [Documentation]    测试用例执行初始化部分：包括如下：
+    ...    - 一、测试用例初始化数据准备，包括：Token、Appkey、用户数据、群组信息、聊天室信息等
+    ...    - 二、共享多线程之间，保证初始化变量在各个线程之间可用
+    #创建连接session
+    Create Alia Session
+    #锁住初始化的操作
+    Acquire Lock    setupLock
+    Run Only Once    Setup
+    Release Lock    setupLock
+    #从线程池中取出共享的变量，以供其他线程使用
+    Set Parallel Global Value
+
 Setup
     [Documentation]    测试用例执行初始化部分：包括如下：
     ...    - 1、设置超管Token等相关信息、或获取Org Token
@@ -22,3 +37,25 @@ Setup
     Get Chatgroup Init    #初始化群组信息
     Get Chatroom Init    #初始化聊天室信息
     Set Model Case Run Status Init    #初始化模板case中，各条用例的执行状态
+
+Set Parallel Global Value
+    [Documentation]    从线程池中取出共享的变量，以供其他线程使用
+    #从线程池中取出共享的变量，以供其他线程使用
+    &{ParallelRestRes}    Get Parallel Value For Key    ParallelRestRes
+    &{ParallelToken}    Get Parallel Value For Key    ParallelToken
+    &{ParallelbaseRes}    Get Parallel Value For Key    ParallelbaseRes
+    &{ParallelRunModelCaseConditionDic}    Get Parallel Value For Key    ParallelRunModelCaseConditionDic
+    &{ParallelModelCaseRunStatus}    Get Parallel Value For Key    ParallelModelCaseRunStatus
+    &{ParallelvalidIMUserInfo}    Get Parallel Value For Key    ParallelvalidIMUserInfo
+    Set Global Variable    ${RestRes}    ${ParallelRestRes}
+    Set Global Variable    ${Token}    ${ParallelToken}
+    Set Global Variable    ${baseRes}    ${ParallelbaseRes}
+    Set Global Variable    ${RunModelCaseConditionDic}    ${ParallelRunModelCaseConditionDic}
+    Set Global Variable    ${ModelCaseRunStatus}    ${ParallelModelCaseRunStatus}
+    Set Global Variable    ${validIMUserInfo}    ${ParallelvalidIMUserInfo}
+
+Create Alia Session
+    #创建连接
+    Create Session    session    ${RestRes.RestUrl}
+    set to dictionary    ${RestRes}    alias=session
+    set global variable    ${RestRes}    ${RestRes}

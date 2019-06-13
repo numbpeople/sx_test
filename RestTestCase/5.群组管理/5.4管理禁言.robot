@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Teardown    Delete Temp Specific User For Loop
+Force Tags        chatgroupMute
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -8,6 +8,7 @@ Resource          ../../Variable_Env.robot
 Resource          ../../Common/GroupCommon/GroupMuteCommon.robot
 Resource          ../../Result/GroupResult/Group_Result.robot
 Resource          ../../Result/GroupResult/GroupMute_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 添加禁言(/{orgName}/{appName}/chatgroups/{groupId}/mute)

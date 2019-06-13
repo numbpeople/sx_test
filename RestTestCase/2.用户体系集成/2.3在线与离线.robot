@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        userOnlineAndOffline
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -10,6 +11,7 @@ Resource          ../../Result/UserResult/FriendsAndBlacklist_Result.robot
 Resource          ../../Result/UserResult/UserManagement_Result.robot
 Resource          ../../Result/BaseResullt.robot
 Resource          ../../Result/UserResult/UserOnlineAndOffline_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 获取IM用户在线状态(/{orgName}/{appName}/users/{userName}/status)

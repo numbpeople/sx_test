@@ -7,6 +7,7 @@ Resource          ../../Variable_Env.robot
 Resource          ../../Common/SendMessageCommon/SendMessageCommon.robot
 Resource          ../../Result/BaseResullt.robot
 Resource          ../../Result/SendMessageResult/SendMessage_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 给用户发送文本消息(/{orgName}/{appName}/messages)

@@ -1,3 +1,4 @@
 *** Settings ***
-Suite Teardown
-Resource          ../../Common/UserCommon/UserCommon.robot
+Test Teardown     Test Data Teardown
+Force Tags        chatroom
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot

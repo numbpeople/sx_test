@@ -3,6 +3,7 @@ Library           requests
 Library           RequestsLibrary
 Library           Collections
 Library           json
+Library           pabot.PabotLib
 Resource          ../../RestApi/App/AppApi.robot
 Resource          ../../Variable_Env.robot
 Resource          ../BaseCommon.robot
@@ -10,10 +11,10 @@ Resource          ../../RestApi/Token/TokenApi.robot
 
 *** Keywords ***
 Create App
-    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${data}
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
     [Documentation]    创建应用app
     # 创建应用app
-    ${resp}=    /management/organizations/{orgName}/applications    ${method}    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
+    ${resp}=    /management/organizations/{orgName}/applications    POST    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
 
@@ -29,7 +30,7 @@ Create Temp App
     ${newRequestHeader}    copy dictionary    ${requestHeader}
     ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
     #创建应用app
-    &{apiResponse}    Create App    POST    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
+    &{apiResponse}    Create App    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
     Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    创建应用失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
     ${text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}
@@ -55,7 +56,7 @@ Create Exist Application Template
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
-    @{arguments}    Create List    POST    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
     #设置请求头，并运行关键字
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Create App
     ...    @{arguments}
@@ -84,7 +85,7 @@ Create New Application Template
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
-    @{arguments}    Create List    POST    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
     #设置请求头，并运行关键字
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Create App
     ...    @{arguments}
@@ -263,6 +264,8 @@ Get Applications And Set AppName Init
     Comment    ${randoNumber}    Generate Random String    5    [NUMBERS]
     set to dictionary    ${baseRes}    validAppName=${applicationName}    invalidAppName=invalidApp${randomNumber}    validAppUUID=${applicationUUID}
     set global variable    ${baseRes}    ${baseRes}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
+    Set Parallel Value For Key    ParallelRunModelCaseConditionDic    ${RunModelCaseConditionDic}
 
 Get Console Applications
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${params}
@@ -319,6 +322,8 @@ Get Application And Set Global Variable
     set global variable    ${baseRes}    ${baseRes}
     set to dictionary    ${RunModelCaseConditionDic}    specificAppkey=${RunModelCaseConditionDic.orgName}#${RunModelCaseConditionDic.appName}
     set global variable    ${RunModelCaseConditionDic}    ${RunModelCaseConditionDic}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
+    Set Parallel Value For Key    ParallelRunModelCaseConditionDic    ${RunModelCaseConditionDic}
 
 Update App
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
@@ -346,7 +351,7 @@ Update App AllowOpenRegistration
     ${expectedStatusCode}    set variable    200
     #修改应用app
     &{apiResponse}    Update App    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
-    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取应用列表失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    修改应用的开放注册&授权注册接口失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
     ${text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}
     log    ${text}
@@ -470,3 +475,4 @@ Get AppToken Init
     #设置全局变量
     set to dictionary    ${Token}    appToken=${accessToken}
     set global variable    ${Token}    ${Token}
+    Set Parallel Value For Key    ParallelToken    ${Token}

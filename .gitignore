@@ -9,6 +9,7 @@
 *.war
 *.ear
 *.pyc
+log/
 
 # report Files #
 *.html

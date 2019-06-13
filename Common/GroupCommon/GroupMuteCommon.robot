@@ -104,7 +104,7 @@ Add Chatgroup User Mute With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     ${groupId}    set variable    ${randomNumber}
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
@@ -203,7 +203,7 @@ Remove Chatgroup User Mute With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     ${groupId}    set variable    ${randomNumber}
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}

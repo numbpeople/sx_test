@@ -83,6 +83,8 @@ Create Temp User
     ${url}    set variable    ${apiResponse.url}
     log    ${text}
     log    ${url}
+    #记录创建的IM用户，为用例teardown中清理
+    run keyword if    '${specificPreString}' == '${EMPTY}'    Record Temp User List    ${text['entities'][0]['username']}
     Return From Keyword    ${text}
 
 Delete Temp Specific User
@@ -115,6 +117,19 @@ Delete Temp Specific User For Loop
     \    ${status}    Run Keyword And Return Status    Should Contain    ${userName}    ${preRandomString}
     \    #删除指定用户
     \    run keyword if    ${status}    Delete Temp Specific User    ${userName}
+
+Delete Temp Specific User For Test TearDown Loop
+    [Documentation]    删除用例中创建的用户
+    #删除用例中创建的用户
+    ${variableExsitStatus}    Run Keyword And Return Status    Variable Should Exist    ${testTempUserList}
+    return from keyword if    not ${variableExsitStatus}
+    #循环删除指定用户
+    log list    ${testTempUserList}
+    : FOR    ${i}    IN    @{testTempUserList}
+    \    #获取用户username
+    \    ${userName}    set variable    ${i}
+    \    #删除指定用户
+    \    Delete Temp Specific User    ${userName}
 
 Get Users With Params
     [Arguments]    ${limit}    ${cursor}=
@@ -165,11 +180,29 @@ Get Valid And Invalid User Init
     #创建新的用户
     ${user}    Create Temp User    initvaliduser
     ${validIMUser}    set variable    ${user['entities'][0]['username']}
-    &{validIMUserInfo}    create dictionary    uuid=${user['entities'][0]['uuid']}    created=${user['entities'][0]['created']}    modified=${user['entities'][0]['modified']}    username=${user['entities'][0]['username']}    nickname=${user['entities'][0]['nickname']}
-    #设置全局的有效、无效基本数据
+    &{validIMUserInfo}    create dictionary    uuid=${user['entities'][0]['uuid']}    username=${user['entities'][0]['username']}    nickname=${user['entities'][0]['nickname']}
+    #设置全局的有效、无效基本数据    created=${user['entities'][0]['created']}    modified=${user['entities'][0]['modified']}
     ${randomNumber}    Generate Random Specified String
-    set to dictionary    ${baseRes}    validIMUser=${validIMUser}    invalidIMUser=invalidUser${randomNumber}    validIMUserInfo=${validIMUserInfo}
+    set to dictionary    ${baseRes}    validIMUser=${validIMUser}    invalidIMUser=invalidUser${randomNumber}
     set global variable    ${baseRes}    ${baseRes}
+    set global variable    ${validIMUserInfo}    ${validIMUserInfo}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
+    Set Parallel Value For Key    ParallelvalidIMUserInfo    ${validIMUserInfo}    #设置有效用户的返回值信息，供用例使用
+
+Record Temp User List
+    [Arguments]    ${userName}
+    [Documentation]    记录创建的IM用户，为用例teardown中清理
+    #记录创建的IM用户，为用例teardown中清理
+    ${variableExsitStatus}    Run Keyword And Return Status    Variable Should Exist    ${testTempUserList}    #判断预置变量是否存在
+    #如果变量存在，则直接将用户加到列表中
+    run keyword if    ${variableExsitStatus}    append to list    ${testTempUserList}    ${userName}
+    run keyword if    ${variableExsitStatus}    set test variable    ${testTempUserList}    ${testTempUserList}
+    return from keyword if    ${variableExsitStatus}    ${testTempUserList}
+    #如果变量不存在，则创建变量后将用户加到列表中
+    @{testTempUserList}    create list    ${userName}
+    #将变量设置为测试用例集可用
+    set test variable    ${testTempUserList}    ${testTempUserList}
+    return from keyword    ${testTempUserList}
 
 Create Exist User Template
     [Arguments]    ${contentType}    ${token}    ${openRegistration}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}

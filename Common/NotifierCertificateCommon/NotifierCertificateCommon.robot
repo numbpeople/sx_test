@@ -31,12 +31,12 @@ Upload Certificate Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #创建新的用户
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
     #创建请求数据

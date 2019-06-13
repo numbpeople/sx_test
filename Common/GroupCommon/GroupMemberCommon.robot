@@ -115,7 +115,7 @@ Add Temp Chatgroup Admin
     Return From Keyword    ${text}
 
 Create New Chatgroup And Set Group Admin
-    [Arguments]    ${owner}=${baseRes.validIMUserInfo.username}    ${userName}=    ${groupId}=
+    [Arguments]    ${owner}=${validIMUserInfo.username}    ${userName}=    ${groupId}=
     [Documentation]    创建新的群组、添加普通成员并设置群管理
     #创建一个群组
     ${newGroupId}    set variable    ${groupId}
@@ -175,7 +175,7 @@ Add Single Chatgroup Member With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${randomNumber}    userName=${userName}
     #设置请求集和
@@ -298,7 +298,7 @@ Remove Single Chatgroup Member With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${randomNumber}    userName=${userName}
@@ -329,7 +329,7 @@ Get Multi Chatgroup Member Template
     #设置请求数据
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
     ${groupId}    set variable    ${chatGroup.groupId}
@@ -396,7 +396,7 @@ Add Multi Chatgroup Member Template
     #设置请求数据
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
     ${groupId}    set variable    ${chatGroup.groupId}
@@ -435,7 +435,7 @@ Remove Multi Chatgroup Member Template
     ${userName}    set variable    ${user['entities'][0]['username']}
     ${user1}    Create Temp User
     ${userName1}    set variable    ${user1['entities'][0]['username']}
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
     ${groupId}    set variable    ${chatGroup.groupId}
@@ -473,7 +473,7 @@ Add Chatgroup Admin Template
     #设置请求数据
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
     ${groupId}    set variable    ${chatGroup.groupId}
@@ -608,7 +608,7 @@ Remove Chatgroup Admin Template
     #设置请求数据
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
     ${groupId}    set variable    ${chatGroup.groupId}
@@ -647,7 +647,7 @@ Remove Chatgroup Admin With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${userName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${userName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${groupId}    set variable    ${randomNumber}
     #设置请求数据
@@ -744,7 +744,7 @@ Get Chatgroup Admin Template
     #设置请求数据
     ${user}    Create Temp User
     ${userName}    set variable    ${user['entities'][0]['username']}
-    ${ownerUserName}    set variable    ${baseRes.validIMUserInfo.username}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
     #创建一个群组
     ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
     ${groupId}    set variable    ${chatGroup.groupId}

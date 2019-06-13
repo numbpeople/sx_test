@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        userFriendsAndBlacklist
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -9,9 +10,11 @@ Resource          ../../Variable_Env.robot
 Resource          ../../Result/UserResult/FriendsAndBlacklist_Result.robot
 Resource          ../../Result/UserResult/UserManagement_Result.robot
 Resource          ../../Result/BaseResullt.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 添加好友(/{orgName}/{appName}/users/{ownerUsername}/contacts/users/{friendUsername})
+    [Tags]    adduser
     [Template]    Add Friend Template
     ${contentType.JSON}    ${Token.orgToken}    ${AddFriendDictionary.statusCode}    ${AddFriendDictionary.reponseResult}    ${AddFriendDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${UserUnAuthorizedDictionary.statusCode}    ${UserUnAuthorizedDictionary.reponseResult}    ${UserUnAuthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}

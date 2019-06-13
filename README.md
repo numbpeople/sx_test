@@ -19,6 +19,7 @@ IM自动化是一个企业级自动化项目，包含接口&UI自动化。致力
 * robotframework-selenium2library
 * robotframework-excellibrary
 * pandas
+* robotframework-pabot
   ...
 ```
 4.在线安装依赖包

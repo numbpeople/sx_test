@@ -3,6 +3,7 @@ Library           requests
 Library           RequestsLibrary
 Library           Collections
 Library           json
+Library           pabot.PabotLib
 Resource          ../../RestApi/Token/TokenApi.robot
 Resource          ../../Variable_Env.robot
 Resource          ../BaseCommon.robot
@@ -17,8 +18,6 @@ Get Management Token
 
 Get OrgToken Or BestToken Init
     [Documentation]    初始化console后台管理token或设置超管token
-    Create Session    session    ${RestRes.RestUrl}
-    set to dictionary    ${RestRes}    alias=session
     #设置超管token
     ${specificBestTokenAndAppkeyStatus}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.orgName}" == "${EMPTY}")
     ${bestTokenNotEmpty}    evaluate    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"
@@ -42,6 +41,9 @@ Get OrgToken Or BestToken Init
     set global variable    ${RestRes}    ${RestRes}
     set global variable    ${Token}    ${Token}
     set global variable    ${baseRes}    ${baseRes}
+    Set Parallel Value For Key    ParallelRestRes    ${RestRes}
+    Set Parallel Value For Key    ParallelToken    ${Token}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
 
 Get BestToken And Set Global Variable
     [Arguments]    ${randomNumber}=
@@ -51,3 +53,6 @@ Get BestToken And Set Global Variable
     set global variable    ${RestRes}    ${RestRes}
     set global variable    ${Token}    ${Token}
     set global variable    ${baseRes}    ${baseRes}
+    Set Parallel Value For Key    ParallelRestRes    ${RestRes}
+    Set Parallel Value For Key    ParallelToken    ${Token}
+    Set Parallel Value For Key    ParallelbaseRes    ${baseRes}

@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Teardown    Delete Temp Specific User For Loop
+Force Tags        chatgroupBlacklist
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -9,6 +9,7 @@ Resource          ../../Common/GroupCommon/GroupBlacklistCommon.robot
 Resource          ../../Result/GroupResult/Group_Result.robot
 Resource          ../../Result/GroupResult/GroupMember_Result.robot
 Resource          ../../Result/GroupResult/ChatgroupBlacklist_Result.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 添加单个用户至群组黑名单(/{orgName}/{appName}/chatgroups/{groupId}/blocks/users/{userName})

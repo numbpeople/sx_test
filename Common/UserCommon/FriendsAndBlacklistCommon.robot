@@ -115,13 +115,11 @@ Add Friend Template
     ${user}    Create Temp User
     ${ownerUUID}    set variable    ${user['entities'][0]['uuid']}
     ${ownerUserNameAccount}    set variable    ${user['entities'][0]['username']}
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
-    ${created}    set variable    ${baseRes.validIMUserInfo.created}
-    ${modified}    set variable    ${baseRes.validIMUserInfo.modified}
-    ${nickname}    set variable    ${baseRes.validIMUserInfo.nickname}
+    ${username}    set variable    ${validIMUserInfo.username}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
+    ${nickname}    set variable    ${validIMUserInfo.nickname}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${friendUsername}    set variable    ${ownerUserNameAccount}    ${username}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
@@ -133,8 +131,8 @@ Add Friend Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${ownerUUID}'    '${uuid}'    '${created}'    '${modified}'
-    ...    '${username}'    '${nickname}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${ownerUUID}'    '${uuid}'    '${username}'    '${nickname}'
+    ...    '${orgName}'    '${appName}'
     @{argumentValueUnauthorized}    create list    'post'    '${applicationUUID}'    '/${ownerUUID}'
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
@@ -154,7 +152,7 @@ Add Inexistent Friend Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${friendUsername}    set variable    ${baseRes.validIMUser}    ${randomNumber}
@@ -189,13 +187,11 @@ Remove Friend Template
     ${user}    Create Temp User
     ${ownerUUID}    set variable    ${user['entities'][0]['uuid']}
     ${ownerUserNameAccount}    set variable    ${user['entities'][0]['username']}
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
-    ${created}    set variable    ${baseRes.validIMUserInfo.created}
-    ${modified}    set variable    ${baseRes.validIMUserInfo.modified}
-    ${nickname}    set variable    ${baseRes.validIMUserInfo.nickname}
+    ${username}    set variable    ${validIMUserInfo.username}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
+    ${nickname}    set variable    ${validIMUserInfo.nickname}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${validUserUUID}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${friendUsername}    set variable    ${ownerUserNameAccount}    ${username}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
@@ -209,8 +205,8 @@ Remove Friend Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${ownerUUID}'    '${uuid}'    '${created}'    '${modified}'
-    ...    '${username}'    '${nickname}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${ownerUUID}'    '${uuid}'    '${username}'    '${nickname}'
+    ...    '${orgName}'    '${appName}'
     @{argumentValueUnauthorized}    create list    'delete'    '${applicationUUID}'    '/${ownerUUID}'
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
@@ -268,7 +264,7 @@ Get Inexistent Friend Template
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    set variable    ${randomNumber}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}
@@ -300,7 +296,7 @@ Add User Blacklist Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    set variable    ${baseRes.validIMUser}
     ${data}    set variable    {"usernames":["${ownerUsername}"]}
@@ -334,7 +330,7 @@ Add Inexistent User Blacklist Template
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    set variable    ${baseRes.validIMUser}
     ${data}    set variable    {"usernames":["${randomNumber}"]}
@@ -367,11 +363,9 @@ Remove User Blacklist Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     Add Blacklist For User    ${baseRes.validIMUser}    ${baseRes.validIMUser}
-    ${username}    set variable    ${baseRes.validIMUserInfo.username}
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
-    ${created}    set variable    ${baseRes.validIMUserInfo.created}
-    ${modified}    set variable    ${baseRes.validIMUserInfo.modified}
-    ${nickname}    set variable    ${baseRes.validIMUserInfo.nickname}
+    ${username}    set variable    ${validIMUserInfo.username}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
+    ${nickname}    set variable    ${validIMUserInfo.nickname}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${blockedUsername}    set variable    ${baseRes.validIMUser}    ${baseRes.validIMUser}
@@ -384,8 +378,8 @@ Remove User Blacklist Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${created}'    '${modified}'    '${username}'
-    ...    '${nickname}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${username}'    '${nickname}'    '${orgName}'
+    ...    '${appName}'
     @{argumentValueUnauthorized}    create list    'delete'    '${applicationUUID}'    '/${uuid}'
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
@@ -405,7 +399,7 @@ Remove Inexistent User Blacklist Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    set variable    ${baseRes.validIMUser}

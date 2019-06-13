@@ -1,4 +1,5 @@
 *** Settings ***
+Force Tags        userManagement
 Library           requests
 Library           RequestsLibrary
 Library           Collections
@@ -8,6 +9,7 @@ Resource          ../../Common/UserCommon/UserCommon.robot
 Resource          ../../Variable_Env.robot
 Resource          ../../Result/UserResult/UserManagement_Result.robot
 Resource          ../../Result/BaseResullt.robot
+Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 
 *** Test Cases ***
 注册单个已存在的用户(/{orgName}/{appName}/users)
@@ -84,6 +86,7 @@ Resource          ../../Result/BaseResullt.robot
     #该条接口用例会执行不通过，因为header中不传入Content-Type为application/json，接口请求不通过，返回值：{"error":"web_application","timestamp":1556592834885,"duration":0,"exception":"javax.ws.rs.WebApplicationException","error_description":"Unsupported Media Type"}
 
 获取单个IM用户(/{orgName}/{appName}/users/{userName})
+    [Tags]    singleuser
     [Template]    Get Single User Template
     ${contentType.JSON}    ${Token.orgToken}    ${GetSingleUserDictionary.statusCode}    ${GetSingleUserDictionary.reponseResult}    ${GetSingleUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${SingleUserNoUnauthorizedDictionary.statusCode}    ${SingleUserNoUnauthorizedDictionary.reponseResult}    ${SingleUserNoUnauthorizedDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}

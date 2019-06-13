@@ -56,7 +56,7 @@ Get User Status Template
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
     #设置请求数据
-    ${uuid}    set variable    ${baseRes.validIMUserInfo.uuid}
+    ${uuid}    set variable    ${validIMUserInfo.uuid}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${userName}    set variable    ${baseRes.validIMUser}
@@ -119,7 +119,7 @@ Get User Batch Status Template
     #设置请求数据
     ${user}    Create Temp User
     ${user1}    set variable    ${user['entities'][0]['username']}
-    ${user2}    set variable    ${baseRes.validIMUserInfo.username}
+    ${user2}    set variable    ${validIMUserInfo.username}
     ${data}    set variable    {"usernames":["${user1}","${user2}"]}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${userName}    set variable    ${baseRes.validIMUser}

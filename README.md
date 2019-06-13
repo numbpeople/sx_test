@@ -19,7 +19,6 @@ IM自动化是一个企业级自动化项目，包含接口&UI自动化。致力
 * robotframework-selenium2library
 * robotframework-excellibrary
 * pandas
-* robotframework-pabot
   ...
 ```
 4.在线安装依赖包
@@ -50,7 +49,7 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 
 
 
-## 项目运行
+## 项目配置方式
 
 当前IM自动化项目支持以下两个配置方式运行用例：
 
@@ -70,6 +69,19 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 ```
 ![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/77e94d89-a5fe-4670-be14-8ba30efd712a5oyH5a6aYXBwa2V55omn6KGMLnBuZw==)
 
+## 项目运行
+支持ride页面启动与命令行执行用例，命令行模式下：
+
+- 单线程模式
+```
+pybot -d C:\Users\leo\git\IM-auto-test\log C:\Users\leo\git\IM-auto-test
+```
+- 多线程模式
+```
+pabot --pabotlib --processes 16 -d C:\Users\leo\git\IM-auto-test\log C:\Users\leo\git\IM-auto-test
+```
+
+#### ==其中 --processes 参数后需要填写用例suite集并发数==
 
 
 ## Variable_Env变量参数的定义

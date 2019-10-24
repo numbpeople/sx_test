@@ -131,8 +131,8 @@ Add Friend Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${ownerUUID}'    '${uuid}'    '${username}'    '${nickname}'
-    ...    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${username}'    '${nickname}'    '${orgName}'
+    ...    '${appName}'
     @{argumentValueUnauthorized}    create list    'post'    '${applicationUUID}'    '/${ownerUUID}'
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
@@ -205,8 +205,8 @@ Remove Friend Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${ownerUUID}'    '${uuid}'    '${username}'    '${nickname}'
-    ...    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${uuid}'    '${username}'    '${nickname}'    '${orgName}'
+    ...    '${appName}'
     @{argumentValueUnauthorized}    create list    'delete'    '${applicationUUID}'    '/${ownerUUID}'
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值

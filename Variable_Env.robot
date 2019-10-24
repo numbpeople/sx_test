@@ -11,7 +11,7 @@ ${timeout}        ${30.0}    # 接口请求超时时间
 &{FilterEntity}    page_size=5    page_num=1    limit=20    # 接口请求参数
 &{baseRes}        validOrgName=    invalidOrgName=    validAppName=    invalidAppName=    validIMUser=    invalidIMUser=    validOrgUUID=
 ...               validAppUUID=    validChatgroup=    validChatroom=    # 有效的app和user均在validOrgName组织下，无效变量则随机取值
-${allowOpenRegistration}    true    # 应用APP开放注册（true）、授权注册（false）
+${allowOpenRegistration}    ${EMPTY}    # 应用APP开放注册（true）、授权注册（false）
 &{Token}          bestToken=    orgToken=    appToken=    userToken=    # 多种token的配置，包含超管token、管理员token、应用token、用户登录token
 &{RunStatus}      RUN=True    NORUN=False    # 设置用例的执行装填，RUN即为执行、NORUN即为不执行
 &{ModelCaseRunStatus}    OrgToken_ContentType=${RunStatus.RUN}    EmptyOrgToken_EmptyContentType=${RunStatus.RUN}    OrgToken_EmptyContentType=${RunStatus.RUN}    EmptyOrgToken_ContentType=${RunStatus.RUN}    BestToken_ContentType=${RunStatus.NORUN}    AppToken_ContentType=${RunStatus.RUN}    # 模块用例的多种组合执行状态

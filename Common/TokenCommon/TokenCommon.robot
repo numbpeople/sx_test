@@ -19,8 +19,8 @@ Get Management Token
 Get OrgToken Or BestToken Init
     [Documentation]    初始化console后台管理token或设置超管token
     #设置超管token
-    ${specificBestTokenAndAppkeyStatus}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.orgName}" == "${EMPTY}")
-    ${bestTokenNotEmpty}    evaluate    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"
+    ${specificBestTokenAndAppkeyStatus}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.orgName}" == "${EMPTY}")    #检查配置超管token，但未配置orgName
+    ${bestTokenNotEmpty}    evaluate    "${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}"    #检查超管token不为空
     Run Keyword If    ${specificBestTokenAndAppkeyStatus}    FAIL    配置了指定超管token，但是没有配置orgName，请检查变量：RunModelCaseConditionDic 配置
     ${randomNumber}    Generate Random String    10    [NUMBERS]
     Run Keyword And Return If    ${bestTokenNotEmpty}    Get BestToken And Set Global Variable    ${randomNumber}
@@ -34,7 +34,9 @@ Get OrgToken Or BestToken Init
     ${url}    set variable    ${apiResponse.url}
     #获取orgName
     @{orgNameList}    Get Dictionary Keys    ${text['user']['organizations']}
-    ${orgName}    set variable    ${orgNameList[0]}
+    Comment    ${orgName}    set variable    ${orgNameList[0]}
+    ${orgName}    run keyword if    ("${RunModelCaseConditionDic.orgName}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    Set Variable    ${RunModelCaseConditionDic.orgName}
+    ...    ELSE    Set Variable    ${orgNameList[0]}
     set to dictionary    ${Token}    orgToken=${text['access_token']}
     #设置全局的有效、无效基本数据
     set to dictionary    ${baseRes}    validOrgName=${orgName}    invalidOrgName=${randomNumber}
@@ -47,6 +49,7 @@ Get OrgToken Or BestToken Init
 
 Get BestToken And Set Global Variable
     [Arguments]    ${randomNumber}=
+    [Documentation]    ${RunModelCaseConditionDic}配置了超管token，超管token和orgName为全局变量
     #设置全局变量
     set to dictionary    ${Token}    bestToken=${RunModelCaseConditionDic.specificBestToken}
     set to dictionary    ${baseRes}    validOrgName=${RunModelCaseConditionDic.orgName}    invalidOrgName=${randomNumber}

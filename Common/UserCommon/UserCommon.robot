@@ -357,11 +357,14 @@ Create New Multi User Template
     ${randomNumber1}    Generate Random Specified String
     &{user1}    create dictionary    username=${randomNumber}    password=${randomNumber}
     &{user2}    create dictionary    username=${randomNumber1}    password=${randomNumber1}
-    @{data}    create list    ${user1}    ${user2}
+    ${user1Json}    dumps    ${user1}
+    ${user2Json}    dumps    ${user2}
+    ${requestBody}    set variable    [{"username":"${randomNumber}","password":"${randomNumber}"},{"username":"${randomNumber1}","password":"${randomNumber1}"}]
+    @{data}    create list    ${user1Json}    ${user2Json}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
-    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${requestBody}
     #设置请求头，并运行关键字
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Create User
     ...    @{arguments}
@@ -397,10 +400,11 @@ Create New Multi User With Illegal UserName Template
     &{user1}    create dictionary    username=${username}    password=${password}
     &{user2}    create dictionary    username=${username1}    password=${password1}
     @{data}    create list    ${user1}    ${user2}
+    ${requestBody}    set variable    [{"username":"${username}","password":"${password}"},{"username":"${username1}","password":"${password1}"}]
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
-    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${requestBody}
     #设置请求头，并运行关键字
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Create User
     ...    @{arguments}
@@ -436,10 +440,11 @@ Create New Multi User With Illegal PassWord Template
     &{user1}    create dictionary    username=${username}    password=${password}
     &{user2}    create dictionary    username=${username1}    password=${password1}
     @{data}    create list    ${user1}    ${user2}
+    ${requestBody}    set variable    [{"username":"${username}","password":"${password}"},{"username":"${username1}","password":"${password1}"}]
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
-    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${requestBody}
     #设置请求头，并运行关键字
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Create User
     ...    @{arguments}

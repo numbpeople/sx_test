@@ -19,7 +19,7 @@ Create App
     Return From Keyword    ${apiResponse}
 
 Create Temp App
-    [Arguments]    ${openRegistration}=${allowOpenRegistration}
+    [Arguments]    ${openRegistration}=true
     [Documentation]    创建一个新的应用APP
     #创建获取token的请求体
     ${randoNumber}    Generate Random Specified String
@@ -51,6 +51,9 @@ Create Exist Application Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${appRunStatus}    Should No Run App Testcase
+    Return From Keyword If    ${appRunStatus}
     #设置请求数据
     ${data}    set variable    {"name":"${baseRes.validAppName}","productName":"${baseRes.validAppName}","appDesc":"${baseRes.validAppName}","app_status":"online","allow_open_registration":true}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
@@ -79,9 +82,13 @@ Create New Application Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${appRunStatus}    Should No Run App Testcase
+    Return From Keyword If    ${appRunStatus}
     #设置请求数据
     ${randoNumber}    Generate Random Specified String
-    ${data}    set variable    {"name":"${randoNumber}","productName":"${randoNumber}","appDesc":"${randoNumber}","app_status":"online","allow_open_registration":true}
+    ${appStatus}    set variable    online
+    ${data}    set variable    {"name":"${randoNumber}","productName":"${randoNumber}","appDesc":"${randoNumber}","app_status":"${appStatus}","allow_open_registration":true}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
@@ -109,6 +116,9 @@ Get Applications List Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${appRunStatus}    Should No Run App Testcase
+    Return From Keyword If    ${appRunStatus}
     #设置请求数据
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}
     ${filter}    Copy Dictionary    ${FilterEntity}
@@ -138,6 +148,9 @@ Get Applications List With Inexistent Org Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${appRunStatus}    Should No Run App Testcase
+    Return From Keyword If    ${appRunStatus}
     #设置请求数据
     &{pathParamter}    Create Dictionary    orgName=${baseRes.invalidOrgName}
     ${filter}    Copy Dictionary    ${FilterEntity}
@@ -167,6 +180,9 @@ Get Specific Application Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${appRunStatus}    Should No Run App Testcase
+    Return From Keyword If    ${appRunStatus}
     #创建一个新的应用app
     &{newAppApiResponse}    Create Temp App
     ${uuid}    set variable    ${newAppApiResponse['entities'][0]['uuid']}
@@ -202,6 +218,9 @@ Get Specific Application Template With Inexistent Application Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${appRunStatus}    Should No Run App Testcase
+    Return From Keyword If    ${appRunStatus}
     #设置请求数据
     ${randoNumber}    Generate Random String    10    [NUMBERS]
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.invalidAppName}
@@ -214,7 +233,7 @@ Get Specific Application Template With Inexistent Application Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${pathParamter.appName}'    '${pathParamter.orgName}'
+    @{argumentValue}    create list    '${pathParamter.orgName}'    '${pathParamter.appName}'    '${pathParamter.orgName}'    '${pathParamter.appName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -250,12 +269,13 @@ Get App And Return Application
 Get Applications And Set AppName Init
     [Documentation]    初始化组织下的应用信息
     #设置有效appName和无效appName
-    ${bestTokenAndAppNameStatus}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" == "${EMPTY}")
-    ${bestTokenAndAppNameNotEmpty}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")
+    ${bestTokenAndAppNameStatus}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" == "${EMPTY}")    #配置了超管token，并且appName未配置
+    Comment    ${bestTokenAndAppNameNotEmpty}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    #配置了超管token和appName
+    ${orgNameAndAppNameNotEmpty}    evaluate    ("${RunModelCaseConditionDic.orgName}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    #配置了orgName和appName
     Run Keyword If    ${bestTokenAndAppNameStatus}    FAIL    配置了指定超管token，需要配置orgName、appName，请检查变量：RunModelCaseConditionDic 配置
     ${randomNumber}    Generate Random String    10    [NUMBERS]
-    Run Keyword If    ${bestTokenAndAppNameNotEmpty}    Get Application And Set Global Variable    ${RunModelCaseConditionDic.orgName}    ${RunModelCaseConditionDic.appName}    ${randomNumber}
-    Return From Keyword If    ${bestTokenAndAppNameNotEmpty}
+    Run Keyword If    ${orgNameAndAppNameNotEmpty}    Get Application And Set Global Variable    ${RunModelCaseConditionDic.orgName}    ${RunModelCaseConditionDic.appName}    ${randomNumber}
+    Return From Keyword If    ${orgNameAndAppNameNotEmpty}
     #创建新的应用
     &{newAppApiResponse}    Create Temp App
     ${applicationName}    set variable    ${newAppApiResponse['entities'][0]['applicationName']}
@@ -315,7 +335,7 @@ Get Console Specific Application And Return Application
 Get Application And Set Global Variable
     [Arguments]    ${orgName}    ${appName}    ${randomNumber}=
     #获取指定应用信息
-    ${applicationInfo}    Get Console Specific Application And Return Application    ${orgName}    ${appName}
+    &{applicationInfo}    Get Console Specific Application And Return Application    ${orgName}    ${appName}
     ${applicationUUID}    set variable    ${applicationInfo.uuid}
     #设置变量并更新为全局
     set to dictionary    ${baseRes}    validAppName=${RunModelCaseConditionDic.appName}    invalidAppName=invalidApp${randomNumber}    validAppUUID=${applicationUUID}
@@ -418,7 +438,7 @@ Get Appkey Token
     [Arguments]    ${orgName}    ${appName}
     [Documentation]    获取应用appkey的token
     #获取应用的Client ID和Client Secret信息
-    ${credentials}    Get Specific App Credentials    ${orgName}    ${appName}
+    &{credentials}    Get Specific App Credentials    ${orgName}    ${appName}
     ${clientId}    ${clientSecret}    set variable    ${credentials.clientId}    ${credentials.clientSecret}
     #创建获取token的请求体
     ${data}    set variable    {"grant_type":"client_credentials","client_id":"${clientId}","client_secret":"${clientSecret}"}
@@ -460,7 +480,7 @@ Get Specific App Credentials
     #获取应用的Client ID和Client Secret信息
     &{apiResponse}    Get App Credentials    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
     Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取应用的Client ID和Client Secret信息失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
-    ${text}    set variable    ${apiResponse.text}
+    &{text}    set variable    ${apiResponse.text}
     ${url}    set variable    ${apiResponse.url}
     log    ${text}
     log    ${url}

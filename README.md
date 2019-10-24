@@ -19,6 +19,7 @@ IM自动化是一个企业级自动化项目，包含接口&UI自动化。致力
 * robotframework-selenium2library
 * robotframework-excellibrary
 * pandas
+* robotframework-pabot
   ...
 ```
 4.在线安装依赖包
@@ -27,6 +28,8 @@ IM自动化是一个企业级自动化项目，包含接口&UI自动化。致力
 $ cd C:\Users\leo\git\IM-auto-test
 $ pip install -r requirements.txt
 ```
+
+---
 
 ## 项目结构
 
@@ -47,6 +50,7 @@ Result：测试用例对比的预期返回结构
 Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、指定超管Token和Appkey信息等参数定义的资源文件
 ```
 
+---
 
 
 ## 项目配置方式
@@ -62,12 +66,24 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 ![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/c95647b2-4eea-44d6-abb2-757e22c10761Y29uc29sZeaJp-ihjOaWueW8jy5wbmc=)
 
 
+- 环信Console管理后台账号/密码和指定Appkey执行用例
+
+```
+使用环信Console管理后台账号/密码 + 指定Appkey 执行所有测试用例
+```
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/c95647b2-4eea-44d6-abb2-757e22c10761Y29uc29sZeaJp-ihjOaWueW8jy5wbmc=)
+
+![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/bcae4ee6-a6db-470c-a888-7d89dfe9b896aW1hZ2UucG5n)
+
+
 - 指定Appkey和超管Token执行用例
 
 ```
 使用指定的Appkey和超管Token执行属于正常使用的测试用例
 ```
 ![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/77e94d89-a5fe-4670-be14-8ba30efd712a5oyH5a6aYXBwa2V55omn6KGMLnBuZw==)
+
+---
 
 ## 项目运行
 支持ride页面启动与命令行执行用例，命令行模式下：
@@ -81,10 +97,14 @@ pybot -d C:\Users\leo\git\IM-auto-test\log C:\Users\leo\git\IM-auto-test
 pabot --pabotlib --processes 16 -d C:\Users\leo\git\IM-auto-test\log C:\Users\leo\git\IM-auto-test
 ```
 
-#### ==其中 --processes 参数后需要填写用例suite集并发数==
 
+#### 其中 ==--processes== 参数后需要填写用例suite集并发数
+
+
+---
 
 ## Variable_Env变量参数的定义
+
 
 |参数名称|参数值举例|参数描述|
 | ---- | --- | --- |

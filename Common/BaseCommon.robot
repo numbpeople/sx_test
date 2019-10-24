@@ -188,8 +188,8 @@ Check Type Format
     ${keyStatus}    Run Keyword And Return Status    should contain    "${diffKey}"    :
     ${valueStatus}    Run Keyword And Return Status    log    ${diffStructResultJson['${diffKey}']}
     Continue For Loop If    (not ${keyStatus}) and (not ${valueStatus})
-    log    ${diffStructResultJson['${diffKey}']}
-    log    ${requestResult['${diffKey}']}
+    Comment    log    ${diffStructResultJson['${diffKey}']}
+    Comment    log    ${requestResult['${diffKey}']}
     #判断是否是json
     ${valueJsonType}    Check Json Type    ${diffStructResultJson['${diffKey}']}
     @{jsondiffStructList}    run keyword if    ${valueJsonType}    Get Dictionary Keys    ${diffStructResultJson['${diffKey}']}
@@ -239,6 +239,7 @@ Set Request Attribute And Run Keyword
     Set List Value    ${arguments}    ${index}    ${requestHeader1}
     #运行关键字
     &{apiResponse}    Run keyword    ${keyword}    @{arguments}
+    log dictionary    ${apiResponse}
     set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.resp.text}\n ================================================================华丽的分割线================================================================
     Return From Keyword    ${apiResponse}
 
@@ -350,3 +351,9 @@ Reset Request Header For Not Empty
     \    ${keyValue}    set variable    ${newRequestHeader['${i}']}
     \    run keyword if    "${keyValue}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    ${i}
     return from keyword    ${newRequestHeader}
+
+Should No Run App Testcase
+    [Documentation]    判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    #判断如果存在指定appkey和bestToken，则不执行app应用相关的测试用例
+    ${status}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.orgName}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")
+    Return From Keyword    ${status}

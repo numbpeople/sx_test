@@ -61,6 +61,8 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 
 ```
 使用环信Console管理后台已存在的【管理员登录邮箱和密码】，执行用例会创建新的应用来执行所有测试用例
+
+执行用例范围：用例将执行每条测试用例中除去最后一条数据的所有测试数据
 ```
 
 ![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/c95647b2-4eea-44d6-abb2-757e22c10761Y29uc29sZeaJp-ihjOaWueW8jy5wbmc=)
@@ -70,6 +72,8 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 
 ```
 使用环信Console管理后台账号/密码 + 指定Appkey 执行所有测试用例
+
+执行用例范围：用例将执行每条测试用例中除去最后一条数据的所有测试数据
 ```
 ![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/c95647b2-4eea-44d6-abb2-757e22c10761Y29uc29sZeaJp-ihjOaWueW8jy5wbmc=)
 
@@ -79,9 +83,12 @@ Variable_Env.robot: 定义了用例执行的Rest地址、登录账号密码、�
 - 指定Appkey和超管Token执行用例
 
 ```
-使用指定的Appkey和超管Token执行属于正常使用的测试用例
+设置范围：需要设置&{RunModelCaseConditionDic}变量中specificBestToken、orgName、appName
+
+执行用例范围：用例将仅执行每条测试用例中最后一条测试数据，其他测试数据将忽略
 ```
 ![image](https://kefu.easemob.com/v1/Tenant/634/MediaFiles/77e94d89-a5fe-4670-be14-8ba30efd712a5oyH5a6aYXBwa2V55omn6KGMLnBuZw==)
+
 
 ---
 
@@ -98,7 +105,7 @@ pabot --pabotlib --processes 16 -d C:\Users\leo\git\IM-auto-test\log C:\Users\le
 ```
 
 
-#### 其中 ==--processes== 参数后需要填写用例suite集并发数
+#### 其中 ==*--processes*== 参数后需要填写用例suite集并发数
 
 
 ---
@@ -112,3 +119,20 @@ pabot --pabotlib --processes 16 -d C:\Users\leo\git\IM-auto-test\log C:\Users\le
 |&{URLDeclare}|bj=https://a1.easemob.com|定义了常用的Rest集群地址|
 |&{RunModelCaseConditionDic}|orgName=sipsoft、appName=sandbox、specificBestToken=YWMtzyUm6ItOEemUEgcakCE-pgAAAAAAAAAAAAAAAAAAAAFe2JYa1n8R45heowo6U5LUAQMAAAFrQDk7fQBPGgDzCSzjnyAlJr1bFVAh7729xKey1_D2gZ7JMRqZZ6Pk8g|指定Appkey场景下配置的Appkey信息和超管token，该配置优先于console后台账号密码配置|
 |${timeout}|${30.0}|接口超时时间设置|
+
+---
+
+## 特需场景配置：
+
+
+1. 仅需要使用OrgToken执行所有正常测试用例，不想其他异常case，例如：token为空，或contentType为空下场景的case
+
+```
+需要设置&{ModelCaseRunStatus}变量中变量各个参数的值
+
+例如：
+1、OrgToken_ContentType：代表OrgToken和ContentType不为空，值${RunStatus.RUN}或${RunStatus.NORUN}，分别代表执行或不执行
+
+2、EmptyOrgToken_EmptyContentType：代表OrgToken和ContentType均为空，值${RunStatus.RUN}或${RunStatus.NORUN}，分别代表执行或不执行
+
+```

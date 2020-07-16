@@ -165,6 +165,7 @@ Get User Offline Msg Count Template
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    sleep    1s
     #设置请求头，并运行关键字
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get User Offline Msg Count
     ...    @{arguments}

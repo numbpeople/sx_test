@@ -167,7 +167,8 @@ Check Value Format
     \    Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}
     \    ...    ${diffKey}    Check Value Format
     \    #检查字段值是否相等
-    \    ${valueStatus}    Run Keyword And Return Status    Should Be Equal    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}
+    \    log many    ${requestResult['${diffKey}']}
+    \    ${valueStatus}    Run Keyword And Return Status    Should Contain    "${diffStructResultJson['${diffKey}']}"    "${requestResult['${diffKey}']}"
     \    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
     \    run keyword if    not ${valueStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中字段：${diffKey}，不等于${diffStructResultJson['${diffKey}']}，实际值为：${requestResult['${diffKey}']}。\n
     return from keyword    ${diffResult}
@@ -200,7 +201,7 @@ Check Type Format
     run keyword if    ${valueJsonType}    ${keyword}    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}    ${jsondiffStructList}    ${diffResult}
     #判断是否是list
     run keyword if    ${valueListType}    ${keyword}    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}    ${listdiffStructList}    ${diffResult}
-    Continue For Loop If    ${valueListType}
+    Continue For Loop If    ${valueListType} or ${valueJsonType}
 
 Check Json Type
     [Arguments]    ${key}
@@ -240,7 +241,7 @@ Set Request Attribute And Run Keyword
     #运行关键字
     &{apiResponse}    Run keyword    ${keyword}    @{arguments}
     log dictionary    ${apiResponse}
-    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.resp.text}\n ================================================================华丽的分割线================================================================
+    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}\n ================================================================华丽的分割线================================================================
     Return From Keyword    ${apiResponse}
 
 Assert Request Result

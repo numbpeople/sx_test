@@ -15,6 +15,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
 
 *** Test Cases ***
 待编写：删除华为证书
+    [Documentation]    - 待编写：删除华为证书
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -22,6 +23,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：删除小米证书
+    [Documentation]    - 待编写：删除小米证书
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -29,6 +31,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：上传华为证书
+    [Documentation]    - 待编写：上传华为证书
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -36,6 +39,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：上传华为证书-证书已存在
+    [Documentation]    - 待编写：上传华为证书-证书已存在
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -43,6 +47,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：上传小米证书
+    [Documentation]    - 待编写：上传小米证书
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -50,6 +55,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：获取证书
+    [Documentation]    - 待编写：获取证书
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -57,6 +63,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：获取证书-使用无效token
+    [Documentation]    - 待编写：获取证书-使用无效token
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
@@ -64,6 +71,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.bestToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：删除小米证书-使用无效token
+    [Documentation]    - 待编写：删除小米证书-使用无效token
     [Template]    Upload Certificate Template
     ${EMPTY}    ${Token.orgToken}    ${UploadMediaFileDictionary.statusCode}    ${UploadMediaFileDictionary.reponseResult}    ${UploadMediaFileDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${UploadMediaUnAuthenticateDictionary.statusCode}    ${UploadMediaUnAuthenticateDictionary.reponseResult}    ${UploadMediaUnAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}

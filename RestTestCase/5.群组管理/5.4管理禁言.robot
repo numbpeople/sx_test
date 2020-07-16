@@ -64,7 +64,6 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${RemoveChatgroupUserMuteDictionary.statusCode}    ${RemoveChatgroupUserMuteDictionary.reponseResult}    ${RemoveChatgroupUserMuteDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${RemoveChatgroupUserMuteDictionary.statusCode}    ${RemoveChatgroupUserMuteDictionary.reponseResult}    ${RemoveChatgroupUserMuteDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    #如果IM用户不存在，则不应该接口通过，应该返回用户不存在的错误
 
 获取禁言列表(/{orgName}/{appName}/chatgroups/{groupId}/mute/)
     [Template]    Get Chatgroup User Mute List Template

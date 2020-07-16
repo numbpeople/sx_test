@@ -38,6 +38,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.bestToken}    ${SendMessageDictionary.statusCode}    ${SendMessageDictionary.reponseResult}    ${SendMessageDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：给用户发送视频消息(/{orgName}/{appName}/messages)
+    [Documentation]    - 待编写：给用户发送视频消息(/{orgName}/{appName}/messages)
     [Template]    Send Video Message Template
     ${contentType.JSON}    ${Token.orgToken}    ${SendMessageDictionary.statusCode}    ${SendMessageDictionary.reponseResult}    ${SendMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
@@ -47,6 +48,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.bestToken}    ${SendMessageDictionary.statusCode}    ${SendMessageDictionary.reponseResult}    ${SendMessageDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 待编写：给用户发送透传消息(/{orgName}/{appName}/messages)
+    [Documentation]    - 待编写：给用户发送透传消息(/{orgName}/{appName}/messages)
     [Template]    Send Text Message Template
     ${contentType.JSON}    ${Token.orgToken}    ${SendMessageDictionary.statusCode}    ${SendMessageDictionary.reponseResult}    ${SendMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}

@@ -41,7 +41,8 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.appToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
-获取用户离线消息数(/{orgName}/{appName}/users/{userName}/offline_msg_count)---数据是从msync取的，因为rest和msync之间会有数据异步处理，数据会延迟，所以目前是延迟一秒取数据。后续优化
+获取用户离线消息数(/{orgName}/{appName}/users/{userName}/offline_msg_count)
+    [Documentation]    - 数据是从msync取的，因为rest和msync之间会有数据异步处理，数据会延迟，所以目前是延迟一秒取数据。后续优化
     [Template]    Get User Offline Msg Count Template
     ${contentType.JSON}    ${Token.orgToken}    ${UserOfflineMsgCountDictionary.statusCode}    ${UserOfflineMsgCountDictionary.reponseResult}    ${UserOfflineMsgCountDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_ContentType}

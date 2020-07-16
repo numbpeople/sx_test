@@ -21,7 +21,6 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    false    ${ExistUserDictionary.statusCode}    ${ExistUserDictionary.reponseResult}    ${ExistUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    false    ${ExistUserDictionary.statusCode}    ${ExistUserDictionary.reponseResult}    ${ExistUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    #该条接口用例会执行不通过，因为token值为空时，开发注册接口调用报错401，预期结果：200请求通过
 
 注册单个用户(/{orgName}/{appName}/users)
     [Template]    Create New User Template
@@ -62,7 +61,6 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    false    ${NewMutilUserDictionary.statusCode}    ${NewMutilUserDictionary.reponseResult}    ${NewMutilUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    false    ${NewMutilUserDictionary.statusCode}    ${NewMutilUserDictionary.reponseResult}    ${NewMutilUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    #该条接口用例会执行不通过，因为token值为空时，开发注册接口调用报错401，预期结果：200请求通过
 
 注册多个用户-用户名不合法(/{orgName}/{appName}/users)
     [Template]    Create New Multi User With Illegal UserName Template
@@ -73,7 +71,6 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    false    ${NewUserWithIllegalUserNameDictionary.statusCode}    ${NewUserWithIllegalUserNameDictionary.reponseResult}    ${NewUserWithIllegalUserNameDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    false    ${NewUserWithIllegalUserNameDictionary.statusCode}    ${NewUserWithIllegalUserNameDictionary.reponseResult}    ${NewUserWithIllegalUserNameDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    #该条接口用例会执行不通过，因为token值为空时，开发注册接口调用报错401，预期结果：200请求通过
 
 注册多个用户-密码不合法(/{orgName}/{appName}/users)
     [Template]    Create New Multi User With Illegal PassWord Template
@@ -84,7 +81,6 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    false    ${NewUserWithIllegalPassWordDictionary.statusCode}    ${NewUserWithIllegalPassWordDictionary.reponseResult}    ${NewUserWithIllegalPassWordDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    false    ${NewUserWithIllegalPassWordDictionary.statusCode}    ${NewUserWithIllegalPassWordDictionary.reponseResult}    ${NewUserWithIllegalPassWordDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    #该条接口用例会执行不通过，因为token值为空时，开发注册接口调用报错401，预期结果：200请求通过
 
 获取单个IM用户(/{orgName}/{appName}/users/{userName})
     [Tags]    singleuser

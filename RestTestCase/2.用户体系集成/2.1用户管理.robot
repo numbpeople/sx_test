@@ -21,7 +21,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    false    ${ExistUserDictionary.statusCode}    ${ExistUserDictionary.reponseResult}    ${ExistUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    false    ${ExistUserDictionary.statusCode}    ${ExistUserDictionary.reponseResult}    ${ExistUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
+    
 注册单个用户(/{orgName}/{appName}/users)
     [Template]    Create New User Template
     ${contentType.JSON}    ${Token.orgToken}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}

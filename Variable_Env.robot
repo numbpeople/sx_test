@@ -1,13 +1,12 @@
 *** Variables ***
-&{RestRes}        RestUrl=${URLDeclare.rest1_sdb}    username=leoli@easemob.com    password=lijipeng123    alias=    # 用例执行环境配置、console登录账号密码
+&{RestRes}        RestUrl=${URLDeclare.rest1_sdb}    username=easemob@easemob.com    password=huanxintest1024    alias=    # 用例执行环境配置、console登录账号密码
 &{URLDeclare}     bj=https://a1.easemob.com    rest1_gray=https://a2.easemob.com    rest1_sdb=https://a1-hsb.easemob.com    rest2_sdb=http://39.96.116.29:8080    # rest1.0灰度：https://a2.easemob.com、rest1.0沙箱：https://a1-hsb.easemob.com、rest2.0沙箱: http://39.96.116.29:8080、北京集群：https://a1.easemob.com
 &{RunModelCaseConditionDic}    orgName=    appName=    specificBestToken=    specificAppkey=    # 是否指定appkey、是否指定超级token；specificAppkey参数不用填写！
 ${timeout}        ${30.0}    # 接口请求超时时间
 &{ResponseStatus}    OK=OK    FAIL=FAIL
 &{ApiResponse}    status=${ResponseStatus.OK}    errorDescribetion=    statusCode=    text=    url=    describetion=    # 接口请求后的返回结构
 &{contentType}    JSON=application/json    TEXT=text/plain    # 请求header头中contentType值的类型
-&{requestHeader}    Content-Type=    Authorization=    restrict-access=    thumbnail=    share-secret=    Accept=    thumbnail=
-...               # 请求header头中可以设置的多种key&value类型
+&{requestHeader}    Content-Type=    Authorization=    restrict-access=    thumbnail=    share-secret=    Accept=    thumbnail=    # 请求header头中可以设置的多种key&value类型
 &{FilterEntity}    page_size=5    page_num=1    limit=20    # 接口请求参数
 &{baseRes}        validOrgName=    invalidOrgName=    validAppName=    invalidAppName=    validIMUser=    invalidIMUser=    validOrgUUID=
 ...               validAppUUID=    validChatgroup=    validChatroom=    # 有效的app和user均在validOrgName组织下，无效变量则随机取值

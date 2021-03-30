@@ -78,15 +78,15 @@ Return Result
     ${jsonStatus}    Run Keyword And Return Status    to json    ${resp.text}
     Return From Keyword If    not ${jsonStatus}    ${apiResponse}
     #设置请求返回值
-    ${textJson}    to json    ${resp.text}
+    &{textJson}    to json    ${resp.text}
     set to dictionary    ${apiResponse}    status=${ResponseStatus.OK}    url=${resp.url}    statusCode=${resp.status_code}    text=${textJson}    resp=${resp}
     Return From Keyword    ${apiResponse}
 
 Format Jsonstr
     [Arguments]    ${jsonstr}    ${argument}
     ${t}    evaluate    ','.join(list(map(str,@{argument})))
-    ${formatstr}    decode bytes to string    ${t}    utf-8
-    ${s}    evaluate    '${jsonstr}' % (${formatstr})
+    # ${formatstr}    decode bytes to string    ${t}    utf-8
+    ${s}    evaluate    '${jsonstr}' % (${t})
     return from keyword    ${s}
 
 Repeat Keyword Times
@@ -149,33 +149,32 @@ Structure Value Should Be Equal
 Check Field Format
     [Arguments]    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}
     #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
-    : FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructTemplateList}
-    \    #递归校验结构的正确性
-    \    Check Type Format    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}    ${index}
-    \    ...    ${diffKey}    Check Field Format
-    \    #根据json结构断言字段正确性
-    \    ${keyStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${requestResult}    ${diffKey}
-    \    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
-    \    run keyword if    not ${keyStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中未包含字段：${diffKey}\n
+    FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructTemplateList}
+    #递归校验结构的正确性
+    Check Type Format    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}    ${index}    ${diffKey}    Check Field Format
+    #根据json结构断言字段正确性
+    ${keyStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${requestResult}    ${diffKey}
+    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
+    run keyword if    not ${keyStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中未包含字段：${diffKey}\n
+    END    
     return from keyword    ${diffResult}
 
 Check Value Format
     [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}
     #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
-    : FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructList}
-    \    #递归校验结构的正确性
-    \    Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}
-    \    ...    ${diffKey}    Check Value Format
-    \    #检查字段值是否相等
-    \    log many    ${requestResult['${diffKey}']}
-    \    ${valueStatus}    Run Keyword And Return Status    Should Contain    "${diffStructResultJson['${diffKey}']}"    "${requestResult['${diffKey}']}"
-    \    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
-    \    run keyword if    not ${valueStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中字段：${diffKey}，不等于${diffStructResultJson['${diffKey}']}，实际值为：${requestResult['${diffKey}']}。\n
+    FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructList}
+    #递归校验结构的正确性
+    Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}    Check Value Format
+    #检查字段值是否相等
+    log many    ${requestResult['${diffKey}']}
+    ${valueStatus}    Run Keyword And Return Status    Should Contain    "${diffStructResultJson['${diffKey}']}"    "${requestResult['${diffKey}']}"
+    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
+    run keyword if    not ${valueStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中字段：${diffKey}，不等于${diffStructResultJson['${diffKey}']}，实际值为：${requestResult['${diffKey}']}。\n
+    END
     return from keyword    ${diffResult}
 
 Check Type Format
-    [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}
-    ...    ${keyword}
+    [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}    ${keyword}
     [Documentation]    递归校验结构的正确性
     log    ${diffStructResultJson}
     log    ${requestResult}
@@ -241,7 +240,7 @@ Set Request Attribute And Run Keyword
     #运行关键字
     &{apiResponse}    Run keyword    ${keyword}    @{arguments}
     log dictionary    ${apiResponse}
-    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}\n ================================================================华丽的分割线================================================================
+    set to dictionary    ${apiResponse}    errorDescribetion=${keywordDescribtion}，${contentTypeDesc}，${tokenDesc}，\n预期返回状态码等于${statusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}\n================================================================华丽的分割线================================================================
     Return From Keyword    ${apiResponse}
 
 Assert Request Result
@@ -348,9 +347,10 @@ Reset Request Header For Not Empty
     [Documentation]    将请求header中值为空的key去掉
     #考虑如果传入header中值为空情况，去掉请求key
     @{keys}    Get Dictionary Keys    ${newRequestHeader}
-    : FOR    ${i}    IN    @{keys}
-    \    ${keyValue}    set variable    ${newRequestHeader['${i}']}
-    \    run keyword if    "${keyValue}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    ${i}
+    FOR    ${i}    IN    @{keys}
+    ${keyValue}    set variable    ${newRequestHeader['${i}']}
+    run keyword if    "${keyValue}" == "${EMPTY}"    Remove From Dictionary    ${newRequestHeader}    ${i}
+    END    
     return from keyword    ${newRequestHeader}
 
 Should No Run App Testcase

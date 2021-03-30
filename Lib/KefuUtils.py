@@ -71,7 +71,7 @@ def is_float(s):
         return False
 
 def del_files(path):
-    print 'start del files in path:' + path
+    print ('start del files in path:' + path)
     ls = os.listdir(path)
     for i in ls:
         c_path = os.path.join(path, i)
@@ -79,16 +79,16 @@ def del_files(path):
 #         c_path = c_path.encode('unicode-escape').decode('string_escape')  
         c_path = c_path.decode('utf-8').decode('utf-8') 
         c_path = c_path.replace('\\', '/')
-        print c_path
+        print (c_path)
         if os.path.isdir(c_path):
             del_file(c_path)
-            print 'del_file' + c_path
+            print ('del_file' + c_path)
             c_path.close()
         else:
             os.remove(c_path)
-            print 'remove' + c_path
+            print ('remove' + c_path)
 #             c_path.close()
-    print 'finish del files in path:' + path
+    print ('finish del files in path:' + path)
 
 def mkdir(path):
     # 判断路径是否存在
@@ -101,16 +101,16 @@ def mkdir(path):
         # 如果不存在则创建目录
         # 创建目录操作函数
         os.makedirs(path) 
-        print path+' 创建成功'
+        print (path+' 创建成功')
         return True
     else:
         # 如果目录存在则不创建，并提示目录已存在
-        print path+' 目录已存在'
+        print (path+' 目录已存在')
         return False
 
 def find_folder_path(path,folderName):
     sysstr = platform.system()
-    print sysstr
+    print (sysstr)
 #     if(sysstr =="Windows"):
 #         print '使用了Windows系统执行测试用例'
 #         path=os.path.abspath(os.path.dirname(path)+os.path.sep+".."+os.path.sep+"..")
@@ -118,11 +118,11 @@ def find_folder_path(path,folderName):
 #         path=os.path.abspath(os.path.dirname(path)+os.path.sep+".."+os.path.sep+"..")
     #找到指定文件夹的路径值
     path=os.path.abspath(os.path.dirname(path))
-    print path
+    print (path)
     path=path+'\\'+folderName
-    print path
+    print (path)
     path=path.replace("\\", "/")
-    print path
+    print (path)
     #创建该文件夹,判断当前是否存在，不存在则创建
     #mkdir(path)
     return path
@@ -132,7 +132,7 @@ def del_files(path):
     #path=find_folder_path(folderName)
     #给文件夹赋权限
     sysstr = platform.system()
-    print sysstr
+    print (sysstr)
     if(sysstr =="Windows"):
         print ("使用Windows自动化测试,把目录赋权限")
         os.chmod(path, stat.S_IWRITE)

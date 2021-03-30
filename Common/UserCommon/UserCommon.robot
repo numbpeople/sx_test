@@ -125,11 +125,12 @@ Delete Temp Specific User For Test TearDown Loop
     return from keyword if    not ${variableExsitStatus}
     #循环删除指定用户
     log list    ${testTempUserList}
-    : FOR    ${i}    IN    @{testTempUserList}
-    \    #获取用户username
-    \    ${userName}    set variable    ${i}
-    \    #删除指定用户
-    \    Delete Temp Specific User    ${userName}
+    FOR    ${i}    IN    @{testTempUserList}
+    #获取用户username
+    ${userName}    set variable    ${i}
+    #删除指定用户
+    Delete Temp Specific User    ${userName}
+    END
 
 Get Users With Params
     [Arguments]    ${limit}    ${cursor}=

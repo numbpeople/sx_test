@@ -485,7 +485,7 @@ Get Specific App Credentials
     log    ${text}
     log    ${url}
     #创建返回结构
-    &{result}    create dictionary    clientId=${text.credentials.client_id}    clientSecret=${text.credentials.client_secret}
+    &{result}    create dictionary    clientId=${text.credentials["client_id"]}    clientSecret=${text.credentials["client_secret"]}
     return from keyword    ${result}
 
 Get AppToken Init

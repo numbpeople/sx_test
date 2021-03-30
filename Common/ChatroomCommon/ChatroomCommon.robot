@@ -86,7 +86,7 @@ Get Chatroom Init
     ${userName}    set variable    ${validIMUserInfo.username}
     ${maxusers}    set variable    200
     ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
-    ${chatroomId}    set variable    ${chatroom.data.id}
+    ${chatroomId}    set variable    ${chatroom.data["id"]}
     ${validChatroom}    create dictionary    chatroomId=${chatroomId}    name=${userName}    desc=${userName}    owner=${userName}    maxusers=${maxusers}
     #设置全局的有效
     set to dictionary    ${baseRes}    validChatroom=${validChatroom}

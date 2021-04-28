@@ -15,3 +15,4 @@ ${allowOpenRegistration}    ${EMPTY}    # 应用APP开放注册（true）、授�
 &{RunStatus}      RUN=True    NORUN=False    # 设置用例的执行装填，RUN即为执行、NORUN即为不执行
 &{ModelCaseRunStatus}    OrgToken_ContentType=${RunStatus.RUN}    EmptyOrgToken_EmptyContentType=${RunStatus.RUN}    OrgToken_EmptyContentType=${RunStatus.RUN}    EmptyOrgToken_ContentType=${RunStatus.RUN}    BestToken_ContentType=${RunStatus.NORUN}    AppToken_ContentType=${RunStatus.RUN}    # 模块用例的多种组合执行状态
 ${preRandomString}    imautotest    # 创建随机数的前缀字符串
+&{appreciationservice}    orgname=easemob-demo        appname=chatdemoui    apptoken=    orgtoken=YWMtvrSFSJOYEeu09q2wt1cOGAAAAAAAAAAAAAAAAAAAAAHWVZvSOwZMUJ9NRQCEAaB2AQMAAAF4kf0CigBPGgDTibWmq85N0l3riEgYWnuuxwaiUTCEpzsnc5hBwNkIfw    Accept=application/json    ContentType=application/json    #测试增值服务相关的case（增值服务需要与开通，目前是有特殊的appkey）

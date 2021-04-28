@@ -215,3 +215,33 @@ Get User Offline Msg Status Template
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+强制用户下线
+    [Arguments]    ${session}
+    [Documentation]    强制用户下线
+    #创建一个新的用户
+    ${user}    Create Temp User
+    #获取创建的用户名称
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    #设置请求的header
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    #设置orgname和appname
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    #强制用户下线接口
+    ${resp}=    /{org_name}/{app_name}/users/{user_name}/disconnect    ${session}    ${orgName}    ${appName}    ${userName}    ${newRequestHeader}    ${timeout}
+    [Return]    ${resp}
+查看用户在线设备状态
+    [Arguments]    ${session}
+    [Documentation]    查看用户在线设备状态，如果用户离线，获取的data为空，主要验证接口请求成功
+    #创建一个新的用户
+    ${user}    Create Temp User
+    #获取创建的用户名称
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    #设置请求的header
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    #设置orgname和appname
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    #查看用户在线设备状态
+    ${resp}=    /{org_name}/{app_name}/users/{user_name}/resources    ${session}    ${orgName}    ${appName}    ${userName}    ${newRequestHeader}    ${timeout}
+    [Return]    ${resp}    ${orgName}    ${appName}

@@ -112,3 +112,13 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    强制用户下线
     ${uri}=    set variable    /${org_name}/${app_name}/users/${user_name}/disconnect
     Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+/{org_name}/{app_name}/users/{user_name}/resources
+    [Arguments]    ${session}    ${org_name}    ${app_name}    ${user_name}    ${header}    ${timeout}
+    [Documentation]    获取用户在线设备状态
+    ${uri}=    set variable    /${org_name}/${app_name}/users/${user_name}/resources
+    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+/{org_name}/{app_name}/users/{user_name}/messageroaming
+    [Arguments]    ${session}    ${org_name}    ${app_name}    ${user_name}    ${header}    ${data}    ${timeout}
+    [Documentation]    获取消息漫游
+    ${uri}=    set variable    /${org_name}/${app_name}/users/${user_name}/messageroaming
+    Run Keyword And Return    Post Request    ${session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}

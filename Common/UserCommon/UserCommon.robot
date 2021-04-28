@@ -19,8 +19,8 @@ Create User
 
 Get User
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${params}=
-    [Documentation]    创建应用app下的用户
-    # 创建应用app
+    [Documentation]    获取应用app下的用户
+    # 获取应用app
     ${resp}=    /{orgName}/{appName}/users    GET    ${session}    ${header}    pathParamter=${pathParamter}    params=${params}
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
@@ -875,3 +875,37 @@ Modify User Notification_No_Disturbing Template
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+设置用户免打扰开启或者关闭
+    [Arguments]    ${session}    ${notification_no_disturbing}
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${uuid}    set variable    ${user['entities'][0]['uuid']}
+    #设置请求数据
+    ${newRequestHeader}    Set Request Header And Return    ${requestHeader}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
+    ${data}    set variable    {"notification_no_disturbing":${notification_no_disturbing}}
+    ${resp}=    Modify Specific User    ${session}    ${newRequestHeader}    ${pathParamter}    ${data}
+    [Return]    ${resp}
+修改用户device_token
+    [Arguments]    ${session}
+    [Documentation]    查看用户在线设备状态，如果用户离线，获取的data为空，主要验证接口请求成功
+    #创建一个新的用户
+    ${user}    Create Temp User
+    #获取创建的用户名称
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${uuid}    Set Variable    ${user['entities'][0]['uuid']}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    #设置请求的header
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    #设置orgname和appname
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
+    #构建body
+    ${device_token}    Generate Random String        
+    ${data}    Create Dictionary    device_token=${device_token}    notifier_name=${userName}
+    # ${method}    Set Variable    PUT
+    #修改用户device_token api
+    #${resp}=    /{orgName}/{appName}/users/{userName}    ${session}    ${orgName}    ${appName}    ${userName}    ${newRequestHeader}    ${timeout}
+    ${resp}=    /{orgName}/{appName}/users/{userName}    PUT    ${session}    ${newRequestHeader}    ${pathParamter}    NONE    ${data}
+    [Return]    ${uuid}    ${resp}    ${device_token}

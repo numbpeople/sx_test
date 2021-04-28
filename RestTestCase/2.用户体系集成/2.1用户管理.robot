@@ -184,7 +184,21 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
-设置免打扰(/{orgName}/{appName}/users/{userName})
+开启免打扰
+    [Documentation]    开启免打扰
+    ${resp}=    设置用户免打扰开启或者关闭    session    true
+    Should Be Equal As Integers    200    ${resp["statusCode"]}    不正确的状态码:${resp["statusCode"]}，错误原因：${resp["errorDescribetion"]}
+    # ${result}    to json    ${resp.content}
+    Should Be True    ${resp["text"]["entities"][0]["notification_no_disturbing"]}            
+
+关闭免打扰
+    [Documentation]    关闭免打扰
+    ${resp}=    设置用户免打扰开启或者关闭    session    false
+    Should Be Equal As Integers    200    ${resp.statusCode}    不正确的状态码:${resp.statusCode}，错误原因：${resp.errorDescribetion}
+    # ${result}    to json    ${resp.content}
+    Should Be True    not ${resp["text"]["entities"][0]["notification_no_disturbing"]}   
+    
+设置推送免打扰开始时间和结束时间(/{orgName}/{appName}/users/{userName})
     [Template]    Modify User Notification_No_Disturbing Template
     ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
@@ -192,3 +206,10 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNotificationNoDisturbingDictionary.statusCode}    ${ModifyUserNotificationNoDisturbingDictionary.reponseResult}    ${ModifyUserNotificationNoDisturbingDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+修改用户deive_token(/{orgName}/{appName}/users/{userName})
+    [Documentation]    修改用户deive_token，deive_token用户进行推送时会用到
+    ${uuid}    ${resp}    ${device_token}    修改用户device_token    session
+    Should Be Equal As Integers    200    ${resp.status_code}    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
+    ${result}    to json    ${resp.content}
+    Should Be Equal As Strings    ${uuid}    ${result["entities"][0]["uuid"]}
+    Should Be Equal As Strings    ${device_token}    ${result["entities"][0]["device_token"]}

@@ -59,3 +59,19 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${UserBatchStatusDictionary.statusCode}    ${UserBatchStatusDictionary.reponseResult}    ${UserBatchStatusDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+强制用户下线(/{org_name}/{app_name}/users/{user_name}/disconnect)
+    [Documentation]    强制用户下线
+    #Create session     url    ${RestRes.RestUrl}
+    ${resp}=    强制用户下线    session
+    Should Be Equal As Integers    200    ${resp.status_code}    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
+    ${result}    to json    ${resp.content}
+    Should Be True    ${result["data"]["result"]}
+ 查看用户在线设备状态(/{org_name}/{app_name}/users/{user_name}/resources)
+    [Documentation]    查看用户在线设备状态
+    ...    目前无法设置im用户为在线状态，主要验证请求成功
+    ${resp}    ${orgName}    ${appName}    查看用户在线设备状态    session
+    Should Be Equal As Integers    200    ${resp.status_code}    不正确的状态码:${resp.status_code}，错误原因：${resp.content}
+    ${result}    to json    ${resp.content}
+    Should Be Equal As Strings    ${appName}    ${result["applicationName"]}
+    Should Be Empty    ${result["data"]}    
+    

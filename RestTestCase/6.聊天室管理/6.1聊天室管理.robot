@@ -120,3 +120,35 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetIMUserJoinedChatroomDictionary.statusCode}    ${GetIMUserJoinedChatroomDictionary.reponseResult}    ${GetIMUserJoinedChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetIMUserJoinedChatroomDictionary.statusCode}    ${GetIMUserJoinedChatroomDictionary.reponseResult}    ${GetIMUserJoinedChatroomDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+分页获取聊天室信息
+    [Template]     Get Chatroom Detail By Page Template
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatroomListDictionary.statusCode}    ${GetChatroomListDictionary.reponseResult}    ${GetChatroomListDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatroomListDictionary.statusCode}    ${GetChatroomListDictionary.reponseResult}    ${GetChatroomListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+
+更新聊天室公告
+    [Template]    Update Chatroom Announment Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ChatroomAnnouncementDictionary.statusCode}    ${ChatroomAnnouncementDictionary.reponseResult}    ${ChatroomAnnouncementDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.orgToken}    ${ChatroomAnnouncementDictionary.statusCode}    ${ChatroomAnnouncementDictionary.reponseResult}    ${ChatroomAnnouncementDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+获取聊天室公告
+    [Template]    Get Chatroom Announment Template
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatroomAnnouncementDictionary.statusCode}    ${GetChatroomAnnouncementDictionary.reponseResult}    ${GetChatroomAnnouncementDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatroomAnnouncementDictionary.statusCode}    ${EMPTY}    ${EMPTY}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+聊天室静音
+    [Template]    Ban Chatroom Template
+    ${contentType.JSON}    ${Token.orgToken}    ${BanChatroomDictionary.statusCode}    ${BanChatroomDictionary.reponseResult}    ${BanChatroomDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${BanChatroomDictionary.statusCode}    ${BanChatroomDictionary.reponseResult}    ${BanChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+解除聊天室静音
+    [Template]    Allow Chatroom Template
+    ${contentType.JSON}    ${Token.orgToken}    ${BanChatroomDictionary.statusCode}    ${BanChatroomDictionary.reponseResult}    ${BanChatroomDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${BanChatroomDictionary.statusCode}    ${BanChatroomDictionary.reponseResult}    ${BanChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+

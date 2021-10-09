@@ -8,7 +8,7 @@ Resource          ../../Variable_Env.robot
 Resource          ../BaseCommon.robot
 Resource          ../UserCommon/UserCommon.robot
 Resource          ../FileUploadDownloadCommon/FileUploadDownloadCommon.robot
-
+Resource          ../SendMessageCommom/SendMessageCommom.robot
 *** Keywords ***
 Send Message
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
@@ -244,12 +244,6 @@ Send Video Message Template
 Send Ext Message Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    发送扩展消息
-    ...    - 传入header中content-type值
-    ...    - 传入header中token值
-    ...    - 测试用例的预期状态码
-    ...    - 针对返回值对比的结构
-    ...    - 针对返回值需要对比的字段和返回值
-    ...    - 该条模板用例，是否执行
     return from keyword    true
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
@@ -288,3 +282,142 @@ Send Ext Message Template
     @{argumentValue}    create list    '${applicationUUID}'    '${userName}'    '${orgName}'    '${appName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Send Group Message
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
+    [Documentation]    发送文本、图片、语音、视频、扩展等消息
+    #发送文本、图片、语音、视频、扩展等消息
+    ${resp}=    /{orgName}/{appName}/messages?useMsgId=true    POST    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Send Group Message Template 
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    发送群文本消息
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    ${orgName}    ${appName}    ${groupId}    ${userName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}    ${baseRes.validChatgroup.groupId}    ${validIMUserInfo.username}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${groupId}    userName=${userName}
+    #定义消息接收人列表
+    @{targetList}    create list    ${groupId}
+    #定义消息类型和内容
+    &{msgInfo}    create dictionary    type=txt    msg=${groupId}
+    #定义请求体
+    &{msgBody}    create dictionary    target_type=chatgroups    target=${targetList}    msg=${msgInfo}    from=${userName}
+    #转换json的请求体
+    ${msgData}    dumps    ${msgBody}
+    log dictionary    ${msgBody}
+    log    ${msgData}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${msgData}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Send Group Message
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list    '${groupId}'
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${orgName}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+
+Send Group Audio Message Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    发送语音消息
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${groupId}    Set Variable    ${baseRes.validChatgroup.groupId}        
+    #上传语音文件
+    ${pictureResponse}    Upload Audio
+    ${uuid}    set variable    ${pictureResponse.uuid}
+    ${shareSecret}    set variable    ${pictureResponse.shareSecret}
+    ${url}    set variable    ${pictureResponse.url}
+    ${filename}    set variable    ${pictureResponse.filename}
+    #设置请求数据
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    #定义消息接收人列表
+    @{targetList}    create list    ${groupId}
+    #定义消息类型和内容
+    &{msgInfo}    create dictionary    type=audio    filename=${filename}    secret=${shareSecret}    url=${url}    length=3494
+    #定义请求体
+    &{msgBody}    create dictionary    target_type=chatgroups    target=${targetList}    msg=${msgInfo}    from=${userName}
+    #转换json的请求体
+    ${msgData}    dumps    ${msgBody}
+    log dictionary    ${msgBody}
+    log    ${msgData}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${msgData}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Send Message
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list    '${groupId}'
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${orgName}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Send Group Picture Message Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    发送图片消息
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${groupId}    Set Variable    ${baseRes.validChatgroup.groupId}  
+    #上传图片文件
+    ${pictureResponse}    Upload Picture
+    ${uuid}    set variable    ${pictureResponse.uuid}
+    ${shareSecret}    set variable    ${pictureResponse.shareSecret}
+    ${url}    set variable    ${pictureResponse.url}
+    ${filename}    set variable    ${pictureResponse.filename}
+    #设置请求数据
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    #定义消息接收人列表
+    @{targetList}    create list    ${groupId}
+    #定义消息类型和内容
+    &{msgInfo}    create dictionary    type=img    filename=${filename}    secret=${shareSecret}    url=${url}
+    #定义图片尺寸
+    &{size}    create dictionary    width=480    height=720
+    #定义请求体
+    &{msgBody}    create dictionary    target_type=chatgroups    target=${targetList}    msg=${msgInfo}    from=${userName}    size=${size}
+    #转换json的请求体
+    ${msgData}    dumps    ${msgBody}
+    log dictionary    ${msgBody}
+    log    ${msgData}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${msgData}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Send Message
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list    '${groupId}'
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${orgName}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+

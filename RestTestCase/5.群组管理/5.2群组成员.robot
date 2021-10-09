@@ -193,3 +193,36 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${TransferChatgroupDictionary.statusCode}    ${TransferChatgroupDictionary.reponseResult}    ${TransferChatgroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${TransferChatgroupDictionary.statusCode}    ${TransferChatgroupDictionary.reponseResult}    ${TransferChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+邀请加入群组
+    [Template]    Invite to group Template
+    [Documentation]    created by wudi
+    ${contentType.JSON}    ${Token.orgToken}    ${InviteToGroupDictionary.statusCode}    ${InviteToGroupDictionary.reponseResult}    ${InviteToGroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${InviteToGroupDictionary.statusCode}    ${InviteToGroupDictionary.reponseResult}    ${InviteToGroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${InviteToGroupDictionary.statusCode}    ${InviteToGroupDictionary.reponseResult}    ${InviteToGroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+
+申请加入群组
+    [Template]    Apply to join in group Template 
+    [Documentation]    created by wudi
+    ${contentType.JSON}    ${Token.orgToken}    ${ApplyToJoinInDictionary.statusCode}    ${ApplyToJoinInDictionary.reponseResult}    ${ApplyToJoinInDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ApplyToJoinInDictionary.statusCode}    ${ApplyToJoinInDictionary.reponseResult}    ${ApplyToJoinInDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    
+离开群组
+    [Template]    Quit Group Template 
+    [Documentation]    created by wudi
+    ${contentType.JSON}    ${Token.orgToken}    ${QuitGroupDictionary.statusCode}    ${QuitGroupDictionary.reponseResult}    ${QuitGroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${QuitGroupDictionary.statusCode}    ${QuitGroupDictionary.reponseResult}    ${QuitGroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    
+审批用户加入群组
+    [Template]    Apply Verify Template
+    [Documentation]    created by wudi
+    ${contentType.JSON}    ${Token.orgToken}    ${ApplyVerifyDictionary.statusCode}    ${ApplyVerifyDictionary.reponseResult}    ${ApplyVerifyDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ApplyVerifyDictionary.statusCode}    ${ApplyVerifyDictionary.reponseResult}    ${ApplyVerifyDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+
+被邀请人审批群组邀请
+    [Template]    Accept Invitation From Group Template
+    [Documentation]    created by wudi
+    ${contentType.JSON}    ${Token.orgToken}    ${InviteVerifyDictionary.statusCode}    ${InviteVerifyDictionary.reponseResult}    ${InviteVerifyDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${InviteVerifyDictionary.statusCode}    ${InviteVerifyDictionary.reponseResult}    ${InviteVerifyDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}

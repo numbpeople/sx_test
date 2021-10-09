@@ -14,7 +14,7 @@ request
     ...    ${files}=
     [Documentation]    封装的请求信息，返回相应结果
     #封装各个请求方法与参数值
-    Log Many    ${uri}    ${header}    ${params}    ${data}    ${files}
+    Log Many    ${uri}    ${header}    ${params}    ${data}    ${files}    ${session}
     Run Keyword And Return If    '${method}'=='GET'    GET Request    ${session}    ${uri}    headers=${header}    params=${params}
     ...    timeout=${timeout}
     Run Keyword And Return If    '${method}'=='POST'    Post Request    ${session}    ${uri}    headers=${header}    data=${data}
@@ -227,6 +227,7 @@ Set Request Attribute And Run Keyword
     Log    ${keywordDescribtion}
     Log    ${keyword}
     Log    ${arguments}
+   
     #设置请求header基本属性
     &{newRequestHeader}    set variable    ${arguments[1]}
     ${result}    Set Base Request Attribute    ${contentType}    ${token}    ${newRequestHeader}
@@ -237,6 +238,7 @@ Set Request Attribute And Run Keyword
     #替换列表参数中header值
     ${index}    Get Index From List    ${arguments}    ${newRequestHeader}
     Set List Value    ${arguments}    ${index}    ${requestHeader1}
+    
     #运行关键字
     &{apiResponse}    Run keyword    ${keyword}    @{arguments}
     log dictionary    ${apiResponse}
@@ -257,6 +259,7 @@ Assert Request Result
     run keyword if    not ${codeStatus}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=${errorDescribetion}，实际返回状态码：${apiResponse.statusCode}
     #验证接口返回值的字段是否完整
     ${errorDescribetion}    set variable    ${apiResponse.errorDescribetion}
+    Log    ${errorDescribetion}    
     #判断对比的结构中是否有包含替换的值的场景
     ${diffStructTemplateResultStatus}    Run Keyword And Return Status    Should Contain    ${diffStructTemplate}    %
     #替换格式化str

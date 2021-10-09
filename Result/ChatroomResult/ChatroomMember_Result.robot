@@ -20,3 +20,7 @@ ${GetChatroomAdminListDiffEntity}    {"action":"get","application":"%s","entitie
 &{DeleteMultiChatroomMemberDictionary}    statusCode=200    reponseResult=${DeleteMultiChatroomMember}
 &{ChatroomAdminDictionary}    statusCode=200    reponseResult=${ChatroomAdmin}
 &{GetChatroomAdminListDictionary}    statusCode=200    reponseResult=${GetChatroomAdminList}
+
+${ShieldChatroom}    {"action":"post","application":"07828e56-bf58-459d-a32d-dcd95be719e3","data":{"result":true,"action":"add_shield","user":"imautotest-7025924139","id":"160517962399747"},"duration":0,"entities":[],"organization":"easemob-demo","timestamp":1632480259087,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-1012325497/chatrooms/160517962399747/shield"}
+${ShieldChatroomDiffEntity}    {"action":"%s","application":"%s","data":{"result":%s,"action":"%s","user":"%s","id":"%s"},"organization":"%s"}
+&{ShieldChatroomDictionary}    statusCode=200    reponseResult=${ShieldChatroom}

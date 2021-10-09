@@ -20,6 +20,6 @@ ${UnableToAuthenticateDiffEntity}    {"error":"unauthorized","exception":"Easemo
 ${EasemobSecurityException1}    {"error":"auth_bad_access_token","exception":"EasemobSecurityException","timestamp":1569469646795,"duration":0,"error_description":"Unable to authenticate due to corrupt access token"}
 ${EasemobSecurityExceptionDiffEntity1}    {"error":"auth_bad_access_token","exception":"EasemobSecurityException","error_description":"Unable to authenticate due to corrupt access token"}
 &{EasemobSecurityExceptionDictionary1}    statusCode=401    reponseResult=${EasemobSecurityException}
-${EasemobSecurityException}    {"error":"unauthorized","exception":"EasemobSecurityException","timestamp":1570613925656,"duration":1,"error_description":"Unable to authenticate (OAuth)"}
+${EasemobSecurityException}    {"error":"unauthorized","exception":"com.easemob.im.exceptions.EasemobSecurityException","timestamp":1570613925656,"duration":1,"error_description":"Unable to authenticate (OAuth)"}
 ${EasemobSecurityExceptionDiffEntity}    {"error":"unauthorized","exception":"EasemobSecurityException","error_description":"Unable to authenticate (OAuth)"}
 &{EasemobSecurityExceptionDictionary}    statusCode=401    reponseResult=${EasemobSecurityException}

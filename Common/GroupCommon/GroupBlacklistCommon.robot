@@ -92,7 +92,7 @@ Add Single User Chatgroup Blacklist Template
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
     @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    'add_blocks'    '${userName}'    '${groupId}'
-    ...    '${orgName}'    '${appName}'
+    ...    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -190,7 +190,7 @@ Remove Single User Chatgroup Blacklist Template
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
     @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    'remove_blocks'    '${userName}'    '${groupId}'
-    ...    '${orgName}'    '${appName}'
+    ...    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -227,7 +227,7 @@ Get Chatgroup Blacklist Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    'get'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    'get'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    
     ...    '1'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
@@ -296,7 +296,7 @@ Add Multi User Chatgroup Blacklist Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${groupId}'    '${groupId}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${groupId}'    '${groupId}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -332,7 +332,7 @@ Add Multi User Chatgroup Blacklist With Inexistent IMUser Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${groupId}'    '${groupId}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${groupId}'    '${groupId}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -372,6 +372,6 @@ Remove Multi User Chatgroup Blacklist Template
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
     @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    'remove_blocks'    '${groupId}'    'remove_blocks'
-    ...    '${groupId}'    '${orgName}'    '${appName}'
+    ...    '${groupId}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}

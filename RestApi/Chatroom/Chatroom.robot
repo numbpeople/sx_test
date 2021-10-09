@@ -107,3 +107,23 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    从聊天室黑名单批量移除用户
     ${uri}=    set variable    /${org_name}/${app_name}/chatrooms/${RoomID}/blocks/users/${user1},${user2}
     Run Keyword And Return    delete Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/{orgName}/{appName}/chatrooms/{roomId}/announcement
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/announcement
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+
+/{orgName}/{appName}/chatrooms/{roomId}/ban
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/ban
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+
+/{orgName}/{appName}/chatrooms/{roomId}/users
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/users
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+
+/{orgName}/{appName}/chatrooms/{chatroomId}/shield
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/shield
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}

@@ -11,6 +11,15 @@ Resource          ../../Common/BaseCommon.robot
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
+/{orgName}/{appName}/chatgroups/{grpID}/roles
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取群组角色列表
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/roles
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+
 /{orgName}/{appName}/chatgroups/{groupId}
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=
@@ -100,10 +109,11 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${data}    ${file}
 
 /{org_name}/{app_name}/publicchatgroups
-    [Arguments]    ${session}    ${org_name}    ${app_name}    ${header}    ${timeout}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    
     [Documentation]    不分页获取APP下的公开群组
-    ${uri}=    set variable    /${org_name}/${app_name}/publicchatgroups
-    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/publicchatgroups
+    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    
+    
 
 /{org_name}/{app_name}/chatgroups/{groupid1}{groupid2}{groupid3}{groupid4}
     [Arguments]    ${session}    ${org_name}    ${app_name}    ${groupid1}    ${groupid2}    ${groupid3}
@@ -151,3 +161,97 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    获取群共享文件列表
     ${uri}=    set variable    /${org_name}/${app_name}/chatgroups/${groupid}/share_files
     Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+
+/{orgname}/{appname}/chatgroups/count
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=    
+    [Documentation]    群组统计    created by wudi
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/count
+    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    
+
+/{orgName}/{appName}/chatgroups/{groupId}/invite
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=    
+    [Documentation]    邀请加入群组
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/invite
+    Run Keyword And Return    Post Request    ${session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+/{orgName}/{appName}/chatgroups/{groupId}/apply2
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=    
+    [Documentation]    申请加入群组
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/apply
+    Run Keyword And Return    Post Request    ${session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+
+    
+/{orgName}/{appName}/chatgroups/{grpID}/announcement
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取群组角色列表
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/announcement
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+    
+/{orgName}/{appName}/chatgroups/{grpID}/shield
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    屏蔽群消息
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/shield
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{grpID}/white/users
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取白名单
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/white/users
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{grpID}/white/users/{username}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    添加白名单-单个
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/white/users/${pathParamter.userName}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{grpID}/ban
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    群组静音   
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/ban
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{grpID}/acks/{msgID}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取群消息已读列表   
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/acks/${pathParamter.msgId}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+ 
+/{orgName}/{appName}/chatgroups/{grpID}/share_files
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取群文件列表   
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/share_files
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{grpID}/invite_verify
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]   
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/invite_verify
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatgroups/{groupId}/mutebyrole
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    1、禁言群成员(角色)
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/mute?role=${pathParamter.m}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}

@@ -56,3 +56,32 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${SendMessageDictionary.statusCode}    ${SendMessageDictionary.reponseResult}    ${SendMessageDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${SendMessageDictionary.statusCode}    ${SendMessageDictionary.reponseResult}    ${SendMessageDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+发送群文本消息
+    [Template]    Send Group Message Template
+    [Documentation]    created by wudi 
+    ${contentType.JSON}    ${Token.orgToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+    
+发送群语音消息
+    [Template]    Send Group Audio Message Template
+    [Documentation]    created by wudi 
+    ${contentType.JSON}    ${Token.orgToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+发送群图片消息
+    [Template]    Send Group Picture Message Template
+    ${contentType.JSON}    ${Token.orgToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${SendGroupMessageDictionary.statusCode}    ${SendGroupMessageDictionary.reponseResult}    ${SendGroupMessageDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+   

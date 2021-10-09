@@ -119,3 +119,10 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetChatroomAdminListDictionary.statusCode}    ${GetChatroomAdminListDictionary.reponseResult}    ${GetChatroomAdminListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatroomAdminListDictionary.statusCode}    ${GetChatroomAdminListDictionary.reponseResult}    ${GetChatroomAdminListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+屏蔽聊天室
+    [Template]    Shield Chatroom Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ShieldChatroomDictionary.statusCode}    ${ShieldChatroomDictionary.reponseResult}    ${ShieldChatroomDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ShieldChatroomDictionary.statusCode}    ${ShieldChatroomDictionary.reponseResult}    ${ShieldChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+
+    

@@ -86,7 +86,7 @@ Add Chatgroup User Mute Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -185,7 +185,7 @@ Remove Chatgroup User Mute Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -247,7 +247,7 @@ Remove Chatgroup User Mute With Inexistent IMUser Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -284,6 +284,40 @@ Get Chatgroup User Mute List Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    '${userName}'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+ 
+ Remove mute by role 
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatgroups/{groupId}/mutebyrole    DELETE    ${session}    ${header}    pathParamter=${pathParamter}      
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse} 
+    
+ 
+Remove mute by role Template 
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    ${orgName}    ${appName}    ${groupId}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}    ${baseRes.validChatgroup.groupId}
+    #创建用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    #header
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${groupId}    userName=${userName}    m=member
+    #添加到群
+    &{apiResponse}    Add Single Chatgroup Member    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
+    #添加禁言
+    ${data11}    Set Variable    {"role":"member","mute_duration":1000000}
+    &{apiResponse1}    Add Chatgroup User Mute    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data11}
+    # 移除禁言
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse3}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}     Remove mute by role    @{arguments}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    'true'    
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse3}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+ 

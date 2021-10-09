@@ -73,3 +73,13 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetChatgroupUserMuteListDictionary.statusCode}    ${GetChatgroupUserMuteListDictionary.reponseResult}    ${GetChatgroupUserMuteListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupUserMuteListDictionary.statusCode}    ${GetChatgroupUserMuteListDictionary.reponseResult}    ${GetChatgroupUserMuteListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+移出群组禁言（角色）
+    [Template]    Remove mute by role Template
+    [Documentation]    created by wudi   
+    ${contentType.JSON}    ${Token.orgToken}    ${RemoveMuteByRoleDictionary.statusCode}    ${RemoveMuteByRoleDictionary.reponseResult}    ${RemoveMuteByRoleDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${RemoveMuteByRoleDictionary.statusCode}    ${RemoveMuteByRoleDictionary.reponseResult}    ${RemoveMuteByRoleDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+
+
+ 
+ 

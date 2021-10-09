@@ -586,3 +586,150 @@ Get IMUser Joined Chatroom Template
     @{argumentValue}    create list    '${applicationUUID}'    '${chatroomId}'    '${userName}'    '${orgName}'    '${appName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+ 
+ Get Chatroom Detail By Page
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${params}    Set Variable    limit=1
+    ${resp}=    /{orgName}/{appName}/chatrooms    GET    ${session}    ${header}    pathParamter=${pathParamter}    params=${params}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+ 
+ 
+ Get Chatroom Detail By Page Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建一个聊天室
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get Chatroom Detail By Page
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${applicationUUID}'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+
+Update Chatroom Announment
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${data}    Set Variable    {"announcement":"test"}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{roomId}/announcement    POST    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}    
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+ 
+ 
+Update Chatroom Announment Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建一个聊天室
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    #参数
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Update Chatroom Announment
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'post'    '${applicationUUID}'    '${chatroomId}'    'true'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Get Chatroom Announment
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{roomId}/announcement    GET    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+ 
+ 
+Get Chatroom Announment Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建一个聊天室
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    #参数
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #更新公告
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Update Chatroom Announment
+    ...    @{arguments}
+    #获取公告
+    &{apiResponse2}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get Chatroom Announment
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse2}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'get'    '${applicationUUID}'    'test'    '${orgName}'    
+    Assert Request Result    ${apiResponse2}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Ban Chatroom
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{roomId}/ban    POST    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+ 
+ 
+Ban Chatroom Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建一个聊天室
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    #参数
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Ban Chatroom    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'put'    '${applicationUUID}'    'true'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Allow Chatroom
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{roomId}/ban    DELETE    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Allow Chatroom Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建一个聊天室
+    ${userName}    set variable    ${validIMUserInfo.username}
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    #参数
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Ban Chatroom    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'put'    '${applicationUUID}'    'true'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+

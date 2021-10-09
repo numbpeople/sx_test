@@ -16,6 +16,7 @@ Get Management Token
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
 
+
 Get OrgToken Or BestToken Init
     [Documentation]    初始化console后台管理token或设置超管token
     #设置超管token

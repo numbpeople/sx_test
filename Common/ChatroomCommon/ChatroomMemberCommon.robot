@@ -565,3 +565,47 @@ Get Chatroom Admin List Template
     @{argumentValue}    create list    '${applicationUUID}'    '${userName1}'    '${orgName}'    '${appName}'    '1'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Shield Chatroom
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{chatroomId}/shield    POST    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Shield Chatroom Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    
+    #获取该用户user token
+    ${gettokendata}    set variable    {"grant_type":"password","username":"${userName}","password":"${userName}"}
+    &{pathParamter1}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    ${resp}=    /{orgName}/{appName}/token    POST    ${RestRes.alias}    ${requestHeader}    pathParamter=${pathParamter1}    data=${gettokendata}
+    ${r}    loads    ${resp.text}   
+    ${usertoken}    Get From Dictionary    ${r}    access_token
+    
+    #创建一个聊天室
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    #参数
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${usertoken}    ${statusCode}    ${keywordDescribtion}    Shield Chatroom    @{arguments}
+    Log Dictionary    ${apiResponse}
+    
+    @{argumentField}    create list
+    @{argumentValue}    create list    'post'    '${applicationUUID}'    'true'    'add_shield'    '${userName}'    '${chatroomId}'    '${orgName}'      
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+
+
+
+
+

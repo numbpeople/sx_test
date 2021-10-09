@@ -476,6 +476,7 @@ Get Specific App Credentials
     ${newRequestHeader}    copy dictionary    ${requestHeader}
     set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
     set to dictionary    ${newRequestHeader}    Authorization=Bearer ${newToken}
+    log    ${newRequestHeader}
     ${expectedStatusCode}    set variable    200
     #获取应用的Client ID和Client Secret信息
     &{apiResponse}    Get App Credentials    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
@@ -495,4 +496,6 @@ Get AppToken Init
     #设置全局变量
     set to dictionary    ${Token}    appToken=${accessToken}
     set global variable    ${Token}    ${Token}
+    Log   ${Token}     
     Set Parallel Value For Key    ParallelToken    ${Token}
+    log    ${Token.appToken}

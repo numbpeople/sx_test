@@ -60,3 +60,4 @@ Get BestToken And Set Global Variable
     Set Parallel Value For Key    ParallelRestRes    ${RestRes}
     Set Parallel Value For Key    ParallelToken    ${Token}
     Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
+    

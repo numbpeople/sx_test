@@ -456,7 +456,27 @@ Get Appkey Token
     log    ${url}
     ${access_token}    set variable    ${text.access_token}
     Return From Keyword    ${access_token}
-
+    
+ Get User Token
+    [Arguments]    ${orgName}    ${appName}    ${username}    ${password}
+    [Documentation]    获取user的token
+    #创建获取user token的请求体
+    ${data}    set variable    {"grant_type":"password","username":"${username}","password":"${password}"}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    ${expectedStatusCode}    set variable    200
+    #给相应变量赋值
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    set to dictionary    ${newRequestHeader}    Content-Type=${contentType.JSON}
+    #获取user token
+    &{apiResponse}    Get Appkey Or User Token    POST    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    获取应用user token失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
+    ${text}    set variable    ${apiResponse.text}
+    ${url}    set variable    ${apiResponse.url}
+    log    ${text}
+    log    ${url}
+    ${access_token}    set variable    ${text.access_token}
+    Return From Keyword    ${access_token}
+    
 Get App Credentials
     [Arguments]    ${session}    ${header}    ${pathParamter}
     [Documentation]    获取应用的Client ID和Client Secret信息

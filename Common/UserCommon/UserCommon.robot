@@ -468,6 +468,7 @@ Get Single User Template
     #判断是否继续执行该条测试用例
     ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
     Return From Keyword If    not ${runStatus}
+    Log    ${baseRes}    
     #创建新的用户
     ${user}    Create Temp User
     ${username}    set variable    ${user['entities'][0]['username']}
@@ -475,6 +476,10 @@ Get Single User Template
     ${created}    set variable    ${user['entities'][0]['created']}
     ${modified}    set variable    ${user['entities'][0]['modified']}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
+    
     #设置请求数据
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}    userName=${username}
     #设置请求集和
@@ -608,6 +613,10 @@ Delete Single User Template
     ${created}    set variable    ${user['entities'][0]['created']}
     ${modified}    set variable    ${user['entities'][0]['modified']}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
+    
     #设置请求数据
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}    userName=${username}
     #设置请求集和
@@ -618,7 +627,7 @@ Delete Single User Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${uuid}'    '${created}'    '${modified}'    '${username}'    '${username}'
+    @{argumentValue}    create list    '${uuid}'    '${created}'    '${username}'    '${username}'
     ...    '${baseRes.validOrgName}'    '${baseRes.validAppName}'
     @{argumentValueUnauthorized}    create list    '${applicationUUID}'    '${uuid}'
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
@@ -856,6 +865,10 @@ Modify User Notification_No_Disturbing Template
     ${created}    set variable    ${user['entities'][0]['created']}
     ${modified}    set variable    ${user['entities'][0]['modified']}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
+    
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
@@ -881,6 +894,7 @@ Modify User Notification_No_Disturbing Template
     ${userName}    set variable    ${user['entities'][0]['username']}
     ${uuid}    set variable    ${user['entities'][0]['uuid']}
     #设置请求数据
+    log    ${requestHeader}
     ${newRequestHeader}    Set Request Header And Return    ${requestHeader}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}

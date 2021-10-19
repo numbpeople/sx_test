@@ -457,12 +457,12 @@ Get Appkey Token
     ${access_token}    set variable    ${text.access_token}
     Return From Keyword    ${access_token}
     
- Get User Token
-    [Arguments]    ${orgName}    ${appName}    ${username}    ${password}
+Get User Token
     [Documentation]    获取user的token
     #创建获取user token的请求体
-    ${data}    set variable    {"grant_type":"password","username":"${username}","password":"${password}"}
-    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    [Arguments]    ${token1}
+    ${data}    set variable    {"grant_type":"password","username":"${baseRes.validIMUser}","password":"${baseRes.validIMUser}"}
+    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     ${expectedStatusCode}    set variable    200
     #给相应变量赋值
     ${newRequestHeader}    copy dictionary    ${requestHeader}
@@ -475,7 +475,15 @@ Get Appkey Token
     log    ${text}
     log    ${url}
     ${access_token}    set variable    ${text.access_token}
-    Return From Keyword    ${access_token}
+    #设置全局变量
+    set to dictionary    ${Token}    userToken=${accessToken} 
+    # Return From Keyword    ${Token.userToken}
+    Log    ${Token}    
+    Log    ${token1}
+    Log    ${Token.userToken} 
+    # ${token}=    Set Variable If    "${token1}" == "a"    ${token1}    ${Token.userToken}    
+    Return From Keyword    ${Token.userToken}
+
     
 Get App Credentials
     [Arguments]    ${session}    ${header}    ${pathParamter}
@@ -519,3 +527,15 @@ Get AppToken Init
     Log   ${Token}     
     Set Parallel Value For Key    ParallelToken    ${Token}
     log    ${Token.appToken}
+
+Judge the use of Token
+    [Documentation]    判断是否使用usertoken
+    ...    由于usertoken需要先注册用户，才可以获取。所以部分测试case使用usertoken时需判断是否使用usertoken
+    ...    判断：
+    [Arguments]    ${username}    ${token}
+    ${baseRes.validIMUser}    set variable    ${username}
+    ${token}=    Run Keyword If    "${token}"=="a"    Get User Token    ${token}
+    ...    ELSE    Set Variable    ${token}
+    log    ${token}
+    [Return]    ${token}
+    

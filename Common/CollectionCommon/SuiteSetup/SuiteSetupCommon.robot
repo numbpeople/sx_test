@@ -33,6 +33,7 @@ Setup
     Get OrgToken Or BestToken Init    #初始化console后台管理token或设置超管token
     Get Applications And Set AppName Init    #初始化组织下的应用信息
     Get AppToken Init    #初始化Appkey的token
+    # Get UserToken init    #初始化usertoken
     Get Valid And Invalid User Init    #初始化应用下用户信息
     Get Chatgroup Init    #初始化群组信息
     Get Chatroom Init    #初始化聊天室信息

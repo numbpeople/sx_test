@@ -8,7 +8,7 @@ Resource          ../../Variable_Env.robot
 Resource          ../BaseCommon.robot
 Resource          ../UserCommon/UserCommon.robot
 Resource          ../FileUploadDownloadCommon/FileUploadDownloadCommon.robot
-Resource          ../SendMessageCommom/SendMessageCommom.robot
+# Resource          ../SendMessageCommom/SendMessageCommom.robot
 *** Keywords ***
 Send Message
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}

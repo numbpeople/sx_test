@@ -37,6 +37,7 @@ Set Base Request Attribute
     #给相应变量赋值
     set to dictionary    ${newRequestHeader}    Content-Type=${contentType}
     set to dictionary    ${newRequestHeader}    Authorization=Bearer ${token}
+    Log Dictionary    ${newRequestHeader}
     #考虑如果传入header中值为空情况，去掉请求key
     ${newRequestHeader}    Reset Request Header For Not Empty    ${newRequestHeader}
     #定义返回结构

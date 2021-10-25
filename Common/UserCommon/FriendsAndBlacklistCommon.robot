@@ -123,6 +123,8 @@ Add Friend Template
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${friendUsername}    set variable    ${ownerUserNameAccount}    ${username}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUserNameAccount}    ${token} 
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
@@ -156,7 +158,11 @@ Add Inexistent Friend Template
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${friendUsername}    set variable    ${baseRes.validIMUser}    ${randomNumber}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token}
+    
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
+
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
@@ -195,6 +201,8 @@ Remove Friend Template
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${friendUsername}    set variable    ${ownerUserNameAccount}    ${username}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUserNameAccount}    ${token} 
     #添加好友操作
     ${userInfo}    Add Friend For User    ${ownerUsername}    ${friendUsername}
     #设置请求集和
@@ -229,6 +237,8 @@ Get Friend Template
     ${username}    set variable    ${user['entities'][0]['username']}
     ${uuid}    set variable    ${user['entities'][0]['uuid']}
     ${ownerUsername}    ${friendUsername}    set variable    ${username}    ${baseRes.validIMUser}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token} 
     #添加好友操作
     Add Friend For User    ${ownerUsername}    ${friendUsername}
     #设置请求数据
@@ -301,6 +311,8 @@ Add User Blacklist Template
     ${ownerUsername}    set variable    ${baseRes.validIMUser}
     ${data}    set variable    {"usernames":["${ownerUsername}"]}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token} 
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
@@ -335,6 +347,8 @@ Add Inexistent User Blacklist Template
     ${ownerUsername}    set variable    ${baseRes.validIMUser}
     ${data}    set variable    {"usernames":["${randomNumber}"]}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token} 
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
@@ -370,6 +384,8 @@ Remove User Blacklist Template
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    ${blockedUsername}    set variable    ${baseRes.validIMUser}    ${baseRes.validIMUser}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    blockedUsername=${blockedUsername}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token} 
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
@@ -404,6 +420,8 @@ Remove Inexistent User Blacklist Template
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${ownerUsername}    set variable    ${baseRes.validIMUser}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    blockedUsername=${randomNumber}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token} 
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
@@ -435,6 +453,8 @@ Get User BlacklistTemplate
     ${username}    set variable    ${user['entities'][0]['username']}
     ${uuid}    set variable    ${user['entities'][0]['uuid']}
     ${ownerUsername}    ${blacklistUser}    set variable    ${username}    ${username}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${ownerUsername}    ${token} 
     #添加黑名单操作
     Add Blacklist For User    ${ownerUsername}    ${blacklistUser}
     #设置请求数据

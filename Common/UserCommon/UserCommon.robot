@@ -714,6 +714,8 @@ Modify User Password Template
     #创建新的用户
     ${user}    Create Temp User
     ${username}    set variable    ${user['entities'][0]['username']}
+    #判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
     #设置请求数据
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}    imUser=${username}
     #设置请求集和
@@ -785,6 +787,8 @@ Modify User Nickname Template
     ${modified}    set variable    ${user['entities'][0]['modified']}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${randomNumber}    Generate Random Specified String
+    #判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
@@ -825,6 +829,8 @@ Modify User Notification_Display_Style Template
     ${created}    set variable    ${user['entities'][0]['created']}
     ${modified}    set variable    ${user['entities'][0]['modified']}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    #判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
     #设置请求数据
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}

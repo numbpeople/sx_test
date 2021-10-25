@@ -460,8 +460,8 @@ Get Appkey Token
 Get User Token
     [Documentation]    获取user的token
     #创建获取user token的请求体
-    [Arguments]    ${token1}
-    ${data}    set variable    {"grant_type":"password","username":"${baseRes.validIMUser}","password":"${baseRes.validIMUser}"}
+    [Arguments]    ${username}    ${token1}
+    ${data}    set variable    {"grant_type":"password","username":"${username}","password":"${username}"}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     ${expectedStatusCode}    set variable    200
     #给相应变量赋值
@@ -481,7 +481,6 @@ Get User Token
     Log    ${Token}    
     Log    ${token1}
     Log    ${Token.userToken} 
-    # ${token}=    Set Variable If    "${token1}" == "a"    ${token1}    ${Token.userToken}    
     Return From Keyword    ${Token.userToken}
 
     
@@ -533,8 +532,9 @@ Judge the use of Token
     ...    由于usertoken需要先注册用户，才可以获取。所以部分测试case使用usertoken时需判断是否使用usertoken
     ...    判断：
     [Arguments]    ${username}    ${token}
-    ${baseRes.validIMUser}    set variable    ${username}
-    ${token}=    Run Keyword If    "${token}"=="a"    Get User Token    ${token}
+    # ${baseRes.validIMUser}    set variable    ${username}
+    log    ${token}
+    ${token}=    Run Keyword If    "${token}"=="${RandomParameter.userToken}"    Get User Token    ${username}    ${token}
     ...    ELSE    Set Variable    ${token}
     log    ${token}
     [Return]    ${token}

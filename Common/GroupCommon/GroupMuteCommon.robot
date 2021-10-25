@@ -316,7 +316,7 @@ Remove mute by role Template
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
     &{apiResponse3}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}     Remove mute by role    @{arguments}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${baseRes.validAppUUID}'    'true'    
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    'true'    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse3}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 

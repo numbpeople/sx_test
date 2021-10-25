@@ -86,8 +86,10 @@ Return Result
 Format Jsonstr
     [Arguments]    ${jsonstr}    ${argument}
     ${t}    evaluate    ','.join(list(map(str,@{argument})))
+    log    ${t}
     # ${formatstr}    decode bytes to string    ${t}    utf-8
     ${s}    evaluate    '${jsonstr}' % (${t})
+    Log    ${s}    
     return from keyword    ${s}
 
 Repeat Keyword Times

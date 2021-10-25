@@ -74,7 +74,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.appToken}    ${GetChatgroupUserMuteListDictionary.statusCode}    ${GetChatgroupUserMuteListDictionary.reponseResult}    ${GetChatgroupUserMuteListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupUserMuteListDictionary.statusCode}    ${GetChatgroupUserMuteListDictionary.reponseResult}    ${GetChatgroupUserMuteListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
-移出群组禁言（角色）
+移除群组禁言（角色）
     [Template]    Remove mute by role Template
     [Documentation]    created by wudi   
     ${contentType.JSON}    ${Token.orgToken}    ${RemoveMuteByRoleDictionary.statusCode}    ${RemoveMuteByRoleDictionary.reponseResult}    ${RemoveMuteByRoleDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}

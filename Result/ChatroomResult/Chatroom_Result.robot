@@ -19,7 +19,7 @@ ${GetChatroomListDiffEntity}    {"action":"get","application":"%s","entities":[]
 ${GetSpecificChatroomDetail}    {"action":"get","application":"8369ad90-7ea7-11e9-b22e-1fe28719a175","uri":"http://a1-hsb.easemob.com/1104190221201050/imautotest-5616018852/chatrooms/83215992815617","entities":[],"data":[{"id":"83215992815617","name":"imautotest-3578266576","description":"imautotest-3578266576","membersonly":false,"allowinvites":false,"maxusers":200,"owner":"imautotest-3578266576","created":1558759355082,"custom":"","affiliations_count":1,"affiliations":[{"owner":"imautotest-3578266576"}],"public":true}],"timestamp":1558759355275,"duration":0,"organization":"1104190221201050","applicationName":"imautotest-5616018852","count":1}
 ${GetSpecificChatroomDetailDiffEntity}    {"action":"get","application":"%s","entities":[],"data":[{"id":"%s","name":"%s","description":"%s","membersonly":%s,"allowinvites":%s,"maxusers":%s,"owner":"%s","custom":"","affiliations_count":%s,"affiliations":[{"owner":"%s"}],"public":%s}],"organization":"%s","applicationName":"%s","count":%s}
 ${GetIMUserJoinedChatroom}    {"action":"get","application":"f13b81a0-7eb5-11e9-bc65-b56cb87cec8d","uri":"http://a1-hsb.easemob.com/1104190221201050/imautotest-1915126582/users/imautotest-3737234878/joined_chatrooms","entities":[],"data":[{"id":"83222490841089","name":"imautotest-3737234878"}],"timestamp":1558765552524,"duration":1,"organization":"1104190221201050","applicationName":"imautotest-1915126582","count":1}
-${GetIMUserJoinedChatroomDiffEntity}    {"action":"get","application":"%s","entities":[],"data":[{"id":"%s","name":"%s"}],"organization":"%s","applicationName":"%s","count":1}
+${GetIMUserJoinedChatroomDiffEntity}    {"action":"get","application":"%s","entities":[],"data":[{"id":"%s","name":"%s"}],"organization":"%s","count":1}
 &{CreateChatroomDictionary}    statusCode=200    reponseResult=${CreateChatroom}
 &{CreateChatroomWithNameFiledDiscardedDictionary}    statusCode=400    reponseResult=${CreateChatroomWithNameFiledDiscarded}
 &{CreateChatroomWithOwnerFiledDiscardedDictionary}    statusCode=400    reponseResult=${CreateChatroomWithOwnerFiledDiscarded}
@@ -35,7 +35,7 @@ ${ChatroomAnnouncementDiffEntity}    {"action":"%s","application":"%s","data":{"
 &{ChatroomAnnouncementDictionary}    statusCode=200    reponseResult=${ChatroomAnnouncement}
 
 ${GetChatroomAnnouncement}    {"action":"get","application":"c7dece76-fad6-4f7e-a73d-ed120f611381","count":0,"data":{"announcement":"test"},"duration":1,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1632473712802,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-7262515131/chatrooms/160511098421251/announcement"}
-${GetChatroomAnnouncementDiffEntity}    {"action":"%s","application":"%s","organization":"%s"}
+${GetChatroomAnnouncementDiffEntity}    {"action":"%s","application":"%s","data":{"announcement":"%s"}"organization":"%s"}
 &{GetChatroomAnnouncementDictionary}    statusCode=200    reponseResult=${GetChatroomAnnouncement}
  
 ${BanChatroom}    {"action":"put","application":"602c612f-4c2e-4e9d-ac19-d61d53db4740","data":{"mute":true},"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1632469973448,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-5562764900/chatrooms/160507177795587/ban"}

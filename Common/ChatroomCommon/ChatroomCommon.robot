@@ -548,7 +548,7 @@ Get All Chatrooms Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -583,7 +583,7 @@ Get IMUser Joined Chatroom Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${chatroomId}'    '${userName}'    '${orgName}'    '${appName}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${chatroomId}'    '${userName}'    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 

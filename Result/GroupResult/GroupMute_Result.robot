@@ -16,5 +16,6 @@ ${GetChatgroupUserMuteListDiffEntity}    {"action":"%s","application":"%s","enti
 &{GetChatgroupUserMuteListDictionary}    statusCode=200    reponseResult=${GetChatgroupUserMuteList}
 
 ${RemoveMuteByRole}    {"action":"delete","application":"024663e6-d99c-42f2-97f3-cc734388651d","data":[{"result":true,"user":"imautotest-5368765495"}],"duration":0,"entities":[],"organization":"easemob-demo","params":{"role":["member"]},"properties":{},"timestamp":1632307417409,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-7016991165/chatgroups/160336724426753/mute"}
-${RemoveMuteByRoleDiffEntity}    {"action":"delete","application":"%s","data":[{"result":%s}],"entities":[],"organization":"easemob-demo","params":{"role":["member"]},"properties":{}}
+# ${RemoveMuteByRoleDiffEntity}    {"action":"delete","application":"%s","data":[{"result":%s}],"entities":[],"organization":"easemob-demo","params":{"role":["member"]},"properties":{}}
+${RemoveMuteByRoleDiffEntity}    {"action":"delete","application":"%s","data":[{"result":%s}],"entities":[],"organization":"%s","params":{"role":["member"]},"properties":{}}
 &{RemoveMuteByRoleDictionary}    statusCode=200    reponseResult=${RemoveMuteByRole}

@@ -14,7 +14,7 @@ Resource          ../../Common/GetMessageCommon/GetMessageCommo.robot
     
 获取历史消息有内容
 
-获取消息漫游(/{org_name}/{app_name}/users/{user_name}/messageroaming)
+获取用户消息漫游(/{org_name}/{app_name}/users/{user_name}/messageroaming)
     [Documentation]    获取漫游消息
     ${resp}=    创建一个新用户    session
     ${result}    to json    ${resp.content}

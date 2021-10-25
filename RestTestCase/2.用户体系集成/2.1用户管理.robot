@@ -150,6 +150,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     #发现批量删除不能指定用户方式去删除，他是按照创建时间正序去批量删除，所以避免为了造成数据误删除，该用例暂时不执行
 
 重置IM用户密码(/{orgName}/{appName}/users/{imUser}/password)
+    [Tags]    usertoken
     [Template]    Modify User Password Template
     ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserPasswordDictionary.statusCode}    ${ModifyUserPasswordDictionary.reponseResult}    ${ModifyUserPasswordDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
@@ -157,7 +158,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${ModifyUserPasswordDictionary.statusCode}    ${ModifyUserPasswordDictionary.reponseResult}    ${ModifyUserPasswordDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserPasswordDictionary.statusCode}    ${ModifyUserPasswordDictionary.reponseResult}    ${ModifyUserPasswordDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
+    ${contentType.JSON}    ${Token.userToken}    ${ModifyUserPasswordDictionary.statusCode}    ${ModifyUserPasswordDictionary.reponseResult}    ${ModifyUserPasswordDiffEntity}    ${ModelCaseRunStatus.userToken_ContentType}
 重置不存在的IM用户密码(/{orgName}/{appName}/users/{imUser}/password)
     [Template]    Modify Inexistent User Password Template
     ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserPasswordEntityNotFoundDictionary.statusCode}    ${ModifyUserPasswordEntityNotFoundDictionary.reponseResult}    ${ModifyUserPasswordEntityNotFoundDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
@@ -168,6 +169,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserPasswordEntityNotFoundDictionary.statusCode}    ${ModifyUserPasswordEntityNotFoundDictionary.reponseResult}    ${ModifyUserPasswordEntityNotFoundDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 修改用户昵称(/{orgName}/{appName}/users/{userName})
+    [Tags]    usertoken
     [Template]    Modify User Nickname Template
     ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
@@ -175,8 +177,9 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
+    ${contentType.JSON}    ${Token.userToken}    ${ModifyUserNicknameDictionary.statusCode}    ${ModifyUserNicknameDictionary.reponseResult}    ${ModifyUserNicknameDiffEntity}    ${ModelCaseRunStatus.userToken_ContentType}
 设置推送消息展示方式(/{orgName}/{appName}/users/{userName})
+    [Tags]    usertoken
     [Template]    Modify User Notification_Display_Style Template
     ${contentType.JSON}    ${Token.orgToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
@@ -184,7 +187,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
+    ${contentType.JSON}    ${Token.userToken}    ${ModifyUserNotificationDisplayStyleDictionary.statusCode}    ${ModifyUserNotificationDisplayStyleDictionary.reponseResult}    ${ModifyUserNotificationDisplayStyleDiffEntity}    ${ModelCaseRunStatus.userToken_ContentType}
 开启免打扰
     [Tags]    usertoken
     [Documentation]    开启免打扰

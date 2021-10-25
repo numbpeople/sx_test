@@ -61,6 +61,8 @@ Get User Status Template
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     ${userName}    set variable    ${baseRes.validIMUser}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${userName}
+    #判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
@@ -155,6 +157,8 @@ Get User Offline Msg Count Template
     ${userName}    set variable    ${user['entities'][0]['username']}
     ${uuid}    set variable    ${user['entities'][0]['uuid']}
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    #判断是否获取usertoken
+    ${token}    Judge the use of Token    ${userName}    ${token} 
     #发送文本消息
     &{msgEntity}    create dictionary    fromUser=${userName}    targetUser=${userName}    msg=${userName}
     ${times}    set variable    1

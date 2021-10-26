@@ -35,7 +35,7 @@ ${ChatroomAnnouncementDiffEntity}    {"action":"%s","application":"%s","data":{"
 &{ChatroomAnnouncementDictionary}    statusCode=200    reponseResult=${ChatroomAnnouncement}
 
 ${GetChatroomAnnouncement}    {"action":"get","application":"c7dece76-fad6-4f7e-a73d-ed120f611381","count":0,"data":{"announcement":"test"},"duration":1,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1632473712802,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-7262515131/chatrooms/160511098421251/announcement"}
-${GetChatroomAnnouncementDiffEntity}    {"action":"%s","application":"%s","data":{"announcement":"%s"}"organization":"%s"}
+${GetChatroomAnnouncementDiffEntity}    {"action":"%s","application":"%s","data":{"announcement":"%s"},"organization":"%s"}
 &{GetChatroomAnnouncementDictionary}    statusCode=200    reponseResult=${GetChatroomAnnouncement}
  
 ${BanChatroom}    {"action":"put","application":"602c612f-4c2e-4e9d-ac19-d61d53db4740","data":{"mute":true},"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1632469973448,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-5562764900/chatrooms/160507177795587/ban"}

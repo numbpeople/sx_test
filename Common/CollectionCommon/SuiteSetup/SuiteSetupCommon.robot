@@ -54,9 +54,36 @@ Set Parallel Global Value
     Set Global Variable    ${RunModelCaseConditionDic}    ${ParallelRunModelCaseConditionDic}
     Set Global Variable    ${ModelCaseRunStatus}    ${ParallelModelCaseRunStatus}
     Set Global Variable    ${validIMUserInfo}    ${ParallelvalidIMUserInfo}
+Get username and name
+    [Documentation]    #根据url判断超级管理员登录的用户名和密码
+    #根据url判断超级管理员登录的用户名和密码
+    ${username}    Set Variable If    "${RestRes.RestUrl}"=="http://a1-hsb.easemob.com"    easemob@easemob.com
+    #vip6
+    ...    "${RestRes.RestUrl}"=="http://a1-vip6.easemob.com"    1066280919@qq.com
+    #hw
+    ...    "${RestRes.RestUrl}"=="http://a1-hw.easemob.com"    13400327635@139.com
+    #east
+    ...    "${RestRes.RestUrl}"=="http://a1-41.easemob.com"    dee.wu@easemob.com
+    #frank
+    ...    "${RestRes.RestUrl}"=="http://a51.easemob.com"    1541499889@qq.com
+    #sgp
+    ...    "${RestRes.RestUrl}"=="http://a1-sgp.easemob.com"    shuangxi89710@163.com
+    #ebs
+    ...    "${RestRes.RestUrl}"=="http://a1.easemob.com"    easemobdemoadmin
+    #hk
+    ...    "${RestRes.RestUrl}"=="http://hk-test.easemob.com"    wwl@easemob.com
+    ${password}    Set Variable If    "${RestRes.RestUrl}"=="http://a1-hsb.easemob.com" or "${RestRes.RestUrl}"=="http://a1.easemob.com"   ${Password.password_ebs_hsb}
+    ...    "${RestRes.RestUrl}"!="http://a1-hsb.easemob.com" or "${RestRes.RestUrl}"!="http://a1.easemob.com"    ${Password.other_password}
+    # [Return]    ${username}    ${password}    
+    Return From Keyword    ${username}    ${password}
 
 Create Alia Session
-    #创建连接
+    [Documentation]    创建rest链接
+    #根据url判断超级管理员登录的用户名和密码
+    ${username}    ${password}    Get username and name
+    Set To Dictionary    ${RestRes}    username=${username}        password=${password}
     Create Session    session    ${RestRes.RestUrl}
-    set to dictionary    ${RestRes}    alias=session
+    Create Session    consolesession    ${ManagementApi.ManagetmentUrl}
+    set to dictionary    ${RestRes}    alias=session    consolealias=consolesession
+    Log    ${RestRes}    
     set global variable    ${RestRes}    ${RestRes}

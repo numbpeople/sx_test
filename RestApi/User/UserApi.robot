@@ -122,3 +122,25 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    获取消息漫游
     ${uri}=    set variable    /${org_name}/${app_name}/users/${user_name}/messageroaming
     Run Keyword And Return    Post Request    ${session}    ${uri}    headers=${header}    data=${data}    timeout=${timeout}
+    
+/{org_name}/{app_name}/metadata/user/capacity
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    获取用户属性容量
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/metadata/user/capacity
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/metadata/user/{username}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    设置/获取用户属性
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/metadata/user/${pathParamter.userName}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/metadata/user/get
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    批量获取用户属性
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/metadata/user/get
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}

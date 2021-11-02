@@ -125,4 +125,40 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.orgToken}    ${ShieldChatroomDictionary.statusCode}    ${ShieldChatroomDictionary.reponseResult}    ${ShieldChatroomDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    ${ShieldChatroomDictionary.statusCode}    ${ShieldChatroomDictionary.reponseResult}    ${ShieldChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
 
-    
+分页获取聊天室超级管理员列表-未设置超级管理员
+    [Documentation]    create by shuang
+    [Template]    Get Chatroom SuperAdminZero Template
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomZeroSuperAdminListDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomZeroSuperAdminListDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomZeroSuperAdminListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomZeroSuperAdminListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+分页获取聊天室超级管理员列表-已添加超级管理员
+    [Documentation]    create by shuang
+    [Template]    Get Chatroom SuperAdmin Template
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomSuperAdminListDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomSuperAdminListDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomSuperAdminListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomSuperAdminListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+添加超级管理员
+    [Documentation]    create by shuang
+    [Template]    Add Chatroom SuperAdmin Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ChatroomSuperAdminDictionary.statusCode}    ${ChatroomSuperAdminDictionary.reponseResult}    ${ChatroomSuperAdminDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${ChatroomSuperAdminDictionary.statusCode}    ${ChatroomSuperAdminDictionary.reponseResult}    ${ChatroomSuperAdminDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ChatroomSuperAdminDictionary.statusCode}    ${ChatroomSuperAdminDictionary.reponseResult}    ${ChatroomSuperAdminDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${ChatroomSuperAdminDictionary.statusCode}    ${ChatroomSuperAdminDictionary.reponseResult}    ${ChatroomSuperAdminDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+移除超级管理员
+    [Documentation]    create by shuang
+    [Template]    Remove Chatroom SuperAdmin Template
+    ${contentType.JSON}    ${Token.orgToken}    ${RemoveChatRoomsSuperAdminDictionary.statusCode}    ${RemoveChatRoomsSuperAdminDictionary.reponseResult}    ${RemoveChatRoomsSuperAdminListDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${RemoveChatRoomsSuperAdminDictionary.statusCode}    ${RemoveChatRoomsSuperAdminDictionary.reponseResult}    ${RemoveChatRoomsSuperAdminListDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${RemoveChatRoomsSuperAdminDictionary.statusCode}    ${RemoveChatRoomsSuperAdminDictionary.reponseResult}    ${RemoveChatRoomsSuperAdminListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${RemoveChatRoomsSuperAdminDictionary.statusCode}    ${RemoveChatRoomsSuperAdminDictionary.reponseResult}    ${RemoveChatRoomsSuperAdminListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}

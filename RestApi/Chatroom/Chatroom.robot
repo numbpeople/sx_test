@@ -127,3 +127,15 @@ Resource          ../../Common/BaseCommon.robot
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/shield
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+/{org_name}/{app_name}/chatrooms/super_admin
+    [Documentation]    分页获取聊天室超级管理员列表/添加聊天室超级管理员
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/super_admin
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/chatrooms/super_admin/{super_admin}
+    [Documentation]    移除超级管理员
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/super_admin/${pathParamter.super_admin}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}

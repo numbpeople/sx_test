@@ -57,6 +57,7 @@ Set Parallel Global Value
 Get username and name
     [Documentation]    #根据url判断超级管理员登录的用户名和密码
     #根据url判断超级管理员登录的用户名和密码
+    #hsb
     ${username}    Set Variable If    "${RestRes.RestUrl}"=="http://a1-hsb.easemob.com"    easemob@easemob.com
     #vip6
     ...    "${RestRes.RestUrl}"=="http://a1-vip6.easemob.com"    1066280919@qq.com

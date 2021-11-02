@@ -85,6 +85,8 @@ Return Result
 
 Format Jsonstr
     [Arguments]    ${jsonstr}    ${argument}
+    Log    ${jsonstr}
+    Log    ${argument}    
     ${t}    evaluate    ','.join(list(map(str,@{argument})))
     log    ${t}
     # ${formatstr}    decode bytes to string    ${t}    utf-8
@@ -122,7 +124,6 @@ Structure Field Should Be Equal
     #定义返回结构
     &{diffResult}    create dictionary    status=True    errorDescribtion=
     log    ${diffStructTemplate}
-    #
     ${diffStructTemplateLength}    get length    ${diffStructTemplate}
     return from keyword if    ${diffStructTemplateLength} == 0    ${diffResult}
     #将模板转换成字典
@@ -270,6 +271,8 @@ Assert Request Result
     run keyword if    ${diffStructTemplateResultStatus}    set suite variable    ${diffStructTemplate}    ${diffStructTemplateResultTemp}
     #验证接口返回值的字段是否完整
     ${errorDescribetion}    set variable    ${apiResponse.errorDescribetion}
+    log    ${apiResponse.text}
+    Log    ${diffStructTemplate}    
     ${fieldDiffResult}    Structure Field Should Be Equal    ${apiResponse.text}    ${diffStructTemplate}
     run keyword if    not ${fieldDiffResult.status}    set to dictionary    ${apiResponse}    status=${ResponseStatus.FAIL}    errorDescribetion=${errorDescribetion}，${fieldDiffResult.errorDescribtion}
     #验证接口返回值的字段值是否正确

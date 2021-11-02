@@ -134,6 +134,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomZeroSuperAdminListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatroomSuperAdminDictionary.statusCode}    ${GetChatroomSuperAdminDictionary.reponseResult}    ${GetChatroomZeroSuperAdminListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
 分页获取聊天室超级管理员列表-已添加超级管理员
     [Documentation]    create by shuang
     [Template]    Get Chatroom SuperAdmin Template

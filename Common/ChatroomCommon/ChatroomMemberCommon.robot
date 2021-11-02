@@ -679,6 +679,8 @@ Get Chatroom SuperAdmin Template
     #创建新的用户
     ${user}    Create Temp User
     ${userName1}    set variable    ${user['entities'][0]['username']}
+    #添加聊天室管理员用户
+    Add Temp Chatroom SuperAdmin    ${userName1}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
     ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
@@ -692,9 +694,12 @@ Get Chatroom SuperAdmin Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    0    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin'
+    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${userName}'    1    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    #移除聊天室超级管理员
+    Remove Temp Chatroom SuperAdmin    ${userName1}
+    
 Add Temp Chatroom SuperAdmin
     [Documentation]    添加聊天室超级管理员
     [Arguments]    ${username}  
@@ -731,7 +736,7 @@ Add Chatroom SuperAdmin Template
     ${validUserUUID}    set variable    ${validIMUserInfo.uuid}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
-    ${data}    set variable    {"superadmin": "%{userName}"}
+    ${data}    set variable    {"superadmin": "${userName}"}
     #设置请求集和
     ${keywordDescribtion}    set variable    ${TEST NAME}
     @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
@@ -741,7 +746,6 @@ Add Chatroom SuperAdmin Template
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list    
     @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin'
- 
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
     
@@ -776,3 +780,17 @@ Remove Chatroom SuperAdmin Template
     @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${username}'    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin/${username}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+Remove Temp Chatroom SuperAdmin
+    [Documentation]    添加聊天室超级管理员
+    [Arguments]    ${username}  
+    ${expectedStatusCode}    Set Variable    200
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}    super_admin=${username}
+
+    &{ApiResponse}    Remove Chatroom SuperAdmin    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    创建用户失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
+    ${text}    set variable    ${apiResponse.text}
+    ${url}    set variable    ${apiResponse.url}
+    log    ${text}
+    log    ${url}

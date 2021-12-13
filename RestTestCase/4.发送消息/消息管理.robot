@@ -10,11 +10,11 @@ Resource          ../../Result/SendMessageResult/SendMessage_Result.robot
 Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 Resource          ../../Common/GetMessageCommon/GetMessageCommo.robot
 *** Test Cases ***
-获取历史消息为空
+# 获取历史消息为空
     
-获取历史消息有内容
+# 获取历史消息有内容
 
-获取用户消息漫游(/{org_name}/{app_name}/users/{user_name}/messageroaming)
+# 获取用户消息漫游(/{org_name}/{app_name}/users/{user_name}/messageroaming)
     [Documentation]    获取漫游消息
     ${resp}=    创建一个新用户    session
     ${result}    to json    ${resp.content}
@@ -27,5 +27,5 @@ Resource          ../../Common/GetMessageCommon/GetMessageCommo.robot
     Should Be Equal As Strings    get message roaming    ${result["action"]}
     Should Be Empty    ${result["data"]["msgs"]}    
  
-查询漫游消息消息设置
+# 查询漫游消息消息设置
     

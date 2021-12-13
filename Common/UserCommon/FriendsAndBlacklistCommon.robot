@@ -17,7 +17,24 @@ Add Friend
     ${resp}=    /{orgName}/{appName}/users/{ownerUsername}/contacts/users/{friendUsername}    POST    ${session}    ${header}    pathParamter=${pathParamter}
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
-
+Apply Add Friend
+    [Arguments]    ${session}    ${header}    ${pathParamter}    ${data}
+    [Documentation]    申请添加好友
+    ${resp}=    /{orgName}/{appName}/users/{userName}/contacts/apply    POST    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+Reject Friend Request
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    拒绝添加好友申请
+    ${resp}=    /{orgName}/{appName}/users/{userName1}/contacts/decline/users/{userName2}    POST    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+Agree Friend Request
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    同意添加好友申请
+    ${resp}=    /{orgName}/{appName}/users/{userName1}/contacts/accept/users/{userName2}    POST    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
 Add Friend For User
     [Arguments]    ${ownerUsername}    ${friendUsername}
     [Documentation]    添加好友
@@ -500,5 +517,102 @@ Get Inexistent User BlacklistTemplate
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
     @{argumentValue}    create list
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+Apply Add Friend Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    添加好友申请
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建用户
+    ${userres1}    Create Temp User
+    ${username1}    Set Variable    ${userres1['entities'][0]['username']}
+    ${userres2}    Create Temp User
+    ${username2}    Set Variable    ${userres2['entities'][0]['username']}
+    #设置请求数据
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${username1}
+    ${data}    Set Variable    {"usernames":["${username2}"]}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Apply Add Friend
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${username1}'    '${orgName}'    '${applicationUUID}'    '${username2}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+Agree Friend Request Template   
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    添加好友申请
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建用户
+    ${userres1}    Create Temp User
+    ${username1}    Set Variable    ${userres1['entities'][0]['username']}
+    ${userres2}    Create Temp User
+    ${username2}    Set Variable    ${userres2['entities'][0]['username']}
+    #设置请求数据
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName1=${username1}    userName2=${username2}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Agree Friend Request
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${username1}'    '${username2}'    '${orgName}'    '${applicationUUID}'    '${username2}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue} 
+Reject Friend Request Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    添加好友申请
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建用户
+    ${userres1}    Create Temp User
+    ${username1}    Set Variable    ${userres1['entities'][0]['username']}
+    ${userres2}    Create Temp User
+    ${username2}    Set Variable    ${userres2['entities'][0]['username']}
+    #设置请求数据
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName1=${username1}    userName2=${username2}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Reject Friend Request
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${username1}'    '${username2}'    '${orgName}'    '${applicationUUID}'    '${username2}'    '${appName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}

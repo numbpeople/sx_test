@@ -119,6 +119,13 @@ Chatgroup Count
     ${resp}=    /{orgname}/{appname}/chatgroups/count    GET    ${session}    ${header}    pathParamter=${pathParamter}
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
+Chatgroup Member Count
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    群组统计    created by wudi
+    #获取群组详情
+    ${resp}=    /{orgname}/{appname}/chatgroups/{groupid}/count    GET    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
 
 Chatgroup Count Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
@@ -141,7 +148,34 @@ Chatgroup Count Template
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
     
-
+Chatgroup Member Count Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    群组成员数量统计    created by shuangxi
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建一个用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${ownerUserName}    set variable    ${validIMUserInfo.username}
+    #创建一个群组
+    ${chatGroup}    Create Temp Chatgroup    owner=${ownerUserName}
+    ${groupId}    set variable    ${chatGroup.groupId}
+    ${groupName}    set variable    ${chatGroup.groupName}
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${groupId}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Chatgroup Member Count
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '1'    '${orgName}'    
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 Create New Chatgroup Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    创建一个新的群组
@@ -313,6 +347,36 @@ Edit Chatgroup Template
     ${groupId}    set variable    ${baseRes.validChatgroup.groupId}    #获取初始化的有效群组
     &{chatGroupEntity}    Create Dictionary    groupname=${randomNumber}    description=${randomNumber}    maxusers=200
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","description":"${chatGroupEntity.description}","maxusers":${chatGroupEntity.maxusers}}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${groupId}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Edit Chatgroup
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${orgName}'    
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+Edit Chatgroup Maxuser Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    修改群组信息
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #设置请求数据
+    ${randomNumber}    Generate Random Specified String
+    ${groupId}    set variable    ${baseRes.validChatgroup.groupId}    #获取初始化的有效群组
+    &{chatGroupEntity}    Create Dictionary    maxusers=100
+    ${data}    set variable    {"maxusers":${chatGroupEntity.maxusers}}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
     &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    groupId=${groupId}
     #设置请求集和

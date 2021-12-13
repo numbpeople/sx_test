@@ -11,3 +11,12 @@ ${UserOfflineMsgCountDiffEntity}    {"action":"get","entities":[],"data":{"%s":%
 &{SingleUserStatusDictionary}    statusCode=200    reponseResult=${SingleUserStatus}
 &{UserBatchStatusDictionary}    statusCode=200    reponseResult=${UserBatchStatus}
 &{UserOfflineMsgCountDictionary}    statusCode=200    reponseResult=${UserOfflineMsgCount}
+
+${GetUserResouces}    {"path":"/users/1111/resources","uri":"https://a1-hsb.easemob.com/easemob-demo/easeim/users/1111/resources","timestamp":1635847174419,"organization":"easemob-demo","application":"e019c634-e3f2-4e9c-9393-463657845f4f","entities":[],"action":"get","data":[],"duration":1075,"applicationName":"easeim"}
+${GetUserResoucesDiffEntity}    {"path":"/users/%s/resources","organization":"%s","application":"%s","entities":[],"action":"get","data":[],"applicationName":"%s"}
+&{GetUserResoucesDictionary}    statusCode=200    reponseResult=${GetUserResouces}
+
+${GetUserResoucesUnauthorized}    {"path":"/users/1111/resources","uri":"https://a1-hsb.easemob.com/easemob-demo/easeim/users/1111/resources","timestamp":1635847174419,"organization":"easemob-demo","application":"e019c634-e3f2-4e9c-9393-463657845f4f","entities":[],"action":"get","data":[],"duration":1075,"applicationName":"easeim"}
+${GetUserResoucesUnauthorizedDiffEntity}    {"path":"/users/%s/resources","organization":"%s","application":"%s","entities":[],"action":"get","data":[],"applicationName":"%s"}
+&{GetUserResoucesUnauthorizedDictionary}    statusCode=200    reponseResult=${GetUserResouces}
+

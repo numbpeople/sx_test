@@ -18,17 +18,17 @@ ${ChatroomAdmin}    {"action":"post","application":"396311b0-868f-11e9-be13-9fb2
 ${ChatroomAdminDiffEntity}    {"action":"%s","application":"%s","entities":[],"data":{"result":"%s","%s":"%s"},"organization":"%s","applicationName":"%s"}
 
 ${ChatroomSuperAdmin}    {"action":"post","application":"e019c634-e3f2-4e9c-9393-463657845f4f","applicationName":"easeim","data":{"result":"success","resource":""},"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1635252358332,"uri":"http://a1-hsb.easemob.com/easemob-demo/easeim/chatrooms/super_admin"}
-${ChatroomSuperAdminDiffEntity}    {"action":"post","application":"%s","applicationName":"%s","data":{"result":"success","resource":""},"duration":0,"entities":[],"organization":"%s","properties":{},"uri":"%s"}
+${ChatroomSuperAdminDiffEntity}    {"action":"post","application":"%s","applicationName":"%s","data":{"result":"success","resource":""},"duration":0,"entities":[],"organization":"%s","properties":{}}
 
 ${GetChatroomAdminList}    {"action":"get","application":"927d7c90-8694-11e9-85b3-795f60fcf636","uri":"http://a1-hsb.easemob.com/1104190221201050/imautotest-8634588330/chatrooms/84129799536642/admin","entities":[],"data":["imautotest-7689100811"],"timestamp":1559630830117,"duration":0,"organization":"1104190221201050","applicationName":"imautotest-8634588330","count":1}
 ${GetChatroomAdminListDiffEntity}    {"action":"get","application":"%s","entities":[],"data":["%s"],"organization":"%s","applicationName":"%s","count":%s}
 
 ${GetChatroomSuperAdminList}    {"action":"get","application":"e019c634-e3f2-4e9c-9393-463657845f4f","applicationName":"easeim","count":1,"data":["1111"],"duration":1,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1635253015781,"uri":"http://a1-hsb.easemob.com/easemob-demo/easeim/chatrooms/super_admin"}
-${GetChatroomSuperAdminListDiffEntity}    {"action":"get","application":"%s","applicationName":"%s","data":["%s"],"count": %s,"entities":[],"organization":"%s","uri":"%s"}
-${GetChatroomZeroSuperAdminListDiffEntity}    {"action":"get","application":"%s","applicationName":"%s","data":[],"count": %s,"entities":[],"organization":"%s","uri":"%s"}
+${GetChatroomSuperAdminListDiffEntity}    {"action":"get","application":"%s","applicationName":"%s","data":["%s"],"count": %s,"entities":[],"organization":"%s"}
+${GetChatroomZeroSuperAdminListDiffEntity}    {"action":"get","application":"%s","applicationName":"%s","data":[],"count": %s,"entities":[],"organization":"%s"}
 
 ${RemoveChatRoomsSuperAdmin}    {"action":"delete","application":"e019c634-e3f2-4e9c-9393-463657845f4f","applicationName":"easeim","data":{"newSuperAdmin":"1111","resource":""},"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1635306308413,"uri":"http://a1-hsb.easemob.com/easemob-demo/easeim/chatrooms/super_admin/1111"}
-${RemoveChatRoomsSuperAdminListDiffEntity}    {"action":"delete","application":"%s","applicationName":"%s","data":{"newSuperAdmin":"%s","resource":""},"entities":[],"organization":"%s","properties":{},"uri":"%s"}
+${RemoveChatRoomsSuperAdminListDiffEntity}    {"action":"delete","application":"%s","applicationName":"%s","data":{"newSuperAdmin":"%s","resource":""},"entities":[],"organization":"%s","properties":{}}
 
 &{ChatroomMemberDictionary}    statusCode=200    reponseResult=${ChatroomMember}
 &{GetChatroomMemberDictionary}    statusCode=200    reponseResult=${GetChatroomMember}

@@ -12,12 +12,16 @@ ${GroupPublicNotFound}    {"error":"invalid_parameter","timestamp":1557402657886
 ${GroupPublicNotFoundDiffEntity}    {"error":"invalid_parameter","exception":"com.easemob.group.exception.InvalidParameterException","error_description":"group must contain public field!"}
 ${EditChatgroup}    {"action":"put","application":"8be024f0-e978-11e8-b697-5d598d5f8402","uri":"http://a1.easemob.com/easemob-demo/testapp/chatgroups/66021836783617","entities":[],"data":{"description":true,"maxusers":true,"groupname":true},"timestamp":1542363146301,"duration":0,"organization":"easemob-demo"}
 ${EditChatgroupDiffEntity}    {"action":"put","application":"%s","entities":[],"data":{"description":true,"maxusers":true,"groupname":true},"organization":"%s"}
+${EditChatgroupMaxuser}    {"action":"put","application":"8be024f0-e978-11e8-b697-5d598d5f8402","uri":"http://a1.easemob.com/easemob-demo/testapp/chatgroups/66021836783617","entities":[],"data":{"maxusers":true},"timestamp":1542363146301,"duration":0,"organization":"easemob-demo"}
+${EditChatgroupMaxuserDiffEntity}    {"action":"put","application":"%s","entities":[],"data":{"maxusers":true},"organization":"%s"}
 ${ChatgroupIdNotFound}    {"error":"resource_not_found","timestamp":1542363205192,"duration":0,"exception":"com.easemob.group.exception.ResourceNotFoundException","error_description":"grpID 6602183678361 does not exist!"}
 ${ChatgroupIdNotFoundDiffEntity}    {"error":"resource_not_found","exception":"com.easemob.group.exception.ResourceNotFoundException","error_description":"grpID %s does not exist!"}
 ${DeleteChatgroup}    {"action":"delete","application":"e1af6e90-fccf-11e7-8cd3-5d660b6f51f2","uri":"http://a1-mesos.easemob.com/talent-leoli123/test/chatgroups/81793235615745","entities":[],"data":{"success":true,"groupid":"81793235615745"},"timestamp":1557463339484,"duration":0,"organization":"talent-leoli123"}
 ${DeleteChatgroupDiffEntity}    {"action":"delete","application":"%s","entities":[],"data":{"success":true,"groupid":"%s"},"organization":"%s"}
 ${GetChatgroup}    {"action":"get","application":"e1af6e90-fccf-11e7-8cd3-5d660b6f51f2","uri":"http://a1-mesos.easemob.com/talent-leoli123/test/chatgroups/","entities":[],"data":[],"timestamp":1557468113965,"duration":0,"organization":"talent-leoli123","count":4}
 ${GetChatgroupDiffEntity}    {"action":"get","application":"%s","entities":[],"data":[],"organization":"%s"}
+${GetChatgroupMember}    {"action":"get","application":"e1af6e90-fccf-11e7-8cd3-5d660b6f51f2","uri":"http://a1-mesos.easemob.com/talent-leoli123/test/chatgroups/","entities":[],"data":[],"timestamp":1557468113965,"duration":0,"organization":"talent-leoli123","count":4}
+${GetChatgroupMemberDiffEntity}    {"action":"get","application":"%s","entities":[],"data":"%s","organization":"%s"}
 ${GetIMUserJoinedChatgroups}    {"action":"get","application":"8be024f0-e978-11e8-b697-5d598d5f8402","uri":"http://a1.easemob.com/easemob-demo/testapp/users/user1/joined_chatgroups","entities":[],"data":[{"groupid":"%s","groupname":"%s"}],"timestamp":1542359565885,"duration":1,"organization":"easemob-demo","count":1}
 ${GetIMUserJoinedChatgroupsDiffEntity}    {"action":"get","application":"%s","entities":[],"data":[{"groupid":"%s","groupname":"%s"}],"organization":"%s","count":1}
 ${GetChatgroupDetail}    {"action":"get","application":"e1af6e90-fccf-11e7-8cd3-5d660b6f51f2","uri":"http://a1-mesos.easemob.com/talent-leoli123/test/chatgroups/81873787224065","entities":[],"data":[{"id":"81873787224065","name":"validuser1234567890","description":"validuser1234567890","membersonly":false,"allowinvites":false,"maxusers":200,"owner":"validuser1234567890","created":1557479328046,"custom":"","affiliations_count":1,"affiliations":[{"owner":"validuser1234567890"}],"public":true}],"timestamp":1557479335883,"duration":0,"organization":"talent-leoli123","count":1}
@@ -29,9 +33,11 @@ ${GetChatgroupDetailGroupIdNotFoundDiffEntity}    {"error":"service_resource_not
 &{GroupMemberNotFoundDictionary}    statusCode=404    reponseResult=${GroupMemberNotFound}
 &{GroupPublicNotFoundDictionary}    statusCode=400    reponseResult=${GroupPublicNotFound}
 &{EditChatgroupDictionary}    statusCode=200    reponseResult=${EditChatgroup}
+&{EditChatgroupMaxuserDictionary}    statusCode=200    reponseResult=${EditChatgroupMaxuser}
 &{ChatgroupIdNotFoundDictionary}    statusCode=404    reponseResult=${ChatgroupIdNotFound}
 &{DeleteChatgroupDictionary}    statusCode=200    reponseResult=${DeleteChatgroup}
 &{GetChatgroupDictionary}    statusCode=200    reponseResult=${GetChatgroup}
+&{GetChatgroupMemberDictionary}    statusCode=200    reponseResult=${GetChatgroupMember}
 &{GetIMUserJoinedChatgroupsDictionary}    statusCode=200    reponseResult=${GetIMUserJoinedChatgroups}
 &{GetChatgroupDetailDictionary}    statusCode=200    reponseResult=${GetChatgroupDetail}
 &{GetChatgroupDetailGroupIdNotFoundDictionary}    statusCode=404    reponseResult=${GetChatgroupDetailGroupIdNotFound}

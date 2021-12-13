@@ -27,6 +27,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    2、转让群组
     ...    3、修改群组信息
     ...    4、删除群组
+    ...    5、修改群组最大人数
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
@@ -168,7 +169,12 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    群组统计    created by wudi
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/count
     Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    
-
+/{orgname}/{appname}/chatgroups/{groupid}/count
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=    
+    [Documentation]    群组成员数量统计    created by wudi
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/count
+    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}   
 /{orgName}/{appName}/chatgroups/{groupId}/invite
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=    

@@ -222,3 +222,22 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${result}    to json    ${resp.content}
     Should Be Equal As Strings    ${uuid}    ${result["entities"][0]["uuid"]}
     Should Be Equal As Strings    ${device_token}    ${result["entities"][0]["pushInfo"][0]["device_token"]}
+    
+获取会话列表-（未有会话列表）
+    [Documentation]    获取用户会话列表
+    [Tags]    usertoken
+    [Template]    Get User Session List Templeate
+    ${contentType.JSON}    ${Token.orgToken}    ${GetUserChannlesDictionary.statusCode}    ${GetUserChannlesDictionary.reponseResult}    ${GetUserChannlesDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${GetUserChannlesDictionary.statusCode}    ${GetUserChannlesDictionary.reponseResult}    ${GetUserChannlesDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetUserChannlesDictionary.statusCode}    ${GetUserChannlesDictionary.reponseResult}    ${GetUserChannlesDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${GetUserChannlesDictionary.statusCode}    ${GetUserChannlesDictionary.reponseResult}    ${GetUserChannlesDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+    ${contentType.JSON}    ${Token.userToken}    ${GetUserChannlesDictionary.statusCode}    ${GetUserChannlesDictionary.reponseResult}    ${GetUserChannlesDiffEntity}    ${ModelCaseRunStatus.userToken_ContentType}
+
+# 设置单个用户全局禁言
+    # [Documentation]    需要通过management开通全局禁言服务
+# 查看单个用户全局禁言
+    # [Documentation]    需要通过management开通全局禁言服务
+# 取消单个用户全局禁言（通过设置禁言时间为零）
+    # [Documentation]    需要通过management开通全局禁言服务

@@ -657,7 +657,7 @@ Get Chatroom SuperAdminZero Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    0    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin'
+    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    0    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -694,7 +694,7 @@ Get Chatroom SuperAdmin Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${userName}'    1    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin'
+    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${userName}'    1    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
     #移除聊天室超级管理员
@@ -745,7 +745,7 @@ Add Chatroom SuperAdmin Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list    
-    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin'
+    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
     
@@ -777,7 +777,7 @@ Remove Chatroom SuperAdmin Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list    
-    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${username}'    '${orgName}'    '${RestRes.RestUrl}/${orgName}/${appName}/chatrooms/super_admin/${username}'
+    @{argumentValue}    create list    '${applicationUUID}'    '${appName}'    '${username}'    '${orgName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 Remove Temp Chatroom SuperAdmin

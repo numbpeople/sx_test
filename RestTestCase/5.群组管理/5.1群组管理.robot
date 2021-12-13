@@ -41,13 +41,26 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
 
 修改群组信息(/{orgName}/{appName}/chatgroups/{groupId})
     [Template]    Edit Chatgroup Template
+    [Documentation]    created by shuangxi
+    ...    1.修改群组描述
+    ...    2.修改群组最大人数
+    ...    3.修改群组名称
     ${contentType.JSON}    ${Token.orgToken}    ${EditChatgroupDictionary.statusCode}    ${EditChatgroupDictionary.reponseResult}    ${EditChatgroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
     ${EMPTY}    ${Token.orgToken}    ${EditChatgroupDictionary.statusCode}    ${EditChatgroupDictionary.reponseResult}    ${EditChatgroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${EditChatgroupDictionary.statusCode}    ${EditChatgroupDictionary.reponseResult}    ${EditChatgroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${EditChatgroupDictionary.statusCode}    ${EditChatgroupDictionary.reponseResult}    ${EditChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
+修改群组最大人数(/{orgName}/{appName}/chatgroups/{groupId})
+    [Template]    Edit Chatgroup Maxuser Template
+    [Documentation]    created by shuangxi
+    ...    1.修改群组最大人数
+    ${contentType.JSON}    ${Token.orgToken}    ${EditChatgroupMaxuserDictionary.statusCode}    ${EditChatgroupMaxuserDictionary.reponseResult}    ${EditChatgroupMaxuserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${EditChatgroupMaxuserDictionary.statusCode}    ${EditChatgroupMaxuserDictionary.reponseResult}    ${EditChatgroupMaxuserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${EditChatgroupDictionary.statusCode}    ${EditChatgroupMaxuserDictionary.reponseResult}    ${EditChatgroupMaxuserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${EditChatgroupMaxuserDictionary.statusCode}    ${EditChatgroupMaxuserDictionary.reponseResult}    ${EditChatgroupMaxuserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 修改群组信息-群组ID不存在(/{orgName}/{appName}/chatgroups/{groupId})
     [Template]    Edit Chatgroup With Inexistent GroupId Template
     ${contentType.JSON}    ${Token.orgToken}    ${ChatgroupIdNotFoundDictionary.statusCode}    ${ChatgroupIdNotFoundDictionary.reponseResult}    ${ChatgroupIdNotFoundDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
@@ -82,7 +95,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${Token.orgToken}    ${GetChatgroupDictionary.statusCode}    ${GetChatgroupDictionary.reponseResult}    ${GetChatgroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetChatgroupDictionary.statusCode}    ${GetChatgroupDictionary.reponseResult}    ${GetChatgroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupDictionary.statusCode}    ${GetChatgroupDictionary.reponseResult}    ${GetChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupDictionary.statusCode}    ${GetChatgroupMemberDictionary.reponseResult}    ${GetChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 获取一个用户参与的所有群组(/{orgName}/{appName}/users/{userName}/joined_chatgroups)
     [Template]    Get IM User Joined Chatgroups Template
@@ -180,6 +193,16 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${contentType.JSON}    ${Token.appToken}    ${GetChatgroupDictionary.statusCode}    ${GetChatgroupDictionary.reponseResult}    ${GetChatgroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupDictionary.statusCode}    ${GetChatgroupDictionary.reponseResult}    ${GetChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
+获取群组成员数(/{org_name}/{app_name}/chatgroups/{groupid}/count)
+    [Template]    Chatgroup Member Count Template
+    [Documentation]    created by shuangxi
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatgroupMemberDictionary.statusCode}    ${GetChatgroupMemberDictionary.reponseResult}    ${GetChatgroupMemberDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${GetChatgroupMemberDictionary.statusCode}    ${GetChatgroupMemberDictionary.reponseResult}    ${GetChatgroupMemberDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatgroupMemberDictionary.statusCode}    ${GetChatgroupMemberDictionary.reponseResult}    ${GetChatgroupMemberDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupMemberDictionary.statusCode}    ${GetChatgroupMemberDictionary.reponseResult}    ${GetChatgroupMemberDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+    
 批量获取群组详情(/{orgName}/{appName}/chatgroups/{groupId1},{groupId2})
     [Template]    Get ChatgroupS Detail Template
     [Documentation]    created by wudi

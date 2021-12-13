@@ -16,7 +16,6 @@ Test Teardown    Test User Attribute Teardown
 *** Test Cases ***
 获取属性容量(未设置用户属性)
     [Documentation]    create by shuang
-
     [Template]    Get Attribute CapacityZero Template
     ${contentType.JSON}    ${Token.orgToken}    ${GetUserAttributeCapacityDictionary.statusCode}    ${GetUserAttributeCapacityDictionary.reponseResult}    ${GetUserAttributeCapacityDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${ErrorTokeneDictionary.statusCode}    ${ErrorTokeneDictionary.reponseResult}    ${ErrorTokenDiffEntity1}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}

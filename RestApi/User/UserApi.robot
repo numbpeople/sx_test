@@ -113,10 +113,12 @@ Resource          ../../Common/BaseCommon.robot
     ${uri}=    set variable    /${org_name}/${app_name}/users/${user_name}/disconnect
     Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
 /{org_name}/{app_name}/users/{user_name}/resources
-    [Arguments]    ${session}    ${org_name}    ${app_name}    ${user_name}    ${header}    ${timeout}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
     [Documentation]    获取用户在线设备状态
-    ${uri}=    set variable    /${org_name}/${app_name}/users/${user_name}/resources
-    Run Keyword And Return    Get Request    ${session}    ${uri}    headers=${header}    timeout=${timeout}
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName}/resources
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
 /{org_name}/{app_name}/users/{user_name}/messageroaming
     [Arguments]    ${session}    ${org_name}    ${app_name}    ${user_name}    ${header}    ${data}    ${timeout}
     [Documentation]    获取消息漫游
@@ -142,5 +144,33 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    批量获取用户属性
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/metadata/user/get
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/users/{user_name}/user_channels
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    批量获取用户属性
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName}/user_channels
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/users/{userName}/contacts/apply
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    申请添加好友
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName}/contacts/apply
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/users/{userName1}/contacts/accept/users/{userName2}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    同意添加好友申请
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName1}/contacts/accept/users/${pathParamter.userName2}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
+    ...    ${data}    ${file}
+/{org_name}/{app_name}/users/{userName1}/contacts/decline/users/{userName2}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    拒绝添加好友申请
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName1}/contacts/decline/users/${pathParamter.userName2}
     Run Keyword And Return    request    ${method}    ${session}    ${uri}     ${header}    ${params}
     ...    ${data}    ${file}

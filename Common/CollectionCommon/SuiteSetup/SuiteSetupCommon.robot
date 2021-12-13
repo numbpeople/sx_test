@@ -64,15 +64,19 @@ Get username and name
     #hw
     ...    "${RestRes.RestUrl}"=="http://a1-hw.easemob.com"    13400327635@139.com
     #east
-    ...    "${RestRes.RestUrl}"=="http://a1-41.easemob.com"    dee.wu@easemob.com
+    ...    "${RestRes.RestUrl}"=="https://a41.easemob.com"    dee.wu@easemob.com
     #frank
-    ...    "${RestRes.RestUrl}"=="http://a51.easemob.com"    1541499889@qq.com
+    ...    "${RestRes.RestUrl}"=="https://a51.easemob.com"    1541499889@qq.com
     #sgp
-    ...    "${RestRes.RestUrl}"=="http://a1-sgp.easemob.com"    shuangxi89710@163.com
+    ...    "${RestRes.RestUrl}"=="https://a1-sgp.easemob.com"    shuangxi89710@163.com
     #ebs
     ...    "${RestRes.RestUrl}"=="http://a1.easemob.com"    easemobdemoadmin
     #hk
-    ...    "${RestRes.RestUrl}"=="http://hk-test.easemob.com"    wwl@easemob.com
+    ...    "${RestRes.RestUrl}"=="https://hk-test.easemob.com"    wwl@easemob.com
+    #frank_aws
+    ...    "${RestRes.RestUrl}"=="https://a71.easemob.com"    test@easemob.com
+    #sgp_aws
+    ...    "${RestRes.RestUrl}"=="https://a61.easemob.com"    wwltest@easemob.com 
     ${password}    Set Variable If    "${RestRes.RestUrl}"=="http://a1-hsb.easemob.com" or "${RestRes.RestUrl}"=="http://a1.easemob.com"   ${Password.password_ebs_hsb}
     ...    "${RestRes.RestUrl}"!="http://a1-hsb.easemob.com" or "${RestRes.RestUrl}"!="http://a1.easemob.com"    ${Password.other_password}
     # [Return]    ${username}    ${password}    

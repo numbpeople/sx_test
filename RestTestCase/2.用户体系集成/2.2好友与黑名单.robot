@@ -126,3 +126,27 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${UserNotFoundDictionary.statusCode}    ${UserNotFoundDictionary.reponseResult}    ${UserNotFoundDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${UserNotFoundDictionary.statusCode}    ${UserNotFoundDictionary.reponseResult}    ${UserNotFoundDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+申请添加好友
+    [Template]   Apply Add Friend Template
+    ${contentType.JSON}    ${Token.orgToken}    ${ApplyAddFriendDictionary.statusCode}    ${ApplyAddFriendDictionary.reponseResult}    ${ApplyAddFriendDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${ApplyAddFriendDictionary.statusCode}    ${ApplyAddFriendDictionary.reponseResult}    ${ApplyAddFriendDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${ApplyAddFriendDictionary.statusCode}    ${ApplyAddFriendDictionary.reponseResult}    ${ApplyAddFriendDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${ApplyAddFriendDictionary.statusCode}    ${ApplyAddFriendDictionary.reponseResult}    ${ApplyAddFriendDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+同意添加好友申请
+    [Template]   Agree Friend Request Template
+    ${contentType.JSON}    ${Token.orgToken}    ${AgreeFriendRequestDictionary.statusCode}    ${AgreeFriendRequestDictionary.reponseResult}    ${AgreeFriendRequestDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${AgreeFriendRequestDictionary.statusCode}    ${AgreeFriendRequestDictionary.reponseResult}    ${AgreeFriendRequestDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${AgreeFriendRequestDictionary.statusCode}    ${AgreeFriendRequestDictionary.reponseResult}    ${AgreeFriendRequestDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${AgreeFriendRequestDictionary.statusCode}    ${AgreeFriendRequestDictionary.reponseResult}    ${AgreeFriendRequestDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+拒绝添加好友申请
+    [Template]   Reject Friend Request Template
+    ${contentType.JSON}    ${Token.orgToken}    ${RejectFriendRequestDictionary.statusCode}    ${RejectFriendRequestDictionary.reponseResult}    ${RejectFriendRequestDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${RejectFriendRequestDictionary.statusCode}    ${RejectFriendRequestDictionary.reponseResult}    ${RejectFriendRequestDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${EasemobSecurityExceptionDictionary.statusCode}    ${EasemobSecurityExceptionDictionary.reponseResult}    ${EasemobSecurityExceptionDiffEntity}        ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${RejectFriendRequestDictionary.statusCode}    ${RejectFriendRequestDictionary.reponseResult}    ${RejectFriendRequestDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${RejectFriendRequestDictionary.statusCode}    ${RejectFriendRequestDictionary.reponseResult}    ${RejectFriendRequestDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}    

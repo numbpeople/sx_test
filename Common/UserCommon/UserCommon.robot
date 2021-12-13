@@ -64,7 +64,19 @@ Modify Specific User
     ${resp}=    /{orgName}/{appName}/users/{userName}    PUT    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
-
+Get User Resource
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    获取用户resources
+    ${resp}=    /{org_name}/{app_name}/users/{user_name}/resources    GET    ${session}     ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+    
+Get User Session List
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    获取用户resources
+    ${resp}=    /{org_name}/{app_name}/users/{user_name}/user_channels    GET    ${session}     ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
 Create Temp User
     [Arguments]    ${specificPreString}=
     [Documentation]    创建一个新的用户
@@ -929,3 +941,69 @@ Modify User Notification_No_Disturbing Template
     #${resp}=    /{orgName}/{appName}/users/{userName}    ${session}    ${orgName}    ${appName}    ${userName}    ${newRequestHeader}    ${timeout}
     ${resp}=    /{orgName}/{appName}/users/{userName}    PUT    ${session}    ${newRequestHeader}    ${pathParamter}    NONE    ${data}
     [Return]    ${uuid}    ${resp}    ${device_token}
+    
+Get User Resources Template  
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    获取用户resources
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 应用APP是否是开放注册
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${user}    Create Temp User
+    ${username}    set variable    ${user['entities'][0]['username']}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${username}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get User Resource    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${username}'    '${orgName}'    '${applicationUUID}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Get User Session List Templeate
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    获取用户resources
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 应用APP是否是开放注册
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #创建新的用户
+    ${user}    Create Temp User
+    ${username}    set variable    ${user['entities'][0]['username']}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    #根据token判断是否获取usertoken
+    ${token}    Judge the use of Token    ${username}    ${token} 
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${username}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get User Session List    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${username}'    '${orgName}'    '${applicationUUID}'    '${appName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}

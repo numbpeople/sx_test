@@ -61,3 +61,9 @@ Get BestToken And Set Global Variable
     Set Parallel Value For Key    ParallelToken    ${Token}
     Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
     
+Set App Token Expire Tmplate
+    [Documentation]    设置apptoken过期时间
+    [Arguments]    ${method}
+    #获取app token
+    token
+Set User Token Expire Tmplate

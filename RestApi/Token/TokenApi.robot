@@ -23,3 +23,19 @@ Resource          ../../Common/BaseCommon.robot
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/token
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
+/management/organizations/{orgName}/applications/{appName}/token_expire/{time}
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}=    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    设置app token默认过期时间
+    ...    
+    ${uri}=    set variable    /management/organizations/${pathParamter.orgName}/applications/${pathParamter.appName}/token_expire/${pathParamter.time}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+/{orgName}/{appName}/token/user/{userName}/invalid
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}=    ${params}=    ${data}=
+    ...    ${file}=
+    [Documentation]    设置user token默认过期时间
+    ...    
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/token/user/${pathParamter.userName}/invalid
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}

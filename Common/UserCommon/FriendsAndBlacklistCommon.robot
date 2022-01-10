@@ -554,7 +554,7 @@ Apply Add Friend Template
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 Agree Friend Request Template   
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
-    [Documentation]    添加好友申请
+    [Documentation]    同意添加好友申请
     ...    - 传入header中content-type值
     ...    - 传入header中token值
     ...    - 测试用例的预期状态码
@@ -586,7 +586,7 @@ Agree Friend Request Template
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue} 
 Reject Friend Request Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
-    [Documentation]    添加好友申请
+    [Documentation]    拒绝添加好友申请
     ...    - 传入header中content-type值
     ...    - 传入header中token值
     ...    - 测试用例的预期状态码

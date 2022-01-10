@@ -1,22 +1,17 @@
-*** Settings ***
-Resource    ../../Common/BaseCommon.robot
-Resource    ../../Variable_Env.robot
-
-
 *** Keywords ***
-/{orgName}/{appName}/callbacks
-    [Documentation]    增加/查看所有回调详情
+回调服务
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=
-    ${uri}=    Set Variable    /${pathParamter.orgName}/${pathParamter.appName}/callbacks
+    [Documentation]    management上开通、关闭回调服务
+    ${uri}=    set variable    /os/service/definition?serviceName=callback
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 
-/{orgName}/{appName}/callbacks/{callbackname}
-    [Documentation]    查询/删除/修改单个回调
+设置回调规则上线
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=
-    ${uri}=    Set Variable    /${pathParamter.orgName}/${pathParamter.appName}/callbacks/${pathParamter.callbackname}
+    [Documentation]    management上设置回调规则上线
+    ${uri}=    set variable    /os/service/definition?serviceName=callback&appkey=${pathParamter.orgName}%23${pathParamter.appName}&cluster=${pathParamter.cluster}
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}

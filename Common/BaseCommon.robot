@@ -137,6 +137,7 @@ Structure Field Should Be Equal
 Structure Value Should Be Equal
     [Arguments]    ${requestResult}    ${diffStructResult}
     #定义返回结构
+    Log    ${requestResult}    
     &{diffResult}    create dictionary    status=True    errorDescribtion=
     log    ${diffStructResult}
     ${diffStructResult}    convert to string    ${diffStructResult}
@@ -165,10 +166,15 @@ Check Field Format
 
 Check Value Format
     [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}
+    Log    ${requestResult}    
+    Log    ${diffStructList}
+    Log    ${diffStructResultJson}
+    Log    ${diffResult}    
     #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
     FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructList}
     #递归校验结构的正确性
     Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}    Check Value Format
+    Log    ${requestResult}
     #检查字段值是否相等
     log many    ${requestResult['${diffKey}']}
     ${valueStatus}    Run Keyword And Return Status    Should Contain    "${diffStructResultJson['${diffKey}']}"    "${requestResult['${diffKey}']}"

@@ -139,3 +139,17 @@ Resource          ../../Common/BaseCommon.robot
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/super_admin/${pathParamter.super_admin}
     Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
+ 
+/{orgName}/{appName}/chatrooms/{roomId}/blocks/users/{userName}
+    [Documentation]    聊天室黑名单
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/blocks/users/${pathParamter.userName}
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}
+
+/{orgName}/{appName}/chatrooms/{chatroomId}/blocks/users
+    [Documentation]
+    [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
+    ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/blocks/users
+    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    ...    ${data}    ${file}

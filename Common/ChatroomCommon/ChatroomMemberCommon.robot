@@ -794,3 +794,209 @@ Remove Temp Chatroom SuperAdmin
     ${url}    set variable    ${apiResponse.url}
     log    ${text}
     log    ${url}
+
+Get chatroom shield
+    [Documentation]    获取聊天室屏蔽
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{chatroomId}/shield    GET    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Get chatroom shield Template
+    [Documentation]    获取聊天室屏蔽
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    ${orgName}    ${appName}    ${chatroomId}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}    ${baseRes.validChatroom.chatroomId}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}      
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get chatroom shield    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'get'    '${baseRes.validAppUUID}'    '${appName}'    '0'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    
+Unshield Chatroom
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{chatroomId}/shield    DELETE    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Unshield Chatroom Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    
+    #获取该用户user token
+    ${gettokendata}    set variable    {"grant_type":"password","username":"${userName}","password":"${userName}"}
+    &{pathParamter1}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    ${resp}=    /{orgName}/{appName}/token    POST    ${RestRes.alias}    ${requestHeader}    pathParamter=${pathParamter1}    data=${gettokendata}
+    ${r}    loads    ${resp.text}   
+    ${usertoken}    Get From Dictionary    ${r}    access_token
+    #创建一个聊天室
+    ${maxusers}    set variable    200
+    ${chatroom}    Create Temp Chatroom    ${userName}    ${maxusers}
+    ${chatroomId}    set variable    ${chatroom.data.id}
+    #参数
+    ${orgName}    ${appName}    ${chatroomId}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}    ${chatroomId}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #屏蔽聊天室
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${usertoken}    ${statusCode}    ${keywordDescribtion}    Shield Chatroom    @{arguments}
+    #解除屏蔽聊天室
+    &{apiResponse2}    Set Request Attribute And Run Keyword    ${contentType}    ${usertoken}    ${statusCode}    ${keywordDescribtion}    Unshield Chatroom    @{arguments}
+    Log Dictionary    ${apiResponse2}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    '${appName}'    'true'    'remove_shield'    '${userName}'    '${chatroomId}'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse2}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+ 
+Add Temp Single Black Chatroom
+    [Arguments]    ${chatroomId}    ${userName}
+    [Documentation]    添加单个聊天室黑名单
+    #给相应变量赋值
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    #创建请求体
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}
+    #添加单个聊天室成员
+    &{apiResponse}    Add Single User Chatroom Blacklist    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
+    ${text}    set variable    ${apiResponse.text}
+    Return From Keyword    ${text}
+ 
+Add Single User Chatroom Blacklist
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    添加单个用户至聊天室黑名单
+    #添加单个用户至群组黑名单
+    ${resp}=    /{orgName}/{appName}/chatrooms/{roomId}/blocks/users/{userName}    POST    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+    
+Add Single User Chatroom Blacklist Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    添加单个用户至聊天室黑名单
+    #创建新的用户
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效群组
+    #添加单个聊天室成员
+    Add Temp Single Chatroom Member    ${chatroomId}    ${userName}
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Add Single User Chatroom Blacklist
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    '${appName}'    'true'    'add_blocks'    '${username}'    '${chatroomId}'    '${orgName}'   
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Add Multi User Chatgroup Blacklist
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    批量添加用户至聊天室黑名单
+    ${data}    Set Variable    {"usernames":["${pathParamter.username1}","${pathParamter.username2}"]}
+    ${resp}=    /{orgName}/{appName}/chatrooms/{chatroomId}/blocks/users    POST    ${session}    ${header}    pathParamter=${pathParamter}    data=${data}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+Add Multi User Chatgroup Blacklist Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    #创建新的用户
+    ${user1}    Create Temp User
+    ${userName1}    set variable    ${user1['entities'][0]['username']}
+    ${user2}    Create Temp User
+    ${userName2}    set variable    ${user2['entities'][0]['username']}
+    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效群组
+    #添加单个聊天室成员
+    Add Temp Single Chatroom Member    ${chatroomId}    ${userName1}
+    Add Temp Single Chatroom Member    ${chatroomId}    ${userName2}
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    username1=${userName1}    username2=${userName2}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Add Multi User Chatgroup Blacklist
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'post'    '${baseRes.validAppUUID}'    '${appName}'    'true'    'add_blocks'    '${chatroomId}'    'true'    'add_blocks'    '${chatroomId}'    '${orgName}'   
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+
+Get Chatroom BlackList
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    添加单个用户至聊天室黑名单
+    #添加单个用户至群组黑名单
+    ${resp}=    /{orgName}/{appName}/chatrooms/{chatroomId}/blocks/users    GET    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}    
+
+
+Get Chatroom BlackList Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效群组
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    #添加单个聊天室成员
+    Add Temp Single Chatroom Member    ${chatroomId}    ${userName}
+    #添加黑名单
+    Add Temp Single Black Chatroom    ${chatroomId}    ${userName}
+    #查询黑名单
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Get Chatroom BlackList
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'get'    '${baseRes.validAppUUID}'    '${appName}'    '1'    '${userName}'    '${orgName}'   
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    
+Remove Chatroom BlackList
+    [Arguments]    ${session}    ${header}    ${pathParamter}
+    [Documentation]    黑名单移除单个聊天室用户
+    #添加单个用户至群组黑名单
+    ${resp}=    /{orgName}/{appName}/chatrooms/{roomId}/blocks/users/{userName}    DELETE    ${session}    ${header}    pathParamter=${pathParamter}
+    &{apiResponse}    Return Result    ${resp}
+    Return From Keyword    ${apiResponse}
+
+
+Remove Chatroom BlackList Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效群组
+    ${user}    Create Temp User
+    ${userName}    set variable    ${user['entities'][0]['username']}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    #添加单个聊天室成员
+    Add Temp Single Chatroom Member    ${chatroomId}    ${userName}
+    #添加黑名单
+    Add Temp Single Black Chatroom    ${chatroomId}    ${userName}
+    #查询黑名单
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    chatroomId=${chatroomId}    userName=${userName}    
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Remove Chatroom BlackList
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    'delete'    '${baseRes.validAppUUID}'    '${appName}'    'true'    'remove_blocks'    '${userName}'    '${chatroomId}'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    
+
+    

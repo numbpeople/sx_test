@@ -163,3 +163,48 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${RemoveChatRoomsSuperAdminDictionary.statusCode}    ${RemoveChatRoomsSuperAdminDictionary.reponseResult}    ${RemoveChatRoomsSuperAdminListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${RemoveChatRoomsSuperAdminDictionary.statusCode}    ${RemoveChatRoomsSuperAdminDictionary.reponseResult}    ${RemoveChatRoomsSuperAdminListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
+获取聊天室屏蔽
+    [Documentation]    create by wudi
+    [Template]    Get chatroom shield Template
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatroomShieldDictionary.statusCode}    ${GetChatroomShieldDictionary.reponseResult}    ${GetChatroomShieldDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatroomShieldDictionary.statusCode}    ${GetChatroomShieldDictionary.reponseResult}    ${GetChatroomShieldDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+解除聊天室屏蔽
+    [Documentation]    create by wudi
+    [Template]    Unshield chatroom Template
+    ${contentType.JSON}    ${Token.orgToken}    ${UnShieldChatroomDictionary.statusCode}    ${UnShieldChatroomDictionary.reponseResult}    ${UnShieldChatroomDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${UnShieldChatroomDictionary.statusCode}    ${UnShieldChatroomDictionary.reponseResult}    ${UnShieldChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+添加单个用户至聊天室黑名单
+    [Documentation]    create by wudi
+    [Template]    Add Single User Chatroom Blacklist Template
+    ${contentType.JSON}    ${Token.orgToken}    ${addSingleBlackDictionary.statusCode}    ${addSingleBlackDictionary.reponseResult}    ${addSingleBlackDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${addSingleBlackDictionary.statusCode}    ${addSingleBlackDictionary.reponseResult}    ${addSingleBlackDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+添加多个用户至聊天室黑名单
+    [Documentation]    create by wudi
+    [Template]    Add Multi User Chatgroup Blacklist Template
+    ${contentType.JSON}    ${Token.orgToken}    ${addMultiBlackDictionary.statusCode}    ${addMultiBlackDictionary.reponseResult}    ${addMultiBlackDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${addMultiBlackDictionary.statusCode}    ${addMultiBlackDictionary.reponseResult}    ${addMultiBlackDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+获取聊天室黑名单列表
+    [Documentation]    create by wudi
+    [Template]    Get Chatroom BlackList Template
+    ${contentType.JSON}    ${Token.orgToken}    ${GetChatroomBlackDictionary.statusCode}    ${GetChatroomBlackDictionary.reponseResult}    ${GetChatroomBlackDiffentity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${GetChatroomBlackDictionary.statusCode}    ${GetChatroomBlackDictionary.reponseResult}    ${GetChatroomBlackDiffentity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+从聊天室黑名单移除单个用户
+    [Documentation]    create by wudi
+    [Template]    Remove Chatroom BlackList Template
+    ${contentType.JSON}    ${Token.orgToken}    ${RemoveChatroomBlackDictionary.statusCode}    ${RemoveChatroomBlackDictionary.reponseResult}    ${RemoveChatroomBlackDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${RemoveChatroomBlackDictionary.statusCode}    ${RemoveChatroomBlackDictionary.reponseResult}    ${RemoveChatroomBlackDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+
+
+

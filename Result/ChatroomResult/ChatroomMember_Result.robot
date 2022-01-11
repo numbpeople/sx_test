@@ -44,3 +44,27 @@ ${RemoveChatRoomsSuperAdminListDiffEntity}    {"action":"delete","application":"
 ${ShieldChatroom}    {"action":"post","application":"07828e56-bf58-459d-a32d-dcd95be719e3","data":{"result":true,"action":"add_shield","user":"imautotest-7025924139","id":"160517962399747"},"duration":0,"entities":[],"organization":"easemob-demo","timestamp":1632480259087,"uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-1012325497/chatrooms/160517962399747/shield"}
 ${ShieldChatroomDiffEntity}    {"action":"%s","application":"%s","data":{"result":%s,"action":"%s","user":"%s","id":"%s"},"organization":"%s"}
 &{ShieldChatroomDictionary}    statusCode=200    reponseResult=${ShieldChatroom}
+
+${GetChatroomShield}    {"action":"get","application":"5d6c5f58-a650-4cdf-9399-5f7b7da51ba","applicationName":"shuang","count":0,"data":[],"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1641868756045,"uri":"http://a1.easemob.com/easemob-demo/shuang/chatrooms/170362515030018/shield"}
+${GetChatroomShieldDiffEntity}    {"action":"%s","application":"%s","applicationName":"%s","count":%s,"data":[],"entities":[],"organization":"%s"}             
+&{GetChatroomShieldDictionary}    statusCode=200    reponseResult=${GetChatroomShield}
+        
+${UnShieldChatroom}    {"action":"delete","application":"5d6c5f58-a650-4cdf-9399-5f7b57da51ba","applicationName":"shuang","data":{"result":true,"action":"remove_shield","user":"imautotest-3731203962","id":"170367860670466"},"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1641873854168,"uri":"http://a1.easemob.com/easemob-demo/shuang/chatrooms/170367860670466/shield"}
+${UnShieldChatroomDiffEntity}    {"action":"%s","application":"%s","applicationName":"%s","data":{"result":%s,"action":"%s","user":"%s","id":"%s"},"organization":"%s"}   
+&{UnShieldChatroomDictionary}    statusCode=200    reponseResult=${UnShieldChatroom}
+
+${addSingleBlack}    {"action":"post","application":"5d6c5f58-a650-4cdf-9399-5f7b57da51ba","applicationName":"shuang","data":{"result":true,"action":"add_blocks","user":"imautotest-1596482921","id":"170378073800706"},"duration":1,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1641883594613,"uri":"http://a1.easemob.com/easemob-demo/shuang/chatrooms/170378073800706/blocks/users/imautotest-1596482921"}
+${addSingleBlackDiffEntity}    {"action":"%s","application":"%s","applicationName":"%s","data":{"result":%s,"action":"%s","user":"%s","id":"%s"},"organization": "%s"}
+&{addSingleBlackDictionary}    statusCode=200    reponseResult=${addSingleBlack}    
+
+${addMultiBlack}    {"action":"post","application":"5d6c5f58-a650-4cdf-9399-5f7b57da51ba","applicationName":"shuang","data":[{"result":true,"action":"add_blocks","user":"imautotest-5305123096","id":"170382412808196"},{"result":true,"action":"add_blocks","user":"imautotest-8183356731","id":"170382412808196"}],"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1641887732735,"uri":"http://a1.easemob.com/easemob-demo/shuang/chatrooms/170382412808196/blocks/users"}
+${addMultiBlackDiffEntity}    {"action":"%s","application":"%s","applicationName":"%s","data":[{"result":%s,"action":"%s","id":"%s"},{"result":%s,"action":"%s","id":"%s"}],"organization":"%s"}    
+&{addMultiBlackDictionary}    statusCode=200    reponseResult=${addMultiBlack}
+
+${GetChatroomBlack}    {"action":"get","application":"5d6c5f58-a650-4cdf-9399-5f7b57da51ba","applicationName":"shuang","count":1,"data":["imautotest-6215410554"],"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1641895321435,"uri":"http://a1.easemob.com/easemob-demo/shuang/chatrooms/170390370451458/blocks/users"}
+${GetChatroomBlackDiffentity}    {"action":"%s","application":"%s","applicationName":"%s","count":%s,"data":["%s"],"organization":"%s"}
+&{GetChatroomBlackDictionary}    statusCode=200    reponseResult=${GetChatroomBlack}
+
+${RemoveChatroomBlack}    {"action":"delete","application":"5d6c5f58-a650-4cdf-9399-5f7b57da51ba","applicationName":"shuang","data":{"result":true,"action":"remove_blocks","user":"imautotest-5609921848","id":"170470116753409"},"duration":0,"entities":[],"organization":"easemob-demo","properties":{},"timestamp":1641971373164,"uri":"http://a1.easemob.com/easemob-demo/shuang/chatrooms/170470116753409/blocks/users/imautotest-5609921848"}
+${RemoveChatroomBlackDiffEntity}    {"action":"%s","application":"%s","applicationName":"%s","data":{"result":%s,"action":"%s","user":"%s","id":"%s"},"organization":"%s"}
+&{RemoveChatroomBlackDictionary}    statusCode=200    reponseResult=${RemoveChatroomBlack}

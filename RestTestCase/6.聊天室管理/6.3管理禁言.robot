@@ -58,3 +58,4 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetChatroomMemberMuteListDictionary.statusCode}    ${GetChatroomMemberMuteListDictionary.reponseResult}    ${GetChatroomMemberMuteListDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatroomMemberMuteListDictionary.statusCode}    ${GetChatroomMemberMuteListDictionary.reponseResult}    ${GetChatroomMemberMuteListDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+

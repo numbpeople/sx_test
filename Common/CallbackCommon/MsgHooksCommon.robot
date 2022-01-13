@@ -150,6 +150,7 @@ EditMsgHooksTemplate
     #添加一个发送前回调
     ${keywordDescribtion}    set variable    ${TEST NAME}
     ${MsgHooks}    AddMsgHooksTemp 
+    Sleep    20    
     ${msghooksname}    Set Variable    ${MsgHooks["entities"][0]["name"]}
     Log    ${msghooksname}     
     #构建修改body参数 

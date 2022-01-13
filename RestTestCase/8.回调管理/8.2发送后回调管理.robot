@@ -3,7 +3,7 @@ Resource    ../../Variable_Env.robot
 Resource    ../../Common/CallbackCommon/CallbackCommon.robot
 Resource    ../../Result/CallBackResult/CallBack_Result.robot
 Resource    ../../Result/BaseResullt.robot
-Default Tags    callback
+Default Tags    CallBack
 Test Teardown    DeleteAppKeyAllCallBack
 
 *** Test Cases ***
@@ -57,6 +57,7 @@ GetSingCallBack
 
 GetAllCallBack
     [Documentation]    查询所有发送后回调（create by shuang）
+    [Tags]    SmokeTest
     [Template]    GetAllCallBackTemplate
     ${contentType.JSON}    ${Token.orgToken}    ${MoreCallBackDictionary.statusCode}    ${MoreCallBackDictionary.reponseResult}    ${MoreCallBackDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${EMPTY}    ${UnableToAuthenticateDictionary.statusCode}    ${UnableToAuthenticateDictionary.reponseResult}    ${UnableToAuthenticateDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}

@@ -7,7 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ES
 from .bases import Data_bases
 import logging
-
+from os.path import dirname,abspath
 
 
 class Android_Appium_bases():
@@ -18,7 +18,7 @@ class Android_Appium_bases():
     def connect_appium(self,connetc_config_name,path=None):
         logging.debug("连接appium")
         if not path:
-            self.config_path= "/Users/zhanghongqiang/PycharmProjects/im-auto-test/kefu-auto-test/Lib/im_lib"
+            self.config_path= abspath(dirname(abspath(dirname(__file__))))
         else:
             self.config_path=path
         cpas = self.data.get_connect_config(path=self.config_path,name=connetc_config_name)

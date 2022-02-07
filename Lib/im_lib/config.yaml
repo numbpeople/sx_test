@@ -1,0 +1,40 @@
+test_im_version: V3.8.9.1
+appium_server: 'http://127.0.0.1:4723/wd/hub'
+positioning_out_time: 10
+interva_time: 1
+error_screenshots_path: "/Users/zhanghongqiang/PycharmProjects/im_library"
+
+apps:
+  appActivity: &appActivity com.hyphenate.easeim.section.login.activity.SplashActivity
+  appPackage: &appPackage com.hyphenate.easeim
+  ios_app: &ios_app com.easemob.enterprise.easeim
+
+devices:
+  my_udid: &my_udid 00008030-001431E914E1802E
+  oppo_sj001_devicesName: &oppo_sj001_devicesName d963ea41
+  
+start_app_options:
+  android:
+    skipUnlock: &skipUnlock True
+    skipServerInstallation: &skipServerInstallation True
+    unlockType: &unlockType password
+    unlockKey: &unlockKey '111111'
+    newCommandTimeout: &newCommandTimeout 3600  # 等待新命令的最大时长，单位为秒
+    connectHardwareKeyboard: &connectHardwareKeyboard True # 连接键盘
+    noRese: &noRese False # 不重置App，保留应用当前状态，默认为False
+
+connect_config:
+  my_iphone:
+    platformName: ios
+    platformVersion: 15.0
+    devicesName: iphone12
+    udid: *my_udid
+    app: *ios_app
+
+  oppo_sj001_devices:
+    platformName: android
+    platformVersion: '11'
+    appActivity: *appActivity
+    appPackage: *appPackage
+    deviceName: *oppo_sj001_devicesName
+    skipServerInstallation: *skipServerInstallation

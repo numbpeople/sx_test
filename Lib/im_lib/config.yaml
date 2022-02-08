@@ -23,6 +23,7 @@ start_app_options:
     connectHardwareKeyboard: &connectHardwareKeyboard True # 连接键盘
     noRese: &noRese False # 不重置App，保留应用当前状态，默认为False
 
+
 connect_config:
   my_iphone:
     platformName: ios
@@ -38,3 +39,10 @@ connect_config:
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
     skipServerInstallation: *skipServerInstallation
+
+im_service_configs:
+  hsb:
+    appkey: easemob-demo#test-zdh-mqtt
+    im_host: 106.75.100.247
+    port: 6727
+    rest_host: a1-hsb.easemob.com

@@ -27,6 +27,10 @@ class Public(Android_login_page):
         else:
             return f"没有该函数{func_name}"
 
+    def service_config(self,func_name,*args):
+        pass
+
+
 
 if __name__ == '__main__':
     a=Public()

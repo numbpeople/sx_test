@@ -38,3 +38,10 @@ connect_config:
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
     skipServerInstallation: *skipServerInstallation
+
+  helen_iphone:
+    platformName: ios
+    platformVersion: 15.2.1
+    deviceName: iphone12
+    udid: 00008101-000C74620211001E
+    app: com.easemob.enterprise.easeim

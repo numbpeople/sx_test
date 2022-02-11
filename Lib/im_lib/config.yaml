@@ -39,6 +39,7 @@ connect_config:
     deviceName: *oppo_sj001_devicesName
     skipServerInstallation: *skipServerInstallation
 
+
   helen_iphone:
     platformName: ios
     platformVersion: 15.2.1

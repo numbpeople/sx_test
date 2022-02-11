@@ -22,5 +22,9 @@ class Data_bases():
         """获取im服务器配置"""
         return self.config()["im_service_configs"][name]
 
+    def get_im_demo_version(self):
+        """获取yaml文件的im_demo号"""
+        return self.config()["test_im_version"]
+
 if __name__ == '__main__':
     print()

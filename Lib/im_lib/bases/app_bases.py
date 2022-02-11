@@ -92,7 +92,17 @@ class Android_Appium_bases():
         :param driver: WebDriver
         :return: None
         """
-        driver.keyevent(4)
+        driver.back()
+
+    def tap(self,driver: WebDriver,positions: list, duration: int = None) -> None:
+        """
+        :param driver: WebDriver
+        :param positions: 传入一个[(x,y)],z最多五个元祖
+        :param duration: 单位是毫秒，不传轻触
+        :return:None
+        """
+        driver.tap(positions,duration)
+
 
 
 class Ios_appium_base():

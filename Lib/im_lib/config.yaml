@@ -12,7 +12,8 @@ apps:
 devices:
   my_udid: &my_udid 00008030-001431E914E1802E
   oppo_sj001_devicesName: &oppo_sj001_devicesName d963ea41
-  
+  vivo_01: &vivo_01 36c45fd6
+
 start_app_options:
   android:
     skipUnlock: &skipUnlock True
@@ -21,7 +22,7 @@ start_app_options:
     unlockKey: &unlockKey '111111'
     newCommandTimeout: &newCommandTimeout 3600  # 等待新命令的最大时长，单位为秒
     connectHardwareKeyboard: &connectHardwareKeyboard True # 连接键盘
-    noRese: &noRese False # 不重置App，保留应用当前状态，默认为False
+    noRese: &noRese "true" # 不重置App，保留应用当前状态，默认为False
 
 
 connect_config:
@@ -39,10 +40,21 @@ connect_config:
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
     skipServerInstallation: *skipServerInstallation
+    noRese: *noRese
+
+  vivo_01:
+    platformName: android
+    appActivity: *appActivity
+    appPackage: *appPackage
+    deviceName: *vivo_01
+    noReset: "true"
+#    autoGrantPermissions: "true"
 
 im_service_configs:
   hsb:
+    https: True
+    dns: False
     appkey: easemob-demo#test-zdh-mqtt
     im_host: 106.75.100.247
-    port: 6727
+    port: 6717
     rest_host: a1-hsb.easemob.com

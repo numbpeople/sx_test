@@ -15,15 +15,10 @@ class Android_Appium_bases():
     data =  Data_bases()
 
 
-    def connect_appium(self,connetc_config_name,path=None):
+    def connect_appium(self,connetc_config_name):
         logging.debug("连接appium")
-        if not path:
-            self.config_path= abspath(dirname(abspath(dirname(__file__))))
-        else:
-            self.config_path=path
-        cpas = self.data.get_connect_config(path=self.config_path,name=connetc_config_name)
-
-        return webdriver.Remote(self.data.appium_server(self.config_path),cpas)
+        cpas = self.data.get_connect_config(name=connetc_config_name)
+        return webdriver.Remote(self.data.appium_server(),cpas)
 
 
 
@@ -48,7 +43,7 @@ class Android_Appium_bases():
             :param interva_time: 调用该函数时传入循环定位的间隔时间，默认1s循环一次，int类型
         """
         logging.info(f"通过显示等待定位{element}")
-        config_data = self.data.config(self.config_path)
+        config_data = self.data.config()
         try:
             return WebDriverWait(driver,
                                  config_data["positioning_out_time"],
@@ -57,7 +52,6 @@ class Android_Appium_bases():
 
 
         except:
-            pass
             id = random.randint(10000, 99999)
             logging.error(f"定位元素失败,定位的元素是：{element},图片id是：{id}")
             self.screenshots(driver=driver,screenshots_name=str(id)+'-定位失败'+str(time.strftime("-%F-%H-%M-%S")+".png"))
@@ -67,7 +61,7 @@ class Android_Appium_bases():
         """
         :param screenshots_name: 截图保存名称,默认当前时间：2022-01-23-22-02-47.png,如果使用自定义名称传入name 例如：test.png
         """
-        driver.save_screenshot(join(self.data.config(self.config_path)["error_screenshots_path"],screenshots_name))
+        driver.save_screenshot(join(self.data.config()["error_screenshots_path"],screenshots_name))
 
     def is_enabled(self, driver: webdriver, element):
         """
@@ -92,6 +86,23 @@ class Android_Appium_bases():
         """
         logging.debug(f"判断改元素是否被选中:{element}")
         return self.my_element(driver=driver,element=element).is_displayed()
+
+    def return_method(self,driver: WebDriver):
+        """
+        :param driver: WebDriver
+        :return: None
+        """
+        driver.back()
+
+    def tap(self,driver: WebDriver,positions: list, duration: int = None) -> None:
+        """
+        :param driver: WebDriver
+        :param positions: 传入一个[(x,y)],z最多五个元祖
+        :param duration: 单位是毫秒，不传轻触
+        :return:None
+        """
+        driver.tap(positions,duration)
+
 
 
 class Ios_appium_base():

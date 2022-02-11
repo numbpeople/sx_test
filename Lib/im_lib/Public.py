@@ -91,6 +91,7 @@ class Public(
 
     def service_config_page(self,func_name,*args):
         """
+
         该函数是连接服务器配置page 所有操作可以通过该函数来完成
         :param func_name: 任意传入一个func_dict存在的键，可以通过键来调用对应函数
         :param args: 根据传的func_name 来给arge传参数，具体如下：

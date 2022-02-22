@@ -163,7 +163,7 @@ if __name__ == '__main__':
     driver=a.connect_appium_method("vivo_01")
     # a.login_page("android_login",driver,"test1","1")
     b=Android_session_page()
-    b.android_click_user_session(driver,"alone11")
+    b.android_click_user_session(driver,"alone1")
     import time
     time.sleep(3)
 

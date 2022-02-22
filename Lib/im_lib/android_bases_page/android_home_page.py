@@ -106,8 +106,8 @@ class Android_login_page(Android_Appium_bases):
         logging.info("登陆im")
         data = Data_bases()
         expect_version = data.get_im_demo_version()
-        practical_version = self.android_get_im_version_method(driver)
-        assert  expect_version == practical_version , f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
+#         practical_version = self.android_get_im_version_method(driver)
+#         assert  expect_version == practical_version , f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
         self.android_send_user_name_method(driver,username)
         self.android_send_password_method(driver, password)
         self.android_click_login_button_method(driver)

@@ -71,7 +71,7 @@ class Public(
         :return:str or None
         """
         func_dict = {
-            "get_im_version": self.android_get_im_version_method,
+#             "get_im_version": self.android_get_im_version_method,
             "send_user_name":self.android_send_user_name_method,
             "send_password":self.android_send_password_method,
             "click_login_button":self.android_click_login_button_method,
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     driver=a.connect_appium_method("vivo_01")
     # a.login_page("android_login",driver,"test1","1")
     b=Android_session_page()
-    b.android_click_user_session(driver,"alone11")
+    b.android_click_user_session(driver,"alone1")
     import time
     time.sleep(3)
 

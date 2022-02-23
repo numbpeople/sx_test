@@ -7,20 +7,16 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ES
 from .bases import Data_bases
 import logging
-from os.path import dirname,abspath
+from os.path import dirname, abspath
 
 
 class Android_Appium_bases():
+    data = Data_bases()
 
-    data =  Data_bases()
-
-
-    def connect_appium(self,connetc_config_name):
+    def connect_appium(self, connetc_config_name):
         logging.debug("连接appium")
         cpas = self.data.get_connect_config(name=connetc_config_name)
-        return webdriver.Remote(self.data.appium_server(),cpas)
-
-
+        return webdriver.Remote(self.data.appium_server(), cpas)
 
     def my_element(self, driver: WebDriver, element):
         """
@@ -34,7 +30,7 @@ class Android_Appium_bases():
         except:
             pass
 
-    def wait_find(self,driver: WebDriver, element):
+    def wait_find(self, driver: WebDriver, element):
         """
             :param driver:
             :user 显示等待
@@ -54,14 +50,15 @@ class Android_Appium_bases():
         except:
             id = random.randint(10000, 99999)
             logging.error(f"定位元素失败,定位的元素是：{element},图片id是：{id}")
-            self.screenshots(driver=driver,screenshots_name=str(id)+'-定位失败'+str(time.strftime("-%F-%H-%M-%S")+".png"))
+            self.screenshots(driver=driver,
+                             screenshots_name=str(id) + '-定位失败' + str(time.strftime("-%F-%H-%M-%S") + ".png"))
             raise
 
     def screenshots(self, driver: webdriver, screenshots_name=str(time.strftime("%F-%H-%M-%S")) + ".png"):
         """
         :param screenshots_name: 截图保存名称,默认当前时间：2022-01-23-22-02-47.png,如果使用自定义名称传入name 例如：test.png
         """
-        driver.save_screenshot(join(self.data.config()["error_screenshots_path"],screenshots_name))
+        driver.save_screenshot(join(self.data.config()["error_screenshots_path"], screenshots_name))
 
     def is_enabled(self, driver: webdriver, element):
         """
@@ -69,7 +66,7 @@ class Android_Appium_bases():
         :return True or Flase
         """
         logging.debug(f"判断改元素是否可用:{element}")
-        return self.my_element(driver=driver,element=element).is_enabled()
+        return self.my_element(driver=driver, element=element).is_enabled()
 
     def is_selected(self, driver: webdriver.Remote, element):
         """
@@ -77,7 +74,7 @@ class Android_Appium_bases():
         :return True or Flase
         """
         logging.debug(f"判断改元素是否被选中:{element}")
-        return self.my_element(driver=driver,element=element).is_selected()
+        return self.my_element(driver=driver, element=element).is_selected()
 
     def is_displayed(self, driver: webdriver.Remote, element):
         """
@@ -85,25 +82,38 @@ class Android_Appium_bases():
         :return True or Flase
         """
         logging.debug(f"判断改元素是否被选中:{element}")
-        return self.my_element(driver=driver,element=element).is_displayed()
+        return self.my_element(driver=driver, element=element).is_displayed()
 
-    def return_method(self,driver: WebDriver):
+    def return_method(self, driver: WebDriver):
         """
         :param driver: WebDriver
         :return: None
         """
         driver.back()
 
-    def tap(self,driver: WebDriver,positions: list, duration: int = None) -> None:
+    def tap(self, driver: WebDriver, positions: list, duration: int = None) -> None:
         """
         :param driver: WebDriver
         :param positions: 传入一个[(x,y)],z最多五个元祖
         :param duration: 单位是毫秒，不传轻触
         :return:None
         """
-        driver.tap(positions,duration)
+        driver.tap(positions, duration)
 
 
+class IosAppiumBase(Android_Appium_bases):
+    def click_method(self, driver: WebDriver, method_type, xpath_selector) -> str or None:
+        """根据method_type区分是点击事件还是获取文本信息"""
+        element = self.wait_find(driver, xpath_selector)
+        if method_type == "click":
+            element.click()
+        elif method_type == "text":
+            return self.text
+        else:
+            return f"不支持该事件${method_type}"
 
-class Ios_appium_base():
-    pass
+    def find_element(self, driver: WebDriver, element):
+        try:
+            return driver.find_element(*element)
+        except:
+            print("没找到该元素")

@@ -1,4 +1,4 @@
-test_im_version: V3.8.9.1
+test_im_version: V3.9.0
 appium_server: 'http://127.0.0.1:4723/wd/hub'
 positioning_out_time: 10
 interva_time: 1
@@ -46,3 +46,9 @@ connect_config:
     deviceName: iphone12
     udid: 00008101-000C74620211001E
     app: com.easemob.enterprise.easeim
+ 
+  huaweip20:
+    platformName: Android
+    platformVersion: "10"
+    deviceName: CLB7N18B05003594
+    app: /Users/mac/Downloads/easeim3.0-android-release.apk

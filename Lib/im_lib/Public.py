@@ -71,7 +71,7 @@ class Public(
         :return:str or None
         """
         func_dict = {
-            "get_im_version": self.android_get_im_version_method,
+#             "get_im_version": self.android_get_im_version_method,
             "send_user_name":self.android_send_user_name_method,
             "send_password":self.android_send_password_method,
             "click_login_button":self.android_click_login_button_method,

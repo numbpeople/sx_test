@@ -1,7 +1,7 @@
-test_im_version: V3.9.0
+test_im_version: V3.8.9
 appium_server: 'http://127.0.0.1:4723/wd/hub'
 positioning_out_time: 10
-interva_time: 1
+interva_time: 0.5
 error_screenshots_path: "/Users/zhanghongqiang/PycharmProjects/im_library"
 
 apps:
@@ -25,9 +25,9 @@ start_app_options:
 
 connect_config:
   my_iphone:
-    platformName: ios
-    platformVersion: 15.0
-    devicesName: iphone12
+    platformName: "ios"
+    platformVersion: "15.0"
+    deviceName: "iphone12"
     udid: *my_udid
     app: *ios_app
 
@@ -51,4 +51,6 @@ connect_config:
     platformName: Android
     platformVersion: "10"
     deviceName: CLB7N18B05003594
-    app: /Users/mac/Downloads/easeim3.0-android-release.apk
+    appActivity: *appActivity
+    appPackage: *appPackage
+    skipServerInstallation: *skipServerInstallation

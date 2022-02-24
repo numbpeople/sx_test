@@ -10,58 +10,65 @@ class Public(
     Android_service_config
 ):
 
-    def connect_appium_method(self,devices_config_name) -> WebDriver:
+    def connect_appium_method(self,devices_config_name) -> None:
         """
         :param devices_config_name:设备配置名称
             作用:会根据传的name去配置文件里面找配置，连接appium启动应用
-        :return: webdriver
+        :return: None
         """
-        return self.connect_appium(devices_config_name)
+        self.connect_appium(devices_config_name)
 
     def login_page(self, func_name: str, *args: str) -> None or str:
         """
-        该函数是login page，login page所有操作可以通过该函数来完成
+        :作用 该函数是login page，login page所有操作可以通过该函数来完成
+        :元素
+            1. android_version_element = ("xpath", "//android.widget.TextView[1]") # 版本号元素
+            2. android_user_name_element = ("xpath", "//android.widget.EditText[1]") # 用户输入框元素
+            3. android_password_element = ("xpath", "//android.widget.EditText[2]") # 密码输入框元素
+            4. android_login_button_element = ("xpath", "//android.widget.Button") # 登陆按钮元素
+            5. android_registered_element = ("xpath", "//android.widget.TextView[2]]") # 注册账号元素
+            6. android_service_config_element = ("xpath", "//android.widget.TextView[3]") # 服务器配置元素
         :param func_name: 任意传入一个func_dict存在的键，可以通过键来调用对应函数
         :param args: 根据传的func_name 来给arge传参数，具体如下：
-            get_im_version:
+            1. get_im_version:
                 作用: 获取im_demo版本号
                 参数: 传入webdriver，返回测试的im_demo版本
-            send_user_name:
+            2. send_user_name:
                 作用:
                     1.可以做输入用户名操作
                     2.可以做获取用户名输入框的属性操作
                 参数:
                     1.传入webdriver和username是输入登陆用户名，返回None
                     2.传入webdriver返回用户名输入框的属性。
-            send_password:
+            3. send_password:
                 作用:
                     1.可以做输入密码操作
                     2.可以做获取密码输入框的属性操作
                 参数:
                     1.传入webdriver和password是输入登陆密码，返回None
                     1.传入webdriver返回密码输入框的属性。
-            click_login_button:
+            4. click_login_button:
                 作用:
                     1.可以做点击登陆按钮操作
                     2.可以做获取登陆按钮属性操作
                 参数:
                     1.传入webdriver和click是点击登陆按钮操作
                     2.传入webdriver和text是获取登陆按钮属性操作
-            click_registered:
+            5. click_registered:
                 作用:
                     1.可以做点击注册账号按钮操作
                     2.可以做获取注册属性操作
                 参数:
                     1.传入webdriver和click是点击注册账号按钮操作
                     2.传入webdriver和text是获取注册属性操作
-            click_config:
+            6. click_config:
                 作用:
                     1.可以做点击服务器配置按钮操作
                     2.可以做获取服务器配置按钮属性操作
                 参数:
                     1.传入webdriver和click是点击服务器配置按钮操作
                     2.传入webdriver和text是获取服务器配置按钮属性操作
-            android_login:
+            7. android_login:
                 作用: 组合登陆im_demo
                 参数:需要传入参数如下
                     1. webdriver
@@ -71,7 +78,7 @@ class Public(
         :return:str or None
         """
         func_dict = {
-#             "get_im_version": self.android_get_im_version_method,
+            "get_im_version": self.android_get_im_version_method,
             "send_user_name":self.android_send_user_name_method,
             "send_password":self.android_send_password_method,
             "click_login_button":self.android_click_login_button_method,
@@ -96,11 +103,11 @@ class Public(
         :param func_name: 任意传入一个func_dict存在的键，可以通过键来调用对应函数
         :param args: 根据传的func_name 来给arge传参数，具体如下：
 
-            click_custom_service_switch:
+            1. click_custom_service_switch:
                 作用: 点击自定义服务器开关操作
                 参数: 传WebDriver是做点击自定义服务器开关操作
 
-            send_app_key:
+            2. send_app_key:
                 作用:
                     1.输入app_key操作
                     2.获取app_key输入框属性操作
@@ -108,11 +115,11 @@ class Public(
                     1.传WebDriver和app_key是做输入app_key操作
                     2.传WebDriver是做获取app_key输入框属性操作
 
-            click_use_service_switch:
+            3. click_use_service_switch:
                 作用: 是做点击specify server 开关操作
                 参数: 传入WebDriver做点击specify server 开关操作
 
-            send_im_service_host:
+            4. send_im_service_host:
                 作用:
                     1.输入im连接地址
                     2.获取im_server输入框属性操作
@@ -120,7 +127,7 @@ class Public(
                     1.传WebDriver和host是做输入host操作
                     2.传WebDriver是做获取im_server输入框属性操作
 
-            send_port:
+            5. send_port:
                 作用:
                     1.输入端口操作
                     2.获取端口输入框属性操作
@@ -159,12 +166,9 @@ class Public(
 
 if __name__ == '__main__':
     a=Public()
-    driver=a.connect_appium_method("vivo_01")
-    # a.login_page("android_login",driver,"test1","1")
-    b=Android_session_page()
-    b.android_click_user_session(driver,"alone1")
-    import time
-    time.sleep(3)
+    driver=a.connect_appium_method("oppo_sj001_devices")
+    a.login_page("android_login","oppo_sj001_devices","test1","1")
+
 
 
 

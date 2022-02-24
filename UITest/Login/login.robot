@@ -1,5 +1,6 @@
 *** Settings ***
 Library    Lib/im_lib/Public.py
+Library    Lib/im_lib/android_bases_page/android_home_page.py
 Library    AppiumLibrary
 *** Test Cases ***
 login

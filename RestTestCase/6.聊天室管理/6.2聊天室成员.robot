@@ -176,7 +176,6 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     [Template]    Unshield chatroom Template
     ${contentType.JSON}    ${Token.orgToken}    ${UnShieldChatroomDictionary.statusCode}    ${UnShieldChatroomDictionary.reponseResult}    ${UnShieldChatroomDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
     ${contentType.JSON}    ${Token.appToken}    ${UnShieldChatroomDictionary.statusCode}    ${UnShieldChatroomDictionary.reponseResult}    ${UnShieldChatroomDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    ${TokenAuthorizationIsBlankDictionary.statusCode}    ${TokenAuthorizationIsBlankDictionary.reponseResult}    ${TokenAuthorizationIsBlankDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
 
 添加单个用户至聊天室黑名单
     [Documentation]    create by wudi

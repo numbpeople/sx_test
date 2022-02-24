@@ -157,7 +157,6 @@ class Public(
             return f"没有该函数{func_name}"
 
 
-
 if __name__ == '__main__':
     a=Public()
     driver=a.connect_appium_method("vivo_01")

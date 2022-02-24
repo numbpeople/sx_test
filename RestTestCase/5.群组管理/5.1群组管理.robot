@@ -20,7 +20,16 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${CreateChatgroupDictionary.statusCode}    ${CreateChatgroupDictionary.reponseResult}    ${CreateChatgroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${CreateChatgroupDictionary.statusCode}    ${CreateChatgroupDictionary.reponseResult}    ${CreateChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    
+
+创建一个包含中文的群组(/{orgName}/{appName}/chatgroups)
+    [Template]    Create Include Chinese groups Template
+    ${contentType.JSON}    ${Token.orgToken}    ${CreateChatgroupDictionary.statusCode}    ${CreateChatgroupDictionary.reponseResult}    ${CreateChatgroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
+    ${contentType.JSON}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    ${EMPTY}    ${Token.orgToken}    ${CreateChatgroupDictionary.statusCode}    ${CreateChatgroupDictionary.reponseResult}    ${CreateChatgroupDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    ${contentType.JSON}    ${Token.appToken}    ${CreateChatgroupDictionary.statusCode}    ${CreateChatgroupDictionary.reponseResult}    ${CreateChatgroupDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    ${contentType.JSON}    ${Token.bestToken}    ${CreateChatgroupDictionary.statusCode}    ${CreateChatgroupDictionary.reponseResult}    ${CreateChatgroupDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+
 创建一个新的群组-群主用户ID不存在(/{orgName}/{appName}/chatgroups)
     [Template]    Create New Chatgroup With Inexistent Owner Template
     ${contentType.JSON}    ${Token.orgToken}    ${GroupMemberNotFoundDictionary.statusCode}    ${GroupMemberNotFoundDictionary.reponseResult}    ${GroupMemberNotFoundDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
@@ -123,7 +132,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
     ${EMPTY}    ${EMPTY}    ${GroupNoAuthorizationDictionary.statusCode}    ${GroupNoAuthorizationDictionary.reponseResult}    ${GroupNoAuthorizationDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetChatgroupDetailDictionary.statusCode}    ${GetChatgroupDetailDictionary.reponseResult}    ${GetChatgroupDetailDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetChatgroupDetailDictionary.statusCode}    ${GetChatgroupDetailDictionary.reponseResult}    ${GetChatgroupDetailDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-
+    
 获取群组详情-群组ID不存在(/{orgName}/{appName}/chatgroups/{groupId})
     [Template]    Get Chatgroup Detail With Inexistent GroupIdTemplate
     ${contentType.JSON}    ${Token.orgToken}    ${GetChatgroupDetailGroupIdNotFoundDictionary.statusCode}    ${GetChatgroupDetailGroupIdNotFoundDictionary.reponseResult}    ${GetChatgroupDetailGroupIdNotFoundDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}

@@ -24,7 +24,9 @@ Create Temp Chatgroup
     [Documentation]    创建一个群组
     #创建请求体
     ${randomNumber}    Generate Random Specified String
-    &{chatGroupEntity}    Create Dictionary    groupName=${randomNumber}    desc=${randomNumber}    owner=${owner}    maxusers=${maxusers}    public=${public}
+    ${groupName}    Catenate    群组昵称${randomNumber}
+    ${desc}    Catenate    群组描述    ${randomNumber}
+    &{chatGroupEntity}    Create Dictionary    groupName=${groupName}    desc=${desc}    owner=${owner}    maxusers=${maxusers}    public=${public}
     ...    members_only=${members_only}
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupName}","desc":"${chatGroupEntity.desc}","owner":"${chatGroupEntity.owner}","maxusers":${chatGroupEntity.maxusers},"public":${chatGroupEntity.public},"members_only":${chatGroupEntity.members_only}}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
@@ -176,9 +178,10 @@ Chatgroup Member Count Template
     @{argumentValue}    create list    '${baseRes.validAppUUID}'    '1'    '${orgName}'    
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    
 Create New Chatgroup Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
-    [Documentation]    创建一个新的群组
+    [Documentation]    创建一个新的群组（群组名称、描述为英文）
     ...    - 传入header中content-type值
     ...    - 传入header中token值
     ...    - 测试用例的预期状态码
@@ -193,6 +196,42 @@ Create New Chatgroup Template
     ${randomNumber}    Generate Random Specified String
     ${username}    set variable    ${validIMUserInfo.username}
     &{chatGroupEntity}    Create Dictionary    groupname=${randomNumber}    desc=${randomNumber}    owner=${username}    maxusers=200    public=true
+    ...    members_only=false
+    ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","desc":"${chatGroupEntity.desc}","owner":"${chatGroupEntity.owner}","maxusers":${chatGroupEntity.maxusers},"public":${chatGroupEntity.public},"members_only":${chatGroupEntity.members_only}}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    
+    #设置请求头，并运行关键字
+    &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}    Create Chatgroup
+    ...    @{arguments}
+    Log Dictionary    ${apiResponse}
+    @{argumentField}    create list
+    @{argumentValue}    create list    '${baseRes.validAppUUID}'    '${orgName}'
+    #断言请求结果中的字段和返回值
+    Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Create Include Chinese groups Template
+    [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
+    [Documentation]    创建一个新的群组（群组名称、描述为中文）
+    ...    - 传入header中content-type值
+    ...    - 传入header中token值
+    ...    - 测试用例的预期状态码
+    ...    - 针对返回值对比的结构
+    ...    - 针对返回值需要对比的字段和返回值
+    ...    - 该条模板用例，是否执行
+    #判断是否继续执行该条测试用例
+    log    ${token}
+    ${runStatus}    Should Run Model Case    ${specificModelCaseRunStatus}
+    Return From Keyword If    not ${runStatus}
+    #设置请求数据
+    ${randomNumber}    Generate Random Specified String
+    ${desc}    Catenate    描述    ${randomNumber}
+    Log    ${desc}    
+    ${username}    set variable    ${validIMUserInfo.username}
+    &{chatGroupEntity}    Create Dictionary    groupname=群组    desc=${desc}    owner=${username}    maxusers=200    public=true
     ...    members_only=false
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","desc":"${chatGroupEntity.desc}","owner":"${chatGroupEntity.owner}","maxusers":${chatGroupEntity.maxusers},"public":${chatGroupEntity.public},"members_only":${chatGroupEntity.members_only}}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}

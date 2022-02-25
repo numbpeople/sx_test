@@ -104,10 +104,13 @@ class Android_login_page(Android_Appium_bases):
         data = Data_bases()
         expect_version = data.get_im_demo_version()
         practical_version = self.android_get_im_version_method(devices_name)
-        assert  expect_version == practical_version , f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
-        self.android_send_user_name_method(devices_name,username)
-        self.android_send_password_method(devices_name, password)
-        self.android_click_login_button_method(devices_name)
+        if self.judge_element(devices_name,self.android_user_name_element):
+            assert  expect_version == practical_version , f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
+            self.android_send_user_name_method(devices_name,username)
+            self.android_send_password_method(devices_name, password)
+            self.android_click_login_button_method(devices_name)
+        else:
+            pass
 
 
 class Android_registered_page(Android_Appium_bases):
@@ -238,7 +241,7 @@ class Android_service_config(Android_Appium_bases):
 
     def android_click_use_service_switch_method(self,devices_name:str) -> None:
         """
-        :作用 点击使用是有服务器开关
+        :作用 点击使用私有服务器开关
         :param devices_name: 设备名称
         :return: None
         """
@@ -377,8 +380,11 @@ class Android_service_config(Android_Appium_bases):
         elif not service_config_data["dns"]:
             self.android_click_use_service_switch_method(devices_name)
             self.android_send_im_service_host_method(devices_name,service_config_data["im_host"])
+            self.return_method(devices_name)
             self.android_send_port_method(devices_name,service_config_data["port"])
+            self.return_method(devices_name)
             self.android_send_rest_host_method(devices_name,service_config_data["rest_host"])
+            self.return_method(devices_name)
             if not service_config_data["https"]:
                 if self.is_selected(devices_name,self.android_https_switch_element):
                     self.android_click_https_switch_method(devices_name)

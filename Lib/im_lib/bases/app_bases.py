@@ -9,11 +9,10 @@ from .bases import Data_bases
 from config import logging
 
 
-
 class Android_Appium_bases():
 
     data = Data_bases()
-    driver = {}
+    driver:webdriver.Remote = {}
     def connect_appium(self, connetc_config_name) -> None:
         """
         :param connetc_config_name: 设备名称，根据传入的设备名称去config.yaml文件找对应的配置，启动手机
@@ -24,7 +23,20 @@ class Android_Appium_bases():
         driver =webdriver.Remote(self.data.appium_server(), cpas)
         self.driver[connetc_config_name] = driver
 
-    def my_element(self, devices_name: str, element):
+    def judge_element(self, devices_name: str, element: str) -> True or False:
+        """
+        :作用 判断元素是否存在
+        :param devices_name: 设备名称
+        :param element:  元素
+        :return: True or False
+        """
+        if str(self.my_element(devices_name,element)) == "None":
+            return False
+        else:
+            return True
+
+
+    def my_element(self, devices_name: str, element) :
         """
         :作用 定位器
         :param devices_name: 设备名称
@@ -74,7 +86,8 @@ class Android_Appium_bases():
         :return True or Flase
         """
         logging.info(f"操作设备:{devices_name},判断改元素是否可用:{element}")
-        return self.my_element(devices_name=devices_name, element=element).is_enabled()
+        print('erer',self.driver[devices_name].page_source)
+        return self.my_element(devices_name=devices_name, element=element)
 
     def is_selected(self, devices_name: str, element) -> True or False:
         """
@@ -86,7 +99,7 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},判断改元素是否被选中:{element}")
         return self.my_element(devices_name=devices_name, element=element).is_selected()
 
-    def is_displayed(self, devices_name, element) -> True or False:
+    def is_displayed(self, devices_name: str, element) -> True or False:
         """
         :作用 判断该元素是否显示
         :param devices_name: 设备名称
@@ -98,6 +111,7 @@ class Android_Appium_bases():
 
     def return_method(self, devices_name: str) -> None:
         """
+
         :param devices_name: 设备名称
         :return: None
         """
@@ -137,7 +151,14 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},获取:{element}元素文本")
         return self.wait_find(devices_name, element).text
 
-
+    def quit(self,devices_name) -> None:
+        """
+        :作用 结束并退出
+        :param devices_name: 设备名称
+        :return: None
+        """
+        self.driver[devices_name].quit()
+        del self.driver[devices_name]
 
 
 class IosAppiumBase(Android_Appium_bases):

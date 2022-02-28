@@ -1,5 +1,5 @@
 *** Settings ***
-Force Tags        chatroomMember
+Force Tags        chatroomMember    chatroom
 Library           requests
 Library           RequestsLibrary
 Library           Collections

@@ -1,7 +1,7 @@
 import time
 from android_bases_page.android_home_page import Android_login_page,Android_service_config,Android_registered_page
 from android_bases_page.android_session_page import Android_session_page
-
+from Bases_Public_method import Bases_Public_method
 
 class Public(
     Android_login_page,
@@ -248,9 +248,9 @@ class Public(
 if __name__ == '__main__':
     a=Public()
     driver=a.connect_appium_method("oppo_sj001_devices")
-    a.login_page("a_android_login","oppo_sj001_devices","test1","1")
-    b=Android_session_page()
-    b.io("oppo_sj001_devices")
+    print(Bases_Public_method().element_judge("oppo_sj001_devices","login_page_element","a_version_element"))
+
+
 
 
 

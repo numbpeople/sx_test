@@ -44,9 +44,11 @@ class Bases_Public_method(Android_Appium_bases):
 
     }
 
-    all_page_list = [
-        login_page_element, registered_page_element, service_config_page_element
-    ]
+    all_page = {
+        "login_page_element":login_page_element,
+        "registered_page_element":registered_page_element,
+        "service_config_page_element":service_config_page_element
+    }
 
     def public_is_displayed(self, devices_name: str, page_name: str, element_name: str) -> True or False:
         """
@@ -56,11 +58,13 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return True or Flase
         """
-        for page in self.all_page_list:
-            if page == page_name:
-                return self.is_displayed(devices_name, page[element_name])
+        if self.all_page.get(page_name):
+            if self.all_page[page_name].get(element_name):
+                return self.is_displayed(devices_name, self.all_page[page_name][element_name])
             else:
-                return "没有找到你要的元素,检查你传入page_name和element_name是否正确"
+                return f"{page_name}里面没有你要的元素:{element_name},检查你传入page_name是否正确"
+        else:
+            return f"没有找到你要的:{page_name},检查你传入page_name是否正确"
 
     def public_is_selected(self, devices_name: str, page_name: str, element_name: str) -> True or False:
         """
@@ -70,11 +74,13 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return True or Flase
         """
-        for page in self.all_page_list:
-            if page == page_name:
-                return self.is_displayed(devices_name, page[element_name])
+        if self.all_page.get(page_name):
+            if self.all_page[page_name].get(element_name):
+                return self.is_selected(devices_name, self.all_page[page_name][element_name])
             else:
-                return "没有找到你要的元素,检查你传入page_name和element_name是否正确"
+                return f"{page_name}里面没有你要的元素:{element_name},检查你传入page_name是否正确"
+        else:
+            return f"没有找到你要的:{page_name},检查你传入page_name是否正确"
 
     def public_is_enabled(self,  devices_name: str, page_name: str, element_name: str) -> True or False:
         """
@@ -84,11 +90,13 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return True or Flase
         """
-        for page in self.all_page_list:
-            if page == page_name:
-                return self.is_displayed(devices_name, page[element_name])
+        if self.all_page.get(page_name):
+            if self.all_page[page_name].get(element_name):
+                return self.is_displayed(devices_name, self.all_page[page_name][element_name])
             else:
-                return "没有找到你要的元素,检查你传入page_name和element_name是否正确"
+                return f"{page_name}里面没有你要的元素:{element_name},检查你传入page_name是否正确"
+        else:
+            return f"没有找到你要的:{page_name},检查你传入page_name是否正确"
 
     def element_judge(self, devices_name: str, page_name: str, element_name: str) -> True or False:
         """
@@ -98,8 +106,10 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return: True or False
         """
-        for page in self.all_page_list:
-            if page_name == page:
-                return self.judge_element(devices_name, page[element_name])
+        if self.all_page.get(page_name):
+            if self.all_page[page_name].get(element_name):
+                return self.judge_element(devices_name, self.all_page[page_name][element_name])
             else:
-                return "没有找到你要的元素,检查你传入page_name和element_name是否正确"
+                return f"{page_name}里面没有你要的元素:{element_name},检查你传入page_name是否正确"
+        else:
+            return f"没有找到你要的:{page_name},检查你传入page_name是否正确"

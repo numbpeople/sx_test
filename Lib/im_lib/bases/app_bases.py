@@ -23,7 +23,7 @@ class Android_Appium_bases():
         driver =webdriver.Remote(self.data.appium_server(), cpas)
         self.driver[connetc_config_name] = driver
 
-    def judge_element(self, devices_name: str, element: str) -> True or False:
+    def judge_element(self, devices_name: str, element: tuple) -> True or False:
         """
         :作用 判断元素是否存在
         :param devices_name: 设备名称
@@ -34,7 +34,6 @@ class Android_Appium_bases():
             return False
         else:
             return True
-
 
     def my_element(self, devices_name: str, element) :
         """
@@ -136,6 +135,7 @@ class Android_Appium_bases():
         :param element: 元素
         :return:None
         """
+        self.driver.background_app()
         logging.info(f"操作设备:{devices_name},向:{element}元素输入:{text}")
         el = self.wait_find(devices_name,element)
         el.click()

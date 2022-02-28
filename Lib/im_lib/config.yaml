@@ -2,7 +2,7 @@ test_im_version: V3.8.9
 positioning_out_time: 10
 interva_time: 0.5
 error_screenshots_path: "/Users/zhanghongqiang/PycharmProjects/im-auto-test/kefu-auto-test/Lib"
-appium_server: 'http://127.0.0.1:4726/wd/hub'
+appium_server: 'http://127.0.0.1:4723/wd/hub'
 im_service_configs:
   hsb:
     appkey: easemob-demo#test-zdh-mqtt

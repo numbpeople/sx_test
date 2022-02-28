@@ -1,4 +1,4 @@
-test_im_version: V3.8.9
+test_im_version: V3.9.0
 positioning_out_time: 10
 interva_time: 0.5
 error_screenshots_path: "/Users/zhanghongqiang/PycharmProjects/im-auto-test/kefu-auto-test/Lib"
@@ -61,3 +61,4 @@ connect_config:
     appActivity: *appActivity
     appPackage: *appPackage
     skipServerInstallation: *skipServerInstallation
+    noReset: *noRese

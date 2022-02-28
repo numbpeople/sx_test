@@ -1,9 +1,10 @@
 *** Settings ***
 Library    Lib/im_lib/Public.py
-Library    Lib/im_lib/android_bases_page/android_home_page.py
-Library    AppiumLibrary
+Library    Lib/im_lib/Bases_Public_method.py
+Resource    ../../UITeset_Env.robot
+Test Setup    connect_appium_method    ${driver.drivername}
+
 *** Test Cases ***
-login
-    ${driver}    connect_appium_method    huaweip20
-    Log    ${driver}    
-    login_page    android_login    ${driver}    "1111"    "1"
+登录(正确用户名和密码)
+    Log    ${driver.drivername}    
+    login_page    a_android_login    ${driver.drivername}    1111    1

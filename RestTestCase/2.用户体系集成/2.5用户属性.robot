@@ -11,6 +11,7 @@ Resource          ../../Result/BaseResullt.robot
 Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 Resource          ../../Common/UserCommon/UserAttributesCommon.robot
 Resource          ../../Result/UserResult/UserAttribute_Result.robot
+Force Tags    用户属性
 Test Teardown    Test User Attribute Teardown
 
 *** Test Cases ***
@@ -23,8 +24,6 @@ Test Teardown    Test User Attribute Teardown
     ${EMPTY}    ${EMPTY}    ${ErrorTokeneDictionary.statusCode}    ${ErrorTokeneDictionary.reponseResult}    ${ErrorTokenDiffEntity1}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
     ${contentType.JSON}    ${Token.appToken}    ${GetUserAttributeCapacityDictionary.statusCode}    ${GetUserAttributeCapacityDictionary.reponseResult}    ${GetUserAttributeCapacityDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
     ${contentType.JSON}    ${Token.bestToken}    ${GetUserAttributeCapacityDictionary.statusCode}    ${GetUserAttributeCapacityDictionary.reponseResult}    ${GetUserAttributeCapacityDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
-    #不支持usettoken
-    #${contentType.JSON}    ${Token.userToken}    ${GetUserAttributeCapacityDictionary.statusCode}    ${GetUserAttributeCapacityDictionary.reponseResult}    ${GetUserAttributeCapacityDiffEntity}    ${ModelCaseRunStatus.userToken_ContentType}
 
 获取用户属性-未设置用户属性
     [Documentation]    create by shuang

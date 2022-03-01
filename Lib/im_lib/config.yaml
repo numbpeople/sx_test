@@ -60,5 +60,3 @@ connect_config:
     deviceName: CLB7N18B05003594
     appActivity: *appActivity
     appPackage: *appPackage
-    skipServerInstallation: *skipServerInstallation
-    noReset: *noRese

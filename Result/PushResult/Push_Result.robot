@@ -4,7 +4,8 @@ Resource          ../BaseResullt.robot
 *** Variables ***
 
 ${PushNoAuthorization}    {"error":"unauthorized","exception":"EasemobSecurityException","timestamp":1640078400634,"duration":0,"error_description":"Unable to authenticate (OAuth)"}
-${PushNoAuthorizationDiffEntity}    {"error":"unauthorized","exception":"EasemobSecurityException","error_description":"Unable to authenticate (OAuth)"}
+${PushNoAuthorizationDiffEntity}    {"error":"unauthorized","error_description":"Unable to authenticate (OAuth)"}
+
 &{PushNoAuthorizationDictionary}    statusCode=401    reponseResult=${PushNoAuthorization}
 
 ${GetPush}    {"path":"/notifiers","uri":"https://a1-hsb.easemob.com/easemob-demo/imautotest-6488505469/notifiers","timestamp":1640076925457,"entities":[],"count":0,"action":"get","duration":1}    

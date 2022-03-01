@@ -10,6 +10,7 @@ Resource          ../../Common/FileUploadDownloadCommon/FileUploadDownloadCommon
 Resource          ../../Result/BaseResullt.robot
 Resource          ../../Result/FileUploadDownloadResult/FileUploadDownload_Result.robot
 Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
+Force Tags    文件上传与下载
 
 *** Test Cases ***
 上传图片文件(/{orgName}/{appName}/chatfiles)

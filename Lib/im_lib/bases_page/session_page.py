@@ -48,3 +48,4 @@ class Android_session_page(Android_Appium_bases):
             return element.text
         else:
             return "只能传入click:点击,text:获取属性"
+

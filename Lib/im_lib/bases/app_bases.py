@@ -13,6 +13,12 @@ class Android_Appium_bases():
 
     data = Data_bases()
     driver:webdriver.Remote = {}
+
+    def click_my(self,devices_name,element_name):
+
+        self.driver[devices_name].find_element(*element_name).click()
+
+
     def connect_appium(self, connetc_config_name) -> None:
         """
         :param connetc_config_name: 设备名称，根据传入的设备名称去config.yaml文件找对应的配置，启动手机
@@ -135,7 +141,6 @@ class Android_Appium_bases():
         :param element: 元素
         :return:None
         """
-        self.driver.background_app()
         logging.info(f"操作设备:{devices_name},向:{element}元素输入:{text}")
         el = self.wait_find(devices_name,element)
         el.click()
@@ -159,6 +164,24 @@ class Android_Appium_bases():
         """
         self.driver[devices_name].quit()
         del self.driver[devices_name]
+
+    def app_background(self, devices_name: str, seconds: int) -> None:
+        """
+        :作用 将app放到后台
+        :param devices_name: 设备名称
+        :param seconds: 放到后台的时间，单位秒
+        :return: None
+        """
+        self.driver[devices_name].background_app(int(seconds))
+
+    def is_app_installed(self,devices_name: str, app_id: str) -> None:
+        """
+        :作用 判断app是否安装
+        :param devices_name: 设备名称
+        :param app_id: appID
+        :return: None
+        """
+        self.driver[devices_name].is_app_installed(app_id)
 
 
 class IosAppiumBase(Android_Appium_bases):

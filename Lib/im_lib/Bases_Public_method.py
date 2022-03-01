@@ -1,12 +1,12 @@
 
-from android_bases_page.android_home_page import Android_login_page ,Android_service_config ,Android_registered_page
+from bases_page.home_page import Login_page, Service_config, Registered_page
 from bases.app_bases import Android_Appium_bases
 
 
 class Bases_Public_method(Android_Appium_bases):
-    a_login_page = Android_login_page()
-    a_registered_page = Android_registered_page()
-    a_service_config = Android_service_config()
+    a_login_page = Login_page()
+    a_registered_page = Registered_page()
+    a_service_config = Service_config()
 
     # 登陆页面元素
     login_page_element = {

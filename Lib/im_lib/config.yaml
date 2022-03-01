@@ -45,7 +45,7 @@ connect_config:
     appActivity: *appActivity
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
-    noReset: *noRese
+#    noReset: *noRese
 
   helen_iphone:
     platformName: ios

@@ -9,18 +9,12 @@ from .bases import Data_bases
 from config import logging
 
 
-
 class Android_Appium_bases():
-    data = Data_bases()
-
-
     data = Data_bases()
     driver:webdriver.Remote = {}
 
     def click_my(self,devices_name,element_name):
-
         self.driver[devices_name].find_element(*element_name).click()
-
 
     def connect_appium(self, connetc_config_name) -> None:
         """
@@ -31,7 +25,6 @@ class Android_Appium_bases():
         cpas = self.data.get_connect_config(name=connetc_config_name)
         driver =webdriver.Remote(self.data.appium_server(), cpas)
         self.driver[connetc_config_name] = driver
-
 
     def judge_element(self, devices_name: str, element: tuple) -> True or False:
         """
@@ -59,9 +52,7 @@ class Android_Appium_bases():
         except:
             pass
 
-
     def wait_find(self, devices_name: str, element):
-
         """
             :作用 显示等待
             :param devices_name: 设备名称
@@ -92,7 +83,6 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},截图:{screenshots_name}")
         self.driver[devices_name].save_screenshot(join(self.data.config()["error_screenshots_path"], screenshots_name))
 
-
     def is_enabled(self, devices_name: str, element) -> True or False:
         """
         :作用 判断该元素是否可用
@@ -105,7 +95,6 @@ class Android_Appium_bases():
         print('erer',self.driver[devices_name].page_source)
         return self.my_element(devices_name=devices_name, element=element)
 
-
     def is_selected(self, devices_name: str, element) -> True or False:
         """
         :作用 判断该元素是否被选中
@@ -116,7 +105,6 @@ class Android_Appium_bases():
 
         logging.info(f"操作设备:{devices_name},判断改元素是否被选中:{element}")
         return self.my_element(devices_name=devices_name, element=element).is_selected()
-
 
     def is_displayed(self, devices_name: str, element) -> True or False:
         """
@@ -130,18 +118,14 @@ class Android_Appium_bases():
         return self.my_element(devices_name=devices_name, element=element).is_displayed()
 
     def return_method(self, devices_name: str) -> None:
-
         """
-
         :param devices_name: 设备名称
         :return: None
         """
         logging.info(f"操作设备:{devices_name},返回")
         self.driver[devices_name].back()
 
-
     def tap(self, devices_name:str, positions: list, duration: int = None) -> None:
-
         """
         :作用 触摸
         :param devices_name: 设备名称
@@ -149,7 +133,6 @@ class Android_Appium_bases():
         :param duration: 单位是毫秒，不传轻触
         :return:None
         """
-
         logging.info(f"操作设备:{devices_name},触摸位置x/y:{positions},长按条件:{duration}")
         self.driver[devices_name].tap(positions, duration)
 
@@ -166,7 +149,6 @@ class Android_Appium_bases():
         el.clear()
         el.send_keys(text)
         self.tap(devices_name,[(322, 134)])
-
 
     def get_text(self,devices_name,element) -> str:
         """
@@ -204,7 +186,6 @@ class Android_Appium_bases():
         self.driver[devices_name].is_app_installed(app_id)
 
 
-
 class IosAppiumBase(Android_Appium_bases):
     def click_method(self, driver: WebDriver, method_type, xpath_selector) -> str or None:
         """根据method_type区分是点击事件还是获取文本信息"""
@@ -217,8 +198,4 @@ class IosAppiumBase(Android_Appium_bases):
             return f"不支持该事件${method_type}"
 
 
-    def find_element(self, driver: WebDriver, element):
-        try:
-            return driver.find_element(*element)
-        except:
-            print("没找到该元素")
+

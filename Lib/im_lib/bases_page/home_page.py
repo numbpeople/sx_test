@@ -13,13 +13,20 @@ class Login_page(Android_Appium_bases):
     android_registered_element = ("xpath", "//android.widget.TextView[2]]")
     android_service_config_element = ("xpath", "//android.widget.TextView[3]")
 
+    ios_version_element = ("xpath", "//XCUIElementTypeStaticText1")
+    ios_user_name_element = ("xpath", "//XCUIElementTypeTextField")
+    ios_password_element = ("xpath", "//XCUIElementTypeSecureTextField")
+    ios_login_button_element = ("xpath", "//XCUIElementTypeStaticText[@name='登 录']")
+    ios_registered_element = ("xpath", "//XCUIElementTypeButton[@name='注册账号']")
+    ios_service_config_element = ("xpath", "//XCUIElementTypeButton[@name='服务器配置']")
+
     def get_im_version_method(self, platform: str,devices_name:str) -> str:
         """调用该方法返回一个im的版本号"""
         logging.info(f"操作设备:{platform} {devices_name},获取im版本号")
         if str(platform).upper() == "ANDROID":
             return self.wait_find(devices_name,self.android_version_element).text
         elif str(platform).upper() == "IOS":
-            pass
+            return self.wait_find(devices_name,self.android_version_element).text
         else:
             return "platform错误，只能传入android 或者 ios设备"
 
@@ -36,7 +43,7 @@ class Login_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.android_user_name_element
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.ios_user_name_element
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -58,7 +65,7 @@ class Login_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.android_password_element
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.ios_password_element
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -80,7 +87,7 @@ class Login_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element=self.wait_find(devices_name, self.android_login_button_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_login_button_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -105,7 +112,7 @@ class Login_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element=self.wait_find(devices_name, self.android_registered_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -130,7 +137,7 @@ class Login_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name,self.android_service_config_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_service_config_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -172,6 +179,13 @@ class Registered_page(Android_Appium_bases):
     android_registered_button_element = ("xpath","//android.widget.Button")
     android_registered_return_element = ("xpath", '//android.widget.ImageButton[@content-desc="转到上一层级"]')
 
+    ios_registered_user_name_element = ("xpath", "//XCUIElementTypeTextField")
+    ios_registered_password_element = ("xpath", "//XCUIElementTypeSecureTextField[1]")
+    ios_registered_confirm_password_element = ("xpath", "//XCUIElementTypeSecureTextField[2]")
+    ios_registered_agreement_element = ("xpath", "//XCUIElementTypeButton[@name=\"unAgreeProtocol\"]")
+    ios_registered_button_element = ("xpath", "//XCUIElementTypeButton")
+    ios_registered_return_element = ("xpath", '//XCUIElementTypeButton[@name="back left"]')
+
     def registered_user_send_method(self, platform: str, devices_name: str, user: str = None) -> str or None:
         """
         :作用 输入注册用户名
@@ -186,7 +200,7 @@ class Registered_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name,self.android_registered_user_name_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_user_name_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -209,7 +223,7 @@ class Registered_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_registered_password_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_password_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -232,7 +246,7 @@ class Registered_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_registered_confirm_password_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_confirm_password_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -254,7 +268,7 @@ class Registered_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_registered_agreement_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_agreement_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -273,7 +287,7 @@ class Registered_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_registered_button_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_button_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()
@@ -291,7 +305,7 @@ class Registered_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_registered_return_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_registered_return_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -327,6 +341,16 @@ class Service_config(Android_Appium_bases):
     android_confirm_reset_service_element = ("xpath", "//android.widget.Button[2]")
     android_save_button_element = ("xpath","//android.widget.Button[2]")
 
+    ios_service_switch_element = ("xpath", "//XCUIElementTypeSwitch")
+    ios_app_key = ("xpath", "//XCUIElementTypeCell[1]/XCUIElementTypeTextField")
+    ios_apns_cert_name = ("xpath", "//XCUIElementTypeCell[2]/XCUIElementTypeTextField")
+    ios_specify_server = ("xpath", "//XCUIElementTypeSwitch[@name='Specify Server:']")
+    ios_im_server = ("xpath", "//XCUIElementTypeCell[4]/XCUIElementTypeTextField")
+    ios_im_port = ("xpath", "//XCUIElementTypeCell[5]/XCUIElementTypeTextField")
+    ios_rest_server = ("xpath", "//XCUIElementTypeCell[6]/XCUIElementTypeTextField")
+    ios_https_only = ("xpath", "//XCUIElementTypeSwitch[@name='Https Only:']")
+    ios_save_button = ("xpath", "//XCUIElementTypeCell[8]/XCUIElementTypeOther[1]")
+
     def click_custom_service_switch_method(self, platform: str,devices_name: str) -> None or str:
         """
         :作用 点击自定义的服务器
@@ -340,7 +364,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_custom_service_switch_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_service_switch_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -360,7 +384,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_appkey_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_app_key)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -382,7 +406,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_use_service_switch_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_apns_cert_name)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -402,7 +426,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_im_service_host_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_im_server)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -425,7 +449,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_port_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_im_port)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -448,7 +472,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_rest_service_host_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_rest_server)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -470,7 +494,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_https_switch_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_https_only)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -566,7 +590,7 @@ class Service_config(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_save_button_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_save_button)
         else:
             return "platform错误，只能传入android或者ios设备"
 

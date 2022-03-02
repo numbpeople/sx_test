@@ -360,5 +360,7 @@ if __name__ == '__main__':
     a = LoginPage()
     b = ServiceInfo()
     c = RegisteredPage()
+
     driver = a.connect_appium('my_iphone')
+
     c.registered_method(driver, "tst", "123456", "123456")

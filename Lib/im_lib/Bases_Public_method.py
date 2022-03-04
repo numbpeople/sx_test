@@ -113,3 +113,21 @@ class Bases_Public_method(Android_Appium_bases):
                 return f"{page_name}里面没有你要的元素:{element_name},检查你传入page_name是否正确"
         else:
             return f"没有找到你要的:{page_name},检查你传入page_name是否正确"
+
+    def public_app_background(self,devices_name: str, seconds: int):
+        """
+        :作用 将app放到后台
+        :param devices_name: 设备名称
+        :param seconds: 放到后台的时间，单位秒
+        :return: None
+        """
+        self.app_background(devices_name, int(seconds))
+
+    def public_is_app_installed(self, devices_name: str, app_id: str) -> bool:
+        """
+        :作用 判断app是否安装
+        :param devices_name: 设备名称
+        :param app_id: appID
+        :return: None
+        """
+        return self.is_app_installed(devices_name,app_id)

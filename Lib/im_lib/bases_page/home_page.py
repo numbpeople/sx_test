@@ -148,20 +148,29 @@ class Login_page(Android_Appium_bases):
         else:
             return "options字段错误，只能传入:text click"
 
-    def login(self, platform: str, devices_name:str, username: str, password: str) -> None:
+    def login(self, platform: str, devices_name:str, username: str, password: str) -> None or str:
         """
         :作用 登陆
         :param platform: 设备类型 传入android或者ios
         :param devices_name: 设备名称
         :param username: 用户名
         :param password: 密码
-        :return: None
+        :return: None or str
         """
         logging.info(f"操作设备:{platform} {devices_name},开始登陆im")
         data = Data_bases()
         expect_version = data.get_im_demo_version()
         practical_version = self.get_im_version_method(platform, devices_name)
-        if self.judge_element(devices_name, self.android_user_name_element):
+        element = None
+        if str(platform).upper() == "ANDROID":
+            element = self.android_user_name_element
+
+        elif str(platform).upper() == "IOS":
+            pass
+        else:
+            return "platform错误，只能传入android或者ios设备"
+
+        if self.judge_element(devices_name, element):
             assert expect_version == practical_version , f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
             self.send_user_name_method(platform, devices_name, username)
             self.send_password_method(platform, devices_name, password)

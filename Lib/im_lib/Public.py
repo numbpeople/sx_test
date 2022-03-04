@@ -1,15 +1,30 @@
 import time
 from bases_page.home_page import Login_page, Service_config, Registered_page
-from bases_page.session_page import Android_session_page
+from bases_page.session_page import session_page
 from Bases_Public_method import Bases_Public_method
 
 class Public(
     Login_page,
     Registered_page,
     Service_config,
-    Android_session_page
+    session_page
 ):
-
+    
+    def find_element_text(self,devices_name: str, element_text: list) -> None:
+        """
+        :作用 通过文本点击元素
+        :param devices_name: 设备名称
+        :param element_text: 元素text列表
+        :usage: find_element_text(devices, ["使用时允许", "使用时允许", "使用时允许", "允许", "允许"])
+        :return:None
+        """
+        for element in element_text:
+            el = ("xpath", f"//*[@text='{element}']")
+            if self.judge_element(devices_name, el):
+                self.wait_find(devices_name, el).click()
+            else:
+                pass
+    
     def connect_appium_method(self,devices_config_name) -> None:
         """
         :param devices_config_name:设备配置名称
@@ -24,45 +39,45 @@ class Public(
         :android元素:
         :param func_name: 任意传入一个func_dict存在的键，可以通过键来调用对应函数
         :param args: 根据传的func_name 来给arge传参数，具体如下：
-            1. a_get_im_version:
+            1. get_im_version:
                 作用: 获取im_demo版本号
                 参数: 传入platform 和 devices_name，返回测试的im_demo版本
-            2. a_send_user_name:
+            2. send_user_name:
                 作用:
                     1.可以做输入用户名操作
                     2.可以做获取用户名输入框的属性操作
                 参数:
                     1.传入platform和devices_name和username是输入登陆用户名，返回None
                     2.传入platform和devices_name返回用户名输入框的属性。
-            3. a_send_password:
+            3. send_password:
                 作用:
                     1.可以做输入密码操作
                     2.可以做获取密码输入框的属性操作
                 参数:
                     1.传入platform和devices_name和password是输入登陆密码，返回None
                     1.传入platform和devices_name返回密码输入框的属性。
-            4. a_click_login_button:
+            4. click_login_button:
                 作用:
                     1.可以做点击登陆按钮操作
                     2.可以做获取登陆按钮属性操作
                 参数:
                     1.传入platform和devices_name和click是点击登陆按钮操作
                     2.传入platform和devices_name和text是获取登陆按钮属性操作
-            5. a_click_registered:
+            5. click_registered:
                 作用:
                     1.可以做点击注册账号按钮操作
                     2.可以做获取注册属性操作
                 参数:
                     1.传入platform和devices_name和click是点击注册账号按钮操作
                     2.传入platform和devices_name和text是获取注册属性操作
-            6. a_click_config:
+            6. click_config:
                 作用:
                     1.可以做点击服务器配置按钮操作
                     2.可以做获取服务器配置按钮属性操作
                 参数:
                     1.传入platform和devices_name和click是点击服务器配置按钮操作
                     2.传入platform和devices_name和text是获取服务器配置按钮属性操作
-            7. a_android_login:
+            7. android_login:
                 作用: 组合登陆im_demo
                 参数:需要传入参数如下
                     1. platform
@@ -239,12 +254,24 @@ class Public(
             return f"没有该函数{func_name}"
 
 if __name__ == '__main__':
+    from Bases_Public_method import Bases_Public_method
+    b = Bases_Public_method()
     devices = "oppo_sj001_devices"
+    platform = "android"
     a=Public()
     driver=a.connect_appium_method(devices)
-    a.login_page("a_android_login", "android", devices,"test1","1")
+    print(a.get_size(devices))
+    # a.click_more_button_method(platform,devices)
+    # a.click_add_friend_button_method(platform,devices)
 
+    # a.click_user_session_method(platform, devices, "alone1")
 
+    # a.login_page("android_login", "android", devices,"test1","1")
+    # a.find_element_text(devices, ["使用时允许", "使用时允许", "使用时允许", "允许", "允许"])
+    # b.public_app_background(devices,3)
+    # print(b.public_is_app_installed(devices,"com.hyphenate.easeim"))
+    time.sleep(3)
+    a.quit(devices)
 
 
 

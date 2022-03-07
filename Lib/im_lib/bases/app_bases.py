@@ -2,7 +2,6 @@ from os.path import join
 import random
 import time
 from appium import webdriver
-from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ES
 from .bases import Data_bases
@@ -12,9 +11,6 @@ from config import logging
 class Android_Appium_bases():
     data = Data_bases()
     driver:webdriver.Remote = {}
-
-    def click_my(self,devices_name,element_name):
-        self.driver[devices_name].find_element(*element_name).click()
 
     def connect_appium(self, connetc_config_name) -> None:
         """
@@ -33,6 +29,7 @@ class Android_Appium_bases():
         :param element:  元素
         :return: True or False
         """
+        time.sleep(0.7)
         if str(self.my_element(devices_name,element)) == "None":
             return False
         else:
@@ -94,6 +91,7 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},判断改元素是否可用:{element}")
         print('erer',self.driver[devices_name].page_source)
         return self.my_element(devices_name=devices_name, element=element)
+
 
     def is_selected(self, devices_name: str, element) -> True or False:
         """
@@ -164,6 +162,7 @@ class Android_Appium_bases():
         :param devices_name: 设备名称
         :return: None
         """
+        logging.info(f"操作设备:{devices_name},结束并且退出")
         self.driver[devices_name].quit()
         del self.driver[devices_name]
 
@@ -174,28 +173,41 @@ class Android_Appium_bases():
         :param seconds: 放到后台的时间，单位秒
         :return: None
         """
+        logging.info(f"操作设备:{devices_name},将app放到后台{seconds}秒")
         self.driver[devices_name].background_app(int(seconds))
 
-    def is_app_installed(self,devices_name: str, app_id: str) -> None:
+    def is_app_installed(self,devices_name: str, app_id: str) -> bool:
         """
         :作用 判断app是否安装
         :param devices_name: 设备名称
         :param app_id: appID
+        :return: bool
+        """
+        logging.info(f"操作设备:{devices_name},判断{app_id}应用是否安装")
+        return self.driver[devices_name].is_app_installed(app_id)
+
+    def get_window_size(self, devices_name: str) -> dict:
+        """
+        :作用 获取当前窗口的宽度和高度
+        :param devices_name: 设备名称
+        :return: dict
+        """
+        logging.info(f"操作设备:{devices_name},获取当前窗口的宽度和高度")
+        return self.driver[devices_name].get_window_size()
+
+    def swipe(self, devices_name: str, start_x: int, start_y: int, end_x: int, end_y: int, duration: int = 0) -> None:
+        """
+        :作用 滑动
+        :param devices_name: 设备名称
+        :param start_x: 开始的x坐标
+        :param start_y: 开始的y坐标
+        :param end_x: 结束的x坐标
+        :param end_y: 结束的y坐标
+        :param duration: 滑动时间
         :return: None
         """
-        self.driver[devices_name].is_app_installed(app_id)
-
-
-class IosAppiumBase(Android_Appium_bases):
-    def click_method(self, driver: WebDriver, method_type, xpath_selector) -> str or None:
-        """根据method_type区分是点击事件还是获取文本信息"""
-        element = self.wait_find(driver, xpath_selector)
-        if method_type == "click":
-            element.click()
-        elif method_type == "text":
-            return self.text
-        else:
-            return f"不支持该事件${method_type}"
-
+        logging.info(f"操作设备:{devices_name},滑动,开始x坐标:{start_x},开始y坐标:{start_y},"
+                     f"结束x坐标:{end_x},结束y坐标:{end_y}")
+        self.driver[devices_name].swipe(start_x, start_y, end_x, end_y, duration)
 
 

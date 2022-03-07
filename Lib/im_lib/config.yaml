@@ -3,6 +3,7 @@ positioning_out_time: 10
 interva_time: 0.5
 error_screenshots_path: "/Users/zhanghongqiang/PycharmProjects/im-auto-test/kefu-auto-test/Lib"
 appium_server: 'http://127.0.0.1:4723/wd/hub'
+authorization_list: ["使用时允许","允许","仅使用期间允许"]
 im_service_configs:
   hsb:
     appkey: easemob-demo#test-zdh-mqtt
@@ -45,7 +46,7 @@ connect_config:
     appActivity: *appActivity
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
-    noReset: *noRese
+#    noReset: *noRese
 
   helen_iphone:
     platformName: ios

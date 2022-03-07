@@ -171,6 +171,8 @@ class session_page(Android_Appium_bases):
 class Add_group_option_user(Android_Appium_bases):
 
     android_search_element = ("xpath", "//android.view.ViewGroup/android.widget.EditText")
+    android_done_button_element = ("xpath", "//android.widget.RelativeLayout[2]/android.widget.TextView")
+    android_return_button_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
 
     def search_method(self, platform: str, devices_name: str, search_data: str = None) -> str or None:
         """
@@ -195,7 +197,7 @@ class Add_group_option_user(Android_Appium_bases):
         else:
             return self.get_text(devices_name, element)
 
-    def option_click_user(self, platform: str, devices_name: str, user_name: str) -> str or None:
+    def option_click_user_method(self, platform: str, devices_name: str, user_name: str) -> str or None:
         """
         :作用 搜索用户
         :param platform: 设备类型 传入android或者ios
@@ -204,17 +206,50 @@ class Add_group_option_user(Android_Appium_bases):
         :return: str or None
         """
         logging.info(f"操作设备:{platform} {devices_name},创建群组选择用户:{user_name} ")
-        element = ("xpath",f"//*[@text='{user_name}']")
         el = None
         if str(platform).upper() == "ANDROID":
-            el = self.wait_find(devices_name, element)
+            el = self.wait_find(devices_name, ("xpath",f"//android.widget.TextView[@text='{user_name}']"))
         elif str(platform).upper() == "IOS":
             pass
         else:
             return "platform错误，只能传入android或者ios设备"
         el.click()
 
-    def add_group_option_user_method(self, platform: str, devices_name: str,user: str or list):
+    def click_return_button_method(self, platform: str, devices_name: str) -> None or str:
+        """
+        :作用 点击 <-(返回)按钮
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :return: None or str
+        """
+        logging.info(f"操作设备:{platform} {devices_name},点击返回按钮")
+        el = None
+        if str(platform).upper() == "ANDROID":
+            el = self.android_return_button_element
+        elif str(platform).upper() == "IOS":
+            pass
+        else:
+            return "platform错误，只能传入android或者ios设备"
+        self.wait_find(devices_name, el).click()
+
+    def click_done_button_method(self, platform: str, devices_name: str) -> None or str:
+        """
+        :作用 点击完成按钮
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :return: None or str
+        """
+        logging.info(f"操作设备:{platform} {devices_name},点击完成按钮")
+        el = None
+        if str(platform).upper() == "ANDROID":
+            el = self.android_done_button_element
+        elif str(platform).upper() == "IOS":
+            pass
+        else:
+            return "platform错误，只能传入android或者ios设备"
+        self.wait_find(devices_name, el).click()
+
+    def add_group_option_user_method(self, platform: str, devices_name: str, user: list):
         """
         :作用 搜索并点击用户
         :param platform: 设备类型 传入android或者ios
@@ -222,14 +257,45 @@ class Add_group_option_user(Android_Appium_bases):
         :param user: 需要点击的user_name
         :return: str or None
         """
-        self.search_method(platform, devices_name, user)
-        self.option_click_user(platform, devices_name, user)
+        for user_name in user:
+            self.search_method(platform, devices_name, user_name)
+            self.option_click_user_method(platform, devices_name, user_name)
 
 
+class Add_user(Android_Appium_bases):
 
+    android_search_element = ("xpath", "//*[@text='请输入用户ID']")
+    android_reset_button_element = ("xpath", "//android.view.ViewGroup/android.widget.ImageButton")
+    android_cancel_button_element = ("xpath", "//android.view.ViewGroup/android.widget.TextView")
 
+    def add_search_user_method(self,platform: str, devices_name: str, search_user) -> None or str:
+        """
+        :作用 搜索要添加的用户
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :param search_user: 需要添加的用户名称
+        :return: None or str
+        """
+        el = None
+        if str(platform).upper() == "ANDROID":
+            el = self.android_search_element
+        elif str(platform).upper() == "IOS":
+            pass
+        else:
+            return "platform错误，只能传入android或者ios设备"
+        self.send_keys(devices_name, search_user, el)
 
-
-class Add_user():
-
-    pass
+    def click_reset_search_method(self,platform: str, devices_name: str) -> None or str:
+        """
+        :作用 重置搜索文本框
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :return: None or str
+        """
+        el = None
+        if str(platform).upper() == "ANDROID":
+            el = self.android_search_element
+        elif str(platform).upper() == "IOS":
+            pass
+        else:
+            return "platform错误，只能传入android或者ios设备"

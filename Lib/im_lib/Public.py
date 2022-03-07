@@ -1,16 +1,19 @@
 import time
 from bases_page.home_page import Login_page, Service_config, Registered_page
-from bases_page.session_page import session_page
+from bases_page.session_page import session_page, Add_group_option_user, Add_user
+from bases.bases import Data_bases
 from Bases_Public_method import Bases_Public_method
 
 class Public(
     Login_page,
     Registered_page,
     Service_config,
-    session_page
+    session_page,
+    Add_group_option_user,
+    Add_user
 ):
     
-    def find_element_text(self,devices_name: str, element_text: list) -> None:
+    def find_element_text(self,devices_name: str) -> None:
         """
         :作用 通过文本点击元素
         :param devices_name: 设备名称
@@ -18,12 +21,14 @@ class Public(
         :usage: find_element_text(devices, ["使用时允许", "使用时允许", "使用时允许", "允许", "允许"])
         :return:None
         """
-        for element in element_text:
-            el = ("xpath", f"//*[@text='{element}']")
-            if self.judge_element(devices_name, el):
-                self.wait_find(devices_name, el).click()
-            else:
-                pass
+        for x in Data_bases().get_authorization():
+            for element in Data_bases().get_authorization():
+                el = ("xpath", f"//*[@text='{element}']")
+                while True:
+                    if self.judge_element(devices_name, el):
+                        self.wait_find(devices_name, el).click()
+                    else:
+                        break
     
     def connect_appium_method(self,devices_config_name) -> None:
         """
@@ -260,17 +265,20 @@ if __name__ == '__main__':
     platform = "android"
     a=Public()
     driver=a.connect_appium_method(devices)
-    print(a.get_size(devices))
+    print(a.get_window_size(devices))
+    # a.click_session_button_method(platform,devices)
     # a.click_more_button_method(platform,devices)
     # a.click_add_friend_button_method(platform,devices)
+    # a.add_search_user_method(platform,devices,"test123")
 
     # a.click_user_session_method(platform, devices, "alone1")
 
-    # a.login_page("android_login", "android", devices,"test1","1")
+    a.login_page("android_login", "android", devices,"test1","1")
+    a.find_element_text(devices)
     # a.find_element_text(devices, ["使用时允许", "使用时允许", "使用时允许", "允许", "允许"])
     # b.public_app_background(devices,3)
     # print(b.public_is_app_installed(devices,"com.hyphenate.easeim"))
-    time.sleep(3)
+    time.sleep(30)
     a.quit(devices)
 
 

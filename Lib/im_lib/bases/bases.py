@@ -26,5 +26,8 @@ class Data_bases():
         """获取yaml文件的im_demo号"""
         return self.config()["test_im_version"]
 
+    def get_authorization(self):
+        return self.config()["authorization_list"]
+
 if __name__ == '__main__':
-    print()
+    print(Data_bases().get_authorization())

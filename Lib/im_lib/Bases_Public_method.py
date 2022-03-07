@@ -1,7 +1,7 @@
 
 from bases_page.home_page import Login_page, Service_config, Registered_page
 from bases.app_bases import Android_Appium_bases
-
+from config import logging
 
 class Bases_Public_method(Android_Appium_bases):
     a_login_page = Login_page()
@@ -58,6 +58,7 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return True or Flase
         """
+        logging.info(f"操作设备:{devices_name},判断元素是否存在,page_name:{page_name},element_name:{element_name}")
         if self.all_page.get(page_name):
             if self.all_page[page_name].get(element_name):
                 return self.is_displayed(devices_name, self.all_page[page_name][element_name])
@@ -74,6 +75,7 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return True or Flase
         """
+        logging.info(f"操作设备:{devices_name},判断该元素是否被选中,page_name:{page_name},element_name:{element_name}")
         if self.all_page.get(page_name):
             if self.all_page[page_name].get(element_name):
                 return self.is_selected(devices_name, self.all_page[page_name][element_name])
@@ -90,6 +92,7 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return True or Flase
         """
+        logging.info(f"操作设备:{devices_name},判断该元素是否可用,page_name:{page_name},element_name:{element_name}")
         if self.all_page.get(page_name):
             if self.all_page[page_name].get(element_name):
                 return self.is_displayed(devices_name, self.all_page[page_name][element_name])
@@ -106,6 +109,7 @@ class Bases_Public_method(Android_Appium_bases):
         :param element_name:传入元素名称，会去对应的page_name里面找对应的元素
         :return: True or False
         """
+        logging.info(f"操作设备:{devices_name},判断元素是否存在,page_name:{page_name},element_name:{element_name}")
         if self.all_page.get(page_name):
             if self.all_page[page_name].get(element_name):
                 return self.judge_element(devices_name, self.all_page[page_name][element_name])
@@ -121,6 +125,7 @@ class Bases_Public_method(Android_Appium_bases):
         :param seconds: 放到后台的时间，单位秒
         :return: None
         """
+        logging.info(f"操作设备:{devices_name},将app放到后台{seconds}秒")
         self.app_background(devices_name, int(seconds))
 
     def public_is_app_installed(self, devices_name: str, app_id: str) -> bool:
@@ -128,6 +133,34 @@ class Bases_Public_method(Android_Appium_bases):
         :作用 判断app是否安装
         :param devices_name: 设备名称
         :param app_id: appID
+        :return: bool
+        """
+        logging.info(f"操作设备:{devices_name},判断{app_id}应用是否安装")
+        return self.is_app_installed(devices_name, app_id)
+
+    def public_get_window_size(self, devices_name: str):
+        """
+        :作用 获取当前窗口的宽度和高度
+        :param devices_name: 设备名称
+        :return: dict
+        """
+        logging.info(f"操作设备:{devices_name},获取当前窗口的宽度和高度")
+        return self.get_window_size(devices_name)
+
+    def public_swipe(self, devices_name: str, start_x: int, start_y: int, end_x: int, end_y: int,
+                     duration: int = 0) -> None:
+        """
+        :作用 滑动
+        :param devices_name: 设备名称
+        :param start_x: 开始的x坐标
+        :param start_y: 开始的y坐标
+        :param end_x: 结束的x坐标
+        :param end_y: 结束的y坐标
+        :param duration: 滑动时间
         :return: None
         """
-        return self.is_app_installed(devices_name,app_id)
+        logging.info(f"操作设备:{devices_name},滑动,开始x坐标:{start_x},开始y坐标:{start_y},"
+                     f"结束x坐标:{end_x},结束y坐标:{end_y}")
+        self.swipe(devices_name, start_x, start_y, end_x, end_y, duration)
+
+    

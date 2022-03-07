@@ -1,5 +1,5 @@
 *** Variables ***
-&{RestRes}        RestUrl=${URLDeclare.ebs}    username=    password=    alias=    consolealias=    # 用例执行环境配置、console登录账号密码
+&{RestRes}        RestUrl=${URLDeclare.hsb}    username=    password=    alias=    consolealias=    # 用例执行环境配置、console登录账号密码
 &{URLDeclare}     ebs=http://a1.easemob.com    hw=http://a1-hw.easemob.com    frank=https://a51.easemob.com    sgp=https://a1-sgp.easemob.com    sgp_aws=https://a61.easemob.com
 ...    rest1_gray=http://a2.easemob.com    hk=https://hk.test.easemob.com    hsb=http://a1-hsb.easemob.com    frank_aws=https://a71.easemob.com    east=https://a41.easemob.com
 ...    rest2_sdb=http://39.96.116.29:8080    vip6=http://a1-vip6.easemob.com    # rest1.0灰度：https://a2.easemob.com、rest1.0沙箱：https://a1-hsb.easemob.com、rest2.0沙箱: http://39.96.116.29:8080、北京集群：https://a1.easemob.com    item    

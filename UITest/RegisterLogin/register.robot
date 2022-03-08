@@ -2,21 +2,21 @@
 Library    Lib/im_lib/Public.py
 Library    Lib/im_lib/Bases_Public_method.py
 Library    String
-Resource    ../../UITeset_Env.robot  
-Suite Setup    connect_appium_method    ${driver.drivername}
+Resource    ../../UITeset_Env.robot
+Resource    ../../UICommon/RegistetCommon.robot
+Suite Setup    connect_appium_method    ${driver.name}
+Test Setup    构建随机用户名和密码
 
 
 *** Test Cases ***
-正常注册用户（正确的用户名和密码）
+正常注册用户(不存在的用户名)
     [Documentation]    Create by shuang
     ...    操作步骤：
     ...    1.使用不存在的用户名和密码注册
     ...    2.通过rest api调用获取用户详情验证
-    #设置前提条件
-    ${pf}    Set Variable    ${plateform.Android}
-    ${drivername}    Set Variable    ${driver.drivername}
-    ${username}    Generate Random String    4    [LOWER]
-    #注册用户参数:平台、设备名、用户名、密码、确认密码
-    user_registered_page    ${pf}    ${drivername}    ${username}    ${password}    ${password}
-    #通过rest api验证用户是否注册成功
-
+    ...    3.
+    [Template]    注册用户
+    ${platform.platform}    ${driver.name}    ${login.username}    ${login.password}    ${login.password}
+    ${platform.platform}    ${driver.name}    ${login.username1}    ${login.password}    ${login.password}
+    ${platform.platform}    ${driver.name}    ${login.username2}    ${login.password}    ${login.password}
+    ${platform.platform}    ${driver.name}    ${login.username3}    ${login.password}    ${login.password}

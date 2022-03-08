@@ -215,6 +215,7 @@ class Registered_page(Android_Appium_bases):
 
         if user:
             self.send_keys(devices_name, user, element)
+            self.tap(devices_name, [(407, 407)])
         elif not user:
             return self.get_text(devices_name, element)
 
@@ -238,6 +239,7 @@ class Registered_page(Android_Appium_bases):
 
         if password:
             self.send_keys(devices_name, password, element)
+            self.tap(devices_name, [(407, 407)])
         elif not password:
             return self.get_text(devices_name, element)
 
@@ -261,6 +263,7 @@ class Registered_page(Android_Appium_bases):
 
         if password:
             self.send_keys(devices_name,password, element)
+            self.tap(devices_name, [(407, 407)])
         elif not password:
             return self.get_text(devices_name, element)
 

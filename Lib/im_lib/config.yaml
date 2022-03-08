@@ -46,6 +46,7 @@ connect_config:
     appActivity: *appActivity
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
+    connectHardwareKeyboard: false
 #    noReset: *noRese
 
   helen_iphone:

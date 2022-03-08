@@ -146,7 +146,7 @@ class Android_Appium_bases():
         el.click()
         el.clear()
         el.send_keys(text)
-        self.tap(devices_name,[(322, 134)])
+        self.tap(devices_name,[(300, 134)])
 
     def get_text(self,devices_name, element) -> str:
         """

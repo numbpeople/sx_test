@@ -411,3 +411,95 @@
 [2022/03/07 17:57:10] INFO [app_bases.py:45] my_element: 操作的设备:oppo_sj001_devices,定位元素:('xpath', "//*[@text='允许']")
 [2022/03/07 17:57:11] INFO [app_bases.py:45] my_element: 操作的设备:oppo_sj001_devices,定位元素:('xpath', "//*[@text='仅使用期间允许']")
 [2022/03/07 17:57:41] INFO [app_bases.py:165] quit: 操作设备:oppo_sj001_devices,结束并且退出
+[2022/03/08 15:02:14] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:02:21] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:02:51] INFO [app_bases.py:165] quit: 操作设备:oppo_sj001_devices,结束并且退出
+[2022/03/08 15:04:24] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:04:31] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:04:31] INFO [home_page.py:109] click_registered_method: 操作设备:android oppo_sj001_devices,点击注册账号
+[2022/03/08 15:04:31] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.TextView[2]]')
+[2022/03/08 15:04:31] ERROR [app_bases.py:66] wait_find: 定位元素失败,定位的元素是：('xpath', '//android.widget.TextView[2]]'),图片id是：79640
+[2022/03/08 15:04:31] INFO [app_bases.py:80] screenshots: 操作设备:oppo_sj001_devices,截图:79640-定位失败-2022-03-08-15-04-31.png
+[2022/03/08 15:06:47] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:06:54] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:06:54] INFO [home_page.py:109] click_registered_method: 操作设备:android oppo_sj001_devices,点击注册账号
+[2022/03/08 15:06:54] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', "//*[@text='注册账号']")
+[2022/03/08 15:06:55] INFO [home_page.py:333] registered_method: 操作设备:android oppo_sj001_devices,注册用户:用户名:test1,密码1,确认密码:1
+[2022/03/08 15:06:55] INFO [home_page.py:206] registered_user_send_method: 操作设备:android oppo_sj001_devices,输入注册username:test1
+[2022/03/08 15:06:55] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[1]')
+[2022/03/08 15:06:55] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:<appium.webdriver.webelement.WebElement (session="cf110f9a-e20b-41a2-a0b5-40152f35c847", element="00000000-0000-00eb-ffff-ffff0000002c")>元素输入:test1
+[2022/03/08 15:06:55] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位<appium.webdriver.webelement.WebElement (session="cf110f9a-e20b-41a2-a0b5-40152f35c847", element="00000000-0000-00eb-ffff-ffff0000002c")>
+[2022/03/08 15:06:55] ERROR [app_bases.py:66] wait_find: 定位元素失败,定位的元素是：<appium.webdriver.webelement.WebElement (session="cf110f9a-e20b-41a2-a0b5-40152f35c847", element="00000000-0000-00eb-ffff-ffff0000002c")>,图片id是：35679
+[2022/03/08 15:06:55] INFO [app_bases.py:80] screenshots: 操作设备:oppo_sj001_devices,截图:35679-定位失败-2022-03-08-15-06-55.png
+[2022/03/08 15:09:44] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:09:52] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:09:52] INFO [home_page.py:109] click_registered_method: 操作设备:android oppo_sj001_devices,点击注册账号
+[2022/03/08 15:09:52] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', "//*[@text='注册账号']")
+[2022/03/08 15:09:53] INFO [home_page.py:333] registered_method: 操作设备:android oppo_sj001_devices,注册用户:用户名:test1,密码1,确认密码:1
+[2022/03/08 15:09:53] INFO [home_page.py:206] registered_user_send_method: 操作设备:android oppo_sj001_devices,输入注册username:test1
+[2022/03/08 15:09:53] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[1]')
+[2022/03/08 15:09:53] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:<appium.webdriver.webelement.WebElement (session="8a8a2717-45c9-42ce-b8f5-4d6273365b6c", element="00000000-0000-00ff-ffff-ffff0000002c")>元素输入:test1
+[2022/03/08 15:09:53] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位<appium.webdriver.webelement.WebElement (session="8a8a2717-45c9-42ce-b8f5-4d6273365b6c", element="00000000-0000-00ff-ffff-ffff0000002c")>
+[2022/03/08 15:09:53] ERROR [app_bases.py:66] wait_find: 定位元素失败,定位的元素是：<appium.webdriver.webelement.WebElement (session="8a8a2717-45c9-42ce-b8f5-4d6273365b6c", element="00000000-0000-00ff-ffff-ffff0000002c")>,图片id是：77833
+[2022/03/08 15:09:53] INFO [app_bases.py:80] screenshots: 操作设备:oppo_sj001_devices,截图:77833-定位失败-2022-03-08-15-09-53.png
+[2022/03/08 15:17:50] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:17:57] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:17:57] INFO [home_page.py:109] click_registered_method: 操作设备:android oppo_sj001_devices,点击注册账号
+[2022/03/08 15:17:57] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', "//*[@text='注册账号']")
+[2022/03/08 15:17:58] INFO [home_page.py:333] registered_method: 操作设备:android oppo_sj001_devices,注册用户:用户名:test1,密码1,确认密码:1
+[2022/03/08 15:17:58] INFO [home_page.py:206] registered_user_send_method: 操作设备:android oppo_sj001_devices,输入注册username:test1
+[2022/03/08 15:17:58] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[1]')元素输入:test1
+[2022/03/08 15:17:58] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[1]')
+[2022/03/08 15:18:01] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:18:01] INFO [home_page.py:229] registered_password_send_method: 操作设备:android oppo_sj001_devices,输入注册password:1
+[2022/03/08 15:18:01] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[2]')元素输入:1
+[2022/03/08 15:18:01] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[2]')
+[2022/03/08 15:18:03] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:18:04] INFO [home_page.py:252] registered_confirm_password_send_method: 操作设备:android oppo_sj001_devices,输入注册确认密码:1
+[2022/03/08 15:18:04] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[3]')元素输入:1
+[2022/03/08 15:18:04] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[3]')
+[2022/03/08 15:18:05] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:18:36] INFO [app_bases.py:165] quit: 操作设备:oppo_sj001_devices,结束并且退出
+[2022/03/08 15:21:06] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:21:13] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:21:13] INFO [home_page.py:109] click_registered_method: 操作设备:android oppo_sj001_devices,点击注册账号
+[2022/03/08 15:21:13] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', "//*[@text='注册账号']")
+[2022/03/08 15:21:14] INFO [home_page.py:333] registered_method: 操作设备:android oppo_sj001_devices,注册用户:用户名:test1,密码1,确认密码:1
+[2022/03/08 15:21:14] INFO [home_page.py:206] registered_user_send_method: 操作设备:android oppo_sj001_devices,输入注册username:test1
+[2022/03/08 15:21:14] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[1]')元素输入:test1
+[2022/03/08 15:21:14] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[1]')
+[2022/03/08 15:21:17] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:21:17] INFO [home_page.py:229] registered_password_send_method: 操作设备:android oppo_sj001_devices,输入注册password:1
+[2022/03/08 15:21:17] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[2]')元素输入:1
+[2022/03/08 15:21:17] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[2]')
+[2022/03/08 15:21:19] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:21:20] INFO [home_page.py:252] registered_confirm_password_send_method: 操作设备:android oppo_sj001_devices,输入注册确认密码:1
+[2022/03/08 15:21:20] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[3]')元素输入:1
+[2022/03/08 15:21:20] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[3]')
+[2022/03/08 15:21:22] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:21:22] INFO [home_page.py:274] registered_click_agreement_method: 操作设备:android oppo_sj001_devices,点击同意服务条款
+[2022/03/08 15:21:22] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.view.ViewGroup/android.widget.CheckBox')
+[2022/03/08 15:21:23] INFO [home_page.py:293] click_registered_button_method: 操作设备:oppo_sj001_devices,点击注册按钮
+[2022/03/08 15:21:23] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.Button')
+[2022/03/08 15:21:51] INFO [app_bases.py:20] connect_appium: 连接appium,连接设备是:oppo_sj001_devices
+[2022/03/08 15:22:00] INFO [app_bases.py:195] get_window_size: 操作设备:oppo_sj001_devices,获取当前窗口的宽度和高度
+[2022/03/08 15:22:00] INFO [home_page.py:109] click_registered_method: 操作设备:android oppo_sj001_devices,点击注册账号
+[2022/03/08 15:22:00] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', "//*[@text='注册账号']")
+[2022/03/08 15:22:01] INFO [home_page.py:333] registered_method: 操作设备:android oppo_sj001_devices,注册用户:用户名:test1,密码1,确认密码:1
+[2022/03/08 15:22:01] INFO [home_page.py:206] registered_user_send_method: 操作设备:android oppo_sj001_devices,输入注册username:test1
+[2022/03/08 15:22:01] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[1]')元素输入:test1
+[2022/03/08 15:22:01] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[1]')
+[2022/03/08 15:22:04] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:22:04] INFO [home_page.py:229] registered_password_send_method: 操作设备:android oppo_sj001_devices,输入注册password:1
+[2022/03/08 15:22:04] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[2]')元素输入:1
+[2022/03/08 15:22:04] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[2]')
+[2022/03/08 15:22:06] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:22:07] INFO [home_page.py:252] registered_confirm_password_send_method: 操作设备:android oppo_sj001_devices,输入注册确认密码:1
+[2022/03/08 15:22:07] INFO [app_bases.py:144] send_keys: 操作设备:oppo_sj001_devices,向:('xpath', '//android.widget.EditText[3]')元素输入:1
+[2022/03/08 15:22:07] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.EditText[3]')
+[2022/03/08 15:22:08] INFO [app_bases.py:134] tap: 操作设备:oppo_sj001_devices,触摸位置x/y:[(322, 134)],长按条件:None
+[2022/03/08 15:22:08] INFO [home_page.py:274] registered_click_agreement_method: 操作设备:android oppo_sj001_devices,点击同意服务条款
+[2022/03/08 15:22:08] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.view.ViewGroup/android.widget.CheckBox')
+[2022/03/08 15:22:09] INFO [home_page.py:293] click_registered_button_method: 操作设备:oppo_sj001_devices,点击注册按钮
+[2022/03/08 15:22:09] INFO [app_bases.py:58] wait_find: 操作的设备是:oppo_sj001_devices,通过显示等待定位('xpath', '//android.widget.Button')
+[2022/03/08 15:22:39] INFO [app_bases.py:165] quit: 操作设备:oppo_sj001_devices,结束并且退出

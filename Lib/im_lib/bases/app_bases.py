@@ -148,7 +148,7 @@ class Android_Appium_bases():
         el.send_keys(text)
         self.tap(devices_name,[(322, 134)])
 
-    def get_text(self,devices_name,element) -> str:
+    def get_text(self,devices_name, element) -> str:
         """
         :param devices_name: 设备名称
         :return: str

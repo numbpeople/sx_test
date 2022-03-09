@@ -12,7 +12,7 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
 Resource          ../../Common/UserCommon/UserAttributesCommon.robot
 Resource          ../../Result/UserResult/UserAttribute_Result.robot
 Force Tags    用户属性
-Test Teardown    Test User Attribute Teardown
+# Test Teardown    Test User Attribute Teardown
 
 *** Test Cases ***
 获取属性容量(未设置用户属性)

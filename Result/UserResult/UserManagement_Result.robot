@@ -15,7 +15,7 @@ ${NewUserWithIllegalPassWord}    {"error":"illegal_argument","exception":"java.l
 ${NewUserWithIllegalPassWordDiffEntity}    {"error":"illegal_argument","error_description":"password or pin must provided"}
 
 ${NewMutilUser}    {"path":"/users","uri":"https://a1-hsb.easemob.com/easemob-demo/easeim/users","timestamp":1634649328314,"organization":"easemob-demo","application":"e019c634-e3f2-4e9c-9393-463657845f4f","entities":[{"uuid":"a0f92c00-30de-11ec-a3fa-eb428ad19deb","type":"user","created":1634649328325,"modified":1634649328325,"username":"123ddda1231","activated":true},{"uuid":"a0f9ef50-30de-11ec-b878-990b6a4e545d","type":"user","created":1634649328331,"modified":1634649328331,"username":"adfa11s123123sssdad","activated":true}],"action":"post","data":[],"duration":24,"applicationName":"easeim"}
-${NewMutilUserDiffEntity}    {"action":"post","path":"/users","entities":[{"type":"user","username":"%s","activated":true},{"type":"user","username":"%s","activated":true}],"organization":"%s","applicationName":"%s"}
+${NewMutilUserDiffEntity}    {"action":"post","path":"/users","entities":[{"type":"user","activated":true},{"type":"user","activated":true}],"organization":"%s","applicationName":"%s"}
 
 ${GetSingleUser}    {"action":"get","path":"/users","uri":"http://a1-mesos.easemob.com/ljp/8776262879/users/1","entities":[{"uuid":"f1068e00-6a74-11e9-89ab-dd97cc4643af","type":"user","created":1556538610400,"modified":1556538610400,"username":"1","activated":true,"nickname":"1"}],"timestamp":1556599588754,"duration":7,"count":1}
 ${GetSingleUserDiffEntity}    {"action":"get","path":"/users","entities":[{"uuid":"%s","type":"user","created":%s,"modified":%s,"username":"%s","activated":true,"nickname":"%s"}],"count":1}

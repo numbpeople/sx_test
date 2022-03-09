@@ -62,4 +62,4 @@ connect_config:
     deviceName: CLB7N18B05003594
     appActivity: *appActivity
     appPackage: *appPackage
-    noRese: true
+    noReset: true

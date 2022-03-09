@@ -383,7 +383,7 @@ Create New Multi User Template
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
-    @{argumentValue}    create list    '${user1.username}'    '${user2.username}'    '${baseRes.validOrgName}'    '${baseRes.validAppName}'
+    @{argumentValue}    create list    '${baseRes.validOrgName}'    '${baseRes.validAppName}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 

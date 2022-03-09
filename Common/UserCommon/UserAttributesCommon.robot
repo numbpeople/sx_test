@@ -407,8 +407,8 @@ Get More Attribute Template
     &{apiResponse}    Set Request Attribute And Run Keyword    ${contentType}    ${token}    ${statusCode}    ${keywordDescribtion}   Get More User Attribute
     ...    @{arguments}
     Log Dictionary    ${apiResponse}
-    @{argumentField}    create list    '${username1}'    '${properties1}'    '${username1}'    '${username2}'    '${username3}'
-    @{argumentValue}    create list    '${username1}'    '${properties1}'    '${username1}'    '${username2}'    '${username3}'
+    @{argumentField}    create list    '${username1}'    '${properties1}'    '${properties1}'    '${username2}'    '${username3}'
+    @{argumentValue}    create list    '${username1}'    '${properties1}'    '${properties1}'    '${username2}'    '${username3}'
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
     

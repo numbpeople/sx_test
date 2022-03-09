@@ -265,22 +265,23 @@ if __name__ == '__main__':
     platform = "android"
     a=Public()
     driver=a.connect_appium_method(devices)
-    print(a.get_window_size(devices))
-    a.login_page("click_registered",platform,devices)
-    a.user_registered_page("registered_user",platform,devices,"test1","1","1")
-    # a.click_session_button_method(platform,devices)
+    a.login_page("android_login",platform,devices,"test1",1)
+    print(a.get_activity(devices))
+    a.click_more_button_method(platform,devices)
+    a.click_add_friend_button_method(platform,devices)
+    print(a.get_activity(devices))
+    a.start_activity(devices,".MainActivity")
+
+
+
     # a.click_more_button_method(platform,devices)
     # a.click_add_friend_button_method(platform,devices)
     # a.add_search_user_method(platform,devices,"test123")
+    # a.simulation_key(devices,66)
+    # time.sleep(2)
+    # a.click_cancel_button_method(platform,devices)
 
-    # a.click_user_session_method(platform, devices, "alone1")
-
-    # a.login_page("android_login", "android", devices,"test1","1")
-    # a.find_element_text(devices)
-    # a.find_element_text(devices, ["使用时允许", "使用时允许", "使用时允许", "允许", "允许"])
-    # b.public_app_background(devices,3)
-    # print(b.public_is_app_installed(devices,"com.hyphenate.easeim"))
-    time.sleep(30)
+    time.sleep(10)
     a.quit(devices)
 
 

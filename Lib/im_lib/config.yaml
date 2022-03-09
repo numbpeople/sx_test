@@ -7,7 +7,7 @@ authorization_list: ["使用时允许","允许","仅使用期间允许"]
 im_service_configs:
   hsb:
     appkey: easemob-demo#test-zdh-mqtt
-    dns: True
+    dns: False
     im_host: 106.75.100.247
     port: 6717
     rest_host: a1-hsb.easemob.com
@@ -30,7 +30,7 @@ start_app_options:
     unlockKey: &unlockKey '111111'
     newCommandTimeout: &newCommandTimeout 3600  # 等待新命令的最大时长，单位为秒
     connectHardwareKeyboard: &connectHardwareKeyboard True # 连接键盘
-    noRese: &noRese true # 不重置App，保留应用当前状态，默认为false
+    noReset: &noRese true # 不重置App，保留应用当前状态，默认为false
 
 connect_config:
   my_iphone:
@@ -46,8 +46,7 @@ connect_config:
     appActivity: *appActivity
     appPackage: *appPackage
     deviceName: *oppo_sj001_devicesName
-    connectHardwareKeyboard: false
-#    noReset: *noRese
+    noReset: *noRese
 
   helen_iphone:
     platformName: ios

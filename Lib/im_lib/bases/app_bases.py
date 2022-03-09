@@ -210,4 +210,26 @@ class Android_Appium_bases():
                      f"结束x坐标:{end_x},结束y坐标:{end_y}")
         self.driver[devices_name].swipe(start_x, start_y, end_x, end_y, duration)
 
+    def simulation_key(self,devices_name: str, key: str) -> None:
 
+        self.driver[devices_name].keyevent(key)
+
+    def start_activity(self, devices_name: str, activity: str) -> None:
+        """
+        :作用 跳转指定页面
+        :param devices_name: 设备名称
+        :param activity: 页面ID
+        :return: None
+        """
+        logging.info(f"操作设备:{devices_name},跳转到登陆页面:{activity}")
+        app_id = "com.hyphenate.easeim"
+        self.driver[devices_name].start_activity(app_id, activity)
+
+    def get_activity(self, devices_name: str) -> str:
+        """
+        :作用 获取activity
+        :param devices_name: 设备名称
+        :return: str
+        """
+        logging.info(f"操作设备:{devices_name},获取activity")
+        return self.driver[devices_name].current_activity

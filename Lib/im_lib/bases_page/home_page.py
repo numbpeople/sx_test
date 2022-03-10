@@ -1,4 +1,4 @@
-from bases.app_bases import Android_Appium_bases
+from bases.app_bases import Android_Appium_bases, IosAppiumBases
 from bases.bases import Data_bases
 from appium.webdriver.webdriver import WebDriver
 import logging
@@ -179,7 +179,7 @@ class Login_page(Android_Appium_bases):
             pass
 
 
-class Registered_page(Android_Appium_bases):
+class Registered_page(Android_Appium_bases, IosAppiumBases):
 
     android_registered_user_name_element = ("xpath","//android.widget.EditText[1]")
     android_registered_password_element = ("xpath","//android.widget.EditText[2]")
@@ -192,7 +192,7 @@ class Registered_page(Android_Appium_bases):
     ios_registered_password_element = ("xpath", "//XCUIElementTypeSecureTextField[1]")
     ios_registered_confirm_password_element = ("xpath", "//XCUIElementTypeSecureTextField[2]")
     ios_registered_agreement_element = ("xpath", "//XCUIElementTypeButton[@name=\"unAgreeProtocol\"]")
-    ios_registered_button_element = ("xpath", "//XCUIElementTypeButton")
+    ios_registered_button_element = ("xpath", "(//XCUIElementTypeStaticText[@name=\"注册账号\"])[2]")
     ios_registered_return_element = ("xpath", '//XCUIElementTypeButton[@name="back left"]')
 
     def registered_user_send_method(self, platform: str, devices_name: str, user: str = None) -> str or None:
@@ -208,16 +208,22 @@ class Registered_page(Android_Appium_bases):
 
         if str(platform).upper() == "ANDROID":
             element = self.android_registered_user_name_element
+            if user:
+                self.send_keys(devices_name, user, element)
+                self.tap(devices_name, [(407, 407)])
+            elif not user:
+                return self.get_text(devices_name, element)
         elif str(platform).upper() == "IOS":
             element = self.ios_registered_user_name_element
+            if user:
+                self.input_keys(devices_name, user, element)
+                self.tap(devices_name, [(407, 407)])
+            elif not user:
+                return self.get_text(devices_name, element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
-        if user:
-            self.send_keys(devices_name, user, element)
-            self.tap(devices_name, [(407, 407)])
-        elif not user:
-            return self.get_text(devices_name, element)
+
 
     def registered_password_send_method(self, platform: str, devices_name:str, password: str = None) -> str or None:
         """

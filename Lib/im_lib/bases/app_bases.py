@@ -233,3 +233,25 @@ class Android_Appium_bases():
         """
         logging.info(f"操作设备:{devices_name},获取activity")
         return self.driver[devices_name].current_activity
+
+class IosAppiumBases:
+    appiumBases = Android_Appium_bases()
+
+    def input_keys(self, devices_name, text, element) -> None:
+        """
+        :param devices_name: 设备名称
+        :param text: 输入的文本
+        :param element: 元素
+        :return:None
+        """
+        logging.info(f"操作设备:{devices_name},向:{element}元素输入:{text}")
+        self.appiumBases.wait_find(devices_name, element).send_keys(text)
+        self.appiumBases.tap(devices_name, [(300, 134)])
+
+    def hide_keyboard(self, devices_name: str) -> None:
+        """
+        :param devices_name: 设备名称
+        :return: None
+        """
+        logging.info(f"操作设备:{devices_name},返回")
+        self.driver[devices_name].hide_keyboard()

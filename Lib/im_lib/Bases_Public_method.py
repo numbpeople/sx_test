@@ -16,6 +16,13 @@ class Bases_Public_method(Android_Appium_bases):
         "a_android_login_button_element" : a_login_page.android_login_button_element,  # 登陆按钮元素
         "a_registered_element" : a_login_page.android_registered_element,  # 进去注册页面元素
         "a_service_config_element" : a_login_page.android_service_config_element,  # 进入配置连接服务器页面元素
+
+        "i_version_element": a_login_page.ios_version_element, #版本号
+        "i_user_name_element": a_login_page.ios_user_name_element, # 用户名
+        "i_password_element": a_login_page.ios_password_element, # 密码
+        "i_login_button_element": a_login_page.ios_login_button_element, # 登陆
+        "i_registered_element": a_login_page.ios_registered_element, # 注册
+        "i_service_config_element": a_login_page.ios_service_config_element # 服务器信息配置
     }
 
     # 注册页面元素
@@ -26,6 +33,14 @@ class Bases_Public_method(Android_Appium_bases):
         "a_agreement_element":a_registered_page.android_registered_agreement_element,  # 注册同意服务条款元素
         "a_registered_button_element":a_registered_page.android_registered_button_element,  # 注册按钮元素
         "a_registered_return_element":a_registered_page.android_registered_return_element,  # 退出注册页面元素
+
+        "i_registered_user_name_element": a_registered_page.ios_registered_user_name_element,
+        "i_registered_password_element": a_registered_page.ios_registered_password_element,
+        "i_registered_confirm_password_element": a_registered_page.ios_registered_confirm_password_element,
+        "i_registered_agreement_element": a_registered_page.ios_registered_agreement_element,
+        "i_registered_button_element": a_registered_page.ios_registered_button_element,
+        "i_registered_return_element": a_registered_page.ios_registered_return_element
+
     }
 
     # 服务器配置页面
@@ -41,6 +56,16 @@ class Bases_Public_method(Android_Appium_bases):
         "a_cancel_reset_service_element": a_service_config.android_cancel_reset_service_element,  # 配置 取消重置按钮元素
         "a_confirm_reset_service_element": a_service_config.android_confirm_reset_service_element,  # 配置 确认重置按钮元素
         "a_save_button_element": a_service_config.android_save_button_element,  # 保存配置按钮
+
+        "i_service_switch_element": a_service_config.ios_service_switch_element,
+        "i_app_key": a_service_config.ios_app_key_element,
+        "i_apns_cert_name": a_service_config.ios_apns_cert_name_element,
+        "i_specify_server": a_service_config.ios_specify_server_element,
+        "i_im_server": a_service_config.ios_im_server_element,
+        "i_im_port": a_service_config.ios_im_port_element,
+        "i_rest_server": a_service_config.ios_rest_server_element,
+        "i_https_only": a_service_config.ios_https_only_element,
+        "i_save_button": a_service_config.ios_save_button_element
 
     }
 

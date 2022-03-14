@@ -1,4 +1,6 @@
+import os
 from os.path import join
+
 import random
 import time
 from appium import webdriver
@@ -34,6 +36,16 @@ class Android_Appium_bases():
             return False
         else:
             return True
+
+    def xpath_text_positioning(self, devices_name, text):
+        """
+        :作用 通过xpath_text定位
+        :param devices_name: 设备名称
+        :param text: 定位的元素文本
+        :return: 实例
+        """
+        logging.info(f"操作的设备:{devices_name},定位元素:{text}")
+        return self.wait_find(devices_name, ("xpath", f"//*[@text='{text}']"))
 
     def my_element(self, devices_name: str, element) :
         """
@@ -210,9 +222,23 @@ class Android_Appium_bases():
                      f"结束x坐标:{end_x},结束y坐标:{end_y}")
         self.driver[devices_name].swipe(start_x, start_y, end_x, end_y, duration)
 
-    def simulation_key(self,devices_name: str, key: str) -> None:
+    def simulation_key(self,devices_name: str, key: int) -> None:
 
-        self.driver[devices_name].keyevent(key)
+        pass
+
+    def input_method_operation(self, devices_name: str, options: str) -> None:
+        """
+       :作用 输入法操作
+       :param devices_name: 设备名称
+       :param options：
+            go：点击输入发 Go 按钮
+            search：点击输入法搜索按钮
+            done：点击输入法确认按钮
+            previous：点击输入向前按钮；
+       :return: None
+       """
+        logging.info(f"操作设备:{devices_name},点击{options}按钮")
+        self.driver[devices_name].execute_script('mobile: performEditorAction', {'action': f'{options}'})
 
     def start_activity(self, devices_name: str, activity: str) -> None:
         """

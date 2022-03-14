@@ -3,6 +3,7 @@ from bases_page.home_page import Login_page, Service_config, Registered_page
 from bases.app_bases import Android_Appium_bases
 from config import logging
 
+
 class Bases_Public_method(Android_Appium_bases):
     a_login_page = Login_page()
     a_registered_page = Registered_page()
@@ -215,3 +216,27 @@ class Bases_Public_method(Android_Appium_bases):
         """
         logging.info(f"操作设备:{devices_name},获取activity")
         return self.get_activity(devices_name)
+
+    def public_input_method_operation(self, devices_name: str, options: str) -> None:
+        """
+       :作用 输入法操作
+       :param devices_name: 设备名称
+       :param options：
+            go：点击输入发 Go 按钮
+            search：点击输入法搜索按钮
+            done：点击输入法确认按钮
+            previous：点击输入向前按钮；
+       :return: None
+       """
+        logging.info(f"操作设备:{devices_name},点击{options}按钮")
+        self.input_method_operation(devices_name, options)
+
+    def public_get_text(self,devices_name: str, text: str) -> str:
+        """
+       :作用 获取元素文本
+       :param devices_name: 设备名称
+       :param text: 定位元素文本
+       :return: str
+       """
+        logging.info(f"操作设备:{devices_name},获取{text}文本")
+        return self.xpath_text_positioning(devices_name, text).text

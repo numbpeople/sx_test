@@ -633,7 +633,6 @@ class Service_config(Android_Appium_bases):
         logging.info(f"操作设备:{platform} {devices_name},开始配置连接服务器")
         data = Data_bases()
         service_config_data = data.get_service_config(env_name)
-
         if str(platform).upper() == "ANDROID":
             custom_service_switch = self.android_custom_service_switch_element
             https_switch_element =  self.android_https_switch_element

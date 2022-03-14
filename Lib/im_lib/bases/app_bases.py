@@ -260,7 +260,9 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},获取activity")
         return self.driver[devices_name].current_activity
 
+
 class IosAppiumBases:
+
     appiumBases = Android_Appium_bases()
 
     def input_keys(self, devices_name, text, element) -> None:

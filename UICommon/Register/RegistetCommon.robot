@@ -47,13 +47,19 @@ Set UserName Password
     #构建错误的用户名格式：特殊字符、英文
     ${username4}    Set Variable    ${random2}@
     Log    ${username4}    
-    #构建正确的用户名长度超过64位：英文
+    #构建正确的用户名长度64位：英文
     ${username5}    Generate Random String    64    [LOWER]
+    #构建正确的用户名长度超过64位：65英文
+    ${username6}    Generate Random String    65    [LOWER]
+    #用户名长度为错误格式：中文
+    # ${username7}    Set Variable    用户名
     Get Length    item
     #构建用户名密码
     ${password}    Generate Random String    1    [NUMBERS]
     #用户名和密码设置全局变量
-    Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}    username4=${username4}    username5=${username5}    password=${password}
+    Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}
+    ...    username4=${username4}    username5=${username5}    username6=${username6}    
+    ...    password=${password}
     Set Global Variable    ${login}    ${login}
 Determine Regist Page Element
     [Arguments]    ${drivername}    ${element}    ${platform}    ${drivername}
@@ -70,8 +76,11 @@ Resgiter User Template
     ...    步骤5：通过restapi判断是否注册成功
     #注册用户参数:平台、设备名、用户名、密码、确认密码、接口返回的code值
     Log Many    ${platform}    ${drivername}    ${username}    ${password}    ${password}
+    #点击登录页面注册账号
     login_page    click_registered    ${platform}    ${drivername}
+    #注册页面注册账号
     user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${password}    ${password}
+    #等待一段时间，方便后边restapi查看用户
     Sleep    ${timeout}  
     #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
     ${element_res}    element_judge    ${drivername}    registered_page_element    a_user_element

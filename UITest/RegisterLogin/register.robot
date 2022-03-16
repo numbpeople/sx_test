@@ -14,11 +14,12 @@ RegisterUser
     ...    操作步骤：
     ...    1.使用不存在的用户名和密码注册
     ...    2.通过rest api调用获取用户详情验证
-    ...    3.注册用户名使用64位以内字符：纯英文、英文-_、英文数字、纯数字
+    ...    3.注册用户名使用64位以内字符：纯英文、英文-_、英文数字、纯数字、64英文、65位英文、中文
     [Template]    Resgiter User Template
-    ${platform.platform}    ${driver.name}    ${login.username}    ${login.password}    ${login.password}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username1}    ${login.password}    ${login.password}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username2}    ${login.password}    ${login.password}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username3}    ${login.password}    ${login.password}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username4}    ${login.password}    ${login.password}    ${login.errorcode}
+    # ${platform.platform}    ${driver.name}    ${login.username}    ${login.password}    ${login.password}    ${login.rightcode}
+    # ${platform.platform}    ${driver.name}    ${login.username1}    ${login.password}    ${login.password}    ${login.rightcode}
+    # ${platform.platform}    ${driver.name}    ${login.username2}    ${login.password}    ${login.password}    ${login.rightcode}
+    # ${platform.platform}    ${driver.name}    ${login.username3}    ${login.password}    ${login.password}    ${login.rightcode}
+    # ${platform.platform}    ${driver.name}    ${login.username4}    ${login.password}    ${login.password}    ${login.errorcode}
     ${platform.platform}    ${driver.name}    ${login.username5}    ${login.password}    ${login.password}    ${login.rightcode}
+    # ${platform.platform}    ${driver.name}    ${login.username6}    ${login.password}    ${login.password}    ${login.errorcode}

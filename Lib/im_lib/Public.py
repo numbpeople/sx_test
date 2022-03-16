@@ -1,6 +1,6 @@
 import time
 from bases_page.home_page import Login_page, Service_config, Registered_page
-from bases_page.session_page import session_page, Add_group_option_user, Add_user
+from bases_page.session_page import Session_page, Add_group_option_user, Add_user
 from bases.bases import Data_bases
 from Bases_Public_method import Bases_Public_method
 
@@ -8,7 +8,7 @@ class Public(
     Login_page,
     Registered_page,
     Service_config,
-    session_page,
+    Session_page,
     Add_group_option_user,
     Add_user
 ):
@@ -264,6 +264,9 @@ if __name__ == '__main__':
     platform = "android"
     a=Public()
     driver=a.connect_appium_method(devices)
+    a.login_page("click_registered",platform,devices,)
+    a.user_registered_page("registered_user",platform,devices,"test1","1","1")
+
     # a.login_page("android_login",platform,devices,"test1",1)
     # print(a.get_activity(devices))
     # a.click_more_button_method(platform,devices)
@@ -273,13 +276,12 @@ if __name__ == '__main__':
 
 
 
-    a.click_more_button_method(platform,devices)
-    a.click_add_friend_button_method(platform,devices)
-    a.add_search_user_method(platform,devices,"test1")
-    a.input_method_operation(devices,"search")
-    a.click_add_user_button(platform,devices)
-    v=a.xpath_text_positioning(devices, "不能添加自己").text
-    print(v)
+    # a.click_more_button_method(platform,devices)
+    # a.click_add_friend_button_method(platform,devices)
+    # a.add_search_user_method(platform,devices,"test1")
+    # a.input_method_operation(devices,"search")
+    # a.click_add_user_button(platform,devices)
+    # v=a.xpath_text_positioning(devices, "不能添加自己").text
     time.sleep(10)
     a.quit(devices)
 

@@ -5,13 +5,12 @@ import logging
 
 
 class Login_page(Android_Appium_bases):
-
     android_version_element = ("xpath", "//android.widget.TextView[1]")
     android_user_name_element = ("xpath", "//android.widget.EditText[1]")
     android_password_element = ("xpath", "//android.widget.EditText[2]")
     android_login_button_element = ("xpath", "//android.widget.Button")
-    android_registered_element = ("xpath", "//android.widget.TextView[2]]")
-    android_service_config_element = ("xpath", "//android.widget.TextView[3]")
+    android_registered_element = ("xpath", "//*[@text='注册账号']")
+    android_service_config_element = ("xpath", "//*[@text='服务器配置']")
 
     ios_version_element = ("xpath", "//XCUIElementTypeStaticText[@name=\"V3.9.0\"]")
     ios_user_name_element = ("xpath", "//XCUIElementTypeTextField")
@@ -20,17 +19,17 @@ class Login_page(Android_Appium_bases):
     ios_registered_element = ("xpath", "//XCUIElementTypeButton[@name='注册账号']")
     ios_service_config_element = ("xpath", "//XCUIElementTypeButton[@name='服务器配置']")
 
-    def get_im_version_method(self, platform: str,devices_name:str) -> str:
+    def get_im_version_method(self, platform: str, devices_name: str) -> str:
         """调用该方法返回一个im的版本号"""
         logging.info(f"操作设备:{platform} {devices_name},获取im版本号")
         if str(platform).upper() == "ANDROID":
-            return self.wait_find(devices_name,self.android_version_element).text
+            return self.wait_find(devices_name, self.android_version_element).text
         elif str(platform).upper() == "IOS":
-            return self.wait_find(devices_name,self.ios_version_element).text
+            return self.wait_find(devices_name, self.ios_version_element).text
         else:
             return "platform错误，只能传入android 或者 ios设备"
 
-    def send_user_name_method(self, platform: str,devices_name:str, user: str = None) -> str or None:
+    def send_user_name_method(self, platform: str, devices_name: str, user: str = None) -> str or None:
         """
         :作用 输入用户名
         :param platform: 设备类型 传入android或者ios
@@ -52,7 +51,7 @@ class Login_page(Android_Appium_bases):
         elif not user:
             return self.get_text(devices_name, element)
 
-    def send_password_method(self, platform: str, devices_name:str, password: str = None) -> str or None:
+    def send_password_method(self, platform: str, devices_name: str, password: str = None) -> str or None:
         """
         :作用 输入密码
         :param platform: 设备类型 传入android或者ios
@@ -74,7 +73,7 @@ class Login_page(Android_Appium_bases):
         elif not password:
             return self.get_text(devices_name, element)
 
-    def click_login_button_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def click_login_button_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 点击登陆按钮
         :param platform: 设备类型 传入android或者ios
@@ -85,7 +84,7 @@ class Login_page(Android_Appium_bases):
         logging.info(f"操作设备:{platform} {devices_name},点击登陆按钮")
         element = None
         if str(platform).upper() == "ANDROID":
-            element=self.wait_find(devices_name, self.android_login_button_element)
+            element = self.wait_find(devices_name, self.android_login_button_element)
         elif str(platform).upper() == "IOS":
             element = self.wait_find(devices_name, self.ios_login_button_element)
         else:
@@ -98,7 +97,7 @@ class Login_page(Android_Appium_bases):
         else:
             return "options字段错误，只能传入:text click"
 
-    def click_registered_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def click_registered_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 点击注册账号
         :param platform: 设备类型 传入android或者ios
@@ -110,7 +109,7 @@ class Login_page(Android_Appium_bases):
         element = None
 
         if str(platform).upper() == "ANDROID":
-            element=self.wait_find(devices_name, self.android_registered_element)
+            element = self.wait_find(devices_name, self.android_registered_element)
         elif str(platform).upper() == "IOS":
             element = self.wait_find(devices_name, self.ios_registered_element)
         else:
@@ -123,7 +122,7 @@ class Login_page(Android_Appium_bases):
         else:
             return "options字段错误，只能传入:text click"
 
-    def click_service_config_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def click_service_config_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 获取登陆按钮属性
         :param platform: 设备类型 传入android或者ios
@@ -135,7 +134,7 @@ class Login_page(Android_Appium_bases):
         element = None
 
         if str(platform).upper() == "ANDROID":
-            element = self.wait_find(devices_name,self.android_service_config_element)
+            element = self.wait_find(devices_name, self.android_service_config_element)
         elif str(platform).upper() == "IOS":
             element = self.wait_find(devices_name, self.ios_service_config_element)
         else:
@@ -148,7 +147,7 @@ class Login_page(Android_Appium_bases):
         else:
             return "options字段错误，只能传入:text click"
 
-    def login(self, platform: str, devices_name:str, username: str, password: str) -> None or str:
+    def login(self, platform: str, devices_name: str, username: str, password: str) -> None or str:
         """
         :作用 登陆
         :param platform: 设备类型 传入android或者ios
@@ -171,21 +170,20 @@ class Login_page(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
 
         if self.judge_element(devices_name, element):
-            assert expect_version == practical_version , f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
+            assert expect_version == practical_version, f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
             self.send_user_name_method(platform, devices_name, username)
             self.send_password_method(platform, devices_name, password)
-            self.click_login_button_method(platform,devices_name)
+            self.click_login_button_method(platform, devices_name)
         else:
             pass
 
 
 class Registered_page(Android_Appium_bases, IosAppiumBases):
-
-    android_registered_user_name_element = ("xpath","//android.widget.EditText[1]")
-    android_registered_password_element = ("xpath","//android.widget.EditText[2]")
-    android_registered_confirm_password_element = ("xpath","//android.widget.EditText[3]")
-    android_registered_agreement_element = ("xpath","//android.view.ViewGroup/android.widget.CheckBox")
-    android_registered_button_element = ("xpath","//android.widget.Button")
+    android_registered_user_name_element = ("xpath", "//android.widget.EditText[1]")
+    android_registered_password_element = ("xpath", "//android.widget.EditText[2]")
+    android_registered_confirm_password_element = ("xpath", "//android.widget.EditText[3]")
+    android_registered_agreement_element = ("xpath", "//android.view.ViewGroup/android.widget.CheckBox")
+    android_registered_button_element = ("xpath", "//android.widget.Button")
     android_registered_return_element = ("xpath", '//android.widget.ImageButton[@content-desc="转到上一层级"]')
 
     ios_registered_user_name_element = ("xpath", "//XCUIElementTypeTextField")
@@ -223,9 +221,7 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
         else:
             return "platform错误，只能传入android或者ios设备"
 
-
-
-    def registered_password_send_method(self, platform: str, devices_name:str, password: str = None) -> str or None:
+    def registered_password_send_method(self, platform: str, devices_name: str, password: str = None) -> str or None:
         """
         :作用 输入注册密码
         :param platform: 设备类型 传入android或者ios
@@ -249,7 +245,8 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
         elif not password:
             return self.get_text(devices_name, element)
 
-    def registered_confirm_password_send_method(self, platform: str, devices_name:str, password: str = None) -> str or None:
+    def registered_confirm_password_send_method(self, platform: str, devices_name: str,
+                                                password: str = None) -> str or None:
         """
         :作用 输入注册确认密码
         :param platform: 设备类型 传入android或者ios
@@ -268,12 +265,12 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
             return "platform错误，只能传入android或者ios设备"
 
         if password:
-            self.send_keys(devices_name,password, element)
+            self.send_keys(devices_name, password, element)
             self.tap(devices_name, [(407, 407)])
         elif not password:
             return self.get_text(devices_name, element)
 
-    def registered_click_agreement_method(self, platform: str, devices_name:str) -> str or None:
+    def registered_click_agreement_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击同意服务条款
         :param platform: 设备类型 传入android或者ios
@@ -292,7 +289,7 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
 
         element.click()
 
-    def click_registered_button_method(self, platform: str, devices_name:str) -> None or str:
+    def click_registered_button_method(self, platform: str, devices_name: str) -> None or str:
         """
         :作用 点击注册按钮
         :param platform: 设备类型 传入android或者ios
@@ -310,7 +307,7 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
             return "platform错误，只能传入android或者ios设备"
         element.click()
 
-    def registered_return_method(self, platform: str, devices_name:str) -> str or None:
+    def registered_return_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击返回
         :param platform: 设备类型 传入android或者ios
@@ -329,7 +326,7 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
 
         element.click()
 
-    def registered_method(self, platform: str, devices_name:str, user: str, pwd: str, confirm_pwd: str) -> None:
+    def registered_method(self, platform: str, devices_name: str, user: str, pwd: str, confirm_pwd: str) -> None:
         """
         :作用 注册用户
         :param platform: 设备类型 传入android或者ios
@@ -343,24 +340,22 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
         self.registered_user_send_method(platform, devices_name, user)
         self.registered_password_send_method(platform, devices_name, pwd)
         self.registered_confirm_password_send_method(platform, devices_name, confirm_pwd)
-        self.registered_click_agreement_method(platform,devices_name)
-        self.click_registered_button_method(platform,devices_name)
-
+        self.registered_click_agreement_method(platform, devices_name)
+        self.click_registered_button_method(platform, devices_name)
 
 
 class Service_config(Android_Appium_bases):
-
-    android_custom_service_switch_element = ("xpath","//android.widget.Switch[1]")
-    android_appkey_element = ("xpath","//android.widget.EditText[1]")
-    android_use_service_switch_element = ("xpath","//android.widget.Switch[2]")
-    android_im_service_host_element = ("xpath","//android.widget.EditText[2]")
-    android_port_element = ("xpath","//android.widget.EditText[3]")
-    android_rest_service_host_element = ("xpath","//android.widget.EditText[4]")
-    android_https_switch_element = ("xpath","//android.view.ViewGroup/android.widget.Switch[3]")
-    android_reset_service_setupthe_element = ("xpath","//android.widget.Button[1]")
+    android_custom_service_switch_element = ("xpath", "//android.widget.Switch[1]")
+    android_appkey_element = ("xpath", "//android.widget.EditText[1]")
+    android_use_service_switch_element = ("xpath", "//android.widget.Switch[2]")
+    android_im_service_host_element = ("xpath", "//android.widget.EditText[2]")
+    android_port_element = ("xpath", "//android.widget.EditText[3]")
+    android_rest_service_host_element = ("xpath", "//android.widget.EditText[4]")
+    android_https_switch_element = ("xpath", "//android.view.ViewGroup/android.widget.Switch[3]")
+    android_reset_service_setupthe_element = ("xpath", "//android.widget.Button[1]")
     android_cancel_reset_service_element = ("xpath", "//android.widget.Button[1]")
     android_confirm_reset_service_element = ("xpath", "//android.widget.Button[2]")
-    android_save_button_element = ("xpath","//android.widget.Button[2]")
+    android_save_button_element = ("xpath", "//android.widget.Button[2]")
 
     ios_service_switch_element = ("xpath", "//XCUIElementTypeSwitch")
     ios_app_key_element = ("xpath", "//XCUIElementTypeCell[1]/XCUIElementTypeTextField")
@@ -372,7 +367,7 @@ class Service_config(Android_Appium_bases):
     ios_https_only_element = ("xpath", "//XCUIElementTypeSwitch[@name='Https Only:']")
     ios_save_button_element = ("xpath", "//XCUIElementTypeCell[8]/XCUIElementTypeOther[1]")
 
-    def click_custom_service_switch_method(self, platform: str,devices_name: str) -> None or str:
+    def click_custom_service_switch_method(self, platform: str, devices_name: str) -> None or str:
         """
         :作用 点击自定义的服务器
         :param platform: 设备类型 传入android或者ios
@@ -391,7 +386,7 @@ class Service_config(Android_Appium_bases):
 
         element.click()
 
-    def send_appkey_method(self, platform: str, devices_name:str, app_key : str) -> str or None:
+    def send_appkey_method(self, platform: str, devices_name: str, app_key: str) -> str or None:
         """
         :作用 输入app_key
         :param platform: 设备类型 传入android或者ios
@@ -410,11 +405,11 @@ class Service_config(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
 
         if app_key:
-            self.send_keys(devices_name,app_key, element)
+            self.send_keys(devices_name, app_key, element)
         elif not app_key:
             return self.get_text(devices_name, element)
 
-    def click_use_service_switch_method(self, platform: str, devices_name: str) -> None or str :
+    def click_use_service_switch_method(self, platform: str, devices_name: str) -> None or str:
         """
         :作用 点击使用私有服务器开关
         :param platform: 设备类型 传入android或者ios
@@ -433,7 +428,7 @@ class Service_config(Android_Appium_bases):
 
         element.click()
 
-    def send_im_service_host_method(self, platform: str, devices_name:str, im_host : str) -> str or None:
+    def send_im_service_host_method(self, platform: str, devices_name: str, im_host: str) -> str or None:
         """
         :作用 输入im服务器地址
         :param platform: 设备类型 传入android或者ios
@@ -452,11 +447,11 @@ class Service_config(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
 
         if im_host:
-            self.send_keys(devices_name,im_host, element)
+            self.send_keys(devices_name, im_host, element)
         elif not im_host:
             return self.get_text(devices_name, element)
 
-    def send_port_method(self, platform: str, devices_name:str, port: str) -> str or None:
+    def send_port_method(self, platform: str, devices_name: str, port: str) -> str or None:
         """
         :作用 输入端口号
         :param platform: 设备类型 传入android或者ios
@@ -475,11 +470,11 @@ class Service_config(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
 
         if port:
-            self.send_keys(devices_name,port, element)
+            self.send_keys(devices_name, port, element)
         elif not port:
             return self.get_text(devices_name, element)
 
-    def send_rest_host_method(self, platform: str, devices_name:str, rest_host: str) -> str or None:
+    def send_rest_host_method(self, platform: str, devices_name: str, rest_host: str) -> str or None:
         """
         :作用 输入rest服务器地址
         :param platform: 设备类型 传入android或者ios
@@ -498,11 +493,11 @@ class Service_config(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
 
         if rest_host:
-            self.send_keys(devices_name,rest_host, element)
+            self.send_keys(devices_name, rest_host, element)
         elif not rest_host:
             return self.get_text(devices_name, element)
 
-    def click_https_switch_method(self, platform: str, devices_name:str) -> None or str:
+    def click_https_switch_method(self, platform: str, devices_name: str) -> None or str:
         """
         :作用 点击使用https开关
         :param platform: 设备类型 传入android或者ios
@@ -521,7 +516,7 @@ class Service_config(Android_Appium_bases):
 
         element.click()
 
-    def reset_service_setupthe_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def reset_service_setupthe_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 点击重置服务器设置按钮
         :param platform: 设备类型 传入android或者ios
@@ -547,7 +542,7 @@ class Service_config(Android_Appium_bases):
         else:
             return f"options 错误,只能传入 click:点击,text:获取属性"
 
-    def cancel_reset_service_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def cancel_reset_service_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 点击取消重置配置按钮
         :param platform: 设备类型 传入android或者ios
@@ -572,7 +567,7 @@ class Service_config(Android_Appium_bases):
         else:
             return f"options 错误,只能传入 click:点击,text:获取属性"
 
-    def confirm_reset_service_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def confirm_reset_service_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 点击确认重置配置按钮
         :param platform: 设备类型 传入android或者ios
@@ -597,7 +592,7 @@ class Service_config(Android_Appium_bases):
         else:
             return f"options 错误,只能传入 click:点击,text:获取属性"
 
-    def save_button_method(self, platform: str, devices_name:str, options: str = "click") -> str or None:
+    def save_button_method(self, platform: str, devices_name: str, options: str = "click") -> str or None:
         """
         :作用 点击保存配置按钮
         :param platform: 设备类型 传入android或者ios
@@ -622,7 +617,7 @@ class Service_config(Android_Appium_bases):
         else:
             return f"options 错误,只能传入 click:点击,text:获取属性"
 
-    def service_config(self, platform: str, devices_name:str, env_name: str) -> None:
+    def service_config(self, platform: str, devices_name: str, env_name: str) -> None:
         """
         :作用 配置连接服务器
         :param platform: 设备类型 传入android或者ios
@@ -632,10 +627,13 @@ class Service_config(Android_Appium_bases):
         """
         logging.info(f"操作设备:{platform} {devices_name},开始配置连接服务器")
         data = Data_bases()
+        custom_service_switch = None
+        https_switch_element = None
         service_config_data = data.get_service_config(env_name)
+
         if str(platform).upper() == "ANDROID":
             custom_service_switch = self.android_custom_service_switch_element
-            https_switch_element =  self.android_https_switch_element
+            https_switch_element = self.android_https_switch_element
         elif str(platform).upper() == "IOS":
             custom_service_switch = self.ios_service_switch_element
             https_switch_element = self.ios_https_only_element
@@ -648,11 +646,11 @@ class Service_config(Android_Appium_bases):
             pass
         elif not service_config_data["dns"]:
             self.click_use_service_switch_method(platform, devices_name)
-            self.send_im_service_host_method(platform, devices_name,service_config_data["im_host"])
+            self.send_im_service_host_method(platform, devices_name, service_config_data["im_host"])
             self.return_method(devices_name)
-            self.send_port_method(platform, devices_name,service_config_data["port"])
+            self.send_port_method(platform, devices_name, service_config_data["port"])
             self.return_method(devices_name)
-            self.send_rest_host_method(platform, devices_name,service_config_data["rest_host"])
+            self.send_rest_host_method(platform, devices_name, service_config_data["rest_host"])
             self.return_method(devices_name)
             if not service_config_data["https"]:
                 if self.is_selected(devices_name, https_switch_element):
@@ -660,13 +658,4 @@ class Service_config(Android_Appium_bases):
             elif service_config_data["https"]:
                 if not self.is_selected(devices_name, https_switch_element):
                     self.click_https_switch_method(platform, devices_name)
-        self.save_button_method(platform, devices_name,"click")
-
-
-
-
-
-
-
-
-
+        self.save_button_method(platform, devices_name, "click")

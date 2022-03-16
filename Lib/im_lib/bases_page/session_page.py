@@ -2,7 +2,7 @@ from bases.app_bases import Android_Appium_bases
 from config import logging
 
 
-class session_page(Android_Appium_bases):
+class Session_page(Android_Appium_bases):
     android_session_element = ("xpath", "//*[@text='会话']")
     android_contacts_element = ("xpath", "//*[@text='通讯录']")
     android_my_element = ("xpath", "//*[@text='我']")
@@ -695,3 +695,18 @@ class Personal_material(Android_Appium_bases):
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
+
+
+
+class Group_user_combination():
+    session_page = Session_page()
+    add_group_option_user = Add_group_option_user()
+    add_group = Add_group()
+    add_user = Add_user()
+    personal_material = Personal_material()
+
+    def group_add(self, plarfrom: str, devices_name):
+
+        self.session_page.click_more_button_method(plarfrom, devices_name)
+        self.session_page.click_add_group_button_method(plarfrom, devices_name)
+

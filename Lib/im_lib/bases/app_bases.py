@@ -12,7 +12,7 @@ from config import logging
 
 class Android_Appium_bases():
     data = Data_bases()
-    driver:webdriver.Remote = {}
+    driver: webdriver.Remote = {}
 
     def connect_appium(self, connetc_config_name) -> None:
         """
@@ -21,7 +21,7 @@ class Android_Appium_bases():
         """
         logging.info("连接appium,连接设备是:{}".format(connetc_config_name))
         cpas = self.data.get_connect_config(name=connetc_config_name)
-        driver =webdriver.Remote(self.data.appium_server(), cpas)
+        driver = webdriver.Remote(self.data.appium_server(), cpas)
         self.driver[connetc_config_name] = driver
 
     def judge_element(self, devices_name: str, element: tuple) -> True or False:
@@ -32,7 +32,7 @@ class Android_Appium_bases():
         :return: True or False
         """
         time.sleep(0.7)
-        if str(self.my_element(devices_name,element)) == "None":
+        if str(self.my_element(devices_name, element)) == "None":
             return False
         else:
             return True
@@ -47,7 +47,7 @@ class Android_Appium_bases():
         logging.info(f"操作的设备:{devices_name},定位元素:{text}")
         return self.wait_find(devices_name, ("xpath", f"//*[@text='{text}']"))
 
-    def my_element(self, devices_name: str, element) :
+    def my_element(self, devices_name: str, element):
         """
         :作用 定位器
         :param devices_name: 设备名称
@@ -70,7 +70,7 @@ class Android_Appium_bases():
         logging.info(f"操作的设备是:{devices_name},通过显示等待定位{element}")
         config_data = self.data.config()
         try:
-            return WebDriverWait(self.driver[devices_name],config_data["positioning_out_time"],
+            return WebDriverWait(self.driver[devices_name], config_data["positioning_out_time"],
                                  config_data["interva_time"]).until(ES.presence_of_element_located(element))
         except:
 
@@ -82,7 +82,7 @@ class Android_Appium_bases():
                              screenshots_name=str(id) + '-定位失败' + str(time.strftime("-%F-%H-%M-%S") + ".png"))
             raise
 
-    def screenshots(self, devices_name: str, screenshots_name=str(time.strftime("%F-%H-%M-%S")) + ".png") ->None :
+    def screenshots(self, devices_name: str, screenshots_name=str(time.strftime("%F-%H-%M-%S")) + ".png") -> None:
         """
         :作用 截图
         :param devices_name: 设备名称
@@ -101,9 +101,8 @@ class Android_Appium_bases():
         """
 
         logging.info(f"操作设备:{devices_name},判断改元素是否可用:{element}")
-        print('erer',self.driver[devices_name].page_source)
+        print('erer', self.driver[devices_name].page_source)
         return self.my_element(devices_name=devices_name, element=element)
-
 
     def is_selected(self, devices_name: str, element) -> True or False:
         """
@@ -135,7 +134,7 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},返回")
         self.driver[devices_name].back()
 
-    def tap(self, devices_name:str, positions: list, duration: int = None) -> None:
+    def tap(self, devices_name: str, positions: list, duration: int = None) -> None:
         """
         :作用 触摸
         :param devices_name: 设备名称
@@ -146,7 +145,7 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},触摸位置x/y:{positions},长按条件:{duration}")
         self.driver[devices_name].tap(positions, duration)
 
-    def send_keys(self,devices_name,text,element) -> None:
+    def send_keys(self, devices_name, text, element) -> None:
         """
         :param devices_name: 设备名称
         :param text: 输入的文本
@@ -154,13 +153,13 @@ class Android_Appium_bases():
         :return:None
         """
         logging.info(f"操作设备:{devices_name},向:{element}元素输入:{text}")
-        el = self.wait_find(devices_name,element)
+        el = self.wait_find(devices_name, element)
         el.click()
         el.clear()
         el.send_keys(text)
-        self.tap(devices_name,[(300, 134)])
+        self.tap(devices_name, [(300, 134)])
 
-    def get_text(self,devices_name, element) -> str:
+    def get_text(self, devices_name, element) -> str:
         """
         :param devices_name: 设备名称
         :return: str
@@ -168,7 +167,7 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},获取:{element}元素文本")
         return self.wait_find(devices_name, element).text
 
-    def quit(self,devices_name) -> None:
+    def quit(self, devices_name) -> None:
         """
         :作用 结束并退出
         :param devices_name: 设备名称
@@ -188,7 +187,7 @@ class Android_Appium_bases():
         logging.info(f"操作设备:{devices_name},将app放到后台{seconds}秒")
         self.driver[devices_name].background_app(int(seconds))
 
-    def is_app_installed(self,devices_name: str, app_id: str) -> bool:
+    def is_app_installed(self, devices_name: str, app_id: str) -> bool:
         """
         :作用 判断app是否安装
         :param devices_name: 设备名称
@@ -222,7 +221,7 @@ class Android_Appium_bases():
                      f"结束x坐标:{end_x},结束y坐标:{end_y}")
         self.driver[devices_name].swipe(start_x, start_y, end_x, end_y, duration)
 
-    def simulation_key(self,devices_name: str, key: int) -> None:
+    def simulation_key(self, devices_name: str, key: int) -> None:
 
         pass
 
@@ -262,7 +261,6 @@ class Android_Appium_bases():
 
 
 class IosAppiumBases:
-
     appiumBases = Android_Appium_bases()
 
     def input_keys(self, devices_name, text, element) -> None:

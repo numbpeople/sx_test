@@ -11,6 +11,17 @@ class Session_page(Android_Appium_bases):
     android_add_group_element = ("xpath", "//android.widget.TextView[@text='创建群组']")
     android_add_friend_element = ("xpath", "//*[@text='添加好友']")
 
+    ios_session_element = ("xpath", "//XCUIElementTypeButton[@name='会话']")
+    ios_contacts_element = ("xpath", "//XCUIElementTypeButton[@name='通讯录']")
+    ios_my_element = ("xpath", "//XCUIElementTypeButton[@name='我']")
+    ios_search_element = ("xpath", "//XCUIElementTypeTable/XCUIElementTypeOther")
+    ios_more_element = ("xpath", "//XCUIElementTypeButton[@name='icon add']")
+    ios_add_group_element = ("xpath", "//XCUIElementTypeStaticText[@name='创建群组']")
+    ios_add_friend_element = ("xpath", "//XCUIElementTypeStaticText[@name='新的好友']")
+
+
+
+
     def click_session_button_method(self, platform: str, devices_name: str) -> None or str:
         """
         :点击会话按钮
@@ -23,7 +34,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_session_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_session_element)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -41,7 +52,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_contacts_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.android_contacts_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()
@@ -58,7 +69,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_my_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.android_my_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()
@@ -77,7 +88,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.android_search_element
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.ios_search_element
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -98,7 +109,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_more_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_more_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()
@@ -115,7 +126,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_add_group_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_add_group_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()
@@ -132,7 +143,7 @@ class Session_page(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_add_friend_element)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, self.ios_add_friend_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()
@@ -150,10 +161,11 @@ class Session_page(Android_Appium_bases):
         logging.info(f"操作设备:{platform} {devices_name},点击会话操作")
         element = None
         el = ("xpath", f"//*[@text='{name}']")
+        user_node = ("xpath", f"//XCUIElementTypeStaticText[@name='{name}']")
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, el)
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.wait_find(devices_name, user_node)
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -170,6 +182,10 @@ class Add_group_option_user(Android_Appium_bases):
     android_done_button_element = ("xpath", "//android.widget.RelativeLayout[2]/android.widget.TextView")
     android_return_button_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
 
+    ios_search_element = ("xpath", "//XCUIElementTypeTable/XCUIElementTypeOther")
+    ios_done_button_element = ("xpath", "//XCUIElementTypeButton[@name='完成( 0 )']")
+    ios_return_button_element = ("xpath", "//XCUIElementTypeButton[@name='close gray']")
+
     def search_method(self, platform: str, devices_name: str, search_data: str = None) -> str or None:
         """
         :作用 搜索用户
@@ -184,7 +200,7 @@ class Add_group_option_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.android_search_element
         elif str(platform).upper() == "IOS":
-            pass
+            element = self.ios_search_element
         else:
             return "platform错误，只能传入android或者ios设备"
 
@@ -206,7 +222,7 @@ class Add_group_option_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.wait_find(devices_name, ("xpath", f"//android.widget.TextView[@text='{user_name}']"))
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.wait_find(devices_name, ("xpath", f"//XCUIElementTypeStaticText[@name='{user_name}']"))
         else:
             return "platform错误，只能传入android或者ios设备"
         el.click()
@@ -223,7 +239,7 @@ class Add_group_option_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_return_button_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_return_button_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -240,7 +256,7 @@ class Add_group_option_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_done_button_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_done_button_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -276,6 +292,22 @@ class Add_group(Android_Appium_bases):
     android_group_whether_invit_permissions_element = ("xpath", "//android.view.ViewGroup[5]//android.widget.Switch")
     android_grpup_members_element = ("xpath", "//*[@text='群主成员']")
 
+    ios_group_name_element = ("xpath", "/XCUIElementTypeCell[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+    ios_group_name_send_element = ("xpath", "//XCUIElementTypeOther/XCUIElementTypeTextField")
+    ios_group_send_cancel_element = ("xpath", "//XCUIElementTypeButton[@name=\"back left black\"]")
+    ios_group_send_determine_element = ("xpath", "//XCUIElementTypeButton[@name=\"完成\"]")
+    ios_group_introduction_element = ("xpath", "//XCUIElementTypeCell[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+    ios_group_introduction_send_element = ("xpath", "//XCUIElementTypeOther/XCUIElementTypeTextView")
+    ios_group_introduction_renturn_element = ("xpath", "//XCUIElementTypeButton[@name=\"back left black\"]")
+    ios_group_introduction_set_element = ("xpath", "//XCUIElementTypeButton[@name=\"保存\"]")
+    ios_group_count_element = ("xpath", "//XCUIElementTypeCell[4]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+    ios_group_count_send_element = ("xpath", "//XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther")
+    ios_group_count_send_cancel_element = ("xpath", "//XCUIElementTypeButton[@name=\"取消\"]")
+    ios_group_count_send_determine_element = ("xpath", "//XCUIElementTypeButton[@name=\"确定\"]")
+    ios_group_whether_public_element = ("xpath", "//XCUIElementTypeSwitch[@name=\"是否公开群组\"]")
+    ios_group_whether_invit_permissions_element = ("xpath", "//XCUIElementTypeSwitch[@name=\"群成员是否有邀请权限\"]")
+    ios_grpup_members_element = ("xpath", "XCUIElementTypeCell[7]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+
     def click_group_username_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击创建群组-进入输入群组名称
@@ -288,7 +320,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_name_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_name_send_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -306,7 +338,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_name_send_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_name_send_element
         else:
             return "platform错误，只能传入android或者ios设备"
         element = self.wait_find(devices_name, el)
@@ -326,7 +358,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_send_cancel_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_send_cancel_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -343,7 +375,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_send_determine_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_send_determine_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -360,7 +392,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_introduction_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_introduction_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -378,7 +410,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_introduction_send_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_introduction_send_element
         else:
             return "platform错误，只能传入android或者ios设备"
         element = self.wait_find(devices_name, el)
@@ -398,7 +430,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_introduction_renturn_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_introduction_renturn_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -415,7 +447,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_introduction_set_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_introduction_set_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -432,7 +464,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_count_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_count_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -450,7 +482,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_count_send_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_count_send_element
         else:
             return "platform错误，只能传入android或者ios设备"
         element = self.wait_find(devices_name, el)
@@ -470,7 +502,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_count_send_cancel_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_count_send_cancel_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -487,7 +519,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_count_send_determine_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_count_send_determine_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -504,7 +536,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_whether_public_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_whether_public_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -521,7 +553,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_group_whether_invit_permissions_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_group_whether_invit_permissions_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -538,7 +570,7 @@ class Add_group(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_grpup_members_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_grpup_members_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -549,6 +581,11 @@ class Add_user(Android_Appium_bases):
     android_reset_button_element = ("xpath", "//android.view.ViewGroup/android.widget.ImageButton")
     android_cancel_button_element = ("xpath", "//android.view.ViewGroup/android.widget.TextView")
     android_add_user_button_element = ("xpath", "//*[@text='添加好友']")
+
+    ios_search_element = ("xpath", "//XCUIElementTypeOther/XCUIElementTypeTextField")
+    ios_reset_button_element = ("xpath", "//android.view.ViewGroup/android.widget.ImageButton")
+    ios_cancel_button_element = ("xpath", "//XCUIElementTypeStaticText[@name=\"取消\"]")
+    ios_add_user_button_element = ("xpath", "//XCUIElementTypeStaticText[@name=\"添加好友\"]")
 
     def add_search_user_method(self, platform: str, devices_name: str, search_user) -> None or str:
         """
@@ -563,7 +600,7 @@ class Add_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_search_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_search_element
         else:
             return "platform错误，只能传入android或者ios设备"
         element = self.wait_find(devices_name, el)
@@ -600,7 +637,7 @@ class Add_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_cancel_button_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_cancel_button_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -617,7 +654,7 @@ class Add_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = self.android_add_user_button_element
         elif str(platform).upper() == "IOS":
-            pass
+            el = self.ios_add_user_button_element
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -644,6 +681,10 @@ class Personal_material(Android_Appium_bases):
     android_user_name_element = ("xpath", "//android.widget.TextView[1]")
     android_add_user_element = ("xpath", "//android.widget.TextView[2]")
     android_return_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
+
+    ios_user_name_element = ("xpath", "//android.widget.TextView[1]")
+    ios_add_user_element = ("xpath", "//android.widget.TextView[2]")
+    ios_return_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
 
     def get_user_name_text_method(self, platform: str, devices_name: str) -> None or str:
         """

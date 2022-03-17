@@ -81,7 +81,7 @@ class Public(
                 参数:
                     1.传入platform和devices_name和click是点击服务器配置按钮操作
                     2.传入platform和devices_name和text是获取服务器配置按钮属性操作
-            7. android_login:
+            7. login:
                 作用: 组合登陆im_demo
                 参数:需要传入参数如下
                     1. platform
@@ -98,7 +98,7 @@ class Public(
             "click_login_button":self.click_login_button_method,
             "click_registered":self.click_registered_method,
             "click_config":self.click_service_config_method,
-            "android_login":self.login,
+            "login":self.login,
         }
         if func_dict.get(func_name):
             func = func_dict.get(func_name)
@@ -257,17 +257,27 @@ class Public(
         else:
             return f"没有该函数{func_name}"
 
+    def session_page(self, func_name, *args) -> str or None:
+        func_dict = {
+            "click_session_button_method": self.click_session_button_method,
+            "click_user_session_method": self.click_user_session_method
+        }
+        if func_dict.get(func_name):
+            func = func_dict.get(func_name)
+            return func(*args)
+
+        else:
+            return f"没有该函数{func_name}"
+
+
 if __name__ == '__main__':
     from Bases_Public_method import Bases_Public_method
     b = Bases_Public_method()
-    devices = "oppo_sj001_devices"
-    platform = "android"
-    a=Public()
-    driver=a.connect_appium_method(devices)
-    a.login_page("click_registered",platform,devices,)
-    a.user_registered_page("registered_user",platform,devices,"test1","1","1")
-
-    # a.login_page("android_login",platform,devices,"test1",1)
+    # devices = "oppo_sj001_devices"
+    # platform = "android"
+    # a=Public()
+    # driver=a.connect_appium_method(devices)
+    # a.login_page("login",platform,devices,"test1",1)
     # print(a.get_activity(devices))
     # a.click_more_button_method(platform,devices)
     # a.click_add_friend_button_method(platform,devices)
@@ -282,8 +292,32 @@ if __name__ == '__main__':
     # a.input_method_operation(devices,"search")
     # a.click_add_user_button(platform,devices)
     # v=a.xpath_text_positioning(devices, "不能添加自己").text
-    time.sleep(10)
-    a.quit(devices)
+    # print(v)
+    # time.sleep(10)
+    # a.quit(devices)
+
+    # ios测试信息
+    devices = "helen_iphone"
+    platform = "ios"
+    a = Public()
+    a.connect_appium_method(devices)
+    # print(a.get_size(devices))
+    # a.click_more_button_method(platform,devices)
+    # a.click_add_friend_button_method(platform,devices)
+
+    # a.click_user_session_method(platform, devices, "alone1")
+    # 登陆 验证通过
+    a.login_page("login", "ios", devices,"tst","1")
+    # 注册
+    # a.login_page("click_registered", "ios", devices)
+    # a.user_registered_page("registered_user", "ios", devices, "tst00", "1", 1)
+    # 服务器信息配置
+    # a.login_page("click_config", "ios", devices)
+    # a.service_config("ios", devices, "hsb")
+    # 会话列表
+    a.session_page("click_session_button_method", platform, devices)
+    a.session_page("click_user_session_method", platform, devices, "tst01")
+
 
 
 

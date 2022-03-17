@@ -5,7 +5,7 @@
 ...    rest2_sdb=http://39.96.116.29:8080    vip6=http://a1-vip6.easemob.com    # rest1.0灰度：https://a2.easemob.com、rest1.0沙箱：https://a1-hsb.easemob.com、rest2.0沙箱: http://39.96.116.29:8080、北京集群：https://a1.easemob.com    item    
 &{Password}    password_ebs_hsb=huanxintest1024    other_password=12345678.  
 &{ManagementApi}    ManagetmentHsbUrl=http://im-management.easemob.com    ManagetmentUrl=http://im-management-hsb.easemob.com
-&{RunModelCaseConditionDic}    orgName=easemob-demo   appName=shuang    specificBestToken=    specificAppkey=    # 是否指定appkey、是否指定超级token；specificAppkey参数不用填写！
+&{RunModelCaseConditionDic}    orgName=easemob-demo   appName=shuangtest    specificBestToken=    specificAppkey=    # 是否指定appkey、是否指定超级token；specificAppkey参数不用填写！
 ${timeout}        ${30.0}    # 接口请求超时时间
 &{ResponseStatus}    OK=OK    FAIL=FAIL
 &{ApiResponse}    status=${ResponseStatus.OK}    errorDescribetion=    statusCode=    text=    url=    describetion=    # 接口请求后的返回结构

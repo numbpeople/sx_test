@@ -52,13 +52,13 @@ Set UserName Password
     #构建正确的用户名长度超过64位：65英文
     ${username6}    Generate Random String    65    [LOWER]
     #用户名长度为错误格式：中文
-    # ${username7}    Set Variable    用户名
+    ${username7}    Set Variable    用户名
     Get Length    item
     #构建用户名密码
     ${password}    Generate Random String    1    [NUMBERS]
     #用户名和密码设置全局变量
     Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}
-    ...    username4=${username4}    username5=${username5}    username6=${username6}    
+    ...    username4=${username4}    username5=${username5}    username6=${username6}    username7=${username7}     
     ...    password=${password}
     Set Global Variable    ${login}    ${login}
 Determine Regist Page Element

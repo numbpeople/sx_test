@@ -2,7 +2,7 @@ from bases.app_bases import Android_Appium_bases
 from config import logging
 
 
-class Session_page(Android_Appium_bases):
+class SessionPage(Android_Appium_bases):
     android_session_element = ("xpath", "//*[@text='会话']")
     android_contacts_element = ("xpath", "//*[@text='通讯录']")
     android_my_element = ("xpath", "//*[@text='我']")
@@ -177,7 +177,7 @@ class Session_page(Android_Appium_bases):
             return "只能传入click:点击,text:获取属性"
 
 
-class Add_group_option_user(Android_Appium_bases):
+class AddGroupOptionUser(Android_Appium_bases):
     android_search_element = ("xpath", "//android.view.ViewGroup/android.widget.EditText")
     android_done_button_element = ("xpath", "//android.widget.RelativeLayout[2]/android.widget.TextView")
     android_return_button_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
@@ -186,7 +186,7 @@ class Add_group_option_user(Android_Appium_bases):
     ios_done_button_element = ("xpath", "//XCUIElementTypeButton[@name='完成( 0 )']")
     ios_return_button_element = ("xpath", "//XCUIElementTypeButton[@name='close gray']")
 
-    def search_method(self, platform: str, devices_name: str, search_data: str = None) -> str or None:
+    def search_member_method(self, platform: str, devices_name: str, search_data: str = None) -> str or None:
         """
         :作用 搜索用户
         :param platform: 设备类型 传入android或者ios
@@ -275,7 +275,7 @@ class Add_group_option_user(Android_Appium_bases):
             self.option_click_user_method(platform, devices_name, user_name)
 
 
-class Add_group(Android_Appium_bases):
+class AddGroup(Android_Appium_bases):
     android_group_name_element = ("xpath", "//*[@text='请输入群组名称']")
     android_group_name_send_element = ("xpath", "//android.widget.RelativeLayout/android.widget.EditText")
     android_group_send_cancel_element = ("xpath", "//android.view.ViewGroup/android.widget.Button[1]")
@@ -452,7 +452,7 @@ class Add_group(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
 
-    def click_group_conunt_method(self, platform: str, devices_name: str) -> str or None:
+    def click_group_count_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击群组人数-进入群组人数更改
         :param platform: 设备类型 传入android或者ios
@@ -490,7 +490,7 @@ class Add_group(Android_Appium_bases):
         element.clear()
         element.sned_keys(group_count)
 
-    def click_group_conunt_cancel_method(self, platform: str, devices_name: str) -> str or None:
+    def click_group_count_cancel_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击取消按钮-取消群组人数更改
         :param platform: 设备类型 传入android或者ios
@@ -507,7 +507,7 @@ class Add_group(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
 
-    def click_group_conunt_determine_method(self, platform: str, devices_name: str) -> str or None:
+    def click_group_count_determine_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击确定按钮-确定群组人数更改
         :param platform: 设备类型 传入android或者ios
@@ -541,7 +541,7 @@ class Add_group(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
 
-    def click_group_whether_invit_permissions_switch_method(self, platform: str, devices_name: str) -> str or None:
+    def click_group_whether_invitation_permissions_switch(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击群成员是否有邀请权限
         :param platform: 设备类型 传入android或者ios
@@ -558,7 +558,7 @@ class Add_group(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
 
-    def click_grpup_members_method(self, platform: str, devices_name: str) -> str or None:
+    def click_group_members_method(self, platform: str, devices_name: str) -> str or None:
         """
         :作用 点击群成员-进入群成员列表
         :param platform: 设备类型 传入android或者ios
@@ -576,7 +576,7 @@ class Add_group(Android_Appium_bases):
         self.wait_find(devices_name, el).click()
 
 
-class Add_user(Android_Appium_bases):
+class AddUser(Android_Appium_bases):
     android_search_element = ("xpath", "//*[@text='请输入用户ID']")
     android_reset_button_element = ("xpath", "//android.view.ViewGroup/android.widget.ImageButton")
     android_cancel_button_element = ("xpath", "//android.view.ViewGroup/android.widget.TextView")
@@ -671,7 +671,7 @@ class Add_user(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             el = ("xpath", "//*[@resource-id='com.hyphenate.easeim:id/iv_search_user_icon']")
         elif str(platform).upper() == "IOS":
-            pass
+            el = ("xpath", "//XCUIElementTypeButton[@name=\"userData\"]")
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
@@ -682,9 +682,9 @@ class Personal_material(Android_Appium_bases):
     android_add_user_element = ("xpath", "//android.widget.TextView[2]")
     android_return_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
 
-    ios_user_name_element = ("xpath", "//android.widget.TextView[1]")
-    ios_add_user_element = ("xpath", "//android.widget.TextView[2]")
-    ios_return_element = ("xpath", "//android.widget.ImageButton[@content-desc='转到上一层级']")
+    ios_user_name_element = ("xpath", "//XCUIElementTypeCell[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+    ios_add_user_element = ("xpath", "//XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeOther")
+    ios_return_element = ("xpath", "//XCUIElementTypeButton[@name=\"back left black\"]")
 
     def get_user_name_text_method(self, platform: str, devices_name: str) -> None or str:
         """

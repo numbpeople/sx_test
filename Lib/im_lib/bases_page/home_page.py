@@ -4,7 +4,7 @@ from appium.webdriver.webdriver import WebDriver
 import logging
 
 
-class Login_page(Android_Appium_bases):
+class LoginPage(Android_Appium_bases):
     android_version_element = ("xpath", "//android.widget.TextView[1]")
     android_user_name_element = ("xpath", "//android.widget.EditText[1]")
     android_password_element = ("xpath", "//android.widget.EditText[2]")
@@ -178,7 +178,7 @@ class Login_page(Android_Appium_bases):
             pass
 
 
-class Registered_page(Android_Appium_bases, IosAppiumBases):
+class RegisteredPage(Android_Appium_bases, IosAppiumBases):
     android_registered_user_name_element = ("xpath", "//android.widget.EditText[1]")
     android_registered_password_element = ("xpath", "//android.widget.EditText[2]")
     android_registered_confirm_password_element = ("xpath", "//android.widget.EditText[3]")
@@ -344,7 +344,7 @@ class Registered_page(Android_Appium_bases, IosAppiumBases):
         self.click_registered_button_method(platform, devices_name)
 
 
-class Service_config(Android_Appium_bases):
+class ServiceConfig(Android_Appium_bases):
     android_custom_service_switch_element = ("xpath", "//android.widget.Switch[1]")
     android_appkey_element = ("xpath", "//android.widget.EditText[1]")
     android_use_service_switch_element = ("xpath", "//android.widget.Switch[2]")

@@ -1,19 +1,19 @@
-import time
-from bases_page.home_page import Login_page, Service_config, Registered_page
-from bases_page.session_page import Session_page, Add_group_option_user, Add_user
+from bases_page.home_page import LoginPage, ServiceConfig, RegisteredPage
+from bases_page.session_page import SessionPage, AddGroupOptionUser, AddUser, AddGroup
 from bases.bases import Data_bases
-from Bases_Public_method import Bases_Public_method
+
 
 class Public(
-    Login_page,
-    Registered_page,
-    Service_config,
-    Session_page,
-    Add_group_option_user,
-    Add_user
+    LoginPage,
+    RegisteredPage,
+    ServiceConfig,
+    SessionPage,
+    AddGroupOptionUser,
+    AddUser,
+    AddGroup
 ):
 
-    def login_authorization_method(self,devices_name: str) -> None:
+    def login_authorization_method(self, devices_name: str) -> None:
         """
         :作用 通过文本点击元素
         :param devices_name: 设备名称
@@ -28,8 +28,8 @@ class Public(
                         self.wait_find(devices_name, el).click()
                     else:
                         break
-    
-    def connect_appium_method(self,devices_config_name) -> None:
+
+    def connect_appium_method(self, devices_config_name) -> None:
         """
         :param devices_config_name:设备配置名称
             作用:会根据传的name去配置文件里面找配置，连接appium启动应用
@@ -93,12 +93,12 @@ class Public(
         """
         func_dict = {
             "get_im_version": self.get_im_version_method,
-            "send_user_name":self.send_user_name_method,
-            "send_password":self.send_password_method,
-            "click_login_button":self.click_login_button_method,
-            "click_registered":self.click_registered_method,
-            "click_config":self.click_service_config_method,
-            "login":self.login,
+            "send_user_name": self.send_user_name_method,
+            "send_password": self.send_password_method,
+            "click_login_button": self.click_login_button_method,
+            "click_registered": self.click_registered_method,
+            "click_config": self.click_service_config_method,
+            "login": self.login,
         }
         if func_dict.get(func_name):
             func = func_dict.get(func_name)
@@ -107,7 +107,7 @@ class Public(
         else:
             return f"没有该函数{func_name}"
 
-    def user_registered_page(self,func_name: str, *args: str) -> None or str:
+    def user_registered_page(self, func_name: str, *args: str) -> None or str:
         """
         :作用 该函数是注册页面，注册页面所有操作可以通过该函数来完成
         :param func_name: 任意传入一个func_dict存在的键，可以通过键来调用对应函数
@@ -167,7 +167,7 @@ class Public(
         else:
             return f"没有该函数{func_name}"
 
-    def service_config_page(self,func_name,*args) -> str or None:
+    def service_config_page(self, func_name, *args) -> str or None:
         """
 
         该函数是连接服务器配置page 所有操作可以通过该函数来完成
@@ -258,9 +258,131 @@ class Public(
             return f"没有该函数{func_name}"
 
     def session_page(self, func_name, *args) -> str or None:
+        """
+            1、click_session_button：
+                作用：点击会话tab
+            2、click_user_session
+                作用：选择会话列表中某一个用户
+            3、click_contacts_button
+                作用：点击通讯录按钮
+            4、click_my_button
+                作用：点击我的按钮
+            5、search
+                作用：会话列表搜索用户
+            6、click_more_button
+                作用：点击会话中+按钮
+            7、click_add_group_button
+                作用：点击创建群组
+            8、click_add_friend_button
+                作用：点击新的好友
+            以下为创建群组里方法
+            9、search_member
+                作用：搜索群组成员
+            10、option_click_user
+                作用：选择群组成员
+            11、click_return_button
+                作用：选择群组成员中返回
+            12、click_done_button
+                作用：点击完成按钮
+            13、add_group_option_user
+                作用：搜索并点击用户
+        """
         func_dict = {
-            "click_session_button_method": self.click_session_button_method,
-            "click_user_session_method": self.click_user_session_method
+            "click_session_button": self.click_session_button_method,
+            "click_user_session": self.click_user_session_method,
+            "click_contacts_button": self.click_contacts_button_method,
+            "click_my_button": self.click_my_button_method,
+            "search": self.search_method,
+            "click_more_button": self.click_more_button_method,
+            "click_add_group_button": self.click_add_group_button_method,
+            "click_add_friend_button": self.click_add_friend_button_method,
+            "search_member": self.search_member_method,
+            "option_click_user": self.option_click_user_method,
+            "click_return_button": self.click_return_button_method,
+            "click_done_button": self.click_done_button_method,
+            "add_group_option_user": self.add_group_option_user_method,
+        }
+        if func_dict.get(func_name):
+            func = func_dict.get(func_name)
+            return func(*args)
+
+        else:
+            return f"没有该函数{func_name}"
+
+    def add_group(self, func_name, *args) -> str or None:
+        """
+            1、click_group_username
+                作用：创建群组中填写群组名称
+            2、send_group_send_username
+                作用：填写群组名称
+            3、click_determine_send_group_name
+                作用：输入群聊名称后，点击完成
+            4、click_group_introduction
+                作用：点击群介绍
+            5、send_group_introduction
+                作用：输入群介绍
+            6、click_group_introduction_return
+                作用：点击群介绍返回按钮
+            7、click_group_introduction_set
+                作用：点击群组介绍保存按钮
+            8、click_group_count
+                作用：点击群组人数
+            9、send_group_count
+                作用：输入群组人数
+            10、click_group_count_cancel
+                作用：群组人数输入框，点击取消按钮
+            11、click_group_count_determine
+                作用：群组人数输入框，点击确定按钮
+            12、click_group_whether_public_switch
+                作用：点击是否公开群组开关
+            13、click_group_whether_invitation_permissions_switch
+                作用：点击群成员是否有邀请权限开关
+            14、click_group_members
+                作用：点击群组成员
+         """
+        func_dict = {
+            "click_group_username": self.click_group_username_method,
+            "send_group_send_username": self.send_group_send_username_method,
+            "click_cancel_send_group_name": self.click_cancel_send_group_name_method,
+            "click_determine_send_group_name": self.click_determine_send_group_name_method,
+            "click_group_introduction": self.click_group_introduction_method,
+            "send_group_introduction": self.send_group_introduction_method,
+            "click_group_introduction_return": self.click_group_introduction_return_method,
+            "click_group_introduction_set": self.click_group_introduction_set_method,
+            "click_group_count": self.click_group_count_method,
+            "send_group_count": self.send_group_count_method,
+            "click_group_count_cancel": self.click_group_count_cancel_method,
+            "click_group_count_determine": self.click_group_count_determine_method,
+            "click_group_whether_public_switch": self.click_group_whether_public_switch_method,
+            "click_group_whether_invitation_permissions_switch": self.click_group_whether_invitation_permissions_switch,
+            "click_group_members": self.click_group_members_method
+        }
+        if func_dict.get(func_name):
+            func = func_dict.get(func_name)
+            return func(*args)
+
+        else:
+            return f"没有该函数{func_name}"
+
+    def add_user(self, func_name, *args) -> str or None:
+        """
+            1、add_search_user
+                作用：输入要搜索的用户
+            2、click_reset_search
+                作用：点击重置按钮，仅适用于android
+            3、click_cancel_button
+                作用：点击取消按钮
+            4、click_add_user_button
+                作用：点击添加好友按钮
+            5、click_user
+                作用：点击用户查看个人资料
+        """
+        func_dict = {
+            "add_search_user": self.add_search_user_method,
+            "click_reset_search": self.click_reset_search_method,
+            "click_cancel_button": self.click_cancel_button_method,
+            "click_add_user_button": self.click_add_user_button,
+            "click_user": self.click_user_method
         }
         if func_dict.get(func_name):
             func = func_dict.get(func_name)
@@ -272,6 +394,7 @@ class Public(
 
 if __name__ == '__main__':
     from Bases_Public_method import Bases_Public_method
+
     b = Bases_Public_method()
     # devices = "oppo_sj001_devices"
     # platform = "android"
@@ -283,8 +406,6 @@ if __name__ == '__main__':
     # a.click_add_friend_button_method(platform,devices)
     # print(a.get_activity(devices))
     # a.start_activity(devices,".MainActivity")
-
-
 
     # a.click_more_button_method(platform,devices)
     # a.click_add_friend_button_method(platform,devices)
@@ -307,7 +428,7 @@ if __name__ == '__main__':
 
     # a.click_user_session_method(platform, devices, "alone1")
     # 登陆 验证通过
-    a.login_page("login", "ios", devices,"tst","1")
+    a.login_page("login", "ios", devices, "tst", "1")
     # 注册
     # a.login_page("click_registered", "ios", devices)
     # a.user_registered_page("registered_user", "ios", devices, "tst00", "1", 1)
@@ -317,13 +438,3 @@ if __name__ == '__main__':
     # 会话列表
     a.session_page("click_session_button_method", platform, devices)
     a.session_page("click_user_session_method", platform, devices, "tst01")
-
-
-
-
-
-
-
-
-
-

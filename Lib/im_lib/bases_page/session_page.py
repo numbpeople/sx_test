@@ -740,10 +740,10 @@ class Personal_material(Android_Appium_bases):
 
 
 class Group_user_combination():
-    session_page = Session_page()
-    add_group_option_user = Add_group_option_user()
-    add_group = Add_group()
-    add_user = Add_user()
+    session_page = SessionPage()
+    add_group_option_user = AddGroupOptionUser()
+    add_group = AddGroup()
+    add_user = AddUser()
     personal_material = Personal_material()
 
     def group_add(self, plarfrom: str, devices_name):

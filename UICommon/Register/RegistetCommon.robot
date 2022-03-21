@@ -90,6 +90,39 @@ Resgiter User Template
     Sleep    ${timeout}    
     #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    ${code}
+
+Register Login Page Switch Template
+    [Arguments]    ${platform}    ${driver}    ${num}=    
+    [Documentation]    注册登录页面频繁切换
+    ...    
+    #构建登录注册页面切换次数
+    ${num}    Run Keyword If    "${num}" == "${EMPTY}"    Generate Random String    1    [NUMBERS]
+    #构建注册的用户昵称和密码
+    ${username}    Generate Random String    5    [LETTERS][NUMBERS]
+    Log    ${username}    
+    FOR    ${num}    IN RANGE    ${num} 
+        #登录页面点击“注册账号”
+        login_page    click_registered    ${platform}    ${driver}    click
+        #用户名输入框输入用户名
+        user_registered_page    send_registered_user    ${platform}    ${driver}    ${username}
+        #输入用户密码
+        user_registered_page    send_registered_password    ${platform}    ${driver}    ${username}
+        #输入用户确认密码
+        user_registered_page    send_registered_confirm_password    ${platform}    ${driver}    ${username}
+        #点击服务条款
+        user_registered_page    click_agreement    ${platform}    ${driver}
+        #点击返回按钮
+        user_registered_page    click_return    ${platform}    ${driver}
+        Sleep    1    
+    END    
+    #判断页面元素是否存在
+    
+    #注册用户
+    user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${username}    ${username}
+    #设置等待时间，用户注册完成后，不能立刻调用restapi
+    Sleep    ${timeout}    
+    #通过rest api验证用户是否注册成功
+    Should Be exist    ${username}    200
     
 Register Backgroud Template
     [Arguments]

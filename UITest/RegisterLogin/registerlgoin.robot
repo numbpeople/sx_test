@@ -15,14 +15,14 @@ RegisterUser
     [Documentation]    Create by shuang
     ...    1.注册用户名使用64位以内字符：纯英文、英文-_、英文数字、纯数字、64英文、65位英文、中文
     [Template]    Resgiter User Template
-    ${platform.platform}    ${driver.name}    ${login.username}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username1}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username2}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username3}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username4}    ${login.errorcode}
-    ${platform.platform}    ${driver.name}    ${login.username5}    ${login.rightcode}
-    ${platform.platform}    ${driver.name}    ${login.username6}    ${login.errorcode}
-    ${platform.platform}    ${driver.name}    ${login.username7}    ${login.errorcode}
+    ${env.platform}    ${driver.name}    ${login.username}    ${login.rightcode}
+    ${env.platform}    ${driver.name}    ${login.username1}    ${login.rightcode}
+    ${env.platform}    ${driver.name}    ${login.username2}    ${login.rightcode}
+    ${env.platform}    ${driver.name}    ${login.username3}    ${login.rightcode}
+    ${env.platform}    ${driver.name}    ${login.username4}    ${login.errorcode}
+    ${env.platform}    ${driver.name}    ${login.username5}    ${login.rightcode}
+    ${env.platform}    ${driver.name}    ${login.username6}    ${login.errorcode}
+    ${env.platform}    ${driver.name}    ${login.username7}    ${login.errorcode}
 
 LoginUser
     [Documentation]    Create by shuang
@@ -33,5 +33,5 @@ LoginUser
 Register Login Page Switch
     [Documentation]    Cresate by shuang
     [Template]    Register Login Page Switch Template
-    ${platform.platform}    ${driver.name}    ${num}
+    ${env.platform}    ${driver.name}    ${env.num}
     

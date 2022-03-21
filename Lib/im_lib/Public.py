@@ -418,6 +418,7 @@ if __name__ == '__main__':
     # a.quit(devices)
 
     # ios测试信息
+    import time
     devices = "helen_iphone"
     platform = "ios"
     a = Public()
@@ -428,7 +429,10 @@ if __name__ == '__main__':
 
     # a.click_user_session_method(platform, devices, "alone1")
     # 登陆 验证通过
-    a.login_page("login", "ios", devices, "tst", "1")
+    # a.login_page("login", "ios", devices, "tst", "1")
+    time.sleep(4)
+    flag = b.element_judge_text(devices, "用户名")
+    print(flag)
     # 注册
     # a.login_page("click_registered", "ios", devices)
     # a.user_registered_page("registered_user", "ios", devices, "tst00", "1", 1)
@@ -436,5 +440,5 @@ if __name__ == '__main__':
     # a.login_page("click_config", "ios", devices)
     # a.service_config("ios", devices, "hsb")
     # 会话列表
-    a.session_page("click_session_button_method", platform, devices)
-    a.session_page("click_user_session_method", platform, devices, "tst01")
+    # a.session_page("click_session_button_method", platform, devices)
+    # a.session_page("click_user_session_method", platform, devices, "tst01")

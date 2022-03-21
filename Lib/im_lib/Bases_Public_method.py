@@ -1,13 +1,15 @@
 
-from bases_page.home_page import Login_page, Service_config, Registered_page
+from bases_page.home_page import LoginPage, ServiceConfig, RegisteredPage
+from bases_page.session_page import SessionPage, AddGroup, AddUser
 from bases.app_bases import Android_Appium_bases
 from config import logging
 
 
 class Bases_Public_method(Android_Appium_bases):
-    a_login_page = Login_page()
-    a_registered_page = Registered_page()
-    a_service_config = Service_config()
+    a_login_page = LoginPage()
+    a_registered_page = RegisteredPage()
+    a_service_config = ServiceConfig()
+    session_page = SessionPage()
 
     # 登陆页面元素
     login_page_element = {
@@ -41,6 +43,34 @@ class Bases_Public_method(Android_Appium_bases):
         "i_registered_agreement_element": a_registered_page.ios_registered_agreement_element,
         "i_registered_button_element": a_registered_page.ios_registered_button_element,
         "i_registered_return_element": a_registered_page.ios_registered_return_element
+
+    }
+
+    # 会话页面
+    session_page = {
+        "a_session_element": session_page.android_session_element,
+        "a_contacts_element": session_page.android_contacts_element,
+        "a_my_element": session_page.android_my_element,
+        "a_search_element": session_page.android_search_element,
+        "a_more_element": session_page.android_more_element,
+        "a_add_group_element": session_page.android_add_group_element,
+        "_add_friend_element": session_page.android_add_friend_element,
+        "i_session_element": session_page.ios_session_element,
+        "i_contacts_element": session_page.ios_contacts_element,
+        "i_my_element": session_page.ios_my_element,
+        "i_search_element": session_page.ios_search_element,
+        "i_more_element": session_page.ios_more_element,
+        "i_add_group_element": session_page.ios_add_group_element,
+        "i_add_friend_element": session_page.ios_add_friend_element
+    }
+
+    # 创建群组
+    add_group = {
+
+    }
+
+    # 新的好友
+    add_user = {
 
     }
 
@@ -143,6 +173,17 @@ class Bases_Public_method(Android_Appium_bases):
                 return f"{page_name}里面没有你要的元素:{element_name},检查你传入page_name是否正确"
         else:
             return f"没有找到你要的:{page_name},检查你传入page_name是否正确"
+
+    def element_judge_text(self, devices_name: str,  text_name: str) -> True or False:
+        """
+        :作用 通过文本判断元素是否存在
+        :param devices_name: 设备名称
+        :param text_name:传入文本
+        :return: True or False
+        """
+        logging.info(f"操作设备:{devices_name},判断元素是否存在,text_name:{text_name}")
+        return self.judge_element(devices_name, ("xpath", f"//*[@text='{text_name}']"))
+
 
     def public_app_background(self,devices_name: str, seconds: int):
         """

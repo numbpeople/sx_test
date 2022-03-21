@@ -23,9 +23,15 @@ RegisterUser
     ${platform.platform}    ${driver.name}    ${login.username5}    ${login.rightcode}
     ${platform.platform}    ${driver.name}    ${login.username6}    ${login.errorcode}
     ${platform.platform}    ${driver.name}    ${login.username7}    ${login.errorcode}
-Login
+
+LoginUser
     [Documentation]    Create by shuang
     ...    1.登录用户
-    [Template]    LoginUser
-    ${login.username}    ${page_name}    ${a_version_element}    ${False}
+    [Template]    Login User Template
+    ${platform.platform}    ${driver.name}    ${login.username}    ${page_name}    ${page_element}    ${False}
 
+Register Login Page Switch
+    [Documentation]    Cresate by shuang
+    [Template]    Register Login Page Switch Template
+    ${platform.platform}    ${driver.name}    ${num}
+    

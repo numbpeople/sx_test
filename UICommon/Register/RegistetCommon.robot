@@ -66,6 +66,7 @@ Determine Regist Page Element
     [Documentation]    判断注册页面元素是否存在，如果存在则返回登录页面
     ${element_res}    element_judge    ${drivername}    registered_page_element    ${element}
     Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
+
 Resgiter User Template
     [Arguments]    ${platform}    ${drivername}    ${username}    ${code}
     [Documentation]    
@@ -89,3 +90,9 @@ Resgiter User Template
     Sleep    ${timeout}    
     #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    ${code}
+    
+Register Backgroud Template
+    [Arguments]
+    [Documentation]    注册页面退到后台后，再次注册
+    ...    
+    

@@ -98,6 +98,26 @@ Create Temp User
     #记录创建的IM用户，为用例teardown中清理
     run keyword if    '${specificPreString}' == '${EMPTY}'    Record Temp User List    ${text['entities'][0]['username']}
     Return From Keyword    ${text}
+    
+Create New User
+    [Arguments]    ${specificPreString}=
+    [Documentation]    创建一个新的用户
+    #给相应变量赋值
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${expectedStatusCode}    set variable    200
+    ${data}    set variable    {"username":"${specificPreString}","password":"${specificPreString}","nickname":"${specificPreString}"}
+    &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
+    #创建用户
+    &{apiResponse}    Create User    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    ${expectedStatusCode}    创建用户失败，预期返回状态码等于${expectedStatusCode}，\n实际返回状态码等于${apiResponse.statusCode}，\n调用接口：${apiResponse.url}，\n接口返回值：${apiResponse.text}
+    ${text}    set variable    ${apiResponse.text}
+    ${url}    set variable    ${apiResponse.url}
+    log    ${text}
+    log    ${url}
+    #记录创建的IM用户，为用例teardown中清理
+    # run keyword if    '${specificPreString}' == '${EMPTY}'    Record Temp User List    ${text['entities'][0]['username']}
+    Return From Keyword    ${text}
 
 Delete Temp Specific User
     [Arguments]    ${userName}

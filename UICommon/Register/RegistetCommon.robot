@@ -12,6 +12,7 @@ Resource    ../../Common/AppCommon/AppCommon.robot
 Resource    ../../Common/UserCommon/UserCommon.robot
 
 
+
 *** Variables ***
 ${timeout}     2
 
@@ -59,7 +60,6 @@ Set UserName Password
     #用户名和密码设置全局变量
     Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}
     ...    username4=${username4}    username5=${username5}    username6=${username6}    username7=${username7}     
-    ...    password=${password}
     Set Global Variable    ${login}    ${login}
 Determine Regist Page Element
     [Arguments]    ${drivername}    ${element}    ${platform}    ${drivername}
@@ -67,7 +67,7 @@ Determine Regist Page Element
     ${element_res}    element_judge    ${drivername}    registered_page_element    ${element}
     Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
 Resgiter User Template
-    [Arguments]    ${platform}    ${drivername}    ${username}    ${password}    ${password}    ${code}
+    [Arguments]    ${platform}    ${drivername}    ${username}    ${code}
     [Documentation]    
     ...    步骤1：点击【注册用户】
     ...    步骤2：输入用户名、密码、确认密码
@@ -75,11 +75,11 @@ Resgiter User Template
     ...    步骤4：判断页面是否存在注册按钮，存在则返回，不存在则下一步
     ...    步骤5：通过restapi判断是否注册成功
     #注册用户参数:平台、设备名、用户名、密码、确认密码、接口返回的code值
-    Log Many    ${platform}    ${drivername}    ${username}    ${password}    ${password}
+    Log Many    ${platform}    ${drivername}    ${username}
     #点击登录页面注册账号
     login_page    click_registered    ${platform}    ${drivername}
-    #注册页面注册账号
-    user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${password}    ${password}
+    #注册页面注册账号(用户名和密码一样)
+    user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${username}    ${username}
     #等待一段时间，方便后边restapi查看用户
     Sleep    ${timeout}  
     #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）

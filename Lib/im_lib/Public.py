@@ -1,5 +1,7 @@
 from bases_page.home_page import LoginPage, ServiceConfig, RegisteredPage
 from bases_page.session_page import SessionPage, AddGroupOptionUser, AddUser, AddGroup
+import time
+from bases_page.session_page import Personal_material, Group_user_combination
 from bases.bases import Data_bases
 
 
@@ -394,8 +396,11 @@ class Public(
 
 if __name__ == '__main__':
     from Bases_Public_method import Bases_Public_method
+    devices = "oppo_sj001_devices"
+    platform = "android"
+    a=Public()
+    driver=a.connect_appium_method(devices)
 
-    b = Bases_Public_method()
     # devices = "oppo_sj001_devices"
     # platform = "android"
     # a=Public()

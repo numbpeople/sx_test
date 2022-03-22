@@ -48,3 +48,13 @@ Login User No Exit
     [Documentation]    Create by shuang 
     [Template]    LoginUser NoExit Template
     ${env.platform}    ${driver.name}    ${login.username}    ${False}
+    
+Login Background
+    [Documentation]    Cresate by shuang
+    [Template]    Login Background Template
+    ${env.platform}    ${driver.name}    ${login.username}    ${True}
+ 
+Register Background
+    [Documentation]    Cresate by shuang
+    [Template]    Register Backgroud Template
+    ${env.platform}    ${driver.name}    ${login.username}   ${login.rightcode}

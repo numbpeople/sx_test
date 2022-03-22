@@ -9,6 +9,7 @@ Resource    ../Register/RegistetCommon.robot
 
 *** Variables ***
 ${time}    5
+${backgroundtime}    10
 
 *** Keywords ***
 Login User
@@ -64,7 +65,23 @@ Error Userpass Login Template
     Should Be Equal    ${res}        ${loginres}
     Sleep    ${time}    
     
-Login Backgroud
-    [Arguments]
+Login Background Template
+    [Arguments]    ${platform}    ${drivername}    ${username}    ${loginres}
     [Documentation]    登录页面退到后台后，再次登录
+    #注册一个新用户
+    ${userres}    Create New User    ${username} 
+    ${username}    set variable    ${userres['entities'][0]['username']}
+    #输入用户名
+    login_page    send_user_name    ${platform}    ${drivername}    ${username}
+    #输入密码
+    login_page    send_password    ${platform}    ${drivername}    ${username}
+    #退到后台
+    public_app_background    ${drivername}    ${backgroundtime}
+    #点击登录
+    login_page    click_login_button     ${platform}    ${drivername}
+    #判断是否登录成功
+    ${res}    element_judge_text    ${drivername}    会话
+    Log    ${res}    
+    Should Be Equal    ${res}        ${loginres}
+    Sleep    ${time}  
     

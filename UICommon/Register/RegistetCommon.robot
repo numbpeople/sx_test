@@ -14,7 +14,8 @@ Resource    ../../Common/UserCommon/UserCommon.robot
 
 
 *** Variables ***
-${timeout}     2
+${time}     2
+${backgroundtime}    10
 
 *** Keywords ***
 Should Be exist
@@ -90,12 +91,12 @@ Resgiter User Template
     #注册页面注册账号(用户名和密码一样)
     user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${username}    ${username}
     #等待一段时间，方便后边restapi查看用户
-    Sleep    ${timeout}  
+    Sleep    ${time}  
     #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
     ${element_res}    element_judge_text    ${drivername}    注册
     Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
     #设置等待时间，用户注册完成后，不能立刻调用restapi
-    Sleep    ${timeout}    
+    Sleep    ${time}    
     #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    ${code}
     
@@ -137,12 +138,29 @@ Register Login Page Switch Template
     #注册用户
     user_registered_page    registered_user    ${platform}    ${driver}    ${username}    ${username}    ${username}
     #设置等待时间，用户注册完成后，不能立刻调用restapi
-    Sleep    ${timeout}    
+    Sleep    ${time}    
     #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    200
     
 Register Backgroud Template
-    [Arguments]
-    [Documentation]    注册页面退到后台后，再次注册
-    ...    
-    
+    [Arguments]    ${platform}    ${drivername}    ${username}    ${code}
+    [Documentation]    登录页面退到后台后，再次登录
+    #登录页面点击注册账号
+    login_page    click_registered    ${platform}    ${drivername}
+    #注册页面输入用户名
+    user_registered_page    send_registered_user     ${platform}    ${drivername}    ${username}
+    #注册页面输入密码
+    user_registered_page    send_registered_password     ${platform}    ${drivername}    ${username}
+    #注册页面输入确认密码
+    user_registered_page    send_registered_confirm_password     ${platform}    ${drivername}    ${username}
+    #注册页面点击同意条款
+    user_registered_page    click_agreement     ${platform}    ${drivername}
+    #退到后台等待一段时间
+    public_app_background    ${drivername}    ${backgroundtime}
+    Sleep    ${time}    
+    #注册页面点击注册
+    user_registered_page    click_registered_button     ${platform}    ${drivername}
+    #等待时间，进行restapi检验
+    Sleep    ${time}    
+    #rest api判断用户是否注册成功
+    Should Be exist    ${username}    ${code}

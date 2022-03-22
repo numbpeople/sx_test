@@ -32,14 +32,20 @@ Should Be exist
     Should Be Equal As Integers    ${code}    ${apiResponse.statusCode} 
     
 Set UserName Password
+    [Arguments]    ${len}=
+    [Documentation]    创建用户名
+    ...    1.如果长度存在则按照期望的长度构建，如果不存在则随机创建
+    ${number}    Evaluate    random.randint(3,10)    
+    ${newlen}    Run Keyword If    "${len}" =="${EMPTY}"    Set Variable    ${number}
+    ...    ELSE    Set Variable    ${len}
     #构建正确用户名格式：纯英文
-    ${username}    Generate Random String    4    [LOWER]
+    ${username}    Generate Random String    ${newlen}    [LOWER]
     #构建正确用户名格式：英文、_、-
-    ${random1}    Generate Random String    4    [LOWER]
-    ${username1}    Set Variable    ${random1}-a_b
+    ${random1}    Generate Random String    ${newlen}    [LOWER]
+    ${username1}    Set Variable    ${random1}-${random1}
     #构建正确用户名格式：英文、数字
-    ${random2}    Generate Random String    4    [LOWER]
-    ${randomnum2}    Generate Random String    2    [NUMBERS]
+    ${random2}    Generate Random String    ${newlen}    [LOWER]
+    ${randomnum2}    Generate Random String    ${newlen}    [NUMBERS]
     ${username2}    Set Variable    ${random1}${randomnum2}
     #构建正确用户名格式：纯数字
     ${min}    Set Variable    1
@@ -54,12 +60,14 @@ Set UserName Password
     ${username6}    Generate Random String    65    [LOWER]
     #用户名长度为错误格式：中文
     ${username7}    Set Variable    用户名
+    #使用大写字母注册
+    ${username8}    Generate Random String    ${newlen}    [UPPER]    
     Get Length    item
     #构建用户名密码
     ${password}    Generate Random String    1    [NUMBERS]
     #用户名和密码设置全局变量
     Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}
-    ...    username4=${username4}    username5=${username5}    username6=${username6}    username7=${username7}     
+    ...    username4=${username4}    username5=${username5}    username6=${username6}    username7=${username7}    username8=${username8}
     Set Global Variable    ${login}    ${login}
 Determine Regist Page Element
     [Arguments]    ${drivername}    ${element}    ${platform}    ${drivername}
@@ -84,41 +92,50 @@ Resgiter User Template
     #等待一段时间，方便后边restapi查看用户
     Sleep    ${timeout}  
     #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
-    ${element_res}    element_judge    ${drivername}    registered_page_element    a_user_element
+    ${element_res}    element_judge_text    ${drivername}    注册
     Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
     #设置等待时间，用户注册完成后，不能立刻调用restapi
     Sleep    ${timeout}    
     #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    ${code}
-
+    
+Login Page Name
+    [Arguments]    ${platform}    ${driver}    ${username}
+    [Documentation]    封装登录页面与注册页面切换，最终停留在登录页面
+    #登录页面点击“注册账号”
+    login_page    click_registered    ${platform}    ${driver}    click
+    #用户名输入框输入用户名
+    user_registered_page    send_registered_user    ${platform}    ${driver}    ${username}
+    #输入用户密码
+    user_registered_page    send_registered_password    ${platform}    ${driver}    ${username}
+    #输入用户确认密码
+    user_registered_page    send_registered_confirm_password    ${platform}    ${driver}    ${username}
+    #点击服务条款
+    user_registered_page    click_agreement    ${platform}    ${driver}
+    #点击返回按钮
+    user_registered_page    click_return    ${platform}    ${driver}
+    Sleep    1  
+        
 Register Login Page Switch Template
-    [Arguments]    ${platform}    ${driver}    ${num}=    
-    [Documentation]    注册登录页面频繁切换
+    [Arguments]    ${platform}    ${driver}    ${num}    
+    [Documentation]    注册登录页面频繁切换注册用户
     ...    
+    Log    ${num}    
     #构建登录注册页面切换次数
-    ${num}    Run Keyword If    "${num}" == "${EMPTY}"    Generate Random String    1    [NUMBERS]
+    ${newnum}    Run Keyword If    "${num}" == "${EMPTY}"    Generate Random String     1    [NUMBERS]
+    ...    ELSE    Set Variable    ${num}
     #构建注册的用户昵称和密码
-    ${username}    Generate Random String    5    [LETTERS][NUMBERS]
+    ${username}    Generate Random String    6    [LOWER][NUMBERS]
     Log    ${username}    
-    FOR    ${num}    IN RANGE    ${num} 
-        #登录页面点击“注册账号”
-        login_page    click_registered    ${platform}    ${driver}    click
-        #用户名输入框输入用户名
-        user_registered_page    send_registered_user    ${platform}    ${driver}    ${username}
-        #输入用户密码
-        user_registered_page    send_registered_password    ${platform}    ${driver}    ${username}
-        #输入用户确认密码
-        user_registered_page    send_registered_confirm_password    ${platform}    ${driver}    ${username}
-        #点击服务条款
-        user_registered_page    click_agreement    ${platform}    ${driver}
-        #点击返回按钮
-        user_registered_page    click_return    ${platform}    ${driver}
-        Sleep    1    
+    FOR    ${i}    IN RANGE    ${newnum} 
+      Login Page Name    ${platform}    ${driver}    ${username}
     END    
     #判断页面元素是否存在
-    
+    element_judge_text    ${driver}    注册账号
+    #登录页面点击“注册账号”
+    login_page    click_registered    ${platform}    ${driver}    click
     #注册用户
-    user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${username}    ${username}
+    user_registered_page    registered_user    ${platform}    ${driver}    ${username}    ${username}    ${username}
     #设置等待时间，用户注册完成后，不能立刻调用restapi
     Sleep    ${timeout}    
     #通过rest api验证用户是否注册成功

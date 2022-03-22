@@ -100,13 +100,14 @@ Create Temp User
     Return From Keyword    ${text}
     
 Create New User
-    [Arguments]    ${specificPreString}=
+    [Arguments]    ${specificPreString}=    ${password}=
     [Documentation]    创建一个新的用户
     #给相应变量赋值
     ${newRequestHeader}    copy dictionary    ${requestHeader}
     ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${password}    Run Keyword If    "${password}" == "${EMPTY}"    Set Variable        ${specificPreString}
     ${expectedStatusCode}    set variable    200
-    ${data}    set variable    {"username":"${specificPreString}","password":"${specificPreString}","nickname":"${specificPreString}"}
+    ${data}    set variable    {"username":"${specificPreString}","password":"${password}","nickname":"${specificPreString}"}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #创建用户
     &{apiResponse}    Create User    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}

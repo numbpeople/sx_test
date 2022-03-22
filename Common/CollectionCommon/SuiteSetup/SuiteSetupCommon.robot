@@ -54,6 +54,7 @@ Set Parallel Global Value
     Set Global Variable    ${RunModelCaseConditionDic}    ${ParallelRunModelCaseConditionDic}
     Set Global Variable    ${ModelCaseRunStatus}    ${ParallelModelCaseRunStatus}
     Set Global Variable    ${validIMUserInfo}    ${ParallelvalidIMUserInfo}
+    
 Get username and name
     [Documentation]    #根据url判断超级管理员登录的用户名和密码
     #根据url判断超级管理员登录的用户名和密码

@@ -58,7 +58,7 @@ connect_config:
   huaweip20:
     platformName: Android
     platformVersion: "10"
-    deviceName: CLB7N18B05003594
+    deviceName: C7YVB20319007501
     appActivity: *appActivity
     appPackage: *appPackage
     noReset: true

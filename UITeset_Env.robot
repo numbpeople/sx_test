@@ -1,5 +1,5 @@
 *** Variables ***
-&{platform}    platform=${driver.Android}     
+&{env}    platform=${driver.Android}     num=2    password=    
 &{driver}    name=huaweip20    Android=Android    iOS=iOS
 &{baseRes}    orgname=    appname=    token=
 &{requestHeader}    Content-Type=application/json    Authorization=    restrict-access=    thumbnail=    share-secret=    Accept=    thumbnail=    # 请求header头中可以设置的多种key&value类型

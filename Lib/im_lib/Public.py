@@ -114,7 +114,7 @@ class Public(
         :作用 该函数是注册页面，注册页面所有操作可以通过该函数来完成
         :param func_name: 任意传入一个func_dict存在的键，可以通过键来调用对应函数
         :param args: 根据传的func_name 来给arge传参数，具体如下：
-            1. asend_registered_user:
+            1. send_registered_user:
                 作用:
                     1.可以做获取注册用户名输入框的属性操作
                     2.可以做输入用户名操作

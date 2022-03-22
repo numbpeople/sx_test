@@ -396,54 +396,10 @@ class Public(
 
 if __name__ == '__main__':
     from Bases_Public_method import Bases_Public_method
+    b = Bases_Public_method()
     devices = "oppo_sj001_devices"
     platform = "android"
     a=Public()
     driver=a.connect_appium_method(devices)
+    print(b.element_judge_text(devices, "注册账号"))
 
-    # devices = "oppo_sj001_devices"
-    # platform = "android"
-    # a=Public()
-    # driver=a.connect_appium_method(devices)
-    # a.login_page("login",platform,devices,"test1",1)
-    # print(a.get_activity(devices))
-    # a.click_more_button_method(platform,devices)
-    # a.click_add_friend_button_method(platform,devices)
-    # print(a.get_activity(devices))
-    # a.start_activity(devices,".MainActivity")
-
-    # a.click_more_button_method(platform,devices)
-    # a.click_add_friend_button_method(platform,devices)
-    # a.add_search_user_method(platform,devices,"test1")
-    # a.input_method_operation(devices,"search")
-    # a.click_add_user_button(platform,devices)
-    # v=a.xpath_text_positioning(devices, "不能添加自己").text
-    # print(v)
-    # time.sleep(10)
-    # a.quit(devices)
-
-    # ios测试信息
-    import time
-    devices = "helen_iphone"
-    platform = "ios"
-    a = Public()
-    a.connect_appium_method(devices)
-    # print(a.get_size(devices))
-    # a.click_more_button_method(platform,devices)
-    # a.click_add_friend_button_method(platform,devices)
-
-    # a.click_user_session_method(platform, devices, "alone1")
-    # 登陆 验证通过
-    # a.login_page("login", "ios", devices, "tst", "1")
-    time.sleep(4)
-    flag = b.element_judge_text(devices, "用户名")
-    print(flag)
-    # 注册
-    # a.login_page("click_registered", "ios", devices)
-    # a.user_registered_page("registered_user", "ios", devices, "tst00", "1", 1)
-    # 服务器信息配置
-    # a.login_page("click_config", "ios", devices)
-    # a.service_config("ios", devices, "hsb")
-    # 会话列表
-    # a.session_page("click_session_button_method", platform, devices)
-    # a.session_page("click_user_session_method", platform, devices, "tst01")

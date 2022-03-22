@@ -169,13 +169,10 @@ class LoginPage(Android_Appium_bases):
         else:
             return "platform错误，只能传入android或者ios设备"
 
-        if self.judge_element(devices_name, element):
-            assert expect_version == practical_version, f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
-            self.send_user_name_method(platform, devices_name, username)
-            self.send_password_method(platform, devices_name, password)
-            self.click_login_button_method(platform, devices_name)
-        else:
-            pass
+        assert expect_version == practical_version, f"版本号错误,预期是{expect_version},实际结果是{practical_version}"
+        self.send_user_name_method(platform, devices_name, username)
+        self.send_password_method(platform, devices_name, password)
+        self.click_login_button_method(platform, devices_name)
 
 
 class RegisteredPage(Android_Appium_bases, IosAppiumBases):

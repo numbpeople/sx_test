@@ -273,6 +273,7 @@ class AddGroupOptionUser(Android_Appium_bases):
         for user_name in user:
             self.search_method(platform, devices_name, user_name)
             self.option_click_user_method(platform, devices_name, user_name)
+        self.click_done_button_method(platform, devices_name)
 
 
 class AddGroup(Android_Appium_bases):
@@ -287,10 +288,11 @@ class AddGroup(Android_Appium_bases):
     android_group_count_element = ("xpath", "//*[@text='群组人数']")
     android_group_count_send_element = ("xpath", "//android.widget.RelativeLayout/android.widget.EditText")
     android_group_count_send_cancel_element = ("xpath", "//*[@text='取消']")
-    android_group_count_send_determine_element = ("xpath", "//*[@text='确认']")
+    android_group_count_send_determine_element = ("xpath", "//android.widget.Button[2]")
     android_group_whether_public_element = ("xpath", "//android.view.ViewGroup[4]//android.widget.Switch")
     android_group_whether_invit_permissions_element = ("xpath", "//android.view.ViewGroup[5]//android.widget.Switch")
     android_grpup_members_element = ("xpath", "//*[@text='群主成员']")
+    android_group_done_button_element = ("xpath", "//android.widget.RelativeLayout[2]/android.widget.TextView")
 
     ios_group_name_element = ("xpath", "/XCUIElementTypeCell[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
     ios_group_name_send_element = ("xpath", "//XCUIElementTypeOther/XCUIElementTypeTextField")
@@ -325,7 +327,7 @@ class AddGroup(Android_Appium_bases):
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
 
-    def send_group_send_username_method(self, platform: str, devices_name: str, group_name) -> str or None:
+    def send_group_username_method(self, platform: str, devices_name: str, group_name) -> str or None:
         """
         :作用 输入群组名称
         :param platform: 设备类型 传入android或者ios
@@ -344,7 +346,7 @@ class AddGroup(Android_Appium_bases):
         element = self.wait_find(devices_name, el)
         element.click()
         element.clear()
-        element.sned_keys(group_name)
+        element.send_keys(group_name)
 
     def click_cancel_send_group_name_method(self, platform: str, devices_name: str) -> str or None:
         """
@@ -416,7 +418,7 @@ class AddGroup(Android_Appium_bases):
         element = self.wait_find(devices_name, el)
         element.click()
         element.clear()
-        element.sned_keys(group_introduction)
+        element.send_keys(group_introduction)
 
     def click_group_introduction_return_method(self, platform: str, devices_name: str) -> str or None:
         """
@@ -488,7 +490,7 @@ class AddGroup(Android_Appium_bases):
         element = self.wait_find(devices_name, el)
         element.click()
         element.clear()
-        element.sned_keys(group_count)
+        element.send_keys(group_count)
 
     def click_group_count_cancel_method(self, platform: str, devices_name: str) -> str or None:
         """
@@ -574,6 +576,62 @@ class AddGroup(Android_Appium_bases):
         else:
             return "platform错误，只能传入android或者ios设备"
         self.wait_find(devices_name, el).click()
+
+    def click_group_done_button_method(self, platform: str, devices_name: str) -> str or None:
+        """
+        :作用 点击完成按钮-创建群组
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :return: str or None
+        """
+        logging.info(f"操作设备:{platform} {devices_name},点击完成按钮-创建群组")
+        el = None
+        if str(platform).upper() == "ANDROID":
+            el = self.android_group_done_button_element
+        elif str(platform).upper() == "IOS":
+            pass
+        else:
+            return "platform错误，只能传入android或者ios设备"
+        self.wait_find(devices_name, el).click()
+
+    def send_group_name_method(self, platform: str, devices_name: str, group_name: str) -> None or str:
+        """
+        :作用 输入群主名称-组合
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :param group_name: 群主名称
+        :return: None or str
+        """
+        logging.info(f"操作设备:{platform} {devices_name},输入群主名称:{group_name}")
+        self.click_group_username_method(platform, devices_name)
+        self.send_group_username_method(platform, devices_name, group_name)
+        self.click_determine_send_group_name_method(platform, devices_name)
+
+    def send_group_introduce_method(self, platform: str, devices_name: str, group_introduce: str) -> None or str:
+        """
+        :作用 输入简介名称-组合
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :param group_introduce: 群主简介
+        :return: None or str
+        """
+        logging.info(f"操作设备:{platform} {devices_name},输入简介名称-组合:{group_introduce}")
+        self.click_group_introduction_method(platform, devices_name)
+        self.send_group_introduction_method(platform, devices_name, group_introduce)
+        self.click_group_introduction_set_method(platform, devices_name)
+
+    def send_group_number_method(self, platform: str, devices_name: str, group_introduce: str) -> None or str:
+        """
+        :作用 修改群组最大人数-组合
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :param group_introduce: 群主简介
+        :return: None or str
+        """
+        logging.info(f"操作设备:{platform} {devices_name},修改群组最大人数-组合:{group_introduce}")
+        self.click_group_conunt_method(platform, devices_name)
+        self.send_group_count_method(platform, devices_name, group_introduce)
+        self.click_group_conunt_determine_method(platform, devices_name)
 
 
 class AddUser(Android_Appium_bases):
@@ -744,10 +802,46 @@ class Group_user_combination():
     add_group_option_user = AddGroupOptionUser()
     add_group = AddGroup()
     add_user = AddUser()
-    personal_material = Personal_material()
 
-    def group_add(self, plarfrom: str, devices_name):
+    def group_add_method(self, platform: str, devices_name: str, user_name: list, group_name: str,
+                  group_introduce: str, group_number: str) -> None:
+        """
+        :作用 创建群
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :param user_name: 群组要选择的用户
+        :param group_name: 群组名称
+        :param group_introduce: 群组简介
+        :param group_number: 群组最大人数
+        :return: None
+        """
+        logging.info(f"操作设备:{platform} {devices_name},创建群")
+        self.session_page.click_more_button_method(platform, devices_name)
+        self.session_page.click_add_group_button_method(platform, devices_name)
+        self.add_group_option_user.add_group_option_user_method(platform, devices_name, user_name)
+        self.add_group.send_group_name_method(platform, devices_name, group_name)
+        self.add_group.send_group_introduce_method(platform, devices_name, group_introduce)
+        self.add_group.send_group_number_method(platform, devices_name, group_number)
+        self.add_group.click_group_whether_public_switch_method(platform, devices_name)
+        self.add_group.click_group_whether_invit_permissions_switch_method(platform, devices_name)
+        self.add_group.click_group_done_button_method(platform, devices_name)
 
-        self.session_page.click_more_button_method(plarfrom, devices_name)
-        self.session_page.click_add_group_button_method(plarfrom, devices_name)
-
+    def add_user_chum_method(self, platform: str, devices_name: str, user_name: str, input_method_option: str) -> None:
+        """
+        :作用 添加好友
+        :param platform: 设备类型 传入android或者ios
+        :param devices_name: 设备名称
+        :param user_name: 群组要选择的用户
+        :param input_method_option: 输入法选项
+            go：点击输入发 Go 按钮
+            search：点击输入法搜索按钮
+            done：点击输入法确认按钮
+            previous：点击输入向前按钮；
+        :return: None
+        """
+        logging.info(f"操作设备:{platform} {devices_name},创建群")
+        self.session_page.click_more_button_method(platform, devices_name)
+        self.session_page.click_add_friend_button_method(platform, devices_name)
+        self.add_user.add_search_user_method(platform, devices_name,user_name)
+        self.input_method_operation(devices_name, input_method_option)
+        self.add_user.click_add_user_button(platform, devices_name)

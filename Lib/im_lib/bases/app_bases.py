@@ -31,7 +31,7 @@ class Android_Appium_bases():
         :param element:  元素
         :return: True or False
         """
-        time.sleep(1.5)
+        time.sleep(1)
         if str(self.my_element(devices_name, element)) == "None":
             return False
         else:

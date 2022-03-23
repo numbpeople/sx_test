@@ -194,7 +194,7 @@ class Bases_Public_method(Android_Appium_bases):
         """
         logging.info(f"操作设备:{devices_name},判断元素是否存在,text_name:{text_name}")
         if str(platform).upper() == "ANDROID":
-            return self.judge_element(devices_name, ("xpath", f"//*[@name='{text_name}']"))
+            return self.judge_element(devices_name, ("xpath", f"//*[@text='{text_name}']"))
         elif str(platform).upper() == "IOS":
             return self.judge_element(devices_name, ("xpath", f"//*[@value='{text_name}']"))
 

@@ -32,29 +32,29 @@ Register Login Page Switch
 Normal Login User 
     [Documentation]    Create by shuang
     [Template]    Normal Login User Template
-    # ${env.platform}    ${driver.name}    ${login.username}    ${True}
-    # ${env.platform}    ${driver.name}    ${login.username1}    ${True}
-    # ${env.platform}    ${driver.name}    ${login.username2}    ${True}
-    # ${env.platform}    ${driver.name}    ${login.username3}    ${True}
-    # ${env.platform}    ${driver.name}    ${login.username5}    ${True}
-    ${env.platform}    ${driver.name}    ${login.username8}    ${True}
+    ${env.platform}    ${driver.name}    ${login.username}    ${login.password}    ${login.pageelement}    ${True}
+    # ${env.platform}    ${driver.name}    ${login.username1}    ${login.password}    ${login.pageelement}    ${True}
+    # ${env.platform}    ${driver.name}    ${login.username2}    ${login.password}    ${login.pageelement}    ${True}
+    # ${env.platform}    ${driver.name}    ${login.username3}    ${login.password}    ${login.pageelement}    ${True}
+    # ${env.platform}    ${driver.name}    ${login.username5}    ${login.password}    ${login.pageelement}    ${True}
+    # ${env.platform}    ${driver.name}    ${login.username8}    ${login.spec_password}    ${login.pageelement}    ${True}
  
 Error Userpass Login
     [Documentation]    Create by shuang
     [Template]    Error Userpass Login Template
-    ${env.platform}    ${driver.name}    ${login.username}    ${False}
+    ${env.platform}    ${driver.name}    ${login.username}    ${login.pageelement}    ${False}
 
 Login User No Exit
     [Documentation]    Create by shuang 
     [Template]    LoginUser NoExit Template
-    ${env.platform}    ${driver.name}    ${login.username}    ${False}
+    ${env.platform}    ${driver.name}    ${login.username}    ${login.pageelement}    ${False}
     
 Login Background
     [Documentation]    Cresate by shuang
     [Template]    Login Background Template
-    ${env.platform}    ${driver.name}    ${login.username}    ${True}
+    ${env.platform}    ${driver.name}    ${login.username}    ${login.pageelement}    ${True}
  
 Register Background
     [Documentation]    Cresate by shuang
     [Template]    Register Backgroud Template
-    ${env.platform}    ${driver.name}    ${login.username}   ${login.rightcode}
+    ${env.platform}    ${driver.name}    ${login.username}   ${login.pageelement}    ${login.rightcode}

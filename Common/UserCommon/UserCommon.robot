@@ -105,9 +105,10 @@ Create New User
     #给相应变量赋值
     ${newRequestHeader}    copy dictionary    ${requestHeader}
     ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
-    ${password}    Run Keyword If    "${password}" == "${EMPTY}"    Set Variable        ${specificPreString}
+    ${password1}    Run Keyword If    "${password}" == "${EMPTY}"    Set Variable        ${specificPreString}
+    ...    ELSE    Set Variable    ${password}
     ${expectedStatusCode}    set variable    200
-    ${data}    set variable    {"username":"${specificPreString}","password":"${password}","nickname":"${specificPreString}"}
+    ${data}    set variable    {"username":"${specificPreString}","password":"${password1}","nickname":"${specificPreString}"}
     &{pathParamter}    Create Dictionary    orgName=${baseRes.validOrgName}    appName=${baseRes.validAppName}
     #创建用户
     &{apiResponse}    Create User    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}

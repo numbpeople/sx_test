@@ -10,6 +10,7 @@ Resource    ../../RestApi/User/UserApi.robot
 Resource    ../../Common/BaseCommon.robot
 Resource    ../../Common/AppCommon/AppCommon.robot
 Resource    ../../Common/UserCommon/UserCommon.robot
+Resource    ../Login/LoginCommon.robot
 
 
 
@@ -65,10 +66,11 @@ Set UserName Password
     ${username8}    Generate Random String    ${newlen}    [UPPER]    
     Get Length    item
     #构建用户名密码
-    ${password}    Generate Random String    1    [NUMBERS]
+    ${spec_password}    Generate Random String    65    [NUMBERS]
     #用户名和密码设置全局变量
     Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}
     ...    username4=${username4}    username5=${username5}    username6=${username6}    username7=${username7}    username8=${username8}
+    ...    spec_password=${spec_password}
     Set Global Variable    ${login}    ${login}
 Determine Regist Page Element
     [Arguments]    ${drivername}    ${element}    ${platform}    ${drivername}

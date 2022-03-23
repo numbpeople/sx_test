@@ -1,6 +1,7 @@
 
 from bases_page.home_page import LoginPage, ServiceConfig, RegisteredPage
 from bases_page.session_page import SessionPage, AddGroup, AddUser
+from bases_page.my_page import MyPage
 from bases.app_bases import Android_Appium_bases
 from config import logging
 
@@ -10,6 +11,9 @@ class Bases_Public_method(Android_Appium_bases):
     a_registered_page = RegisteredPage()
     a_service_config = ServiceConfig()
     session_page = SessionPage()
+    add_group = AddGroup()
+    add_user = AddUser()
+    my_page = MyPage()
 
     # 登陆页面元素
     login_page_element = {
@@ -72,6 +76,13 @@ class Bases_Public_method(Android_Appium_bases):
     # 新的好友
     add_user = {
 
+    }
+
+    # 我的
+    my_page = {
+        "a_logout_element": my_page.android_logout_element,
+        "i_logout_element": my_page.ios_logout_element,
+        "i_config_element": my_page.ios_config_element
     }
 
     # 服务器配置页面
@@ -182,7 +193,7 @@ class Bases_Public_method(Android_Appium_bases):
         :return: True or False
         """
         logging.info(f"操作设备:{devices_name},判断元素是否存在,text_name:{text_name}")
-        return self.judge_element(devices_name, ("xpath", f"//*[@text='{text_name}']"))
+        return self.judge_element(devices_name, ("xpath", f"//*[@value='{text_name}']"))
 
 
     def public_app_background(self,devices_name: str, seconds: int):

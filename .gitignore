@@ -10,6 +10,7 @@
 *.ear
 *.pyc
 log/
+logs/
 
 # report Files #
 *.html
@@ -36,3 +37,4 @@ hs_err_pid*
 
 # other Files
 *.pub
+*.patch

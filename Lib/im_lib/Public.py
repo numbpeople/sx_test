@@ -2,6 +2,8 @@ from bases_page.home_page import LoginPage, ServiceConfig, RegisteredPage
 from bases_page.session_page import SessionPage, AddGroupOptionUser, AddUser, AddGroup
 import time
 from bases_page.session_page import Personal_material, Group_user_combination
+from bases_page.my_page import MyPage
+
 from bases.bases import Data_bases
 
 
@@ -12,7 +14,8 @@ class Public(
     SessionPage,
     AddGroupOptionUser,
     AddUser,
-    AddGroup
+    AddGroup,
+    MyPage
 ):
 
     def login_authorization_method(self, devices_name: str) -> None:
@@ -385,6 +388,24 @@ class Public(
             "click_cancel_button": self.click_cancel_button_method,
             "click_add_user_button": self.click_add_user_button,
             "click_user": self.click_user_method
+        }
+        if func_dict.get(func_name):
+            func = func_dict.get(func_name)
+            return func(*args)
+
+        else:
+            return f"没有该函数{func_name}"
+
+    def logout_page(self, func_name, *args) -> str or None:
+        """
+            1、logout：
+                作用：登记退出
+            2、config
+                作用：设置
+        """
+        func_dict = {
+            "logout": self.logout,
+            "config": self.config
         }
         if func_dict.get(func_name):
             func = func_dict.get(func_name)

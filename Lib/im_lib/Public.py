@@ -422,5 +422,5 @@ if __name__ == '__main__':
     platform = "android"
     a=Public()
     driver=a.connect_appium_method(devices)
-    print(b.element_judge_text(platform, devices, "注册账号"))
+    print(b.element_judge_text(platform,devices,"通讯录"))
 

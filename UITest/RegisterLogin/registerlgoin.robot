@@ -32,12 +32,12 @@ Register Login Page Switch
 Normal Login User 
     [Documentation]    Create by shuang
     [Template]    Normal Login User Template
-    ${env.platform}    ${driver.name}    ${login.username}    ${login.password}    ${login.pageelement}    ${True}
+    # ${env.platform}    ${driver.name}    ${login.username}    ${login.password}    ${login.pageelement}    ${True}
     # ${env.platform}    ${driver.name}    ${login.username1}    ${login.password}    ${login.pageelement}    ${True}
     # ${env.platform}    ${driver.name}    ${login.username2}    ${login.password}    ${login.pageelement}    ${True}
     # ${env.platform}    ${driver.name}    ${login.username3}    ${login.password}    ${login.pageelement}    ${True}
     # ${env.platform}    ${driver.name}    ${login.username5}    ${login.password}    ${login.pageelement}    ${True}
-    # ${env.platform}    ${driver.name}    ${login.username8}    ${login.spec_password}    ${login.pageelement}    ${True}
+    ${env.platform}    ${driver.name}    ${login.username8}    ${login.spec_password}    ${login.pageelement}    ${True}
  
 Error Userpass Login
     [Documentation]    Create by shuang

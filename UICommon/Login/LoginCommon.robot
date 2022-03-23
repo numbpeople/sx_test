@@ -8,7 +8,7 @@ Resource    ../../Common/UserCommon/UserCommon.robot
 Resource    ../Register/RegistetCommon.robot
 
 *** Variables ***
-${time}    5
+${time}    10
 ${backgroundtime}    10
 
 *** Keywords ***
@@ -100,7 +100,6 @@ Login Background Template
     #判断传入的页面元素是否为空
     ${pageelement}=    Parameter Judge Empty    ${pageelement}   会话
     #判断页面是否登录成功（通过元素是否存在判断）
-    #判断是否登录成功
     ${res}    element_judge_text    ${platform}    ${drivername}    ${pageelement}
     Log    ${res}    
     Should Be Equal    ${res}        ${loginres}

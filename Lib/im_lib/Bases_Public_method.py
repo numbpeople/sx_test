@@ -185,7 +185,7 @@ class Bases_Public_method(Android_Appium_bases):
         else:
             return f"没有找到你要的:{page_name},检查你传入page_name是否正确"
 
-    def element_judge_text(self, devices_name: str,  text_name: str) -> True or False:
+    def element_judge_text(self, platform: str, devices_name: str,  text_name: str) -> True or False:
         """
         :作用 通过文本判断元素是否存在
         :param devices_name: 设备名称
@@ -193,7 +193,10 @@ class Bases_Public_method(Android_Appium_bases):
         :return: True or False
         """
         logging.info(f"操作设备:{devices_name},判断元素是否存在,text_name:{text_name}")
-        return self.judge_element(devices_name, ("xpath", f"//*[@value='{text_name}']"))
+        if str(platform).upper() == "ANDROID":
+            return self.judge_element(devices_name, ("xpath", f"//*[@name='{text_name}']"))
+        elif str(platform).upper() == "IOS":
+            return self.judge_element(devices_name, ("xpath", f"//*[@value='{text_name}']"))
 
 
     def public_app_background(self,devices_name: str, seconds: int):

@@ -69,7 +69,7 @@ class SessionPage(Android_Appium_bases):
         if str(platform).upper() == "ANDROID":
             element = self.wait_find(devices_name, self.android_my_element)
         elif str(platform).upper() == "IOS":
-            element = self.wait_find(devices_name, self.android_my_element)
+            element = self.wait_find(devices_name, self.ios_my_element)
         else:
             return "platform错误，只能传入android或者ios设备"
         element.click()

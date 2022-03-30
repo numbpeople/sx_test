@@ -77,7 +77,13 @@ Determine Regist Page Element
     [Documentation]    判断注册页面元素是否存在，如果存在则返回登录页面
     ${element_res}    element_judge    ${drivername}    registered_page_element    ${element}
     Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
-
+element judge
+    [Arguments]    ${platform}    ${drivername} 
+    #根据传入的平台，设置判断元素
+    ${pageelement}    Set Variable If    "${platform}" == "Android"    注册    注册账号
+    #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
+    ${element_res}    element_judge_text    ${platform}    ${drivername}    ${pageelement}
+    Return From Keyword    ${element_res}
 Resgiter User Template
     [Arguments]    ${platform}    ${drivername}    ${username}    ${code}
     [Documentation]    
@@ -94,8 +100,11 @@ Resgiter User Template
     user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${username}    ${username}
     #等待一段时间，方便后边restapi查看用户
     Sleep    ${time}  
-    #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
-    ${element_res}    element_judge_text    ${drivername}    注册
+    # #根据传入的平台，设置判断元素
+    # ${pageelement}    Set Variable If    "${platform}" = "Android"    注册    注册账号
+    # #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
+    # ${element_res}    element_judge_text    ${platform}    ${drivername}    ${pageelement}
+    ${element_res}=    element judge    ${platform}    ${drivername} 
     Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
     #设置等待时间，用户注册完成后，不能立刻调用restapi
     Sleep    ${time}    
@@ -134,7 +143,7 @@ Register Login Page Switch Template
       Login Page Name    ${platform}    ${driver}    ${username}
     END    
     #判断页面元素是否存在
-    element_judge_text    ${driver}    注册账号
+    element_judge_text    ${platform}    ${driver}    注册账号
     #登录页面点击“注册账号”
     login_page    click_registered    ${platform}    ${driver}    click
     #注册用户

@@ -2,6 +2,8 @@ from bases.app_bases import Android_Appium_bases, IosAppiumBases
 from bases.bases import Data_bases
 from appium.webdriver.webdriver import WebDriver
 import logging
+import time
+from asyncio.tasks import sleep
 
 
 class LoginPage(Android_Appium_bases):
@@ -117,6 +119,7 @@ class LoginPage(Android_Appium_bases):
 
         if options == "click":
             element.click()
+            time.sleep(1)
         elif options == "text":
             return element.text
         else:

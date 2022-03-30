@@ -52,8 +52,21 @@ connect_config:
     platformName: ios
     platformVersion: 15.2.1
     deviceName: iphone12
-    udid: 00008101-000C74620211001E
+    udid: 00008101-000844AE0C88001E
     app: com.easemob.enterprise.easeim
+    
+  iphone6s:
+    platformName: iOS
+    platformVersion: 14.0.1
+    deviceName: iphone6s
+    automationName: XCUITest
+    xcodeSigningId: iPhone Developer
+    udid: 774e66fdc7db15c5756d3684b258d1d7cc189a7c
+    bundleId: com.easemob.enterprise.easeim
+    app: /Users/mac/Downloads/iOS_IM_SDK_V3.9.0/EaseIM.ipa
+    clearSystemFiles: False
+    autoAcceptAlerts :  True
+    noReset : True
  
   huaweip20:
     platformName: Android

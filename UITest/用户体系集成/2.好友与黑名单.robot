@@ -1,5 +1,5 @@
 *** Settings ***
-Resource    ../../UITeset_Env.robot
+Resource    ../../UITest_Env/UITeset_Env.robot
 Resource    ../../UICommon/UIUserCommon/FriendAndBlackListCommon.robot
 Library    String
 

@@ -5,18 +5,21 @@ Library    String
 Library    Collections
 Resource    ../Base.robot
 Resource    ../../Variable_Env.robot
-Resource    ../../UITeset_Env.robot
+Resource    ../../UITest_Env/UITeset_Env.robot
 Resource    ../../RestApi/User/UserApi.robot
 Resource    ../../Common/BaseCommon.robot
 Resource    ../../Common/AppCommon/AppCommon.robot
 Resource    ../../Common/UserCommon/UserCommon.robot
-Resource    ../Login/LoginCommon.robot
+Resource    ../../UITest_Env/RegisterLoginElement/RegisterPageElement.robot
+Resource    ../../UITest_Env/RegisterLoginElement/LoginPageElement.robot
+Resource    LoginCommon.robot
 
 
 
 *** Variables ***
-${time}     2
+${time}     6
 ${backgroundtime}    10
+${waitpagetime}    5
 
 *** Keywords ***
 Should Be exist
@@ -64,72 +67,86 @@ Set UserName Password
     ${username7}    Set Variable    用户名
     #使用大写字母注册
     ${username8}    Generate Random String    ${newlen}    [UPPER]    
-    Get Length    item
     #构建用户名密码
-    ${spec_password}    Generate Random String    65    [NUMBERS]
+    ${spec_password}    Generate Random String    10    [NUMBERS]
     #用户名和密码设置全局变量
-    Set To Dictionary    ${login}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}
-    ...    username4=${username4}    username5=${username5}    username6=${username6}    username7=${username7}    username8=${username8}
-    ...    spec_password=${spec_password}
-    Set Global Variable    ${login}    ${login}
-Determine Regist Page Element
-    [Arguments]    ${drivername}    ${element}    ${platform}    ${drivername}
-    [Documentation]    判断注册页面元素是否存在，如果存在则返回登录页面
-    ${element_res}    element_judge    ${drivername}    registered_page_element    ${element}
-    Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
-element judge
-    [Arguments]    ${platform}    ${drivername} 
-    #根据传入的平台，设置判断元素
-    ${pageelement}    Set Variable If    "${platform}" == "Android"    注册    注册账号
-    #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
-    ${element_res}    element_judge_text    ${platform}    ${drivername}    ${pageelement}
-    Return From Keyword    ${element_res}
-Resgiter User Template
-    [Arguments]    ${platform}    ${drivername}    ${username}    ${code}
-    [Documentation]    
-    ...    步骤1：点击【注册用户】
-    ...    步骤2：输入用户名、密码、确认密码
-    ...    步骤3：点击注册
-    ...    步骤4：判断页面是否存在注册按钮，存在则返回，不存在则下一步
-    ...    步骤5：通过restapi判断是否注册成功
-    #注册用户参数:平台、设备名、用户名、密码、确认密码、接口返回的code值
-    Log Many    ${platform}    ${drivername}    ${username}
-    #点击登录页面注册账号
-    login_page    click_registered    ${platform}    ${drivername}
-    #注册页面注册账号(用户名和密码一样)
-    user_registered_page    registered_user    ${platform}    ${drivername}    ${username}    ${username}    ${username}
-    #等待一段时间，方便后边restapi查看用户
-    Sleep    ${time}  
-    # #根据传入的平台，设置判断元素
-    # ${pageelement}    Set Variable If    "${platform}" = "Android"    注册    注册账号
-    # #判断页面元素是不是存在（注册失败时，停留在注册页面，需要返回到登录页面）
-    # ${element_res}    element_judge_text    ${platform}    ${drivername}    ${pageelement}
-    ${element_res}=    element judge    ${platform}    ${drivername} 
-    Run Keyword If    ${element_res}    user_registered_page     click_return     ${platform}    ${drivername}
-    #设置等待时间，用户注册完成后，不能立刻调用restapi
-    Sleep    ${time}    
-    #通过rest api验证用户是否注册成功
-    Should Be exist    ${username}    ${code}
+    Set To Dictionary    ${rightusername}    username=${username}    username1=${username1}    username2=${username2}    username3=${username3}    username5=${username5}    username8=${username8}
+    Set To Dictionary    ${password}    spec_password=${spec_password}
+    Set To Dictionary    ${errusername}    username4=${username4}    username6=${username6}    username7=${username7}
+    Set Test Variable    ${rightusername}    ${rightusername}
+    Set Test Variable    ${errusername}    ${errusername}
+    Set Test Variable    ${password}    ${password}
+    ${Length}    Get Length    ${rightusername}
+    ${rightusernamevalue}    Get Dictionary Values    ${rightusername}
+    FOR    ${i}    IN RANGE    ${Length}
+    Record Temp User List    ${rightusernamevalue[${i}]}
+    END
     
-Login Page Name
-    [Arguments]    ${platform}    ${driver}    ${username}
-    [Documentation]    封装登录页面与注册页面切换，最终停留在登录页面
-    #登录页面点击“注册账号”
-    login_page    click_registered    ${platform}    ${driver}    click
-    #用户名输入框输入用户名
-    user_registered_page    send_registered_user    ${platform}    ${driver}    ${username}
-    #输入用户密码
-    user_registered_page    send_registered_password    ${platform}    ${driver}    ${username}
-    #输入用户确认密码
-    user_registered_page    send_registered_confirm_password    ${platform}    ${driver}    ${username}
-    #点击服务条款
-    user_registered_page    click_agreement    ${platform}    ${driver}
-    #点击返回按钮
-    user_registered_page    click_return    ${platform}    ${driver}
-    Sleep    1  
-        
-Register Login Page Switch Template
-    [Arguments]    ${platform}    ${driver}    ${num}    
+
+Change Xpath
+    [Documentation]
+    ...   1.根据平台判断页面使用的xpath
+    [Arguments]    ${Android}    ${iOS}
+    ${platform}    Convert To Lower Case    ${env.platform} 
+    ${res}    Set Variable If    "${platform}" == "android"    ${Android}    ${iOS}  
+    Return From Keyword    ${res}    ${platform}
+    
+Get xPaths Used
+    [Documentation]
+    ...   1.根据平台判断登录、注册页面使用的xpath
+    ${methods}    Set Variable    ${findby.xpath}
+    ${register}    ${platform}    Change Xpath    ${AndroidRegisterXpath}    ${iOSRegisterXpath}
+    ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
+    Return From Keyword    ${methods}    ${register}    ${login}    ${platform}
+    
+Register Page No Register Button
+    [Arguments]    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
+    [Documentation]
+    # 等待登录页面的“注册账号”元素出现
+    Wait Until Page Contains Element    ${login.btn_register}    ${waitpagetime}
+    #登录页面点击注册账号
+    #id=com.hyphenate.easeim:id/tv_login_register
+    Click Element    ${methods}=${login.btn_register}
+    # 等待注册页面的“用户名输入框”元素出现
+    Wait Until Page Contains Element    ${register.register_name}    ${waitpagetime}
+    # id=com.hyphenate.easeim:id/et_login_name
+    Input Text    ${methods}=${register.register_name}    ${username}
+    # id=com.hyphenate.easeim:id/et_login_pwd
+    Input Text    ${methods}=${register.register_pwd}    ${newpassword}
+    # id=com.hyphenate.easeim:id/et_login_pwd_confirm
+    Input Text    ${methods}=${register.register_pwd_confirm}    ${pwdconfirm}
+    # id=com.hyphenate.easeim:id/cb_select
+    Click Element    ${methods}=${register.select}
+    
+Register User Page
+    [Arguments]    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
+    Register Page No Register Button    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
+    #点击“注册”按钮
+    Click Element    ${methods}=${register.btn_register2}
+    
+Register User Template
+    [Documentation]    注册页面封装(需要传入用户名、密码、确认密码)
+    ...    1.登录页面点击【注册账号】
+    ...    2.用户名输入框输入内容
+    ...    3.输入确认密码
+    ...    4.同意服务条款
+    ...    5.点击注册按钮
+    [Arguments]    ${username}    ${password}    ${pwdconfirm}    ${code}
+    ${newpassword}    Set Variable If    "${password}" == "${EMPTY}"    ${username}    ${password}
+    ${pwdconfirm}    Set Variable If    "${pwdconfirm}" == "${EMPTY}"    ${username}    ${pwdconfirm}
+    #根据传入平台选择xpath
+    ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    Log Many    ${register}    ${login}    ${platform}
+    Register User Page    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
+    #等待时间写入输入库成功后，通过restapi查看注册是否成功
+    Sleep    ${time}
+    #无论注册成功还是失败，都返回登录页面
+    Run Keyword And Ignore Error    Click Element        ${methods}=${register.back}
+    #判断注册的用户是否注册成功
+    Should Be exist    ${username}    ${code}
+
+Register Login Page Swith
+    [Arguments]    ${username}=    ${newpassword}=    ${pwdconfirm}=    ${num}=
     [Documentation]    注册登录页面频繁切换注册用户
     ...    
     Log    ${num}    
@@ -139,39 +156,40 @@ Register Login Page Switch Template
     #构建注册的用户昵称和密码
     ${username}    Generate Random String    6    [LOWER][NUMBERS]
     Log    ${username}    
-    FOR    ${i}    IN RANGE    ${newnum} 
-      Login Page Name    ${platform}    ${driver}    ${username}
+    #根据传入平台选择xpath
+    ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    #循环次数
+    FOR    ${i}    IN RANGE    ${newnum}
+        #从登陆页面进入到注册页面输入用户名和密码
+        Register Page No Register Button    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
+        ${num1}    Evaluate    ${newnum} - 1        
+        Log Many    ${i}    ${num1}
+        Exit For Loop If    "${i}" == "${num1}"
+        #从注册页面返回登录页面
+        Click Element    ${methods}=${register.back}
     END    
-    #判断页面元素是否存在
-    element_judge_text    ${platform}    ${driver}    注册账号
-    #登录页面点击“注册账号”
-    login_page    click_registered    ${platform}    ${driver}    click
-    #注册用户
-    user_registered_page    registered_user    ${platform}    ${driver}    ${username}    ${username}    ${username}
+    Return From Keyword    ${methods}    ${register}    ${login}    ${platform}
+    
+Change LoginRegiter Page and Register Again Template
+    [Arguments]    ${username}=    ${newpassword}=    ${pwdconfirm}=    ${num}=    ${code}=
+    [Documentation]    注册登录页面频繁切换注册用户
+    ...    
+    ${methods}    ${register}    ${login}    ${platform}    Register Login Page Swith    ${username}    ${newpassword}    ${pwdconfirm}    ${num}
+    #点击注册按钮
+    Click Element    ${methods}=${register.btn_register2}
     #设置等待时间，用户注册完成后，不能立刻调用restapi
     Sleep    ${time}    
     #通过rest api验证用户是否注册成功
-    Should Be exist    ${username}    200
+    Should Be exist    ${username}    ${code}
     
-Register Backgroud Template
-    [Arguments]    ${platform}    ${drivername}    ${username}    ${code}
-    [Documentation]    登录页面退到后台后，再次登录
-    #登录页面点击注册账号
-    login_page    click_registered    ${platform}    ${drivername}
-    #注册页面输入用户名
-    user_registered_page    send_registered_user     ${platform}    ${drivername}    ${username}
-    #注册页面输入密码
-    user_registered_page    send_registered_password     ${platform}    ${drivername}    ${username}
-    #注册页面输入确认密码
-    user_registered_page    send_registered_confirm_password     ${platform}    ${drivername}    ${username}
-    #注册页面点击同意条款
-    user_registered_page    click_agreement     ${platform}    ${drivername}
-    #退到后台等待一段时间
-    public_app_background    ${drivername}    ${backgroundtime}
+Change LoginRegiter Page and Login Again Template
+    [Arguments]    ${username}=    ${newpassword}=    ${pwdconfirm}=    ${num}=    ${code}=
+    [Documentation]    注册登录页面频繁切换注册用户
+    ...    
+    ${methods}    ${register}    ${login}    ${platform}    Register Login Page Swith    ${username}    ${newpassword}    ${pwdconfirm}    ${num}
+    Click Element    ${methods}=${register.back}
+    Normal Login User Template    ${username}    ${newpassword}
+    #设置等待时间，用户注册完成后，不能立刻调用restapi
     Sleep    ${time}    
-    #注册页面点击注册
-    user_registered_page    click_registered_button     ${platform}    ${drivername}
-    #等待时间，进行restapi检验
-    Sleep    ${time}    
-    #rest api判断用户是否注册成功
+    #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    ${code}

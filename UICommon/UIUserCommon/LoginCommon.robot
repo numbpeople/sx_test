@@ -3,15 +3,18 @@ Library    Lib/im_lib/Public.py
 Library    Lib/im_lib/Bases_Public_method.py
 Library    String
 Library    Collections
-Resource    ../../UITeset_Env.robot
+Resource    ../../UITest_Env/UITeset_Env.robot
 Resource    ../../Common/UserCommon/UserCommon.robot
-Resource    ../Register/RegistetCommon.robot
+Resource    RegistetCommon.robot
+Resource    ../../UITest_Env/SessionElement/SessionTabPageElement.robot
+Resource    UserLogout.robot
 
 *** Variables ***
-${time}    10
-${backgroundtime}    10
+${time}    5
+${backgroundtime}    5
 
 *** Keywords ***
+
 Parameter Judge Empty
     [Arguments]    ${parameter}    ${newvalue}
     [Documentation]    判断传入的参数是否为空
@@ -36,17 +39,64 @@ Login User
     #等待页面跳转
     Sleep    ${time}    
     
+Get Session xPaths Used
+    [Documentation]
+    ...   1.根据平台判断登录、注册页面使用的xpath
+    ${methods}    Set Variable    ${findby.xpath}
+    ${session}    ${platform}    Change Xpath    ${AndroidSessionPageXpath}    ${iOSSessionPageXpath}
+    ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
+    Return From Keyword    ${methods}    ${session}    ${login}    ${platform}
+    
 Normal Login User Template
-    [Arguments]    ${platform}    ${drivername}    ${username}    ${password}    ${pageelement}    ${loginres}
+    [Arguments]    ${username}=    ${userpwd}=
     [Documentation]    正确的用户名和密码登录
-    #登录用户
-    Login User    ${platform}    ${drivername}    ${username}    ${password}
-    #判断传入的页面元素是否为空
-    ${pageelement}=    Parameter Judge Empty    ${pageelement}   会话
+    ...   
+    #注册一个新用户
+    ${userres}    Create New User    ${username}
+    ${username}    set variable    ${userres['entities'][0]['username']}
+    #注册成功后，等待登录
+    Sleep    ${time}    
+    #判断使用的xpath
+    ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
+    #等待页面元素出现
+    Wait Until Page Contains Element    ${methods}=${login.login_name}    ${waitpagetime}
+    #输入用户名
+    Input Text    ${methods}=${login.login_name}    ${username}
+    #输入用户密码
+    Input Text    ${methods}=${login.login_pwd}    ${userpwd}
+    #点击登录
+    Click Element    ${methods}=${login.login_button}
+    #等待页面跳转
+    Wait Until Page Contains Element    ${methods}=${session.session_tab}    ${waitpagetime}
     #判断页面是否登录成功（通过元素是否存在判断）
-    ${res}    element_judge_text    ${platform}    ${drivername}    ${pageelement}
-    Log    ${res}    
-    Should Be Equal    ${res}        ${loginres}
+    Page Should Contain Element    ${methods}=${session.session_tab} 
+    #退出登录
+    User Logout
+
+Register Login Template
+    [Arguments]    ${username}=    ${userpwd}=
+    [Documentation]    正确的用户名和密码登录
+    ...   
+    #注册一个新用户
+    Register User Template    ${username}    ${password}    ${password}    200
+    #注册成功后，等待登录
+    Sleep    ${time}    
+    #判断使用的xpath
+    ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
+    #等待页面元素出现
+    Wait Until Page Contains Element    ${methods}=${login.login_name}    ${waitpagetime}
+    #输入用户名
+    Input Text    ${methods}=${login.login_name}    ${username}
+    #输入用户密码
+    Input Text    ${methods}=${login.login_pwd}    ${userpwd}
+    #点击登录
+    Click Element    ${methods}=${login.login_button}
+    #等待页面跳转
+    Wait Until Page Contains Element    ${methods}=${session.session_tab}    ${waitpagetime}
+    #判断页面是否登录成功（通过元素是否存在判断）
+    Page Should Contain Element    ${methods}=${session.session_tab} 
+    #退出登录
+    User Logout    
     
 LoginUser NoExit Template
     [Arguments]    ${platform}    ${drivername}    ${username}    ${pageelement}    ${loginres}

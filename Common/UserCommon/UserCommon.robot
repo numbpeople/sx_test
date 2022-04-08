@@ -118,7 +118,7 @@ Create New User
     log    ${text}
     log    ${url}
     #记录创建的IM用户，为用例teardown中清理
-    # run keyword if    '${specificPreString}' == '${EMPTY}'    Record Temp User List    ${text['entities'][0]['username']}
+    run keyword if    '${specificPreString}' == '${EMPTY}'    Record Temp User List    ${text['entities'][0]['username']}
     Return From Keyword    ${text}
 
 Delete Temp Specific User

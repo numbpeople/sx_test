@@ -1,9 +1,12 @@
 *** Settings ***
+Library    String
+Library    Collections
 Resource    ../../UITest_Env/UITeset_Env.robot
-Force Tags    user
+Resource    ../../UITest_Env/RegisterLoginElement/LoginPageElement.robot
+Resource    ../../UITest_Env/SessionElement/SessionTabPageElement.robot
+Force Tags    usermanagement
 
 *** Keywords ***
-
 UI Add User
     [Documentation]    封装添加用户
 

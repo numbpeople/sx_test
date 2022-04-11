@@ -9,13 +9,14 @@ Resource    ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
 
 *** Test Cases *** 
-注册用户成功
+注册用户成功——正确的格式
     [Documentation]    Create by shuang
     ...    1.注册用户名使用64位以内字符：纯英文、英文-_、英文数字、纯数字、64英文、大写字母
     ...    2.传入的参数分别为：用户名、密码、确认密码、判断码
     [Template]    Register User Template  
     [Setup]    Set UserName Password
     [Teardown]   UI Test Data Teardown 
+    [Tags]    smoke
     ${rightusername.username}    ${rightusername.username}    ${rightusername.username}    ${statuscode.ricode}
     ${rightusername.username1}    ${rightusername.username1}    ${rightusername.username1}    ${statuscode.ricode}
     ${rightusername.username2}    ${rightusername.username2}    ${rightusername.username2}    ${statuscode.ricode}
@@ -42,6 +43,7 @@ Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
     [Template]    Normal Login User Template
     [Setup]    Set UserName Password
     [Teardown]    UI Test Data Teardown
+    [Tags]    smoke
     ${rightusername.username}    ${rightusername.username}
     ${rightusername.username1}    ${rightusername.username1}
     ${rightusername.username2}    ${rightusername.username2}
@@ -56,7 +58,8 @@ Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
     [Template]    Register Login Template
     [Setup]    Set UserName Password
     [Teardown]    UI Test Data Teardown
-     ${rightusername.username}    ${rightusername.username}
+    [Tags]    smoke
+    ${rightusername.username}    ${rightusername.username}
     
 注册登录页面切换再注册
     [Documentation]    Cresate by shuang
@@ -78,6 +81,27 @@ Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
     [Documentation]    Cresate by shuang
     [Template]    Register Backgroud Template
     ${env.platform}    ${driver.name}    ${login.username}   ${login.pageelement}    ${login.rightcode}
+    
+注册已存在的用户
+    [Documentation]    
+    ...    注册已存在的用户
+    [Template]    Register Existing User Template
+    [Setup]    Set UserName Password
+    [Teardown]   UI Test Data Teardown
+    ${rightusername.username}    ${rightusername.username}    ${rightusername.username}
+    
+使用错误的密码登录
+    [Documentation]    
+    ...    使用错误的密码登录
+    [Template]    Incorrect Password Login Template
+    [Setup]    Set UserName Password
+    [Teardown]   UI Test Data Teardown
+    ${rightusername.username}    123
+    
+使用不存在的用户登录    
+    [Template]    User Login Not Exist Template
+    [Setup]    Set UserName Password
+    ${rightusername.username}    ${rightusername.username}
     
 用户退出登录
     [Documentation]    

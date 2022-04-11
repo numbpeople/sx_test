@@ -19,7 +19,7 @@ Resource    LoginCommon.robot
 *** Variables ***
 ${time}     6
 ${backgroundtime}    10
-${waitpagetime}    5
+${waitpagetime}    7
 
 *** Keywords ***
 Should Be exist
@@ -102,6 +102,7 @@ Get xPaths Used
 Register Page No Register Button
     [Arguments]    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
     [Documentation]
+    ...    注册页面，未点击注册按钮
     # 等待登录页面的“注册账号”元素出现
     Wait Until Page Contains Element    ${login.btn_register}    ${waitpagetime}
     #登录页面点击注册账号
@@ -193,3 +194,18 @@ Change LoginRegiter Page and Login Again Template
     Sleep    ${time}    
     #通过rest api验证用户是否注册成功
     Should Be exist    ${username}    ${code}
+    
+Register Existing User Template
+    [Arguments]    ${username}    ${password}    ${pwdconfirm}
+    #注册一个新用户
+    ${userres}    Create New User    ${username}
+    ${username}    set variable    ${userres['entities'][0]['username']}
+    #通过UI页面注册一个已存在的用户
+    ${newpassword}    Set Variable If    "${password}" == "${EMPTY}"    ${username}    ${password}
+    ${pwdconfirm}    Set Variable If    "${pwdconfirm}" == "${EMPTY}"    ${username}    ${pwdconfirm}
+    #根据传入平台选择xpath
+    ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    Log Many    ${register}    ${login}    ${platform}
+    Register User Page    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
+    #通过页面元素判断是否注册成功
+    Page Should Contain Element    ${methods}=${register.back}

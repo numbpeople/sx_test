@@ -47,4 +47,3 @@ random password
     ${header}    Create Dictionary    Accept=${Accept}    Content-Type=${Content-Type}    Authorization=${orgtoken}
     ${data}    Set Variable    {"queue":"test2@easemob.com","start":-1,"end":-1}
     ${resp1}=    /{orgName}/{appName}/chatmessages/roaming_settings?settingType={msg_type}   session    ${orgname}    ${appname}    ${user_name}    ${uri}    ${header}    ${data}    ${timeout}
-漫游消息设置

@@ -276,6 +276,24 @@ Get Friend Template
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
+Rest Get Friends Operation
+    [Documentation]    rest api验证用户是否添加好友成功
+    [Arguments]    ${username}    ${code}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${username}
+    #设置请求集和
+    @{arguments}    Create List    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
+    ${res}    Get Friend    @{arguments}
+    Log    ${res}
+    #判断接口是否执行成功
+    Should Be Equal As Integers    ${res.statusCode}    ${code}
+    #判断接口内容是否正确
+    Log    ${res.text}
+    Return From Keyword    ${res.text.data}
+
+
 Get Inexistent Friend Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    获取不存在用户的好友列表
@@ -519,6 +537,20 @@ Get Inexistent User BlacklistTemplate
     @{argumentValue}    create list
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+    
+Rest Apply Add Friend
+    [Arguments]    ${username}    ${username1}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    #设置请求数据
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    userName=${username1}
+    ${data}    Set Variable    {"usernames":["${username}"]}
+    #设置请求集和
+    @{arguments}    Create List    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
+    ${apiResponse}    Apply Add Friend    @{arguments}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200        
+    
 Apply Add Friend Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    添加好友申请

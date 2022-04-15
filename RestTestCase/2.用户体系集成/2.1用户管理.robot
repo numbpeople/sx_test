@@ -25,12 +25,12 @@ Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.
 注册单个用户(/{orgName}/{appName}/users)
     [Template]    Create New User Template
     ${contentType.JSON}    ${Token.orgToken}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_ContentType}
-    ${contentType.JSON}    ${EMPTY}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${EMPTY}    ${Token.orgToken}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
-    ${EMPTY}    ${EMPTY}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
-    ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
-    ${contentType.JSON}    ${Token.appToken}    false    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
-    ${contentType.JSON}    ${Token.bestToken}    false    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
+    # ${contentType.JSON}    ${EMPTY}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    # ${EMPTY}    ${Token.orgToken}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.OrgToken_EmptyContentType}
+    # ${EMPTY}    ${EMPTY}    true    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_EmptyContentType}
+    # ${contentType.JSON}    ${EMPTY}    false    ${AppRegistrationNoOpenDictionary.statusCode}    ${AppRegistrationNoOpenDictionary.reponseResult}    ${AppRegistrationNoOpenDiffEntity}    ${ModelCaseRunStatus.EmptyOrgToken_ContentType}
+    # ${contentType.JSON}    ${Token.appToken}    false    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.AppToken_ContentType}
+    # ${contentType.JSON}    ${Token.bestToken}    false    ${NewUserDictionary.statusCode}    ${NewUserDictionary.reponseResult}    ${NewUserDiffEntity}    ${ModelCaseRunStatus.BestToken_ContentType}
 
 注册单个用户-用户名为不合法(/{orgName}/{appName}/users)
     [Template]    Create New User With Illegal UserName Template

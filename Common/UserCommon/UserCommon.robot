@@ -762,8 +762,8 @@ Modify User Password Template
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
     @{argumentValue}    create list
-    Comment    @{argumentValueUnauthorized}    create list
-    Comment    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    # Comment    @{argumentValueUnauthorized}    create list
+    # Comment    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
@@ -795,8 +795,8 @@ Modify Inexistent User Password Template
     Log Dictionary    ${apiResponse}
     @{argumentField}    create list
     @{argumentValue}    create list
-    Comment    @{argumentValueUnauthorized}    create list
-    Comment    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
+    # Comment    @{argumentValueUnauthorized}    create list
+    # Comment    Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 

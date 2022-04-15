@@ -1,6 +1,4 @@
 *** Settings ***
-Library    Lib/im_lib/Public.py
-Library    Lib/im_lib/Bases_Public_method.py
 Library    String
 Resource    ../../UITest_Env/UITeset_Env.robot
 Resource    ../../UICommon/UIUserCommon/RegistetCommon.robot
@@ -77,10 +75,10 @@ Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
     [Teardown]   UI Test Data Teardown 
     ${rightusername.username}    ${rightusername.username}    ${rightusername.username}    ${num}    ${statuscode.ricode}
     
-注册-后台运行再注册
-    [Documentation]    Cresate by shuang
-    [Template]    Register Backgroud Template
-    ${env.platform}    ${driver.name}    ${login.username}   ${login.pageelement}    ${login.rightcode}
+# 注册-后台运行再注册
+#     [Documentation]    Cresate by shuang
+#     [Template]    Register Backgroud Template
+#     ${env.platform}    ${driver.name}    ${login.username}   ${login.pageelement}    ${login.rightcode}
     
 注册已存在的用户
     [Documentation]    

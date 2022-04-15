@@ -444,7 +444,7 @@ Edit Chatgroup With Inexistent GroupId Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${randomNumber}    Generate Random Specified String
-    Comment    ${groupId}    set variable    ${baseRes.validChatgroup.groupId}    #获取初始化的有效群组
+    # Comment    ${groupId}    set variable    ${baseRes.validChatgroup.groupId}    #获取初始化的有效群组
     &{chatGroupEntity}    Create Dictionary    groupname=${randomNumber}    description=${randomNumber}    maxusers=200
     ${data}    set variable    {"groupname":"${chatGroupEntity.groupname}","description":"${chatGroupEntity.description}","maxusers":${chatGroupEntity.maxusers}}
     ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}

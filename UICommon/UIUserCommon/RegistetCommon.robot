@@ -1,6 +1,4 @@
 *** Settings ***
-Library    Lib/im_lib/Public.py
-Library    Lib/im_lib/Bases_Public_method.py
 Library    String
 Library    Collections
 Resource    ../Base.robot
@@ -78,8 +76,9 @@ Set UserName Password
     Set Test Variable    ${password}    ${password}
     ${Length}    Get Length    ${rightusername}
     ${rightusernamevalue}    Get Dictionary Values    ${rightusername}
+    ${i}    Set Variable    0
     FOR    ${i}    IN RANGE    ${Length}
-    Record Temp User List    ${rightusernamevalue[${i}]}
+        Record Temp User List    ${rightusernamevalue[${i}]}
     END
     
 
@@ -159,6 +158,7 @@ Register Login Page Swith
     Log    ${username}    
     #根据传入平台选择xpath
     ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    ${i}    Set Variable    0
     #循环次数
     FOR    ${i}    IN RANGE    ${newnum}
         #从登陆页面进入到注册页面输入用户名和密码

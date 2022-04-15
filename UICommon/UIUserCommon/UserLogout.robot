@@ -1,8 +1,10 @@
 *** Settings ***
 Library    String
 Library    Collections
+Library    AppiumLibrary
 Resource    ../../UITest_Env/MyTabElement/MyTabPageElement.robot
 Resource    ../../UITest_Env/MyTabElement/SettingElement.robot
+Resource    RegistetCommon.robot
 Resource    ../../UITest_Env/UITeset_Env.robot
 
 *** Variables ***

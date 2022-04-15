@@ -234,6 +234,20 @@ Get User Offline Msg Status Template
     #强制用户下线接口
     ${resp}=    /{org_name}/{app_name}/users/{user_name}/disconnect    ${session}    ${orgName}    ${appName}    ${userName}    ${newRequestHeader}    ${timeout}
     [Return]    ${resp}
+    
+Forcing User Offline
+    [Documentation]    强制用户下线
+    ...    
+    [Arguments]    ${username}
+    #设置请求的header
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    #设置orgname和appname
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    #强制用户下线接口
+    Log    ${RestRes.alias}    
+    ${resp}=    /{org_name}/{app_name}/users/{user_name}/disconnect    ${RestRes.alias}    ${orgName}    ${appName}    ${username}    ${newRequestHeader}    ${timeout}
+    
 查看用户在线设备状态
     [Arguments]    ${session}
     [Documentation]    查看用户在线设备状态，如果用户离线，获取的data为空，主要验证接口请求成功

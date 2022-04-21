@@ -94,30 +94,30 @@ Format Jsonstr
     Log    ${s}    
     return from keyword    ${s}
 
-Repeat Keyword Times
-    [Arguments]    ${functionName}    ${expectConstruction}    ${expectValue}    @{paramList}
-    [Documentation]    重试调用接口多次，判断结果是否包含预期的值，包含则返回结果，否则返回{}
-    ...
-    ...    【参数值】：
-    ...    - ${functionName} ，代表接口封装后的关键字
-    ...    - ${expectConstruction} ，接口返回值中应取的字段结构
-    ...    - ${expectValue} ，获取接口某字段的预期值
-    ...    - @{paramList}，接口封装后所需要传入的参数值
-    ...
-    ...    【返回值】：
-    ...    - 调用${functionName}接口，返回结果中，匹配${expectConstruction}字段结构，值等于${expectValue}的数据结构
-    : FOR    ${i}    IN RANGE    ${retryTimes}
-    \    ${j}    run keyword    ${functionName}    @{paramList}
-    \    #适配最新的返回结构，获取返回值
-    \    ${status}    Run Keyword And Return Status    Dictionary Should Contain Key    ${j}    statusCode
-    \    run keyword if    ${status}    Set Suite Variable    ${j}    ${j.text}
-    \    #返回结果为空，则进入下次循环
-    \    Continue For Loop If    "${j}" == "[]"
-    \    #想要获取返回值中应取的字段结构，即${j}返回值中，获取${expectConstruction}结构的值 ，例如：${j['data'][0]}
-    \    ${dataRes}    set variable    ${j${expectConstruction}}
-    \    return from keyword if    "${dataRes}" == "${expectValue}"    ${j}
-    \    sleep    ${delay}
-    return from keyword    {}
+# Repeat Keyword Times
+#     [Arguments]    ${functionName}    ${expectConstruction}    ${expectValue}    @{paramList}
+#     [Documentation]    重试调用接口多次，判断结果是否包含预期的值，包含则返回结果，否则返回{}
+#     ...
+#     ...    【参数值】：
+#     ...    - ${functionName} ，代表接口封装后的关键字
+#     ...    - ${expectConstruction} ，接口返回值中应取的字段结构
+#     ...    - ${expectValue} ，获取接口某字段的预期值
+#     ...    - @{paramList}，接口封装后所需要传入的参数值
+#     ...
+#     ...    【返回值】：
+#     ...    - 调用${functionName}接口，返回结果中，匹配${expectConstruction}字段结构，值等于${expectValue}的数据结构
+#     : FOR    ${i}    IN RANGE    ${retryTimes}
+#     \    ${j}    run keyword    ${functionName}    @{paramList}
+#     \    #适配最新的返回结构，获取返回值
+#     \    ${status}    Run Keyword And Return Status    Dictionary Should Contain Key    ${j}    statusCode
+#     \    run keyword if    ${status}    Set Suite Variable    ${j}    ${j.text}
+#     \    #返回结果为空，则进入下次循环
+#     \    Continue For Loop If    "${j}" == "[]"
+#     \    #想要获取返回值中应取的字段结构，即${j}返回值中，获取${expectConstruction}结构的值 ，例如：${j['data'][0]}
+#     \    ${dataRes}    set variable    ${j${expectConstruction}}
+#     \    return from keyword if    "${dataRes}" == "${expectValue}"    ${j}
+#     \    sleep    ${delay}
+#     return from keyword    {}
 
 Structure Field Should Be Equal
     [Arguments]    ${requestResult}    ${diffStructTemplate}
@@ -155,12 +155,39 @@ Check Field Format
     [Arguments]    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}
     #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
     FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructTemplateList}
-    #递归校验结构的正确性
-    Check Type Format    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}    ${index}    ${diffKey}    Check Field Format
-    #根据json结构断言字段正确性
-    ${keyStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${requestResult}    ${diffKey}
-    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
-    run keyword if    not ${keyStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中未包含字段：${diffKey}\n
+        #递归校验结构的正确性（适配robotframework==5.0，使用line：161-185并修改了参数,替换了159行，）
+        # Check Type Format    ${requestResult}    ${diffStructTemplateJson}    ${diffStructTemplateList}    ${diffResult}    ${index}    ${diffKey}    Check Field Format
+        
+        log    ${diffStructTemplateJson}
+        log    ${requestResult}
+        log list    ${diffStructTemplateList}
+        #判断key的类型，如果key是json，则递归循环获取
+        ${keyJsonType}    Check Json Type    ${diffKey}
+        @{keyJsondiffStructList}    run keyword if    ${keyJsonType}    Get Dictionary Keys    ${diffKey}
+        run keyword if    ${keyJsonType}    Check Field Format    ${requestResult[${index}]}    ${diffStructTemplateJson[${index}]}    ${keyJsondiffStructList}    ${diffResult}
+        Continue For Loop If    ${keyJsonType}
+        #判断结果中key和value均不属于json
+        ${keyStatus}    Run Keyword And Return Status    should contain    "${diffKey}"    :
+        ${valueStatus}    Run Keyword And Return Status    log    ${diffStructTemplateJson['${diffKey}']}
+        Continue For Loop If    (not ${keyStatus}) and (not ${valueStatus})
+        Comment    log    ${diffStructTemplateJson['${diffKey}']}
+        Comment    log    ${requestResult['${diffKey}']}
+        #判断是否是json
+        ${valueJsonType}    Check Json Type    ${diffStructTemplateJson['${diffKey}']}
+        @{jsondiffStructList}    run keyword if    ${valueJsonType}    Get Dictionary Keys    ${diffStructTemplateJson['${diffKey}']}
+        #判断是否是list
+        ${valueListType}    Check List Type    ${diffStructTemplateJson['${diffKey}']}
+        @{listdiffStructList}    run keyword if    ${valueListType}    set variable    ${diffStructTemplateJson['${diffKey}']}
+        #判断是否是json
+        run keyword if    ${valueJsonType}    Check Field Format    ${requestResult['${diffKey}']}    ${diffStructTemplateJson['${diffKey}']}    ${jsondiffStructList}    ${diffResult}
+        #判断是否是list
+        run keyword if    ${valueListType}    Check Field Format    ${requestResult['${diffKey}']}    ${diffStructTemplateJson['${diffKey}']}    ${listdiffStructList}    ${diffResult}
+        Continue For Loop If    ${valueListType} or ${valueJsonType}
+
+        #根据json结构断言字段正确性
+        ${keyStatus}    Run Keyword And Return Status    Dictionary Should Contain Key    ${requestResult}    ${diffKey}
+        ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
+        run keyword if    not ${keyStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中未包含字段：${diffKey}\n
     END    
     return from keyword    ${diffResult}
 
@@ -172,14 +199,43 @@ Check Value Format
     Log    ${diffResult}    
     #分别校验字段的匹配性，不匹配或不包含，则将错误置如返回错误结果中
     FOR    ${index}    ${diffKey}    IN ENUMERATE    @{diffStructList}
-    #递归校验结构的正确性
-    Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}    Check Value Format
-    Log    ${requestResult}
-    #检查字段值是否相等
-    log many    ${requestResult['${diffKey}']}
-    ${valueStatus}    Run Keyword And Return Status    Should Contain    "${diffStructResultJson['${diffKey}']}"    "${requestResult['${diffKey}']}"
-    ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
-    run keyword if    not ${valueStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中字段：${diffKey}，不等于${diffStructResultJson['${diffKey}']}，实际值为：${requestResult['${diffKey}']}。\n
+        #递归校验结构的正确性（适配robotframework==5.0，使用line：207-231并修改了参数,替换了159行，）
+        # Check Type Format    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}    Check Value Format
+
+        # [Arguments]    ${requestResult}    ${diffStructResultJson}    ${diffStructList}    ${diffResult}    ${index}    ${diffKey}    ${keyword}
+        # [Documentation]    递归校验结构的正确性
+        log    ${diffStructResultJson}
+        log    ${requestResult}
+        log list    ${diffStructList}
+        #判断key的类型，如果key是json，则递归循环获取
+        ${keyJsonType}    Check Json Type    ${diffKey}
+        @{keyJsondiffStructList}    run keyword if    ${keyJsonType}    Get Dictionary Keys    ${diffKey}
+        run keyword if    ${keyJsonType}    Check Value Format    ${requestResult[${index}]}    ${diffStructResultJson[${index}]}    ${keyJsondiffStructList}    ${diffResult}
+        Continue For Loop If    ${keyJsonType}
+        #判断结果中key和value均不属于json
+        ${keyStatus}    Run Keyword And Return Status    should contain    "${diffKey}"    :
+        ${valueStatus}    Run Keyword And Return Status    log    ${diffStructResultJson['${diffKey}']}
+        Continue For Loop If    (not ${keyStatus}) and (not ${valueStatus})
+        Comment    log    ${diffStructResultJson['${diffKey}']}
+        Comment    log    ${requestResult['${diffKey}']}
+        #判断是否是json
+        ${valueJsonType}    Check Json Type    ${diffStructResultJson['${diffKey}']}
+        @{jsondiffStructList}    run keyword if    ${valueJsonType}    Get Dictionary Keys    ${diffStructResultJson['${diffKey}']}
+        #判断是否是list
+        ${valueListType}    Check List Type    ${diffStructResultJson['${diffKey}']}
+        @{listdiffStructList}    run keyword if    ${valueListType}    set variable    ${diffStructResultJson['${diffKey}']}
+        #判断是否是json
+        run keyword if    ${valueJsonType}    Check Value Format    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}    ${jsondiffStructList}    ${diffResult}
+        #判断是否是list
+        run keyword if    ${valueListType}    Check Value Format    ${requestResult['${diffKey}']}    ${diffStructResultJson['${diffKey}']}    ${listdiffStructList}    ${diffResult}
+        Continue For Loop If    ${valueListType} or ${valueJsonType}
+
+        Log    ${requestResult}
+        #检查字段值是否相等
+        log many    ${requestResult['${diffKey}']}
+        ${valueStatus}    Run Keyword And Return Status    Should Contain    "${diffStructResultJson['${diffKey}']}"    "${requestResult['${diffKey}']}"
+        ${errorDescribtion}    set variable    ${diffResult.errorDescribtion}
+        run keyword if    not ${valueStatus}    set to dictionary    ${diffResult}    status=False    errorDescribtion=${errorDescribtion} \n返回结果中字段：${diffKey}，不等于${diffStructResultJson['${diffKey}']}，实际值为：${requestResult['${diffKey}']}。\n
     END
     return from keyword    ${diffResult}
 

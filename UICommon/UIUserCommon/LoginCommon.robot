@@ -19,7 +19,11 @@ Get Session xPaths Used
     ${methods}    Set Variable    ${findby.xpath}
     ${session}    ${platform}    Change Xpath    ${AndroidSessionPageXpath}    ${iOSSessionPageXpath}
     ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
-    Return From Keyword    ${methods}    ${session}    ${login}    ${platform}
+    # Return From Keyword    ${methods}    ${session}    ${login}    ${platform}
+    Set Test Variable    ${methods}    
+    Set Test Variable    ${session}    
+    Set Test Variable    ${login}    
+    Set Test Variable    ${platform}
     
 Login User
     [Arguments]    ${username}=    ${userpwd}=
@@ -41,7 +45,8 @@ Login Page Operations
     ...    2.输入密码
     ...    3.点击登录按钮
     [Arguments]    ${username}=    ${userpwd}=
-    ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
+    # ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
+    Get Session xPaths Used
     #等待页面元素出现
     Wait Until Page Contains Element    ${methods}=${login.login_name}    ${waitpagetime}
     #输入用户名
@@ -85,7 +90,8 @@ Register Login Template
     #注册成功后，等待登录
     Sleep    ${time}    
     #判断使用的xpath
-    ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
+    # ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
+    Get Session xPaths Used
     #等待页面元素出现
     Wait Until Page Contains Element    ${methods}=${login.login_name}    ${waitpagetime}
     #输入用户名

@@ -145,12 +145,19 @@ Delete Temp Specific User For Loop
     #获取app下所有的用户
     @{userList}    Get Users And Return User    100
     #批量删除测试用户数据
-    : FOR    ${i}    IN    @{userList}
-    \    #获取用户username
-    \    ${userName}    set variable    ${i['username']}
-    \    ${status}    Run Keyword And Return Status    Should Contain    ${userName}    ${preRandomString}
-    \    #删除指定用户
-    \    run keyword if    ${status}    Delete Temp Specific User    ${userName}
+    # : FOR    ${i}    IN    @{userList}
+    # \    #获取用户username
+    # \    ${userName}    set variable    ${i['username']}
+    # \    ${status}    Run Keyword And Return Status    Should Contain    ${userName}    ${preRandomString}
+    # \    #删除指定用户
+    # \    run keyword if    ${status}    Delete Temp Specific User    ${userName}
+    FOR    ${i}    IN    @{userList}
+        #获取用户username
+        ${userName}    set variable    ${i['username']}
+        ${status}    Run Keyword And Return Status    Should Contain    ${userName}    ${preRandomString}
+        #删除指定用户
+        run keyword if    ${status}    Delete Temp Specific User    ${userName}
+    END
 
 Delete Temp Specific User For Test TearDown Loop
     [Documentation]    删除用例中创建的用户

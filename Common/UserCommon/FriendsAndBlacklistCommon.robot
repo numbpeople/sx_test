@@ -35,6 +35,7 @@ Agree Friend Request
     ${resp}=    /{orgName}/{appName}/users/{userName1}/contacts/accept/users/{userName2}    POST    ${session}    ${header}    pathParamter=${pathParamter}
     &{apiResponse}    Return Result    ${resp}
     Return From Keyword    ${apiResponse}
+
 Add Friend For User
     [Arguments]    ${ownerUsername}    ${friendUsername}
     [Documentation]    添加好友
@@ -54,6 +55,19 @@ Add Friend For User
     log    ${url}
     ${user}    set variable    ${text}
     return from keyword    ${user}
+
+Rest Add Friend
+    [Documentation]    
+    ...    添加好友
+    [Arguments]    ${username}    ${username1}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    ${ownerUsername}    ${friendUsername}    set variable    ${username}    ${username1}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
+    @{arguments}    Create List    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
+    ${apiResponse}    Add Friend    @{arguments}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200
 
 Remove Friend
     [Arguments]    ${session}    ${header}    ${pathParamter}
@@ -157,6 +171,7 @@ Add Friend Template
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
+
 Add Inexistent Friend Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    添加单个不存在的好友
@@ -237,6 +252,18 @@ Remove Friend Template
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
+Rest Delete Friend
+    [Documentation]    RestApi删除好友
+    [Arguments]    ${username}    ${friendusername}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    ${ownerUsername}    ${friendUsername}    set variable    ${username}    ${friendusername}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    friendUsername=${friendUsername}
+    @{arguments}    Create List    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}
+    ${response}    Remove Friend    @{arguments}
+    Should Be Equal As Integers    ${response.statusCode}    200
+
 Get Friend Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    获取好友列表
@@ -291,7 +318,7 @@ Rest Get Friends Operation
     Should Be Equal As Integers    ${res.statusCode}    ${code}
     #判断接口内容是否正确
     Log    ${res.text}
-    Return From Keyword    ${res.text.data}
+    Return From Keyword    ${res.text.data[0]}
 
 
 Get Inexistent Friend Template
@@ -361,6 +388,18 @@ Add User Blacklist Template
     Run Keyword If    ${statusCode} == 401    set suite variable    ${argumentValue}    ${argumentValueUnauthorized}
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
+
+Rest Add User Blacklist
+    [Documentation]    将用户添加到黑名单
+    [Arguments]    ${username}    ${username1}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    ${data}    set variable    {"usernames":["${username1}"]}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${username}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
+    &{apiResponse}    Add Blacklist    @{arguments}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200
 
 Add Inexistent User Blacklist Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}

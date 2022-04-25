@@ -1,0 +1,2 @@
+*** Variables ***
+${RegCMD}         ${EMPTY}

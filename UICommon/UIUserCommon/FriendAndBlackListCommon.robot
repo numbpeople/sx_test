@@ -10,6 +10,8 @@ Resource    ../../UITest_Env/SessionElement/SystemNotificationElement.robot
 Resource    LoginCommon.robot
 Resource    ../../UITest_Env/AddressBook/AddressBookTabElement.robot
 Resource    ../../Common/UserCommon/UserOnlineAndOffline.robot
+Resource    ../UISettingCommon/SettingCommon.robot
+
 
 *** Variables ***
 ${time}    5
@@ -17,15 +19,6 @@ ${waitpagetime}    7
 ${KEYCODE_SEARCH}    66
 
 *** Keywords ***
-Get Nottification xPaths Used
-    [Documentation]
-    ...   1.根据平台判断登录、注册页面使用的xpath
-    ${methods}    Set Variable    ${findby.xpath}
-    ${notification}    ${platform}    Change Xpath    ${AndroidNotificationPageXpath}    ${iOSNotificationPageXpath}
-    Set Test Variable    ${methods}    
-    Set Test Variable    ${notification}
-    Set Test Variable    ${platform}
-
 Get Adress Bool Xpath
     [Documentation]
     ...   1.根据平台判断登录、注册页面使用的xpath
@@ -72,13 +65,13 @@ Create User And Login User
 Click Notification
     [Documentation]    
     ...   点击会话列表中的系统通知
-    Get Nottification xPaths Used
+    Get xPaths Used
     Wait Until Page Contains Element    ${notification.systemnotification}    ${waitpagetime}
     Click Element    ${notification.systemnotification}
     
 Click Notification Green
     [Documentation]    点击系统通知中的同意
-    Get Nottification xPaths Used  
+    Get xPaths Used  
     #等待元素出现
     Wait Until Page Contains Element    ${notification.count_green_button}    ${waitpagetime}
     #获取匹配元素的数量
@@ -92,7 +85,7 @@ Click Notification Green
     
 Click Notification Refused
     [Documentation]    点击系统通知中的拒绝
-    Get Nottification xPaths Used
+    Get xPaths Used
     Wait Until Page Contains Element     ${notification.refused}    ${waitpagetime}
     Click Element    ${notification.refused}    
 
@@ -368,17 +361,48 @@ Add BLocklist Templeate
 
 Blacklisted Templeate
     [Documentation]    将用户添加到黑名单
-    [Arguments]    ${username}    ${userpwd}    ${username1}
+    [Arguments]    ${owerusername}    ${userpwd}    ${friendusername}
     #创建用户1和用户2，并登录用户1
-    Create User And Login User    ${username}    ${userpwd}    ${username1}
+    Create User And Login User    ${owerusername}    ${userpwd}    ${friendusername}
     #RestApi用户添加好友
-    Rest Add Friend    ${username}    ${username1}
+    Rest Add Friend    ${owerusername}    ${friendusername}
     Sleep    ${time}
     #进入到通讯录页面
     Click Adress Book
     #判断通讯录页面存在好友2（期望存在好友2）
-    Page Should Contain Text    ${username1} 
+    Page Should Contain Text    ${friendusername} 
     #RestApi将用户添加到黑名单
-    Rest Add User Blacklist    ${username}    ${username1}
+    Rest Add User Blacklist    ${owerusername}    ${friendusername}
     #判断通讯录页面存在好友2（期望存在好友2）
-    Page Should Contain Text    ${username1} 
+    Page Should Contain Text    ${friendusername} 
+
+Enter Blacklist Page Operation
+    [Documentation]    进入到黑名单列表
+    #点击【我】tab页面
+    Click MyPage
+    #点击【设置】按钮
+    Click Setting
+    #点击【隐私】按钮
+    Click Privacy
+    #点击【黑名单】按钮
+    Click Blacklist
+
+
+Remove Blacklist Templeate
+    [Documentation]    将用户从黑名单中移除
+    [Arguments]    ${owerusername}    ${userpwd}    ${friendusername}
+    #创建用户1和用户2，并登录用户1
+    Create User And Login User    ${owerusername}    ${userpwd}    ${friendusername}
+    #RestApi用户添加好友
+    Rest Add Friend    ${owerusername}    ${friendusername}
+    #RestApi添加黑名单
+    Rest Add User Blacklist    ${owerusername}    ${friendusername}
+    #进入到黑名单页面
+    Enter Blacklist Page Operation
+    #将用户移除黑名单
+    Removing Blacklist    ${friendusername}
+    #RestApi确认是否移除黑名单
+    Rest Get Blacklist    ${owerusername}
+    #UI页面确认是否移除黑名单
+    Swipe By Percent    569    393    569    1288
+    Page Should Not Contain Element    ${blackname}

@@ -5,6 +5,7 @@ Resource    ../../UITest_Env/UITeset_Env.robot
 Resource    ../../Common/UserCommon/UserCommon.robot
 Resource    RegistetCommon.robot
 Resource    ../../UITest_Env/SessionElement/SessionTabPageElement.robot
+Resource    ../../UITest_Env/SessionElement/SystemNotificationElement.robot
 Resource    UserLogout.robot
 
 *** Variables ***
@@ -13,17 +14,25 @@ ${backgroundtime}    5
 
 *** Keywords ***
     
-Get Session xPaths Used
+Get xPaths Used
     [Documentation]
     ...   1.根据平台判断登录、注册页面使用的xpath
     ${methods}    Set Variable    ${findby.xpath}
     ${session}    ${platform}    Change Xpath    ${AndroidSessionPageXpath}    ${iOSSessionPageXpath}
     ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
-    # Return From Keyword    ${methods}    ${session}    ${login}    ${platform}
+    ${mypage}    ${platform}    Change Xpath    ${AndroidMyPageElement}    ${iOSMyPageElement}
+    ${notification}    ${platform}    Change Xpath    ${AndroidNotificationPageXpath}    ${iOSNotificationPageXpath}
+    ${register}    ${platform}    Change Xpath    ${AndroidRegisterXpath}    ${iOSRegisterXpath}
+    ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
+    ${seting}    ${platform}    Change Xpath    ${AndroidSetingElement}    ${iOSSetingElement}
     Set Test Variable    ${methods}    
+    Set Test Variable    ${notification}
+    Set Test Variable    ${platform}  
     Set Test Variable    ${session}    
-    Set Test Variable    ${login}    
-    Set Test Variable    ${platform}
+    Set Test Variable    ${login}   
+    Set Test Variable    ${register}
+    Set Test Variable    ${mypage}
+    Set Test Variable    ${seting}
     
 Login User
     [Arguments]    ${username}=    ${userpwd}=
@@ -45,8 +54,7 @@ Login Page Operations
     ...    2.输入密码
     ...    3.点击登录按钮
     [Arguments]    ${username}=    ${userpwd}=
-    # ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
-    Get Session xPaths Used
+    Get xPaths Used
     #等待页面元素出现
     Wait Until Page Contains Element    ${methods}=${login.login_name}    ${waitpagetime}
     #输入用户名
@@ -90,8 +98,7 @@ Register Login Template
     #注册成功后，等待登录
     Sleep    ${time}    
     #判断使用的xpath
-    # ${methods}    ${session}    ${login}    ${platform}    Get Session xPaths Used
-    Get Session xPaths Used
+    Get xPaths Used
     #等待页面元素出现
     Wait Until Page Contains Element    ${methods}=${login.login_name}    ${waitpagetime}
     #输入用户名

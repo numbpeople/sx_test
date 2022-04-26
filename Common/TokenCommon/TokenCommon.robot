@@ -35,7 +35,7 @@ Get OrgToken Or BestToken Init
     ${url}    set variable    ${apiResponse.url}
     #获取orgName
     @{orgNameList}    Get Dictionary Keys    ${text['user']['organizations']}
-    Comment    ${orgName}    set variable    ${orgNameList[0]}
+    # Comment    ${orgName}    set variable    ${orgNameList[0]}
     ${orgName}    run keyword if    ("${RunModelCaseConditionDic.orgName}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    Set Variable    ${RunModelCaseConditionDic.orgName}
     ...    ELSE    Set Variable    ${orgNameList[0]}
     set to dictionary    ${Token}    orgToken=${text['access_token']}
@@ -61,9 +61,9 @@ Get BestToken And Set Global Variable
     Set Parallel Value For Key    ParallelToken    ${Token}
     Set Parallel Value For Key    ParallelbaseRes    ${baseRes}
     
-Set App Token Expire Tmplate
-    [Documentation]    设置apptoken过期时间
-    [Arguments]    ${method}
-    #获取app token
-    token
+# Set App Token Expire Tmplate
+#     [Documentation]    设置apptoken过期时间
+#     [Arguments]    ${method}
+#     #获取app token
+#     token
 Set User Token Expire Tmplate

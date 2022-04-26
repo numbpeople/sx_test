@@ -2,12 +2,12 @@
 Library    String
 Library    Collections
 Resource    ../Base.robot
-Resource    ../../Variable_Env.robot
+Resource    ../../../Variable_Env.robot
 Resource    ../../UITest_Env/UITeset_Env.robot
-Resource    ../../RestApi/User/UserApi.robot
-Resource    ../../Common/BaseCommon.robot
-Resource    ../../Common/AppCommon/AppCommon.robot
-Resource    ../../Common/UserCommon/UserCommon.robot
+Resource    ../../../RestApi/User/UserApi.robot
+Resource    ../../../Common/BaseCommon.robot
+Resource    ../../../Common/AppCommon/AppCommon.robot
+Resource    ../../../Common/UserCommon/UserCommon.robot
 Resource    ../../UITest_Env/RegisterLoginElement/RegisterPageElement.robot
 Resource    ../../UITest_Env/RegisterLoginElement/LoginPageElement.robot
 Resource    LoginCommon.robot

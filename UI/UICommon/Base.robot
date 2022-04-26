@@ -2,13 +2,13 @@
 Library    String
 Library    Collections
 Library    AppiumLibrary
-Resource    ../Variable_Env.robot
+Resource    ../../Variable_Env.robot
 Resource    ../UITest_Env/UITeset_Env.robot
-Resource    ../RestApi/User/UserApi.robot
-Resource    ../Common/BaseCommon.robot
-Resource    ../Common/AppCommon/AppCommon.robot
-Resource    ../Common/UserCommon/UserCommon.robot
-Resource    ../Common/CollectionCommon/SuiteSetup/SuiteSetupCommon.robot
+Resource    ../../RestApi/User/UserApi.robot
+Resource    ../../Common/BaseCommon.robot
+Resource    ../../Common/AppCommon/AppCommon.robot
+Resource    ../../Common/UserCommon/UserCommon.robot
+Resource    ../../Common/CollectionCommon/SuiteSetup/SuiteSetupCommon.robot
 Resource    UIUserCommon/RegistetCommon.robot
 
 

@@ -15,15 +15,22 @@ Get My xPaths Used
     [Documentation]
     ...   1.根据平台判断登录、注册页面使用的xpath
     ${methods}    Set Variable    ${findby.xpath}
-    ${myPage}    ${platform}    Change Xpath    ${AndroidMyPageElement}    ${iOSMyPageElement}
+    ${mypage}    ${platform}    Change Xpath    ${AndroidMyPageElement}    ${iOSMyPageElement}
     ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
     ${seting}    ${platform}    Change Xpath    ${AndroidSetingElement}    ${iOSSetingElement}
-    Return From Keyword    ${methods}    ${MyPage}    ${login}    ${seting}
+    Set Test Variable    ${methods}    
+    Set Test Variable    ${mypage}    
+    Set Test Variable    ${login}    
+    Set Test Variable    ${seting}
+
+Click MyPage
+    Wait Until Page Contains Element    ${methods}=${mypage.my_tab}    ${waitpagetime}
+    Click Element    ${methods}=${mypage.my_tab}
     
 User Logout
     [Documentation]    
     ...    1.用户登出
-    ${methods}    ${MyPage}    ${login}    ${seting}     Get My xPaths Used
+    Get xPaths Used
     #点击“我的”,进入我的页面
     Click Element    ${methods}=${mypage.my_tab}
     #等待页面出现“设置”按钮

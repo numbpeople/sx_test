@@ -72,3 +72,11 @@ Library    String
     [Setup]    Set UserName Password    
     [Teardown]    UI Test Data Teardown  
     ${rightusername.username}    ${rightusername.username}    ${rightusername.username2} 
+
+将用户移除黑名单
+    [Documentation]    从黑名单将用户移除
+    [Tags]    smoke
+    [Template]    Remove Blacklist Templeate
+    [Setup]    Set UserName Password    
+    [Teardown]    UI Test Data Teardown  
+    ${rightusername.username}    ${rightusername.username}    ${rightusername.username2} 

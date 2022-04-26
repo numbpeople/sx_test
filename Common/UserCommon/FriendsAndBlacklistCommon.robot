@@ -389,18 +389,6 @@ Add User Blacklist Template
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
-Rest Add User Blacklist
-    [Documentation]    将用户添加到黑名单
-    [Arguments]    ${username}    ${username1}
-    ${newRequestHeader}    copy dictionary    ${requestHeader}
-    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
-    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
-    ${data}    set variable    {"usernames":["${username1}"]}
-    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${username}
-    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}    ${data}
-    &{apiResponse}    Add Blacklist    @{arguments}
-    Should Be Equal As Integers    ${apiResponse.statusCode}    200
-
 Add Inexistent User Blacklist Template
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    添加IM用户的黑名单-黑名单用户不存在
@@ -510,6 +498,42 @@ Remove Inexistent User Blacklist Template
     #断言请求结果中的字段和返回值
     Assert Request Result    ${apiResponse}    ${diffStructTemplate}    ${diffStructResult}    ${statusCode}    ${argumentField}    ${argumentValue}
 
+Rest Add User Blacklist
+    [Documentation]    将用户添加到黑名单
+    [Arguments]    ${username}    ${username1}
+    ${newRequestHeader}    copy dictionary    ${requestHeader}
+    ${newRequestHeader}    Set Request Header And Return    ${newRequestHeader}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    ${data}    set variable    {"usernames":["${username1}"]}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${username}
+    @{arguments}    Create List    ${RestRes.alias}    ${newRequestHeader}    ${pathParamter}    ${data}
+    &{apiResponse}    Add Blacklist    @{arguments}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200
+    
+Rest Remove Blacklist
+    [Documentation]    将IM用户从黑名单列表中移除
+    [Arguments]    ${ownerUsername}    ${friendUsername}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}    blockedUsername=${friendUsername}
+    #设置请求集和
+    ${keywordDescribtion}    set variable    ${TEST NAME}
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    Remove Blacklist    @{arguments}
+    Should Be Equal As Integers    ${apiResponse.statusCode}    200
+
+Rest Get Blacklist
+    [Documentation]    rest获取黑名单列表
+    [Arguments]    ${ownerUsername}
+    #设置请求数据
+    ${applicationUUID}    set variable    ${baseRes.validAppUUID}
+    ${orgName}    ${appName}    set variable    ${baseRes.validOrgName}    ${baseRes.validAppName}
+    &{pathParamter}    Create Dictionary    orgName=${orgName}    appName=${appName}    ownerUsername=${ownerUsername}
+    #设置请求集和
+    @{arguments}    Create List    ${RestRes.alias}    ${requestHeader}    ${pathParamter}
+    ${apiresponse}    Get Blacklist     @{arguments}
+    Should Be Equal As Integers    ${apiresponse.statusCode}    200
+    Should Be Equal As Strings    ${apiresponse.text[0].data}    0
+    
 Get User BlacklistTemplate
     [Arguments]    ${contentType}    ${token}    ${statusCode}    ${diffStructTemplate}    ${diffStructResult}    ${specificModelCaseRunStatus}
     [Documentation]    获取用户的黑名单列表

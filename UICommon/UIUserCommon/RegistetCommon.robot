@@ -90,14 +90,6 @@ Change Xpath
     ${res}    Set Variable If    "${platform}" == "android"    ${Android}    ${iOS}  
     Return From Keyword    ${res}    ${platform}
     
-Get xPaths Used
-    [Documentation]
-    ...   1.根据平台判断登录、注册页面使用的xpath
-    ${methods}    Set Variable    ${findby.xpath}
-    ${register}    ${platform}    Change Xpath    ${AndroidRegisterXpath}    ${iOSRegisterXpath}
-    ${login}    ${platform}    Change Xpath    ${AndroidLoginXpath}    ${iOSLoginXpath}
-    Return From Keyword    ${methods}    ${register}    ${login}    ${platform}
-    
 Register Page No Register Button
     [Arguments]    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
     [Documentation]
@@ -135,7 +127,7 @@ Register User Template
     ${newpassword}    Set Variable If    "${password}" == "${EMPTY}"    ${username}    ${password}
     ${pwdconfirm}    Set Variable If    "${pwdconfirm}" == "${EMPTY}"    ${username}    ${pwdconfirm}
     #根据传入平台选择xpath
-    ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    Get xPaths Used
     Log Many    ${register}    ${login}    ${platform}
     Register User Page    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
     #等待时间写入输入库成功后，通过restapi查看注册是否成功
@@ -157,7 +149,7 @@ Register Login Page Swith
     ${username}    Generate Random String    6    [LOWER][NUMBERS]
     Log    ${username}    
     #根据传入平台选择xpath
-    ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    Get xPaths Used
     ${i}    Set Variable    0
     #循环次数
     FOR    ${i}    IN RANGE    ${newnum}
@@ -204,7 +196,7 @@ Register Existing User Template
     ${newpassword}    Set Variable If    "${password}" == "${EMPTY}"    ${username}    ${password}
     ${pwdconfirm}    Set Variable If    "${pwdconfirm}" == "${EMPTY}"    ${username}    ${pwdconfirm}
     #根据传入平台选择xpath
-    ${methods}    ${register}    ${login}    ${platform}    Get xPaths Used
+    Get xPaths Used
     Log Many    ${register}    ${login}    ${platform}
     Register User Page    ${methods}    ${login}    ${register}    ${username}    ${newpassword}    ${pwdconfirm}
     #通过页面元素判断是否注册成功

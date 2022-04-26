@@ -1,15 +1,15 @@
 *** Settings ***
 Library    String
 Library    Collections
-Resource    ../../Common/UserCommon/FriendsAndBlacklistCommon.robot
+Resource    ../../../Common/UserCommon/FriendsAndBlacklistCommon.robot
 Resource    ../../UITest_Env/UITeset_Env.robot
-Resource    ../../Variable_Env.robot
+Resource    ../../../Variable_Env.robot
 Resource    ../../UITest_Env/RegisterLoginElement/LoginPageElement.robot
 Resource    ../../UITest_Env/SessionElement/SessionTabPageElement.robot
 Resource    ../../UITest_Env/SessionElement/SystemNotificationElement.robot
 Resource    LoginCommon.robot
 Resource    ../../UITest_Env/AddressBook/AddressBookTabElement.robot
-Resource    ../../Common/UserCommon/UserOnlineAndOffline.robot
+Resource    ../../../Common/UserCommon/UserOnlineAndOffline.robot
 Resource    ../UISettingCommon/SettingCommon.robot
 
 

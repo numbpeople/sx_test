@@ -2,7 +2,7 @@
 Library    String
 Library    Collections
 Resource    ../../UITest_Env/UITeset_Env.robot
-Resource    ../../Common/UserCommon/UserCommon.robot
+Resource    ../../../Common/UserCommon/UserCommon.robot
 Resource    RegistetCommon.robot
 Resource    ../../UITest_Env/SessionElement/SessionTabPageElement.robot
 Resource    ../../UITest_Env/SessionElement/SystemNotificationElement.robot

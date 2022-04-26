@@ -3,7 +3,7 @@ Library    String
 Resource    ../../UITest_Env/UITeset_Env.robot
 Resource    ../../UICommon/UIUserCommon/RegistetCommon.robot
 Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
-Resource    ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
+Resource    ../../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 Resource    ../../UICommon/UIUserCommon/LoginCommon.robot
 
 *** Test Cases *** 

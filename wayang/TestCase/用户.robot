@@ -6,4 +6,4 @@ Resource    ../Common/UserCommon.robot
 
 *** Test Cases ***
 修改用户昵称
-    SDKupdateCurrentUserNick    "test"    ${WayangRes.device1}
+    SDKupdateCurrentUserNick    "test123"    ${WayangRes.device}

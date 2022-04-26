@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          ../BaseResullt.robot
+# Resource          ../BaseResullt.robot
 
 *** Variables ***
 ${ChatgroupUserMute}    {"action":"post","application":"cef552f0-7ac9-11e9-9543-398cbe730822","uri":"http://a1-hsb.easemob.com/1104190221201050/imautotest-9229138137/chatgroups/82770268323841/mute","entities":[],"data":[{"result":true,"expire":1558420680313,"user":"imautotest-5817865707"}],"timestamp":1558334280314,"duration":0,"organization":"1104190221201050","applicationName":"imautotest-9229138137"}

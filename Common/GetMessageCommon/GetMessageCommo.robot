@@ -31,19 +31,19 @@ random password
     ${password}    Evaluate    str(random.random())[-3:]    random
     [Return]    ${password}
     
-获取漫游消息
-    # [Arguments]
-    [Documentation]    获取漫游消息
-    ${resp}=    创建一个新用户    session
-    ${result}    to json    ${resp.content}
-    ${user_name}    Set Variable    ${result["entities"][0]["username"]}
-    ${header}    Create Dictionary    Accept=${Accept}    Content-Type=${Content-Type}    Authorization=${orgtoken}
-    ${data}    Set Variable    {"queue":"test2@easemob.com","start":-1,"end":-1}
-    ${resp1}=    /{org_name}/{app_name}/users/{user_name}/messageroaming    session    ${orgname}    ${appname}    ${user_name}    ${uri}    ${header}    ${data}    ${timeout}
-查询漫游消息设置
-    ${resp}=    创建一个新用户    session
-    ${result}    to json    ${resp.content}
-    ${user_name}    Set Variable    ${result["entities"][0]["username"]}
-    ${header}    Create Dictionary    Accept=${Accept}    Content-Type=${Content-Type}    Authorization=${orgtoken}
-    ${data}    Set Variable    {"queue":"test2@easemob.com","start":-1,"end":-1}
-    ${resp1}=    /{orgName}/{appName}/chatmessages/roaming_settings?settingType={msg_type}   session    ${orgname}    ${appname}    ${user_name}    ${uri}    ${header}    ${data}    ${timeout}
+# 获取漫游消息
+#     # [Arguments]
+#     [Documentation]    获取漫游消息
+#     ${resp}=    创建一个新用户    session
+#     ${result}    to json    ${resp.content}
+#     ${user_name}    Set Variable    ${result["entities"][0]["username"]}
+#     ${header}    Create Dictionary    Accept=${Accept}    Content-Type=${Content-Type}    Authorization=${orgtoken}
+#     ${data}    Set Variable    {"queue":"test2@easemob.com","start":-1,"end":-1}
+#     ${resp1}=    /{org_name}/{app_name}/users/{user_name}/messageroaming    session    ${orgname}    ${appname}    ${user_name}    ${uri}    ${header}    ${data}    ${timeout}
+# 查询漫游消息设置
+#     ${resp}=    创建一个新用户    session
+#     ${result}    to json    ${resp.content}
+#     ${user_name}    Set Variable    ${result["entities"][0]["username"]}
+#     ${header}    Create Dictionary    Accept=${Accept}    Content-Type=${Content-Type}    Authorization=${orgtoken}
+#     ${data}    Set Variable    {"queue":"test2@easemob.com","start":-1,"end":-1}
+#     ${resp1}=    /{orgName}/{appName}/chatmessages/roaming_settings?settingType={msg_type}   session    ${orgname}    ${appname}    ${user_name}    ${uri}    ${header}    ${data}    ${timeout}

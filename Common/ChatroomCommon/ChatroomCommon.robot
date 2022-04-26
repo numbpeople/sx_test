@@ -162,7 +162,7 @@ Create Chatroom With Owner Is The Same As Member Template
     Return From Keyword If    not ${runStatus}
     #设置请求数据
     ${ownerUserName}    set variable    ${validIMUserInfo.username}
-    Comment    ${user}    Create Temp User
+    # Comment    ${user}    Create Temp User
     ${userName}    set variable    ${ownerUserName}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
@@ -424,7 +424,7 @@ Modify Chatroom With Inexistent ChatroomIdTemplate
     Return From Keyword If    not ${runStatus}
     #创建一个聊天室
     ${randomNumber}    Generate Random Specified String
-    Comment    ${chatroom}    Create Temp Chatroom
+    # Comment    ${chatroom}    Create Temp Chatroom
     ${chatroomId}    set variable    ${randomNumber}
     #设置请求数据
     ${userName}    set variable    ${validIMUserInfo.username}

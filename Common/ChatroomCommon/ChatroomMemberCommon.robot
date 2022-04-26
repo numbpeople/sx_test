@@ -186,9 +186,9 @@ Add Single Chatroom Member With Inexistent ChatroomId Template
     #设置请求数据
     ${userName}    set variable    ${validIMUserInfo.username}
     #创建一个聊天室
-    Comment    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效聊天室信息
+    # Comment    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效聊天室信息
     ${randomNumber}    Generate Random Specified String
-    Comment    ${chatroom}    Create Temp Chatroom    ${userName}
+    # Comment    ${chatroom}    Create Temp Chatroom    ${userName}
     ${chatroomId}    set variable    ${randomNumber}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}
@@ -452,9 +452,9 @@ Add Chatroom Admin With Inexistent ChatroomId Template
     #设置请求数据
     ${userName}    set variable    ${validIMUserInfo.username}
     #创建一个聊天室
-    Comment    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效聊天室信息
+    # Comment    ${chatroomId}    set variable    ${baseRes.validChatroom.chatroomId}    #获取初始化的有效聊天室信息
     ${randomNumber}    Generate Random Specified String
-    Comment    ${chatroom}    Create Temp Chatroom    ${userName}
+    # Comment    ${chatroom}    Create Temp Chatroom    ${userName}
     ${chatroomId}    set variable    ${randomNumber}
     #设置请求数据
     ${applicationUUID}    set variable    ${baseRes.validAppUUID}

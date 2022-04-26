@@ -270,7 +270,7 @@ Get Applications And Set AppName Init
     [Documentation]    初始化组织下的应用信息
     #设置有效appName和无效appName
     ${bestTokenAndAppNameStatus}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" == "${EMPTY}")    #配置了超管token，并且appName未配置
-    Comment    ${bestTokenAndAppNameNotEmpty}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    #配置了超管token和appName
+    # Comment    ${bestTokenAndAppNameNotEmpty}    evaluate    ("${RunModelCaseConditionDic.specificBestToken}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    #配置了超管token和appName
     ${orgNameAndAppNameNotEmpty}    evaluate    ("${RunModelCaseConditionDic.orgName}" != "${EMPTY}") and ("${RunModelCaseConditionDic.appName}" != "${EMPTY}")    #配置了orgName和appName
     Run Keyword If    ${bestTokenAndAppNameStatus}    FAIL    配置了指定超管token，需要配置orgName、appName，请检查变量：RunModelCaseConditionDic 配置
     ${randomNumber}    Generate Random String    10    [NUMBERS]
@@ -281,7 +281,7 @@ Get Applications And Set AppName Init
     ${applicationName}    set variable    ${newAppApiResponse['entities'][0]['applicationName']}
     ${applicationUUID}    set variable    ${newAppApiResponse['entities'][0]['uuid']}
     #设置全局的有效、无效基本数据
-    Comment    ${randoNumber}    Generate Random String    5    [NUMBERS]
+    # Comment    ${randoNumber}    Generate Random String    5    [NUMBERS]
     set to dictionary    ${baseRes}    validAppName=${applicationName}    invalidAppName=invalidApp${randomNumber}    validAppUUID=${applicationUUID}
     set global variable    ${baseRes}    ${baseRes}
     Set Parallel Value For Key    ParallelbaseRes    ${baseRes}

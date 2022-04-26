@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          ../BaseResullt.robot
+# Resource          ../BaseResullt.robot
 
 *** Variables ***
 ${CreateChatgroup}    {"action":"post","application":"e1af6e90-fccf-11e7-8cd3-5d660b6f51f2","uri":"http://a1-mesos.easemob.com/talent-leoli123/test/chatgroups","entities":[],"data":{"groupid":"81787263975425"},"timestamp":1557396813145,"duration":0,"organization":"talent-leoli123","applicationName":"test"}

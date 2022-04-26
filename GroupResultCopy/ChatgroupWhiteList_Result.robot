@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          ../BaseResullt.robot
+# Resource          ../BaseResullt.robot
 
 *** Variables ***
 ${GetWhiteList}    {"action":"get","application":"7e4a08ba-1773-4ac7-8f9a-26f270c53789","uri":"http://a1-hsb.easemob.com/easemob-demo/imautotest-4700491019/chatgroups/159586831106049/white/users","entities":[],"data":["initvaliduser-1390914350"],"timestamp":1631592262881,"duration":0,"organization":"easemob-demo","applicationName":"imautotest-4700491019","count":1}

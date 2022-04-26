@@ -303,6 +303,6 @@ DeleteAppKeyAllCallBack
             ${resu}    DelteCallBackTemp    ${callback}[entities][${index}][name]
             ${resukey}    Set Variable    ${resu.path}
     END
-    ${callback}    GetAllMsgHooksTemp
+    # ${callback}    GetAllMsgHooksTemp
     ${length}    Get Length    ${callback.entities}
     Should Be Equal    "0"    "${length}"    未删除所有回调

@@ -2,7 +2,7 @@
 Resource          WSCommon.robot
 Library           AsyncLibrary
 Library    ../Lib/wayangutils.py
-Library           deepdiff    WITH NAME    TDeep
+Library           deepdiff    
 Resource          ../../Varable_Wayang.robot
 Resource          ../Resource/LoginRes.resource
 Resource          ../Common/LoginCommon.robot

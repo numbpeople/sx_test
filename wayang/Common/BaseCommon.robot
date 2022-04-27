@@ -11,12 +11,12 @@ Resource          ../Common/LoginCommon.robot
 WayangSetup
     ${conn}    WSConnect    ${WayangRes.WSUrl}${WayangRes.topic1}    ${${WayangRes.timeout}}
     Set Global Variable    ${WayangRes.WSconn}    ${conn}
-    SDKLogin    "${WatyangUserinfo.username}"    "${WatyangUserinfo.password}"    "${WayangappInfo.orgname}#${WayangappInfo.appname}"    ${WayangRes.device}    ${false}
+    SDKLogin    "${WatyangUserinfo.username}"    "${WatyangUserinfo.password}"    "${WayangappInfo.orgname}#${WayangappInfo.appname}"    ${WayangRes.device}    ${1}    ${1}    ${false}
     ${handle}    Async Run    WSPING    ${WayangRes.WSconn}    ${WayangRes.delay}
     Set Global Variable    ${wshandle}    ${handle}
     ${conn2}    WSConnect    ${Wayang2Res.WSUrl}${Wayang2Res.topic1}    ${${Wayang2Res.timeout}}
     Set Global Variable    ${Wayang2Res.WSconn}    ${conn2}
-    SDKLogin    "${WatyangUser2info.username}"    "${WatyangUser2info.password}"    "${WayangappInfo.orgname}#${WayangappInfo.appname}"    ${Wayang2Res.device}    ${false}
+    SDKLogin    "${WatyangUser2info.username}"    "${WatyangUser2info.password}"    "${WayangappInfo.orgname}#${WayangappInfo.appname}"    ${Wayang2Res.device}    ${1}    ${1}    ${false}
     ${handle2}    Async Run    WSPING    ${Wayang2Res.WSconn}    ${Wayang2Res.delay}
     Set Global Variable    ${wshandle2}    ${handle2}
 

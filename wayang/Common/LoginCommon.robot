@@ -9,9 +9,9 @@ Resource    ../../Common/GroupCommon/GroupCommon.robot
 
 *** Keywords ***
 SDKLogin
-    [Arguments]    ${username}    ${password}    ${appkey}   ${device} 
+    [Arguments]    ${conn}    ${username}    ${password}    ${appkey}   ${device}    ${bAssert}=${true} 
     IF    "${device}" == "Webim"
-        WebimLogin    ${username}    ${password}    ${appkey}    ${WebimLoginCMD}
+        WebimLogin    ${conn}    ${username}    ${password}    ${appkey}    ${WebimLoginCMD}    ${bAssert}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -26,10 +26,10 @@ SDKLogin
     END
 
 SDKLogout
-    [Arguments]    ${device} 
+    [Arguments]    ${conn}    ${device} 
     Log    ${device}
     IF    "${device}" == "Webim"
-        WebimLogout    ${WebimLogoutCMD}
+        WebimLogout    ${conn}    ${WebimLogoutCMD}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -42,24 +42,24 @@ SDKLogout
         Log    "What?"
     END
 WebimLogin
-    [Arguments]    ${username}    ${password}    ${appkey}    ${cmdjson}
+    [Arguments]    ${conn}    ${username}    ${password}    ${appkey}    ${cmdjson}    ${bAssert}
     @{argumentValue}    create list    ${username}    ${password}    ${appkey}
     ${cmdstr}    Format Jsonstr    ${cmdjson}    ${argumentValue}
-    WSSend    ${WayangRes.WSconn}    ${cmdstr}
-    ${res}    WSRecv    ${WayangRes.WSconn}
-    ${tres}    Convert String to JSON    ${res}
-    ${tresjson}    Convert String to JSON    ${tres['info']['return']}
-    ${texpectedjson}    Convert String to JSON    ${WebimLoginResp}
-    #Assert Response    ${res}['info']['return']['entities']    ${updateCurrentUserNickResp}    ${updateCurrentUserNickExclude}
-    Assert Response    ${tresjson}    ${texpectedjson}    ${WebimLoginExclude}
+    WSSend    ${conn}    ${cmdstr}
+    ${res}    WSRecv    ${conn}
+    IF    ${bAssert}
+        ${tresjson}    Convert WayangResp to Json    ${res}    
+        ${texpectedjson}    Convert String to JSON    ${WebimLoginResp}
+        Assert Response    ${tresjson}    ${texpectedjson}    ${WebimLoginExclude}
+    END
     @{teardownlist}    Create List    ${cmdstr}    ${res}    ${savecasepath}    "WebimLogin"    
     RETURN    ${res}
     [Teardown]    WayangCMDTeardown    ${teardownlist}
 
 WebimLogout
-    [Arguments]    ${cmdjson}
-    WSSend    ${WayangRes.WSconn}    ${cmdjson}
-    ${res}    WSRecv    ${WayangRes.WSconn}
+    [Arguments]    ${conn}    ${cmdjson}
+    WSSend    ${conn}    ${cmdjson}
+    ${res}    WSRecv    ${conn}
     Log    ${res}
     @{teardownlist}    Create List    ${cmdjson}    ${res}    ${savecasepath}    "WebimLogout"    
     RETURN    ${res}

@@ -1,4 +1,5 @@
 *** Variables ***
 ${WebimupdateCurrentUserNickCMD}    {"type":1,"objId":10000,"device":"","cmd":"updateCurrentUserNick","sequence":0,"info":{"params":["%s"]},"extra":{"returnResult":true}}
 ${WebimupdateCurrentUserNickResp}    {"path":"/users","uri":"https://a1.easemob.com/easemob-demo/easeim/users","timestamp":1650983397747,"organization":"%s","application":"8dfb1641-b6d8-450b-bbe9-d8d45a3be39f","entities":[{"uuid":"565f46d0-8219-11eb-804e-51462302c231","type":"user","created":1615433089988,"modified":1650906160631,"username":"%s","activated":true,"nickname":"%s"}],"action":"put","duration":30,"applicationName":"%s","type":0}
-@{WebimupdateCurrentUserNickExclude}              root['uri']    root['timestamp']    root['application']    root['entities']['uuid']    root['entities'][0]['created']    root['entities'][0]['modified']    root['duration']
+@{WebimupdateCurrentUserNickExclude}              root['uri']    root['timestamp']    root['application']    root['entities'][0]['uuid']    root['entities'][0]['created']    root['entities'][0]['modified']    root['duration']
+${WebimaddContactCMD}    {"type":1,"objId":10000,"device":"","cmd":"addContact","sequence":0,"info":{"params":["%s","%s"]},"extra":{"returnResult":true}}

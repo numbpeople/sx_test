@@ -77,6 +77,6 @@ WebimaddContact
         #Assert Response    ${res}['info']['return']['entities']    ${updateCurrentUserNickResp}    ${updateCurrentUserNickExclude}
         Assert Response    ${tresjson}    ${texpectedjson}    ${WebimupdateCurrentUserNickExclude}
     END
-    @{teardownlist}    Create List    ${cmdstr}    ${res}    ${savecasepath}    "WebimupdateCurrentUserNick"    
+    @{teardownlist}    Create List    ${cmdstr}    ${res}    ${savecasepath}    "WebimaddContact"    
     RETURN    ${res}
     [Teardown]    WayangCMDTeardown    ${teardownlist}

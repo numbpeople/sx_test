@@ -7,8 +7,7 @@ Library           WebSocketClient
 *** Keywords ***
 WSConnect
     [Arguments]    ${url}    ${timeout}
-    ${rs}    Evaluate    type(${timeout})
-    Log    ${rs}
+    Log    ${url}
     &{ssldict}    Create Dictionary    cert_reqs=${0}
     ${conn}    WebSocketClient.Connect    ${url}    ${timeout}   sslopt=${ssldict}
     RETURN    ${conn}

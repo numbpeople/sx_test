@@ -25,5 +25,5 @@ SDKsendMessage
 
 
 WebsendMessage
-    [Arguments]    ${conn}    ${msg}    ${cmdjson}
+    [Arguments]    ${conn}    ${msg}
     Log    ${msg}

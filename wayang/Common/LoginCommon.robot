@@ -11,7 +11,7 @@ Resource    ../../Common/GroupCommon/GroupCommon.robot
 SDKLogin
     [Arguments]    ${conn}    ${username}    ${password}    ${appkey}   ${device}    ${bAssert}=${true} 
     IF    "${device}" == "Webim"
-        WebimLogin    ${conn}    ${username}    ${password}    ${appkey}    ${WebimLoginCMD}    ${bAssert}
+        WebimLogin    ${conn}    ${username}    ${password}    ${appkey}    ${bAssert}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -29,7 +29,7 @@ SDKLogout
     [Arguments]    ${conn}    ${device} 
     Log    ${device}
     IF    "${device}" == "Webim"
-        WebimLogout    ${conn}    ${WebimLogoutCMD}
+        WebimLogout    ${conn}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -42,9 +42,9 @@ SDKLogout
         Log    "What?"
     END
 WebimLogin
-    [Arguments]    ${conn}    ${username}    ${password}    ${appkey}    ${cmdjson}    ${bAssert}
+    [Arguments]    ${conn}    ${username}    ${password}    ${appkey}    ${bAssert}
     @{argumentValue}    create list    ${username}    ${password}    ${appkey}
-    ${cmdstr}    Format Jsonstr    ${cmdjson}    ${argumentValue}
+    ${cmdstr}    Format Jsonstr    ${WebimLoginCMD}    ${argumentValue}
     WSSend    ${conn}    ${cmdstr}
     ${res}    WSRecv    ${conn}
     IF    ${bAssert}
@@ -57,10 +57,10 @@ WebimLogin
     [Teardown]    WayangCMDTeardown    ${teardownlist}
 
 WebimLogout
-    [Arguments]    ${conn}    ${cmdjson}
-    WSSend    ${conn}    ${cmdjson}
+    [Arguments]    ${conn}
+    WSSend    ${conn}    ${WebimLogoutCMD}
     ${res}    WSRecv    ${conn}
     Log    ${res}
-    @{teardownlist}    Create List    ${cmdjson}    ${res}    ${savecasepath}    "WebimLogout"    
+    @{teardownlist}    Create List    ${WebimLogoutCMD}    ${res}    ${savecasepath}    "WebimLogout"    
     RETURN    ${res}
     [Teardown]    WayangCMDTeardown    ${teardownlist}

@@ -10,9 +10,9 @@ Resource    ../Resource/UserRes.resource
 *** Keywords ***
 
 SDKupdateCurrentUserNick
-    [Arguments]    ${conn}    ${nickname}    ${device}    ${bAssert}=${true} 
+    [Arguments]    ${conn}    ${nickname}    ${device}    ${cmdtype}    ${resptype}    ${bAssert}=${true} 
     IF    "${device}" == "Webim"
-        WebimupdateCurrentUserNick    ${conn}    ${nickname}    ${bAssert}
+        WebimupdateCurrentUserNick    ${conn}    ${nickname}    ${cmdtype}    ${resptype}    ${bAssert}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -28,27 +28,34 @@ SDKupdateCurrentUserNick
 
 
 WebimupdateCurrentUserNick
-    [Arguments]    ${conn}    ${nickname}    ${bAssert}
-    @{argumentValue}    create list    ${nickname}    
-    ${cmdstr}    Format Jsonstr    ${WebimupdateCurrentUserNickCMD}    ${argumentValue}
+    [Arguments]    ${conn}    ${nickname}    ${cmdtype}    ${resptype}    ${bAssert}
+    IF    ${cmdtype} == ${1}
+        @{argumentValue}    create list    ${nickname}    
+        ${cmdstr}    Format Jsonstr    ${WebimupdateCurrentUserNickCMD1}    ${argumentValue}
+    ELSE
+        Log    ${cmdtype}
+    END
     WSSend    ${conn}    ${cmdstr}
     ${res}    WSRecv    ${conn}
     IF    ${bAssert}
         ${tresjson}    Convert WayangResp to Json    ${res}   
-        @{argument}    Create List    "${WayangappInfo.orgname}"    "${WatyangUserinfo.username}"    ${nickname}    "${WayangappInfo.appname}"
-        ${texpectedstr}    Format Jsonstr    ${WebimupdateCurrentUserNickResp}    ${argument}
-        ${texpectedjson}    Convert String to JSON    ${texpectedstr}
-        #Assert Response    ${res}['info']['return']['entities']    ${updateCurrentUserNickResp}    ${updateCurrentUserNickExclude}
-        Assert Response    ${tresjson}    ${texpectedjson}    ${WebimupdateCurrentUserNickExclude}
+        IF    ${resptype} == ${1}
+            @{argument}    Create List    "${WayangappInfo.orgname}"    "${WatyangUserinfo.username}"    ${nickname}    "${WayangappInfo.appname}"
+            ${texpectedstr}    Format Jsonstr    ${WebimupdateCurrentUserNickResp1}    ${argument}
+            ${texpectedjson}    Convert String to JSON    ${texpectedstr}
+            Assert Response    ${tresjson}    ${texpectedjson}    ${WebimupdateCurrentUserNickExclude1}    
+        ELSE
+            Log    ${resptype}    
+        END     
     END
     @{teardownlist}    Create List    ${cmdstr}    ${res}    ${savecasepath}    "WebimupdateCurrentUserNick"    
     RETURN    ${res}
     [Teardown]    WayangCMDTeardown    ${teardownlist}
 
 SDKaddContact
-    [Arguments]    ${conn}    ${username}    ${msg}    ${device}    ${bAssert}=${true} 
+    [Arguments]    ${conn}    ${username}    ${msg}    ${device}    ${cmdtype}    ${resptype}    ${bAssert}=${true} 
     IF    "${device}" == "Webim"
-        WebimaddContact    ${conn}    ${username}    ${msg}    ${bAssert}
+        WebimaddContact    ${conn}    ${username}    ${msg}    ${cmdtype}    ${resptype}    ${bAssert}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -64,18 +71,25 @@ SDKaddContact
 
 
 WebimaddContact
-    [Arguments]    ${conn}    ${username}    ${msg}    ${bAssert}
-    @{argumentValue}    create list    ${username}    ${msg}    
-    ${cmdstr}    Format Jsonstr    ${WebimaddContactCMD}    ${argumentValue}
+    [Arguments]    ${conn}    ${username}    ${msg}    ${cmdtype}    ${resptype}    ${bAssert}
+    IF    ${cmdtype} == ${1}
+        @{argumentValue}    create list    ${username}    ${msg}    
+        ${cmdstr}    Format Jsonstr    ${WebimaddContactCMD1}    ${argumentValue}
+    ELSE
+        Log    ${cmdtype}
+    END
     WSSend    ${conn}    ${cmdstr}
     ${res}    WSRecv    ${conn}
     IF    ${bAssert}
         ${tresjson}    Convert WayangResp to Json    ${res}   
-        @{argument}    Create List    "${WatyangUser2info.username}"    ${username}    "${WayangappInfo.appname}"
-        ${texpectedstr}    Format Jsonstr    ${WebimupdateCurrentUserNickResp}    ${argument}
-        ${texpectedjson}    Convert String to JSON    ${texpectedstr}
-        #Assert Response    ${res}['info']['return']['entities']    ${updateCurrentUserNickResp}    ${updateCurrentUserNickExclude}
-        Assert Response    ${tresjson}    ${texpectedjson}    ${WebimupdateCurrentUserNickExclude}
+        IF    ${resptype} == ${1}
+            @{argument}    Create List    "${WatyangUser2info.username}"    ${username}    "${WayangappInfo.appname}"
+            ${texpectedstr}    Format Jsonstr    ${WebimupdateCurrentUserNickResp1}    ${argument}
+            ${texpectedjson}    Convert String to JSON    ${texpectedstr}
+            Assert Response    ${tresjson}    ${texpectedjson}    ${WebimupdateCurrentUserNickExclude1}
+        ELSE
+            Log    ${resptype}    
+        END     
     END
     @{teardownlist}    Create List    ${cmdstr}    ${res}    ${savecasepath}    "WebimaddContact"    
     RETURN    ${res}

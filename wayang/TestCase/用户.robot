@@ -6,8 +6,8 @@ Resource    ../Common/UserCommon.robot
 
 *** Test Cases ***
 修改用户昵称
-    SDKupdateCurrentUserNick    ${WayangRes.WSconn}    "test123"    ${WayangRes.device}
+    SDKupdateCurrentUserNick    ${WayangRes.WSconn}    "test123"    ${WayangRes.device}    ${1}    ${1}
 
 添加好友
     ${contactmsg}    FakerLibrary.Sentence    
-    SDKaddContact    ${WayangRes.WSconn}    "${WatyangUser2info.username}"    "${contactmsg}"    ${WayangRes.device}    ${false}
+    SDKaddContact    ${WayangRes.WSconn}    "${WatyangUser2info.username}"    "${contactmsg}"    ${WayangRes.device}        ${1}    ${1}    ${false}

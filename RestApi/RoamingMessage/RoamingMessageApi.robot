@@ -1,10 +1,12 @@
+*** Settings ***
+Resource          ../../Common/BaseCommon.robot
 *** Keywords ***
 /{orgName}/{appName}/chatmessages/{time}
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${files}=
     [Documentation]    发送文本、图片、语音、视频、扩展等消息
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatmessages/{time}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${files}
 /{orgName}/{appName}/chatmessages/roaming_settings?settingType={msg_type}
     [Arguments]    ${session}    ${header}    ${pathParamter}    ${msg_type}

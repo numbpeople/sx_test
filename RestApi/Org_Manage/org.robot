@@ -1,5 +1,6 @@
 *** Settings ***
-
+Library    requests
+Library    RequestsLibrary
 *** Keywords ***
 /management/organizations
     [Arguments]    ${session}    ${header}    ${data}    ${timeout}

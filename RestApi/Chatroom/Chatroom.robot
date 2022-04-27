@@ -8,7 +8,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、创建一个聊天室
     ...    2、不分页获取聊天室
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}
@@ -18,7 +18,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    2、修改聊天室信息
     ...    3、删除聊天室
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/users/{userName}/joined_chatrooms
@@ -26,7 +26,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取用户加入的聊天室
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName}/joined_chatrooms
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/users/{userName}
@@ -36,7 +36,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    2、删除单个聊天室成员
     ...    3、批量删除聊天室成员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/users/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/users
@@ -45,7 +45,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、批量添加聊天室成员
     ...    2、不分页获取聊天室成员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/users
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/admin
@@ -54,7 +54,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、添加聊天室管理员
     ...    2、获取管理员列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/admin
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/admin/{userName}
@@ -62,7 +62,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    移除聊天室管理员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/admin/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/mute
@@ -71,7 +71,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、添加聊天室禁言成员
     ...    2、获取聊天室禁言列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/mute
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/mute/{userName}
@@ -79,7 +79,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    解除被禁言成员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/mute/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{org_name}/{app_name}/chatrooms/{RoomID}/blocks/users/{user}
@@ -111,45 +111,45 @@ Resource          ../../Common/BaseCommon.robot
 /{orgName}/{appName}/chatrooms/{roomId}/announcement
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/announcement
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{roomId}/ban
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/ban
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{roomId}/users
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/users
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/shield
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/shield
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}    ${data}    ${file}
 /{org_name}/{app_name}/chatrooms/super_admin
     [Documentation]    分页获取聊天室超级管理员列表/添加聊天室超级管理员
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/super_admin
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 /{org_name}/{app_name}/chatrooms/super_admin/{super_admin}
     [Documentation]    移除超级管理员
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/super_admin/${pathParamter.super_admin}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
  
 /{orgName}/{appName}/chatrooms/{roomId}/blocks/users/{userName}
     [Documentation]    聊天室黑名单
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/blocks/users/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatrooms/{chatroomId}/blocks/users
     [Documentation]
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=    ${file}=
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatrooms/${pathParamter.chatroomId}/blocks/users
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}

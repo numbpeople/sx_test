@@ -9,7 +9,7 @@ Library           pabot.PabotLib
 Resource          ../Variable_Env.robot
 
 *** Keywords ***
-request
+request method
     [Arguments]    ${method}    ${session}    ${uri}    ${header}    ${params}=    ${data}=
     ...    ${files}=
     [Documentation]    封装的请求信息，返回相应结果

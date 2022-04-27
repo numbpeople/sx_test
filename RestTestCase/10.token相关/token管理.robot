@@ -10,6 +10,5 @@ Resource          ../../Result/APPResult/AppManagement_Result.robot
 Resource          ../../Result/BaseResullt.robot
 Resource          ../../Common/CollectionCommon/TestTeardown/TestTeardownCommon.robot
 *** Test Cases ***
-设置apptoken过期时间
-    [Template]    Set App Token Expire Tmplate
-    
+# 设置apptoken过期时间
+#     [Template]    Set App Token Expire Tmplate

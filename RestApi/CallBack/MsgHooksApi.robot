@@ -9,7 +9,7 @@ Resource    ../../Variable_Env.robot
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=
     ${uri}=    Set Variable    /${pathParamter.orgName}/${pathParamter.appName}/msghooks
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 
@@ -18,5 +18,5 @@ Resource    ../../Variable_Env.robot
     [Arguments]    ${method}    ${session}    ${header}    ${pathParamter}    ${params}=    ${data}=
     ...    ${file}=
     ${uri}=    Set Variable    /${pathParamter.orgName}/${pathParamter.appName}/msghooks/${pathParamter.msgHooksName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}

@@ -8,7 +8,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、不分页获取APP下的群组
     ...    2、创建群组
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{grpID}/roles
@@ -16,7 +16,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取群组角色列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/roles
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 
@@ -29,7 +29,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    4、删除群组
     ...    5、修改群组最大人数
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/users/{userName}/joined_chatgroups
@@ -37,7 +37,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取IM用户加入的所有群组
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/users/${pathParamter.userName}/joined_chatgroups
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/users/{userName}
@@ -46,7 +46,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、添加单个群组成员
     ...    2、移除群组成员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/users/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/users
@@ -54,7 +54,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    1、分页获取一个群组的群成员列表。2、批量添加群组成员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/users
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/admin
@@ -63,7 +63,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、添加群管理员
     ...    2、获取群管理员列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/admin
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/admin/{adminName}
@@ -71,7 +71,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    移除群管理员
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/admin/${pathParamter.adminName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/blocks/users/{userName}
@@ -80,7 +80,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、添加单个用户到黑名单
     ...    2、从黑名单移除单个用户
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/blocks/users/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/blocks/users/
@@ -89,7 +89,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、添加批量用户到群组黑名单
     ...    2、获取群组黑名单列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/blocks/users
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/mute
@@ -98,7 +98,7 @@ Resource          ../../Common/BaseCommon.robot
     [Documentation]    1、禁言群成员
     ...    2、获取禁言成员列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/mute
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/mute/{userName}
@@ -106,7 +106,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    解除禁言
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/mute/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{org_name}/{app_name}/publicchatgroups
@@ -195,7 +195,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取群组角色列表
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/announcement
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
     
 /{orgName}/{appName}/chatgroups/{grpID}/shield
@@ -203,7 +203,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    屏蔽群消息
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/shield
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{grpID}/white/users
@@ -211,7 +211,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取白名单
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/white/users
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{grpID}/white/users/{username}
@@ -219,7 +219,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    添加白名单-单个
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/white/users/${pathParamter.userName}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{grpID}/ban
@@ -227,7 +227,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    群组静音   
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/ban
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{grpID}/acks/{msgID}
@@ -235,7 +235,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取群消息已读列表   
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/acks/${pathParamter.msgId}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
  
 /{orgName}/{appName}/chatgroups/{grpID}/share_files
@@ -243,7 +243,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    获取群文件列表   
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/share_files
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{grpID}/invite_verify
@@ -251,7 +251,7 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]   
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/invite_verify
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}
 
 /{orgName}/{appName}/chatgroups/{groupId}/mutebyrole
@@ -259,5 +259,5 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]    1、禁言群成员(角色)
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/chatgroups/${pathParamter.groupId}/mute?role=${pathParamter.m}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}

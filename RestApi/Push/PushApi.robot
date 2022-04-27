@@ -7,5 +7,5 @@ Resource          ../../Common/BaseCommon.robot
     ...    ${file}=
     [Documentation]   
     ${uri}=    set variable    /${pathParamter.orgName}/${pathParamter.appName}/notifiers/${params}
-    Run Keyword And Return    request    ${method}    ${session}    ${uri}    ${header}    ${params}
+    Run Keyword And Return    request method    ${method}    ${session}    ${uri}    ${header}    ${params}
     ...    ${data}    ${file}

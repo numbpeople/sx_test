@@ -12,7 +12,7 @@ Resource    ../Resource/UserRes.resource
 SDKupdateCurrentUserNick
     [Arguments]    ${conn}    ${nickname}    ${device}    ${bAssert}=${true} 
     IF    "${device}" == "Webim"
-        WebimupdateCurrentUserNick    ${conn}    ${nickname}    ${WebimupdateCurrentUserNickCMD}    ${bAssert}
+        WebimupdateCurrentUserNick    ${conn}    ${nickname}    ${bAssert}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -28,9 +28,9 @@ SDKupdateCurrentUserNick
 
 
 WebimupdateCurrentUserNick
-    [Arguments]    ${conn}    ${nickname}    ${cmdjson}    ${bAssert}
+    [Arguments]    ${conn}    ${nickname}    ${bAssert}
     @{argumentValue}    create list    ${nickname}    
-    ${cmdstr}    Format Jsonstr    ${cmdjson}    ${argumentValue}
+    ${cmdstr}    Format Jsonstr    ${WebimupdateCurrentUserNickCMD}    ${argumentValue}
     WSSend    ${conn}    ${cmdstr}
     ${res}    WSRecv    ${conn}
     IF    ${bAssert}
@@ -48,7 +48,7 @@ WebimupdateCurrentUserNick
 SDKaddContact
     [Arguments]    ${conn}    ${username}    ${msg}    ${device}    ${bAssert}=${true} 
     IF    "${device}" == "Webim"
-        WebimaddContact    ${conn}    ${username}    ${msg}    ${WebimaddContactCMD}    ${bAssert}
+        WebimaddContact    ${conn}    ${username}    ${msg}    ${bAssert}
     ELSE IF    "${device}" == "Uniapp"
         Log    "Uniapp"
     ELSE IF    "${device}" == "Android"
@@ -64,9 +64,9 @@ SDKaddContact
 
 
 WebimaddContact
-    [Arguments]    ${conn}    ${username}    ${msg}    ${cmdjson}    ${bAssert}
+    [Arguments]    ${conn}    ${username}    ${msg}    ${bAssert}
     @{argumentValue}    create list    ${username}    ${msg}    
-    ${cmdstr}    Format Jsonstr    ${cmdjson}    ${argumentValue}
+    ${cmdstr}    Format Jsonstr    ${WebimaddContactCMD}    ${argumentValue}
     WSSend    ${conn}    ${cmdstr}
     ${res}    WSRecv    ${conn}
     IF    ${bAssert}

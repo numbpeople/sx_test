@@ -138,7 +138,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建账号" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建账号" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -159,7 +159,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取当前登录的环信id" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取当前登录的环信id" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -180,7 +180,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="当前是否连接到服务器" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="当前是否连接到服务器" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -201,7 +201,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取sdk版本号" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取sdk版本号" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -222,7 +222,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取所有会话列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取所有会话列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -243,7 +243,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置自己的用户属性" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置自己的用户属性" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -257,14 +257,14 @@
 	&quot;cmd&quot;: &quot;updateOwnInfo&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;data&quot;:{&quot;nickName&quot;: &quot;testup&quot;}}
+	&quot;info&quot;: {&quot;data&quot;:{&quot;nickName&quot;: &quot;tQKodEXthVXBQELGAEPhvCDCXtNsVH7OPKChubp5r8Vs22222222i&quot;}}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加好友" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加好友" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -285,7 +285,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除好友" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除好友" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -306,7 +306,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据id列表获取用户属性" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据id列表获取用户属性" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -320,14 +320,14 @@
 	&quot;cmd&quot;: &quot;fetchUserInfoByUserId&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;ids&quot;:&quot;23c5b280-71de-11ec-8dc1-0b6c8fec5b53,2&quot;}
+	&quot;info&quot;: {&quot;ids&quot;:&quot;tst,tst01&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取好友列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取好友列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -348,7 +348,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从本地获取好友列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从本地获取好友列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -369,7 +369,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加用户到黑名单" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加用户到黑名单" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -390,7 +390,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从黑名单中移除" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从黑名单中移除" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -411,7 +411,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取黑名单列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取黑名单列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -432,7 +432,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="同意好友申请" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="同意好友申请" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -453,7 +453,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝好友申请" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝好友申请" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -474,7 +474,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取自己在其他设备上的信息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取自己在其他设备上的信息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -495,7 +495,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除会话" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除会话" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -516,7 +516,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="下载消息附件" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="下载消息附件" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -537,7 +537,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="下载消息缩略图" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="下载消息缩略图" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -558,7 +558,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取历史消息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取历史消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -579,7 +579,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -600,7 +600,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取会话列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取会话列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -621,7 +621,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取总未读数" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取总未读数" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -642,7 +642,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据id获取消息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据id获取消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -663,7 +663,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置所有会话已读" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置所有会话已读" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -684,7 +684,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="消息撤回" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="消息撤回" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -705,7 +705,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="消息重发" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="消息重发" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -740,14 +740,14 @@
 	&quot;cmd&quot;: &quot;importMessages&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;data&quot;: {&quot;from&quot;:&quot;aa&quot;, &quot;to&quot;:&quot;bb&quot;,&quot;body&quot;:&quot;a to b&quot;, &quot;bodyType&quot;:&quot;TXT&quot;}}
+	&quot;info&quot;: {&quot;data&quot;: [{&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;content&quot;:&quot;文本消息&quot;},{&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;content&quot;:&quot;文本消息&quot;}]}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-文本" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -761,14 +761,182 @@
 	&quot;cmd&quot;: &quot;sendMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;data&quot;: {&quot;from&quot;:&quot;tst&quot;, &quot;to&quot;:&quot;tst01&quot;,&quot;localTime&quot;:11,&quot;serverTime&quot;:111,&quot;status&quot;:0,&quot;MessageType&quot;:0,&quot;direction&quot;:&quot;SEND&quot;}}
+	&quot;info&quot;: {&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;content&quot;:&quot;文本消息&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发送消息已读回执" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-图片" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;sendMessage&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {
+		&quot;type&quot;: &quot;image&quot;,
+		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;localPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
+		&quot;displayName&quot;: &quot;aa&quot;,
+		&quot;fileSize&quot;: 200,
+		&quot;original&quot;: true,
+		&quot;width&quot;: 12.2,
+		&quot;height&quot;: 20.3
+	}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-video" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;sendMessage&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {
+		&quot;type&quot;: &quot;video&quot;,
+		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;localPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
+		&quot;displayName&quot;: &quot;aa&quot;,
+
+		&quot;fileSize&quot;: 200,
+		&quot;original &quot;: true,
+		&quot;width&quot;: 12.2,
+		&quot;height&quot;: 20.3,
+		&quot;thumbnailLocalPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
+		&quot;duration&quot;: 200
+	}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-voice" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;sendMessage&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {
+		&quot;type&quot;: &quot;voice&quot;,
+		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;localPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
+		&quot;displayName&quot;: &quot;aa&quot;,
+		&quot;fileSize&quot;: 200,
+		&quot;duration&quot;: 200
+	}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-location" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;sendMessage&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {
+		&quot;type&quot;: &quot;location&quot;,
+		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;address&quot;: &quot;文本消息&quot;,
+		&quot;buildingName&quot;: &quot;aa&quot;,
+		&quot;latitude&quot;: 200,
+		&quot;longitude&quot;: 200
+	}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-cmd" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;sendMessage&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;type&quot;: &quot;cmd&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;action&quot;:&quot;文本消息&quot;, &quot;deliverOnlineOnly&quot;:true}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发消息-custom" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;sendMessage&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {
+		&quot;type&quot;: &quot;custom&quot;,
+		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;customEvent&quot;: &quot;文本消息&quot;,
+		&quot;data&quot;: {
+			&quot;aa&quot;: &quot;bb &quot;
+		}
+	}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="发送消息已读回执" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -789,7 +957,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新消息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -803,14 +971,23 @@
 	&quot;cmd&quot;: &quot;updateChatMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;data&quot;: {&quot;from&quot;:&quot;aa&quot;, &quot;to&quot;:&quot;bb&quot;,&quot;localTime&quot;:11,&quot;serverTime&quot;:111,&quot;status&quot;:0,&quot;MessageType&quot;:0,&quot;direction&quot;:&quot;SEND&quot;}}
+	&quot;info&quot;: {
+		&quot;type&quot;: &quot;image&quot;,
+		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;localPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
+		&quot;displayName&quot;: &quot;aa&quot;,
+		&quot;fileSize&quot;: 200,
+		&quot;original&quot;: true,
+		&quot;width&quot;: 12.2,
+		&quot;height&quot;: 20.3
+	}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除指定时间戳之前的消息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除指定时间戳之前的消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -831,7 +1008,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除服务器段会话信息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除服务器段会话信息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -852,7 +1029,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员，群主可以操作" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员，群主可以操作" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -873,7 +1050,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="将用户添加到黑名单" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="将用户添加到黑名单" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -894,7 +1071,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="转移聊天室" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="转移聊天室" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -915,7 +1092,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="修改聊天室描述" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="修改聊天室描述" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -936,7 +1113,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="修改聊天室名称" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="修改聊天室名称" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -957,7 +1134,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建聊天室" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建聊天室" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -978,7 +1155,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="销毁聊天室" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="销毁聊天室" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -999,7 +1176,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1020,7 +1197,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室公告" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室公告" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1041,7 +1218,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室黑名单" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室黑名单" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1062,7 +1239,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室成员" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室成员" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1083,7 +1260,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室禁言列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取聊天室禁言列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1104,7 +1281,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入聊天室" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入聊天室" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1125,7 +1302,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="离开聊天室" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="离开聊天室" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1146,7 +1323,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言聊天室成员" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言聊天室成员" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1167,7 +1344,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天室管理员" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天室管理员" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1188,7 +1365,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天室成员" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天室成员" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1209,7 +1386,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除黑名单" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除黑名单" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1230,7 +1407,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除禁言列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除禁言列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1251,7 +1428,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新聊天室公告" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新聊天室公告" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1272,7 +1449,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取是否已经登录" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取是否已经登录" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1293,7 +1470,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取当前环信id对应的token" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取当前环信id对应的token" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1314,7 +1491,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="使用声网token登录环信" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="使用声网token登录环信" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1335,7 +1512,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新声网token" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新声网token" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1356,7 +1533,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加连接回调监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加连接回调监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1377,7 +1554,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除连接回调监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除连接回调监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1398,7 +1575,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加多设备回调监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加多设备回调监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1419,7 +1596,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除多设备回调监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除多设备回调监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1440,7 +1617,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加聊天监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加聊天监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1461,7 +1638,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1482,7 +1659,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加消息监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加消息监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1503,7 +1680,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除消息监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除消息监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1524,7 +1701,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加聊天室监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加聊天室监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1545,7 +1722,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天室监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除聊天室监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1566,7 +1743,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加群组监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加群组监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1587,7 +1764,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除群组监听" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="移除群组监听" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1608,7 +1785,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取免打扰群组列表" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取免打扰群组列表" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1629,7 +1806,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取推送配置项" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取推送配置项" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1650,7 +1827,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从内存获取推送配置项,需要先从服务器获取后才会有值" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从内存获取推送配置项,需要先从服务器获取后才会有值" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1671,7 +1848,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置推送昵称" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置推送昵称" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1692,7 +1869,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="绑定华为deviceToken" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="绑定华为deviceToken" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1713,7 +1890,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="绑定谷歌deviceToken" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="绑定谷歌deviceToken" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1734,7 +1911,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="绑定苹果推送deviceToken" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="绑定苹果推送deviceToken" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1755,7 +1932,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置推送免打扰" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置推送免打扰" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1776,7 +1953,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置群组免打扰" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置群组免打扰" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1797,7 +1974,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置推送显示样式" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置推送显示样式" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1818,7 +1995,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="将push结果发送给服务器" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="将push结果发送给服务器" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1839,7 +2016,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话中最后一条消息" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话中最后一条消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1861,7 +2038,7 @@
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
         </hashTree>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话中收到的最后一条消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话中收到的最后一条消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -1882,7 +2059,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话扩展" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话扩展" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -1903,7 +2080,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置会话扩展" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="设置会话扩展" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -1924,7 +2101,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="标记消息为已读" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="标记消息为已读" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -1945,7 +2122,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话未读数" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话未读数" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -1966,7 +2143,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="标记会话中所有消息都为已读" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="标记会话中所有消息都为已读" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -1987,7 +2164,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中插入消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中插入消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2008,7 +2185,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中添加消息，消息为会话的最后一条" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中添加消息，消息为会话的最后一条" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2029,7 +2206,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2050,7 +2227,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2071,7 +2248,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除会话中的所有消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除会话中的所有消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2092,7 +2269,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据消息id获取消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据消息id获取消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2113,7 +2290,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据类型获取消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据类型获取消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2134,7 +2311,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据消息id获取消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据消息id获取消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2155,7 +2332,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据关键字获取消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据关键字获取消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2176,7 +2353,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据起始时间获取消息" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据起始时间获取消息" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>
@@ -2197,7 +2374,7 @@
           <stringProp name="dataFile"></stringProp>
         </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
         <hashTree/>
-        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话中消息数" enabled="true">
+        <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话中消息数" enabled="false">
           <boolProp name="createNewConnection">false</boolProp>
           <boolProp name="TLS">false</boolProp>
           <stringProp name="server"></stringProp>

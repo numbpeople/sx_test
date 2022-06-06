@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="sessionmessage" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
@@ -61,12 +61,17 @@
           </elementProp>
           <elementProp name="topic" elementType="Argument">
             <stringProp name="Argument.name">topic</stringProp>
-            <stringProp name="Argument.value">shuang</stringProp>
+            <stringProp name="Argument.value">windows00</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="groupid" elementType="Argument">
             <stringProp name="Argument.name">groupid</stringProp>
             <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="username" elementType="Argument">
+            <stringProp name="Argument.name">username</stringProp>
+            <stringProp name="Argument.value">111</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -170,7 +175,7 @@
             <stringProp name="readTimeout">6000</stringProp>
           </eu.luminis.jmeter.wssampler.OpenWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="登录（正常）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="登录（正常）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -184,7 +189,7 @@
 	&quot;cmd&quot;: &quot;login&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;username&quot;:&quot;111&quot;,&quot;password&quot;:&quot;1&quot;}
+	&quot;info&quot;: {&quot;username&quot;:&quot;${username}&quot;,&quot;password&quot;:&quot;1&quot;}
 }</stringProp>
             <stringProp name="readTimeout">60000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -359,6 +364,43 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>true</responseData>
+                <samplerData>true</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+          </ResultCollector>
+          <hashTree/>
         </hashTree>
         <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="会话/消息" enabled="true"/>
         <hashTree>
@@ -418,7 +460,7 @@
 	&quot;cmd&quot;: &quot;lastReceivedMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;${__RandomString(5,asdfghjklllqwertyuiopzxcvbnm,)}&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -488,27 +530,6 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话扩展（存在的conversationId）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;getExt&quot;,
-	&quot;device&quot;: &quot;${topic}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取会话扩展（不存在的conversationId）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -544,7 +565,7 @@
 	&quot;cmd&quot;: &quot;getExt&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -565,7 +586,7 @@
 	&quot;cmd&quot;: &quot;getExt&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;12312312&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -586,7 +607,7 @@
 	&quot;cmd&quot;: &quot;markMessageAsRead&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;messageId&quot;:&quot;122&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;messageId&quot;:&quot;1016939840593200036&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -628,7 +649,7 @@
 	&quot;cmd&quot;: &quot;markMessageAsRead&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;messageId&quot;:&quot;122&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;1231211sdfa&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;messageId&quot;:&quot;122&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -691,7 +712,7 @@
 	&quot;cmd&quot;: &quot;unReadCount&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst11011&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -712,7 +733,7 @@
 	&quot;cmd&quot;: &quot;unReadCount&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;111111sdfasd&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -740,7 +761,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话未读数（conversationId为空）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="会话未读数（conversationId为空）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -817,7 +838,28 @@
 	&quot;cmd&quot;: &quot;markAllMessageAsRead&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;444&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;adf123sa11&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="标记会话中所有消息都为已读（conversationId为非好友）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;markAllMessageAsRead&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;888&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -845,27 +887,6 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="标记会话中所有消息都为已读（conversationId为非好友）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;markAllMessageAsRead&quot;,
-	&quot;device&quot;: &quot;${topic}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中插入消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -880,14 +901,14 @@
 	&quot;cmd&quot;: &quot;insertMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中添加消息，消息为会话的最后一条" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="向会话中添加消息，消息为会话的最后一条（未明白）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -922,7 +943,7 @@
 	&quot;cmd&quot;: &quot;updateMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;${__RandomString(256,qwertyuiop,)}&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -985,7 +1006,7 @@
 	&quot;cmd&quot;: &quot;updateMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;中文&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1006,7 +1027,7 @@
 	&quot;cmd&quot;: &quot;updateMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;！@#%……&amp;&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1027,7 +1048,7 @@
 	&quot;cmd&quot;: &quot;updateMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;按到fghj1231&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1048,7 +1069,7 @@
 	&quot;cmd&quot;: &quot;updateMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;123123ddd&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;content&quot;:&quot;nihaoa&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1090,7 +1111,7 @@
 	&quot;cmd&quot;: &quot;deleteAllMessages&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1111,7 +1132,7 @@
 	&quot;cmd&quot;: &quot;loadMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;messageId&quot;:&quot;1212&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;messageId&quot;:&quot;1017232983268000900&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1132,7 +1153,7 @@
 	&quot;cmd&quot;: &quot;loadMessagesWithMsgType&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;sender&quot;:&quot;1212&quot;,&quot;times&quot;:1121212121212,&quot;count&quot;:20,&quot;conversationType&quot;:&quot;Chat&quot;,&quot;direction&quot;:&quot;UP&quot;,&quot;bodyType&quot;:&quot;TXT&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;sender&quot;:&quot;111&quot;,&quot;times&quot;:1654408828000,&quot;count&quot;:20,&quot;conversationType&quot;:&quot;Chat&quot;,&quot;direction&quot;:&quot;UP&quot;,&quot;bodyType&quot;:&quot;TXT&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1153,7 +1174,7 @@
 	&quot;cmd&quot;: &quot;loadMessages&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;startMessageId&quot;:&quot;1212&quot;,&quot;count&quot;:20,&quot;direction&quot;:&quot;UP&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;startMessageId&quot;:&quot;1017238520349066216&quot;,&quot;count&quot;:20,&quot;direction&quot;:&quot;UP&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1174,7 +1195,7 @@
 	&quot;cmd&quot;: &quot;loadMessagesWithKeyword&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;sender&quot;:&quot;1212&quot;,&quot;times&quot;:12121111121,&quot;count&quot;:20,&quot;conversationType&quot;:&quot;Chat&quot;,&quot;direction&quot;:&quot;UP&quot;,&quot;keywords&quot;:&quot;aa&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;sender&quot;:&quot;111&quot;,&quot;times&quot;:1654408828000,&quot;count&quot;:20,&quot;conversationType&quot;:&quot;Chat&quot;,&quot;direction&quot;:&quot;UP&quot;,&quot;keywords&quot;:&quot;111&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1195,7 +1216,7 @@
 	&quot;cmd&quot;: &quot;loadMessagesWithTime&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;startMessageId&quot;:&quot;1212&quot;,&quot;count&quot;:20,&quot;starttimes&quot;:12121111121,&quot;endtimes&quot;:22121111121}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;,&quot;startMessageId&quot;:&quot;1017238520349066216&quot;,&quot;count&quot;:20,&quot;starttimes&quot;:1654408828000,&quot;endtimes&quot;:1654495228000}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1216,7 +1237,7 @@
 	&quot;cmd&quot;: &quot;messagesCount&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;tst01&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;, &quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1258,7 +1279,7 @@
 	&quot;cmd&quot;: &quot;deleteConversation&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;1&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1279,7 +1300,7 @@
 	&quot;cmd&quot;: &quot;downloadAttachment&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;messageId&quot;: &quot;1&quot;}
+	&quot;info&quot;: {&quot;messageId&quot;: &quot;1017232983268000900&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1300,7 +1321,7 @@
 	&quot;cmd&quot;: &quot;downloadThumbnail&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;messageId&quot;: &quot;1&quot;}
+	&quot;info&quot;: {&quot;messageId&quot;: &quot;1017232983268000900&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1321,7 +1342,7 @@
 	&quot;cmd&quot;: &quot;fetchHistoryMessagesFromServer&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;1&quot;,&quot;startMessageId&quot;: &quot;10&quot;,&quot;count&quot;:20,&quot;conversationType&quot;: &quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;,&quot;startMessageId&quot;: &quot;1017232983268000900&quot;,&quot;count&quot;:20,&quot;conversationType&quot;: &quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1342,7 +1363,7 @@
 	&quot;cmd&quot;: &quot;getConversation&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;: &quot;1&quot;,&quot;createIfNeed&quot;: true,&quot;conversationType&quot;: &quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;: &quot;222&quot;,&quot;createIfNeed&quot;: true,&quot;conversationType&quot;: &quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1370,27 +1391,6 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取总未读数" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;getUnreadMessageCount&quot;,
-	&quot;device&quot;: &quot;${topic}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据id获取消息" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -1405,7 +1405,7 @@
 	&quot;cmd&quot;: &quot;loadChatMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;messageId&quot;: &quot;1&quot;}
+	&quot;info&quot;: {&quot;messageId&quot;: &quot;1017244735007360016&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1447,7 +1447,7 @@
 	&quot;cmd&quot;: &quot;recallMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;messageId&quot;: &quot;1&quot;}
+	&quot;info&quot;: {&quot;messageId&quot;: &quot;1017245183663670220&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1468,7 +1468,7 @@
 	&quot;cmd&quot;: &quot;resendMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;messageId&quot;: &quot;1&quot;}
+	&quot;info&quot;: {&quot;messageId&quot;: &quot;1017245428443251728&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1489,7 +1489,28 @@
 	&quot;cmd&quot;: &quot;importMessages&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;data&quot;: [{&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;content&quot;:&quot;文本消息&quot;},{&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;content&quot;:&quot;文本消息&quot;}]}
+	&quot;info&quot;: {&quot;data&quot;: [{&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;111&quot;,&quot;content&quot;:&quot;插入消息1&quot;},{&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;222&quot;,&quot;content&quot;:&quot;插入消息&quot;}]}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取总未读数" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;getUnreadMessageCount&quot;,
+	&quot;device&quot;: &quot;${topic}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1510,7 +1531,7 @@
 	&quot;cmd&quot;: &quot;sendMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;content&quot;:&quot;文本消息&quot;}
+	&quot;info&quot;: {&quot;type&quot;: &quot;text&quot;, &quot;username&quot;:&quot;222&quot;,&quot;content&quot;:&quot;文本消息&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1533,8 +1554,8 @@
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {
 		&quot;type&quot;: &quot;image&quot;,
-		&quot;username&quot;: &quot;tst02&quot;,
-		&quot;localPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
+		&quot;username&quot;: &quot;222&quot;,
+		&quot;localPath&quot;: &quot;http://a1.easemob.com/easemob-demo/easeim/chatfiles/aaa30340-e496-11ec-a7fb-31fffa54b07a&quot;,
 		&quot;displayName&quot;: &quot;aa&quot;,
 		&quot;fileSize&quot;: 200,
 		&quot;original&quot;: true,
@@ -1624,7 +1645,7 @@
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {
 		&quot;type&quot;: &quot;location&quot;,
-		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;username&quot;: &quot;222&quot;,
 		&quot;address&quot;: &quot;文本消息&quot;,
 		&quot;buildingName&quot;: &quot;aa&quot;,
 		&quot;latitude&quot;: 200,
@@ -1650,7 +1671,7 @@
 	&quot;cmd&quot;: &quot;sendMessage&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;type&quot;: &quot;cmd&quot;, &quot;username&quot;:&quot;tst02&quot;,&quot;action&quot;:&quot;文本消息&quot;, &quot;deliverOnlineOnly&quot;:true}
+	&quot;info&quot;: {&quot;type&quot;: &quot;cmd&quot;, &quot;username&quot;:&quot;222&quot;,&quot;action&quot;:&quot;文本消息&quot;, &quot;deliverOnlineOnly&quot;:true}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1699,11 +1720,12 @@
 	&quot;cmd&quot;: &quot;sendMessageReadAck&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;messageId&quot;:&quot;12121&quot;}
+	&quot;info&quot;: {&quot;messageId&quot;:&quot;1017248654441841680&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
+            <stringProp name="TestPlan.comments">前提条件：操作者给其他用户发送一条消息</stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="更新消息" enabled="false">
@@ -1722,7 +1744,7 @@
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {
 		&quot;type&quot;: &quot;image&quot;,
-		&quot;username&quot;: &quot;tst02&quot;,
+		&quot;username&quot;: &quot;222&quot;,
 		&quot;localPath&quot;: &quot;/Users/yzwang/Desktop/aa.jpeg&quot;,
 		&quot;displayName&quot;: &quot;aa&quot;,
 		&quot;fileSize&quot;: 200,
@@ -1750,14 +1772,14 @@
 	&quot;cmd&quot;: &quot;removeMessagesBeforeTimestamp&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;spendtimes&quot;:12121111121}
+	&quot;info&quot;: {&quot;spendtimes&quot;:1654411687000}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除服务器段会话信息" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除服务器段会话信息" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1771,14 +1793,14 @@
 	&quot;cmd&quot;: &quot;deleteConversationFromServer&quot;,
 	&quot;device&quot;: &quot;${topic}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;conversationId&quot;:&quot;12&quot;,&quot;isDeleteServerMessages&quot;:true,&quot;conversationType&quot;:&quot;Chat&quot;}
+	&quot;info&quot;: {&quot;conversationId&quot;:&quot;222&quot;,&quot;isDeleteServerMessages&quot;:true,&quot;conversationType&quot;:&quot;Chat&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取所有会话列表" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取所有会话列表" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1837,7 +1859,7 @@
           </ResultCollector>
           <hashTree/>
         </hashTree>
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="登出" enabled="true"/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="登出" enabled="false"/>
         <hashTree>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="登出" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>

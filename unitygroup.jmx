@@ -47,7 +47,6 @@
           </value>
         </objProp>
         <stringProp name="filename"></stringProp>
-        <stringProp name="TestPlan.comments">返回600</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
@@ -104,7 +103,7 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="groupid" elementType="Argument">
               <stringProp name="Argument.name">groupid</stringProp>
-              <stringProp name="Argument.value">183433061007361</stringProp>
+              <stringProp name="Argument.value">183683880386561</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="device" elementType="Argument">
@@ -112,39 +111,9 @@
               <stringProp name="Argument.value">windows00</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="noexitgroupid" elementType="Argument">
-              <stringProp name="Argument.name">noexitgroupid</stringProp>
-              <stringProp name="Argument.value">1</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
             <elementProp name="username" elementType="Argument">
               <stringProp name="Argument.name">username</stringProp>
-              <stringProp name="Argument.value">999</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="fileId" elementType="Argument">
-              <stringProp name="Argument.name">fileId</stringProp>
-              <stringProp name="Argument.value">67507460-de3d-11ec-baf8-adcea496db95</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="savePath" elementType="Argument">
-              <stringProp name="Argument.name">savePath</stringProp>
-              <stringProp name="Argument.value">/Users/mac/Downloads</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="oneMfilePath" elementType="Argument">
-              <stringProp name="Argument.name">oneMfilePath</stringProp>
-              <stringProp name="Argument.value"></stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="notjoingroupid" elementType="Argument">
-              <stringProp name="Argument.name">notjoingroupid</stringProp>
-              <stringProp name="Argument.value">182881774272514</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="ms" elementType="Argument">
-              <stringProp name="Argument.name">ms</stringProp>
-              <stringProp name="Argument.value">5000</stringProp>
+              <stringProp name="Argument.value">111</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -161,7 +130,28 @@
             <stringProp name="readTimeout">6000</stringProp>
           </eu.luminis.jmeter.wssampler.OpenWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="登录" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="登出" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;logout&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="登录" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -254,7 +244,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建私有群组（成员有权限邀请）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建私有群组（成员有权限邀请）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -286,7 +276,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建公开群组（成员加入需要验证）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建公开群组（成员加入需要验证）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -318,7 +308,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建公开群组（成员不需要验证）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="创建公开群组（成员不需要验证）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -371,7 +361,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="离开群（其他人创建的群组）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="离开群（其他人创建的群组）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -385,7 +375,7 @@
 	&quot;cmd&quot;: &quot;leaveGroup&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183147620794370&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183681300889601&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -413,7 +403,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（自己创建的群组）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（自己创建的群组）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -427,7 +417,7 @@
 	&quot;cmd&quot;: &quot;destroyGroup&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183148198559745&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183428983095298&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -579,7 +569,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="上传群共享文件（上传1M文件）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="上传群共享文件（上传1M文件）——存在问题" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -593,7 +583,7 @@
 	&quot;cmd&quot;: &quot;uploadGroupSharedFile&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;filePath&quot;:&quot;&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;filePath&quot;:&quot;D:\1.jpg&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -681,7 +671,7 @@
 	&quot;cmd&quot;: &quot;downloadGroupSharedFile&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;fileId&quot;:&quot;${fileId}&quot;,&quot;savePath&quot;:&quot;${savePath}&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;fileId&quot;:&quot;851621b0-e613-11ec-b39c-6f73da94c6bc&quot;,&quot;savePath&quot;:&quot;D:\111.jpg&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -733,7 +723,7 @@
             <stringProp name="TestPlan.comments">返回200</stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除群共享文件" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除群共享文件——存在问题" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -745,9 +735,9 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;deleteGroupSharedFile&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;fileId&quot;:&quot;${fileId}&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;fileId&quot;:&quot;74cc5cc0-e613-11ec-8bcf-0d2a574d3abe&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -766,7 +756,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;deleteGroupSharedFile&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;fileId&quot;:&quot;${fileId}&quot;}
 }</stringProp>
@@ -787,7 +777,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;deleteGroupSharedFile&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;fileId&quot;:&quot;1&quot;}
 }</stringProp>
@@ -983,7 +973,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;updateGroupAnnouncement&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;announcement&quot;:&quot;${__RandomString(2,qwertyuiopasdfghjklzxcvbnm,)}${__RandomString(2,1234567890,)}群组公告&quot;}
 }</stringProp>
@@ -1009,7 +999,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;updateGroupAnnouncement&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;announcement&quot;:&quot;${__RandomString(64,qwertyuiopasdfghjklzxcvnbnm,)}&quot;}
 }</stringProp>
@@ -1035,7 +1025,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;updateGroupAnnouncement&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;announcement&quot;:&quot;${__RandomString(65,qwertyuiopasdfghjklzxcvnbnm,)}&quot;}
 }</stringProp>
@@ -1061,7 +1051,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;updateGroupAnnouncement&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;announcement&quot;:&quot;${__RandomString(65,qwertyuiopasdfghjklzxcvnbnm,)}&quot;}
 }</stringProp>
@@ -1087,7 +1077,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;updateGroupAnnouncement&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;announcement&quot;:&quot;${__RandomDate(,,2050-12-30,,)}&quot;}
 }</stringProp>
@@ -1113,7 +1103,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;changeGroupDescription&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;desc&quot;:&quot;${__RandomDate(,,2050-12-30,,)}&quot;}
 }</stringProp>
@@ -1139,7 +1129,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;changeGroupDescription&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;desc&quot;:&quot;${__RandomString(2,qwertyuiopasdfghjklzxcvbnm,)}${__RandomString(2,1234567890,)}群组描述&quot;}
 }</stringProp>
@@ -1165,7 +1155,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;changeGroupDescription&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;desc&quot;:&quot;${__RandomString(256,qwertyuiopasdfghjklzxcvnbnm,)}&quot;}
 }</stringProp>
@@ -1191,7 +1181,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;changeGroupDescription&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;desc&quot;:&quot;@#￥……&amp;*&quot;}
 }</stringProp>
@@ -1349,7 +1339,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;getGroupAnnouncementFromServer&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;}
 }</stringProp>
@@ -1370,7 +1360,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;getGroupAnnouncementFromServer&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;}
 }</stringProp>
@@ -1379,7 +1369,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群成员列表（目前存在问题：获取群成员为空）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群成员列表" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1393,7 +1383,7 @@
 	&quot;cmd&quot;: &quot;getGroupMemberListFromServer&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;pageSize&quot;:10,&quot;cursor&quot;:&quot;abc&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683880386561&quot;,&quot;pageSize&quot;:10,&quot;cursor&quot;:&quot;&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1477,7 +1467,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;fetchPublicGroupsFromServer&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;pageSize&quot;:5,&quot;cursor&quot;:&quot;group&quot;}
 }</stringProp>
@@ -1498,7 +1488,7 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;fetchPublicGroupsFromServer&quot;,
-	&quot;device&quot;: &quot;shuang&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;pageSize&quot;:5,&quot;cursor&quot;:&quot;group&quot;}
 }</stringProp>
@@ -1603,7 +1593,7 @@
 	&quot;cmd&quot;: &quot;applyJoinToGroup&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183243160748033&quot;,&quot;reason&quot;:&quot;1&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183693739098113&quot;,&quot;reason&quot;:&quot;1&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -1675,6 +1665,49 @@
             <stringProp name="TestPlan.comments">返回601.</stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入公开不需要验证群组（未加入群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;joinPublicGroup&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183681300889601&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入公开需要验证群组（未加入群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;joinPublicGroup&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;182881869692930&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+            <stringProp name="TestPlan.comments">返回603，提示：没有权限</stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入公开群（已加入）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -1717,49 +1750,6 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入公开不需要验证群组（未加入群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;joinPublicGroup&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${notjoingroupid}&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="加入公开需要验证群组（未加入群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;joinPublicGroup&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182881869692930&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-            <stringProp name="TestPlan.comments">返回603，提示：没有权限</stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="同意加群邀请（未加入群组）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -1774,14 +1764,14 @@
 	&quot;cmd&quot;: &quot;acceptGroupInvitation&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183245222248450&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183693739098113&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="同意加群邀请(用户不在邀请列表中)" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="同意加群邀请（用户不在邀请列表中）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1949,7 +1939,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（被邀请用户在邀请列表）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1960,17 +1950,17 @@
             <stringProp name="requestData">{
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unBlockGroup&quot;,
+	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183693739098113&quot;,&quot;reason&quot;:&quot;group name&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（不存在群组）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（被邀请用户不在邀请列表）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -1981,10 +1971,74 @@
             <stringProp name="requestData">{
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unBlockGroup&quot;,
+	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;reason&quot;:&quot;group name&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+            <stringProp name="TestPlan.comments">需要提前发起入群邀请</stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请(不存在群组)" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;reason&quot;:&quot;group name&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（用户已加入群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;reason&quot;:&quot;group name&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（拒绝原因256字符）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;182886001082369&quot;,&quot;reason&quot;:&quot;${__RandomString(256,qwertyuiopasdfghjklzxcvbnm,)}&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -2005,7 +2059,7 @@
 	&quot;cmd&quot;: &quot;declineGroupJoinApplication&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;username&quot;:&quot;222&quot;,&quot;reason&quot;:&quot;2222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683879337986&quot;,&quot;username&quot;:&quot;222&quot;,&quot;reason&quot;:&quot;2222&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -2162,112 +2216,6 @@
             <stringProp name="TestPlan.comments">前提条件：用户必须提前进行申请</stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（被邀请用户在邀请列表）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183245463420929&quot;,&quot;reason&quot;:&quot;group name&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（被邀请用户不在邀请列表）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;reason&quot;:&quot;group name&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-            <stringProp name="TestPlan.comments">需要提前发起入群邀请</stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请(不存在群组)" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;reason&quot;:&quot;group name&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（用户已加入群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;reason&quot;:&quot;group name&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="拒绝群邀请（拒绝原因256字符）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;declineGroupInvitation&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182886001082369&quot;,&quot;reason&quot;:&quot;${__RandomString(256,qwertyuiopasdfghjklzxcvbnm,)}&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
@@ -2308,6 +2256,27 @@
         </hashTree>
         <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="群组成员管理（35条）" enabled="false"/>
         <hashTree>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="转移群（群主转移）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;changeGroupOwner&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683878289409&quot;,&quot;newOwner&quot;:&quot;222&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="转移群（newower为不存在的用户）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -2323,27 +2292,6 @@
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;183253812183041&quot;,&quot;newOwner&quot;:&quot;${__RandomString(7,qwertyuiopasdfghjklzxcvbnm,)}&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="转移群（群主转移）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;changeGroupOwner&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183253812183041&quot;,&quot;newOwner&quot;:&quot;333&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -2413,6 +2361,133 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683880386561&quot;,&quot;memberId&quot;:&quot;222&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（被添加成员不在群组中）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;${__RandomString(7,qwertyuiopasdfghjklzxcvbnm,)}&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（被添加管理员为群主）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;1111&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（被添加管理员，已经是管理员）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;2222&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（未有权限添加管理员）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;182886653296641&quot;,&quot;memberId&quot;:&quot;2222&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+            <stringProp name="TestPlan.comments">返回603</stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（不存在的群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;memberId&quot;:&quot;2222&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除群管理员" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -2427,7 +2502,7 @@
 	&quot;cmd&quot;: &quot;removeGroupAdmin&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;memberId&quot;:&quot;2222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683880386561&quot;,&quot;memberId&quot;:&quot;333&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -2561,7 +2636,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（被添加成员不在群组中）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加群成员（添加多个成员）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -2572,116 +2647,10 @@
             <stringProp name="requestData">{
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
+	&quot;cmd&quot;: &quot;addGroupMembers&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;${__RandomString(7,qwertyuiopasdfghjklzxcvbnm,)}&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（被添加管理员为群主）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;1111&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（被添加管理员，已经是管理员）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;2222&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（未有权限添加管理员）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182886653296641&quot;,&quot;memberId&quot;:&quot;2222&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-            <stringProp name="TestPlan.comments">返回603</stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员（不存在的群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;memberId&quot;:&quot;2222&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加管理员" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupAdmin&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182888018542593&quot;,&quot;memberId&quot;:&quot;2222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683880386561&quot;,&quot;members&quot;:&quot;444,555&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -2835,27 +2804,6 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加群成员（添加多个成员）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;3333,4444&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除群成员" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -2870,7 +2818,7 @@
 	&quot;cmd&quot;: &quot;deleteGroupMembers&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;182970677788673&quot;,&quot;members&quot;:&quot;222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683880386561&quot;,&quot;members&quot;:&quot;222,333&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -3099,7 +3047,7 @@
 	&quot;cmd&quot;: &quot;blockGroupMembers&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -3223,195 +3171,6 @@
 	&quot;type&quot;: 1,
 	&quot;objId&quot;: 10000,
 	&quot;cmd&quot;: &quot;blockGroupMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;777&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加普通成员到白名单）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;222&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加管理员到白名单）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单(管理员有权限添加)" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183411370164225&quot;,&quot;members&quot;:&quot;777&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加管理员到白名单）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（不存在的群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;members&quot;:&quot;3333,4444&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（被添加用户不在群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;3333&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加自己到白名单）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;111&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单(群主添加多个成员)" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444,555&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单(普通成员未有权限添加)" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
 	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;777&quot;}
@@ -3570,196 +3329,7 @@
             <stringProp name="TestPlan.comments">返回：code：200，但data为空。普通成员不能查看群组黑名单列表</stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（群组删除白名单）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（删除多个群组白名单）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333,444&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单(成员未在白名单中)" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;222&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单(群主移除自己)" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;111&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（成员未加入群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;2222,3333&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（不存在群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;members&quot;:&quot;2222,3333&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（群组白名单为空）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;2222,3333&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（普通成员未有权限）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444,555&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（管理员未有权限）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444,555&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群黑名单（操作者为群组）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群黑名单（操作者为群组）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -3773,7 +3343,7 @@
 	&quot;cmd&quot;: &quot;unBlockGroupMembers&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -4108,7 +3678,7 @@
 	&quot;cmd&quot;: &quot;unMuteGroupMembers&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;555&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -4262,132 +3832,6 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（群主解除群禁言）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183428096000001&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（群管理员解除禁言）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183428054056961&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（群组普通成员解除禁言）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183427999531010&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（不存在的群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（未开启群禁言）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（操作者未加入群组）" enabled="false">
-            <boolProp name="createNewConnection">false</boolProp>
-            <boolProp name="TLS">false</boolProp>
-            <stringProp name="server"></stringProp>
-            <stringProp name="port">80</stringProp>
-            <stringProp name="path"></stringProp>
-            <stringProp name="connectTimeout">20000</stringProp>
-            <boolProp name="binaryPayload">false</boolProp>
-            <stringProp name="requestData">{
-	&quot;type&quot;: 1,
-	&quot;objId&quot;: 10000,
-	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
-	&quot;device&quot;: &quot;${device}&quot;,
-	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183428124311554&quot;}
-}</stringProp>
-            <stringProp name="readTimeout">6000</stringProp>
-            <boolProp name="loadDataFromFile">false</boolProp>
-            <stringProp name="dataFile"></stringProp>
-          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
           <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言群成员（群主禁言群成员）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
@@ -4402,7 +3846,7 @@
 	&quot;cmd&quot;: &quot;muteGroupMembers&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;222&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;666&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
@@ -4556,7 +4000,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员(群主操作)" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员(群主操作)" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4577,7 +4021,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（管理员操作）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（管理员操作）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4598,7 +4042,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（普通成员操作）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（普通成员操作）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4619,7 +4063,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（不存在的群组）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（不存在的群组）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4640,7 +4084,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（白名单列表用户，群组普通用户）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="禁言所有群成员（白名单列表用户，群组普通用户）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4660,6 +4104,132 @@
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
             <stringProp name="TestPlan.comments">普通成员未有权限</stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（群主解除群禁言）" enabled="true">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（群管理员解除禁言）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183428054056961&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（群组普通成员解除禁言）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183427999531010&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（不存在的群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（未开启群禁言）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解除群禁言（操作者未加入群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;unMuteGroupAllMembers&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183428124311554&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
@@ -4702,7 +4272,7 @@
         </hashTree>
         <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="白名单（11条）" enabled="false"/>
         <hashTree>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="检查自己是否在白名单中（自己在白名单）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="检查自己是否在白名单中（自己在白名单）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4807,7 +4377,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（管理员获取白名单）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（管理员获取白名单）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4828,7 +4398,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（普通成员获取白名单）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（普通成员获取白名单）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4849,7 +4419,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（不存在群组）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（不存在群组）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4870,7 +4440,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（操作者未加入群组）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（操作者未加入群组）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4891,7 +4461,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（白名单列表用户，群组普通用户）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（白名单列表用户，群组普通用户）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4912,7 +4482,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（白名单列表为空）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取群白名单（白名单列表为空）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4933,47 +4503,425 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-            <boolProp name="ResultCollector.error_logging">false</boolProp>
-            <objProp>
-              <name>saveConfig</name>
-              <value class="SampleSaveConfiguration">
-                <time>true</time>
-                <latency>true</latency>
-                <timestamp>true</timestamp>
-                <success>true</success>
-                <label>true</label>
-                <code>true</code>
-                <message>true</message>
-                <threadName>true</threadName>
-                <dataType>true</dataType>
-                <encoding>false</encoding>
-                <assertions>true</assertions>
-                <subresults>true</subresults>
-                <responseData>true</responseData>
-                <samplerData>true</samplerData>
-                <xml>false</xml>
-                <fieldNames>true</fieldNames>
-                <responseHeaders>false</responseHeaders>
-                <requestHeaders>false</requestHeaders>
-                <responseDataOnError>false</responseDataOnError>
-                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                <assertionsResultsToSave>0</assertionsResultsToSave>
-                <bytes>true</bytes>
-                <sentBytes>true</sentBytes>
-                <url>true</url>
-                <threadCounts>true</threadCounts>
-                <idleTime>true</idleTime>
-                <connectTime>true</connectTime>
-              </value>
-            </objProp>
-            <stringProp name="filename"></stringProp>
-          </ResultCollector>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加普通成员到白名单）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;666&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加管理员到白名单）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单(管理员有权限添加)" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183411370164225&quot;,&quot;members&quot;:&quot;777&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加管理员到白名单）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（不存在的群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;members&quot;:&quot;3333,4444&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（被添加用户不在群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;3333&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单（群主添加自己到白名单）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;111&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单(群主添加多个成员)" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444,555&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="添加白名单(普通成员未有权限添加)" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;addGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;777&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（群组删除白名单）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;666&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（删除多个群组白名单）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;333,444&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单(成员未在白名单中)" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;222&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单(群主移除自己)" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;111&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（成员未加入群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;2222,3333&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（不存在群组）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;1&quot;,&quot;members&quot;:&quot;2222,3333&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（群组白名单为空）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;2222,3333&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（普通成员未有权限）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444,555&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
+          <hashTree/>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="删除白名单（管理员未有权限）" enabled="false">
+            <boolProp name="createNewConnection">false</boolProp>
+            <boolProp name="TLS">false</boolProp>
+            <stringProp name="server"></stringProp>
+            <stringProp name="port">80</stringProp>
+            <stringProp name="path"></stringProp>
+            <stringProp name="connectTimeout">20000</stringProp>
+            <boolProp name="binaryPayload">false</boolProp>
+            <stringProp name="requestData">{
+	&quot;type&quot;: 1,
+	&quot;objId&quot;: 10000,
+	&quot;cmd&quot;: &quot;removeGroupWhiteList&quot;,
+	&quot;device&quot;: &quot;${device}&quot;,
+	&quot;sequence&quot;: 1,
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;,&quot;members&quot;:&quot;444,555&quot;}
+}</stringProp>
+            <stringProp name="readTimeout">6000</stringProp>
+            <boolProp name="loadDataFromFile">false</boolProp>
+            <stringProp name="dataFile"></stringProp>
+          </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
         </hashTree>
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="群消息（10条）" enabled="false"/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>true</responseData>
+              <samplerData>true</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="群消息（10条）" enabled="true"/>
         <hashTree>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息(群主设置)" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（群主设置）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -4987,14 +4935,20 @@
 	&quot;cmd&quot;: &quot;blockGroup&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183434207100930&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;${groupid}&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（普通成员设置）" enabled="true">
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="TestPlan.comments">设置等待时间</stringProp>
+              <stringProp name="ConstantTimer.delay">10</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（普通成员设置）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5015,7 +4969,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（管理员设置）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（管理员设置）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5036,7 +4990,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（设置不存在群组）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（设置不存在群组）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5057,7 +5011,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（非群成员设置）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="不接收群消息（非群成员设置）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5098,8 +5052,14 @@
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
-          <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（管理员设置）" enabled="true">
+          <hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="TestPlan.comments">设置等待时间</stringProp>
+              <stringProp name="ConstantTimer.delay">10</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（管理员设置）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5120,7 +5080,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（普通成员设置）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（普通成员设置）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5141,7 +5101,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（非群组成员设置）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（非群组成员设置）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5162,7 +5122,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（不存在群组）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="恢复接受群消息（不存在群组）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5328,7 +5288,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（群主操作）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（群主操作）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5342,14 +5302,14 @@
 	&quot;cmd&quot;: &quot;destroyGroup&quot;,
 	&quot;device&quot;: &quot;${device}&quot;,
 	&quot;sequence&quot;: 1,
-	&quot;info&quot;: {&quot;groupId&quot;:&quot;183434605559809&quot;}
+	&quot;info&quot;: {&quot;groupId&quot;:&quot;183683879337985&quot;}
 }</stringProp>
             <stringProp name="readTimeout">6000</stringProp>
             <boolProp name="loadDataFromFile">false</boolProp>
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（管理员操作）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（管理员操作）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5370,7 +5330,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（普通成员操作）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="解散群组（普通成员操作）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5471,9 +5431,9 @@
           </ResultCollector>
           <hashTree/>
         </hashTree>
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="获取群信息（6条）" enabled="false"/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="获取群信息（6条）" enabled="true"/>
         <hashTree>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取加入的群列表（用户存在，已加入群组）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取加入的群列表（用户存在，已加入群组）" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5537,7 +5497,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取加入的群列表（获取当前页为空）" enabled="true">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从服务器获取加入的群列表（获取当前页为空）" enabled="false">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5558,7 +5518,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据群id获取本地群（接口封装存在问题）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="根据群id获取本地群" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
@@ -5579,7 +5539,7 @@
             <stringProp name="dataFile"></stringProp>
           </eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler>
           <hashTree/>
-          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="从根本的获取加入的群列表（接口封装存在问题）" enabled="false">
+          <eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler guiclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSamplerGui" testclass="eu.luminis.jmeter.wssampler.RequestResponseWebSocketSampler" testname="获取加入的群列表" enabled="true">
             <boolProp name="createNewConnection">false</boolProp>
             <boolProp name="TLS">false</boolProp>
             <stringProp name="server"></stringProp>
